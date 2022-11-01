@@ -2,7 +2,7 @@ import React,{useState} from 'react'
 import Table from "../../../components/table/Table";
 import { table_jobs_overview } from '../../../components/table/header_table';
 import { JOB_DONE,JOB_PENDING,JOB_CANCEL } from '../../../constants';
-import CreateAdmin from '../../modal/CreateAdmin';
+import CreateJobs from '../../modal/CreateJobs';
 
 const JobsOverview = () => {
   const [isOpenCreateJob,setIsOpenCreateJob] = useState(false)
@@ -37,7 +37,7 @@ const JobsOverview = () => {
       status_cancel={JOB_CANCEL}
       handleCreateJob={handleCreateJob}
       />
-      <CreateAdmin isOpenCreateJob={isOpenCreateJob} setIsOpenCreateJob={setIsOpenCreateJob}/>
+      <CreateJobs isOpenCreateJob={isOpenCreateJob} setIsOpenCreateJob={setIsOpenCreateJob}/>
     </>
   )
 }

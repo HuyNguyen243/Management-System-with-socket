@@ -6,7 +6,7 @@ import { Calendar } from 'primereact/calendar';
 import { InputTextarea } from 'primereact/inputtextarea';
 import { Button } from 'primereact/button';
 
-const CreateAdmin = ({ isOpenCreateJob, setIsOpenCreateJob }) => {
+const CreateJobs = ({ isOpenCreateJob, setIsOpenCreateJob }) => {
     const [cities, setCities] = React.useState(null);
 
     const type_files = [
@@ -111,4 +111,4 @@ const CreateAdmin = ({ isOpenCreateJob, setIsOpenCreateJob }) => {
   )
 }
 
-export default CreateAdmin
+export default CreateJobs
