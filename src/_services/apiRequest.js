@@ -50,7 +50,7 @@ export const del =  (url) => {
 }
 
 async function apiRequest(url, requestOptions) {
-    const URL = process.env.REACT_APP_API || process.env.REACT_APP_DEV_API
+    const URL = process.env.REACT_APP_DEV_API
     requestOptions.url = URL + "/" + url
     const token = storage.get("1touch_access_token")
     let res ;

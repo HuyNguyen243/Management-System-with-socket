@@ -13,3 +13,15 @@ export const dashboardRequest = createAsyncThunk(
         }
     }
 )
+
+export const dashboardEmployeeRequest = createAsyncThunk(
+    'dashboard',
+    async () => {
+        try {
+            const res = await get("users/dashboard")
+            return res.data;
+        } catch (error) {
+            return error?.response?.data;
+        }
+    }
+)
