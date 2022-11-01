@@ -1,0 +1,220 @@
+.total__table{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin: 30px 0;
+}
+
+.total__block{
+    width: 20%;
+    border: 1px solid $color-bloom;
+    border-radius: 10px;
+    height: 84px;
+    text-align: center;
+    margin: 20px;
+}
+
+.total__block:first-child{
+    margin-left: 0;
+}
+
+.total__block:last-child{
+    margin-right: 0;
+}
+
+.total__title{
+    color: $color-primary;
+    margin-top: 10px;
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 16px;
+}
+
+.total__count{
+    margin-top: 20px;
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 16px;
+}
+
+.table_row{
+    display: flex;
+    width: 100%;
+    border-bottom:  1px solid #e5e5e5;
+}
+
+.table_row.header{
+    background-color: $color-table-header;
+    padding: 10px 0;
+    height: 53px;
+}
+
+.table__header-col.center{
+    justify-content: center;
+}
+
+.table__header-col{
+    position: relative;
+    line-height: 100%;
+    display: flex;
+    padding: 0 5px;
+    box-sizing: border-box;
+    span{
+        color: $color-white;
+        font-weight: 400;
+        display: flex;
+        align-items: center;
+        text-transform: uppercase;
+
+    }
+}
+
+.table__container{
+    background-color: $color-bg-table;
+    width: 100%;
+    border-radius: 10px;
+    box-shadow: 3px 4px 4px rgb(0 0 0 / 17%);
+    margin-top: 30px;
+    margin-bottom: 50px;
+}
+
+.table__limit{
+    display: flex;
+    justify-content: flex-end;
+    > span{
+        font-size: 14px;
+        line-height: 16px;
+        color: #223354;
+        display: flex;
+        align-items: center;
+        height: 80px;
+    }
+}
+
+.table__limit{
+    .css-a3l6o-MuiInputBase-root-MuiInput-root-MuiSelect-root::before{
+        border: none !important;
+    }
+    .MuiFormControl-root{
+        justify-content: center !important;
+    }
+}
+
+
+
+.sort__up {
+    position: absolute;
+    top: 0px;
+    width: 12px;
+    margin-left: 4px;
+}
+
+.sort__down {
+    position: absolute;
+    bottom: 0px;
+    width: 12px;
+    margin-left: 4px;
+}
+
+.table__body-col{
+    height: 80px;
+    display: flex;
+    align-items: center;
+    padding: 0 5px;
+    box-sizing: border-box;
+    background-color: $color-bgTable;
+    font-size: 14px;
+}
+
+.table__body-col.center{
+    justify-content: center;
+}
+
+.table__header-name.haft-text{
+    width: 60%;
+}
+
+.table__body-name.center{
+    text-align: center;
+}
+
+.table__body-name.text-bold{
+    font-weight: bold;
+}
+
+.table__body-name.text-blue{
+    color: $color-primary;
+}
+
+.table__body-name.btn_success{
+    color: $color-success;
+    background-color: $color-success-bg;
+    border-radius: 5px;
+    padding: 2px 5px;
+    min-width: 120px;
+    display: block;
+    text-align: center;
+}
+
+.table__body-name.btn_pending{
+    color: $color-warning;
+    background-color: #ffc67080;
+    border-radius: 5px;
+    padding: 2px 5px;
+    min-width: 120px;
+    display: block;
+    text-align: center;
+}
+
+.table__body-name.btn_stop{
+    color: $color-danger;
+    background-color: #ffbdc9;
+    border-radius: 5px;
+    padding: 2px 5px;
+    min-width: 120px;
+    display: block;
+    text-align: center;
+}
+
+.paginate{
+    display: flex;
+    justify-content: center;
+    padding: 30px 0;
+    li{
+        width: 30px;
+        height: 30px;
+        background-color: $color-white;
+        border-radius: 5px;
+        margin: 0 5px;
+        justify-content: center;
+        align-items: center;
+        display: flex;
+        a{
+            color: $color-bloom;
+            font-weight: bold;
+        }
+    }
+    .selected{
+        background-color: $color-primary;
+        a{
+            color: $color-white;
+        }
+    }
+}
+
+.p-datatable-thead tr th{
+    background-color: $color-table-header !important;
+    color: $color-white !important;
+    font-weight: 400 !important;
+    align-items: center;
+    text-transform: uppercase;
+}
+
+.p-datatable .p-datatable-tbody > tr > td{
+    background-color: $color-bgTable !important;
+    text-align: center!important;
+}
+
+.p-datatable .p-column-header-content{
+    justify-content: center !important;
+}

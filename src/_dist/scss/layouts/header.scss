@@ -1,0 +1,126 @@
+.header__button{
+    margin-right: 10px !important;
+}
+
+.header__container{
+    >.MuiPaper-root{
+        >.MuiToolbar-root{
+            padding: 0 20px !important;
+        }
+    }
+    .css-1191obr-MuiPaper-root-MuiAppBar-root,
+    .css-19z1ozs-MuiPaper-root-MuiAppBar-root{
+        background-color: $color-white !important;
+    }
+}
+
+.header__right,
+.information__roles,
+.header__right--profile{
+    display: flex;
+}
+
+.header__block{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header__left{
+    color: $color-primary;
+    font-size: 20px;
+    line-height: 23px;
+}
+
+.information__name{
+    color: $color-bloom;
+    display: flex;
+    align-items: center;
+    p{
+        font-weight: bold;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+        white-space: nowrap;
+        max-width: 120px;
+    }
+}
+
+.information__roles{
+    color: $color-light-bloom;
+    p{
+        overflow: hidden;
+        text-overflow: ellipsis;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+        white-space: nowrap;
+        max-width: 135px;
+    }
+}
+
+.header__right--notification-msg,
+.header__right--notification{
+    position: relative;
+}
+
+.header__right--notification-msg img,
+.header__right--notification img{
+    padding: 12px;
+    background-color: $color-light-blue;
+    margin: 0 10px;
+}
+
+.header__right--profile{
+    margin-left: 20px;
+    width: 200px;
+    .css-e53awj-MuiStack-root{
+        margin-right: 10px;
+    }
+}
+
+.header__right--information{
+    width: 100%;
+}
+.information__roles{
+    justify-content: space-between;
+}
+
+.count_notification{
+    background: $color-danger;
+    width: 24px;
+    height: 24px;
+    position: absolute;
+    display: block;
+    border-radius: 50%;
+    text-align: center;
+    margin: auto 0;
+    font-weight: 600;
+    bottom: 0;
+    right: 0;
+}
+
+.dots_online{
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: $color-isOnline;
+    display: block;
+    margin-left: 5px;
+}
+
+.header__menu{
+    position: absolute;
+    right: 0;
+    top: 65px;
+}
+
+.header__menu-icon{
+    padding: 0 5px;
+}
+
+.header__menu-icon.flex_right{
+    position: absolute;
+    right: 0px;
+}

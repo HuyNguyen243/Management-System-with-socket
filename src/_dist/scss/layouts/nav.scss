@@ -1,0 +1,93 @@
+.nav__container .MuiPaper-root{
+    background-color: $color-secondary !important;
+}
+
+.nav__container .MuiPaper-root::-webkit-scrollbar{
+    display: none !important;
+}
+
+.nav__name{
+    color: $color-white !important;
+    position: relative;
+}
+
+.nav__name.icon_arrow::after{
+    content:"";
+    background-image: url("../../../../public/images/arrow_up.svg");
+    width: 15px;
+    height: 15px;
+    display: block;
+    background-repeat: no-repeat;
+    position: absolute;
+    right: 10px;
+    top: 25%;
+}
+
+.nav__btnMenu{
+    justify-content: flex-start !important;
+}
+
+.nav__icon{
+    margin: 5px 10px;
+    width: 24px;
+}
+
+.nav__button{
+    height: 50px !important;
+    padding: 0!important;
+    margin: 8px 12px !important;
+    border-radius: 12px !important;
+}
+
+.nav_btnChild.active{
+    background-color: $color-primary !important;
+}
+
+.nav__container--nav-child{
+    display: none;
+    p{
+        padding: 10px 0;
+        color : $color-white;
+    }
+    .MuiButtonBase-root{
+        padding-left: 50px !important;
+    }
+}
+
+.nav__container--nav-child.active{
+    display: block
+}
+
+.nav__btn-active{
+    .MuiTouchRipple-root{
+        height: 35px !important;
+        z-index: -99 !important;
+        transform: translateY(-15%) !important;
+        top: 25% !important;
+    }
+}
+
+.nav__icon-active{
+    position: relative;
+    &::before{
+        content: "";
+        width: 3px ;
+        height: 100%;
+        border-radius: 5px;
+        background: $color-primary !important;
+        position: absolute;
+        left: 0;
+        margin-right: 5px;
+    }
+    &::after{
+        content: " ";
+        width: 58px;
+        height: 100%;
+        border-radius: 5px 0 0 5px;
+        background: #0061F4 !important;
+        position: absolute;
+        right: 0;
+        top: 0;
+        z-index: -99;
+    }
+}

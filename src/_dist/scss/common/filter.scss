@@ -1,0 +1,118 @@
+.page__filter{
+    display: flex;
+}
+
+.rs-picker-toggle{
+    width: 270px ;
+    height: 41px;
+    margin-top: 8px;
+}
+.rs-btn-default{
+    border: 1px solid lightgrey !important;
+    border-radius: 5px !important;
+}
+
+.fiter__status{
+    margin-left: 50px !important;
+}
+
+#filter__label,
+#select-label{
+    background-color: $color-white !important;
+    padding-right: 5px;
+}
+
+.rs-picker-toggle-value{
+    color: #000 !important ;
+    margin-top: 3px !important;
+    font-family: "Be VietNam" !important;
+    font-size: 16px !important;
+}
+
+.rs-stack-item{
+    span{
+        margin-top: 2.1px !important;
+    }
+    svg{
+        margin-top: 2px !important;
+    }
+}
+
+.rs-picker-daterange-header{
+    display: none !important;
+}
+
+.rs-picker-toolbar{
+    justify-content: flex-end !important;
+    >.rs-stack-item:first-child{
+        display: none !important;
+    }
+}
+
+.rs-picker-toolbar-right{
+    button{
+        width: 100px;
+    }
+}
+
+.filter__search{
+    position: relative;
+    .MuiFormControl-root{
+        margin-left: 0px !important;
+    }
+}
+
+.filter__btn--search{
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.filter__input--search{
+    .MuiInputBase-root .MuiInputBase-input{
+        padding-right: 40px !important;
+    }
+}
+
+.status__image{
+    margin-right: 5px;
+}
+
+.status__option:first-child{
+   .status__content{
+     padding-left: 18px;
+   }
+}
+
+.status__option:nth-child(2){
+    .status__content{
+        color: $color-success;
+    }
+ }
+
+ .status__option:nth-child(3){
+    .status__content{
+        color: $color-warning;
+    }
+ }
+
+ .status__option:nth-child(4){
+    .status__content{
+        color: $color-danger;
+    }
+ }
+
+ #status__select{
+     display: flex;
+     
+ }
+
+ .filter__button{
+     display: flex;
+     justify-content: center;
+     align-items: center;
+     button{
+         height: 40px;
+     }
+ }
