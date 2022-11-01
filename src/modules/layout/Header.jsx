@@ -12,7 +12,6 @@ import { useLocation } from 'react-router';
 import { SlideMenu } from 'primereact/slidemenu';
 import {useDispatch} from "react-redux"
 import {userLogoutRequest} from "../../redux/auth/action"
-import {storage} from "../../_services/sesionStorage"
 
 export default function Header() {
   const dispatch = useDispatch()
@@ -60,7 +59,6 @@ export default function Header() {
         label:'Thoát',
         command: ()=>{
           dispatch(userLogoutRequest())
-          storage.delete("1touch_access_token")
         }
     }
 ];

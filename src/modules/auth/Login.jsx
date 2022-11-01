@@ -21,7 +21,7 @@ const Login = () => {
       dispatch(userloginRequest(data))
     }
   };
-  console.log(user)
+  
   useEffect(() => {
     if(user?.data?.access_token){
       storage.save("1touch_access_token",user?.data?.access_token)

@@ -1,9 +1,11 @@
-import React from 'react'
+import React,{useState} from 'react'
 import Table from "../../../components/table/Table";
 import { table_jobs_overview } from '../../../components/table/header_table';
 import { JOB_DONE,JOB_PENDING,JOB_CANCEL } from '../../../constants';
+import CreateAdmin from '../../modal/CreateAdmin';
 
 const JobsOverview = () => {
+  const [isOpenCreateJob,setIsOpenCreateJob] = useState(false)
   const DataFilter = (data)=>{
     console.log(data)
   }
@@ -16,7 +18,12 @@ const JobsOverview = () => {
     console.log(e)
   }
 
+  const handleCreateJob = ()=>{
+    setIsOpenCreateJob(true)
+  }
+
   return (
+    <>
       <Table 
       dataTable={[]} 
       handleSort={handleSort} 
@@ -28,7 +35,10 @@ const JobsOverview = () => {
       status_done={JOB_DONE}
       status_pending={JOB_PENDING}
       status_cancel={JOB_CANCEL}
+      handleCreateJob={handleCreateJob}
       />
+      <CreateAdmin isOpenCreateJob={isOpenCreateJob} setIsOpenCreateJob={setIsOpenCreateJob}/>
+    </>
   )
 }
 

@@ -3,7 +3,7 @@ import Table from "../../../components/table/Table";
 import { table_dashboard } from '../../../components/table/header_table';
 import { JOB_DONE,JOB_PENDING,JOB_CANCEL } from '../../../constants';
 import { dashboardRequest } from '../../../redux/dashboard/action';
-import {useDispatch,useSelector} from "react-redux"
+import {useDispatch} from "react-redux"
 
 //data//////////////////
 import { data_dashBoard } from '../../../dataJson';
@@ -11,7 +11,6 @@ import { data_dashBoard } from '../../../dataJson';
 
 const Dashboard = () => {
   const dispatch = useDispatch()
-  const data = useSelector(state=>state?.dashboard?.dashboard)
 
   useEffect(() => {
     dispatch(dashboardRequest())

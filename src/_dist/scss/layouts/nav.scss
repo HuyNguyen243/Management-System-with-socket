@@ -91,3 +91,79 @@
         z-index: -99;
     }
 }
+
+.p-inputtext{
+    width: 100% ;
+}
+
+.creat__job{
+    padding: 10px 0;
+}
+
+.creat__job--title{
+    margin-bottom: 40px;
+}
+
+.p-datepicker{
+    z-index: 99999 !important;
+}
+
+.creat__job--calendar{
+    display: flex;
+}
+
+
+.creat__job--calendar{
+    border: 1px solid $color-border-input;
+    border-radius: 5px;
+    padding: 0 15px !important;
+}
+
+.calendar__image{
+    width: 20px;
+    position: absolute;
+    top: 45px;
+    right: 25px;
+}
+
+.p-dropdown-panel{
+    z-index: 99999 !important;
+}
+
+.create__job--calendar{
+    position: relative;
+
+}
+
+#calendar{
+    width: 100%;
+}
+
+.create__job_type{
+    width: 100%;
+}
+
+.create__job_area{
+    min-height: 150px;
+}
+
+.cancel--btn,
+.confirm--btn{
+    width: 100%;
+    span{
+        color: $color-primary;
+    }
+}
+
+.p-button.p-button-outlined:enabled:hover, .p-button.p-button-outlined:not(button):not(a):not(.p-disabled):hover {
+    background: rgba(99, 102, 241, 0.04);
+    color: #6366F1;
+    border: 1px solid $color-primary;
+}
+
+.confirm--btn{
+    background-color: $color-primary !important;
+    span{
+        color: $color-white !important;
+    }
+}

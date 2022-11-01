@@ -20,7 +20,8 @@ const Table = ({
     status_done,
     status_pending,
     status_cancel,
-    have_btn_add
+    have_btn_add,
+    handleCreateJob
 }) => {
   const [currentItems, setCurrentItems] = useState(null);
   const [perpage, setPerpage] = React.useState(10);
@@ -74,7 +75,7 @@ const Table = ({
         {
             have_btn_add &&
             <Stack spacing={2} direction="row">
-                <Button variant="contained">&#43; Tạo công việc</Button>
+                <Button variant="contained" onClick={handleCreateJob}>&#43; Tạo công việc</Button>
             </Stack>
         }
         <br />

@@ -2,7 +2,6 @@ import axios from "axios";
 import {storage} from "../_services/sesionStorage"
 import {createAxios} from "../_services/createInstance"
 
-
 export const post = async (url, body) => {
     var requestOptions = {
         method: "POST",

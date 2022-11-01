@@ -33,13 +33,12 @@ const userReducer = createSlice({
             state.user.loading = false;
         },
         [userLogoutRequest.fulfilled]: (state,action) => {
-            console.log(action)
+                storage.delete("1touch_access_token")
                 state.user.isAuth = false;
-                state.user.error = action.payload.status;
+                state.user.error = false;
                 state.user.loading = false;
-                state.user.data = action.payload.status ? null : state.user.data ;
+                state.user.data = action.payload ? null : state.user.data ;
         },
-
     }
 })
 
