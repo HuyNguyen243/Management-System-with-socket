@@ -98,10 +98,12 @@
 
 .creat__job{
     padding: 10px 0;
+    height: 100%;
 }
 
 .creat__job--title{
-    margin-bottom: 40px;
+    margin-bottom: 10px;
+    margin-left: 5px;
 }
 
 .p-datepicker{
@@ -122,8 +124,8 @@
 .calendar__image{
     width: 20px;
     position: absolute;
-    top: 45px;
-    right: 25px;
+    top: 38px;
+    right: 14px;
 }
 
 .p-dropdown-panel{
@@ -166,4 +168,51 @@
     span{
         color: $color-white !important;
     }
+}
+
+.warning{
+    color: $color-danger;
+}
+
+.p-autocomplete-panel{
+    z-index: 99999 !important;
+}
+
+.modal__creat--job{
+    display: flex;
+    justify-content: space-around;
+    height: 100%;
+}
+
+.btn_modal{
+    align-items:flex-end;
+    margin-bottom: 0px;
+}
+
+.p-dropdown:not(.p-disabled):hover,
+.p-dropdown:not(.p-disabled).p-focus,
+.p-inputtext:enabled:hover{
+    border: 1px solid $color-border-input;
+    outline: none;
+    box-shadow: none;
+}
+.p-inputtext:enabled:focus{
+    outline: none;
+    box-shadow: none;
+}
+
+.modal__creat--job .field div > span:first-child{
+    font-size: 13px;
+    color: $color-black;
+}
+
+.creat__job--title{
+    color: $color-black;
+    font-weight: bold;
+}
+
+.modal__creat--job .field div span textarea,
+.modal__creat--job .field div span .p-dropdown,
+.modal__creat--job .field div span input{
+    background-color: $color-input;
 }
