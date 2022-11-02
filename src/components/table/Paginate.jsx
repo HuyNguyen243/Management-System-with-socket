@@ -1,15 +1,16 @@
-import React,{ useEffect } from 'react'
+import React,{ useEffect,useState } from 'react'
 import ReactPaginate from 'react-paginate';
 import {useNavigate,useLocation} from "react-router-dom"
 
-const Paginate = ({ itemOffset, setCurrentItems, setPageCount, setItemOffset, perpage, dataTable, pageCount, setPerpage }) => {
+const Paginate = ({  setCurrentItems, setPageCount, perpage, dataTable, pageCount, setPerpage }) => {
     const navigate = useNavigate();
     const location = useLocation();
     const { pathname } = location;
+    const [itemOffset, setItemOffset] = useState(0);
     const urlParams = new URLSearchParams(window.location.search);
-    const myParamURL = Number(urlParams?.get('page')) - 1 > 0 ? Number(urlParams?.get('page')) - 1 : 1;
+    const myParamURL = Number(urlParams?.get('page')) ? Number(urlParams?.get('page')) - 1 : 0
     const ParamPerpage = Number(urlParams?.get('perpage'))
-    
+
     useEffect(() => {
       if(ParamPerpage){
         setPerpage(ParamPerpage)
@@ -19,15 +20,16 @@ const Paginate = ({ itemOffset, setCurrentItems, setPageCount, setItemOffset, pe
     useEffect(() => {
         if(dataTable?.length > 0){
           const endOffset = itemOffset + perpage;
+          
           setCurrentItems(dataTable?.slice(itemOffset, endOffset));
           setPageCount(Math.ceil(dataTable?.length / perpage));
         }
       }, [itemOffset, perpage, dataTable, setCurrentItems, setPageCount]);
 
-    useEffect(()=>{
+    useEffect(() => {
         const newOffset = (myParamURL * perpage) % dataTable?.length;
         setItemOffset(newOffset);
-    })
+    },[setItemOffset,myParamURL,dataTable,perpage])
     
       const handlePageClick = (event) => {
         navigate({
@@ -46,7 +48,7 @@ const Paginate = ({ itemOffset, setCurrentItems, setPageCount, setItemOffset, pe
     previousLabel="<"
     renderOnZeroPageCount={null}
     className="paginate"
-    // forcePage={myParamURL}
+    forcePage={myParamURL}
     />
   )
 }

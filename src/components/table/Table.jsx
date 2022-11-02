@@ -26,7 +26,6 @@ const Table = ({
   const [currentItems, setCurrentItems] = useState(null);
   const [perpage, setPerpage] = React.useState(10);
   const [pageCount, setPageCount] = useState(0);
-  const [itemOffset, setItemOffset] = useState(0);
 
     const DONE = ["REQUEST","PAID","COMPLETE","ONLINE"]
     const PENDING = ["PENDING","UNPAY","INCOMPLETE","LEAVING"]
@@ -69,7 +68,6 @@ const Table = ({
             }
         }
     }
-
   return (
     <div className="page">
         {
@@ -114,10 +112,8 @@ const Table = ({
             }
             </DataTable>
             <Paginate 
-                itemOffset={itemOffset} 
                 setCurrentItems={setCurrentItems} 
                 setPageCount={setPageCount} 
-                setItemOffset={setItemOffset}
                 perpage={perpage}
                 dataTable={dataTable}
                 pageCount={pageCount}
