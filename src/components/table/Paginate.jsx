@@ -17,16 +17,15 @@ const Paginate = ({ itemOffset, setCurrentItems, setPageCount, setItemOffset, pe
     },[setPerpage,ParamPerpage])
 
     useEffect(() => {
-        if(dataTable.length > 0){
+        if(dataTable?.length > 0){
           const endOffset = itemOffset + perpage;
-          setCurrentItems(dataTable.slice(itemOffset, endOffset));
-          setPageCount(Math.ceil(dataTable.length / perpage));
+          setCurrentItems(dataTable?.slice(itemOffset, endOffset));
+          setPageCount(Math.ceil(dataTable?.length / perpage));
         }
-      
       }, [itemOffset, perpage, dataTable, setCurrentItems, setPageCount]);
 
     useEffect(()=>{
-        const newOffset = (myParamURL * perpage) % dataTable.length;
+        const newOffset = (myParamURL * perpage) % dataTable?.length;
         setItemOffset(newOffset);
     })
     
