@@ -31,6 +31,8 @@ const Table = ({
     const PENDING = ["PENDING","UNPAY","INCOMPLETE","LEAVING"]
     const CANCEL = ["UNREQUEST","CANCEL","FIXED","OFFLINE"]
 
+    const old_Data = Array.isArray(dataTable) ? dataTable : []
+    
     const headerTable = (header,sort_value)=>{
         if(header)
         return(
@@ -85,9 +87,9 @@ const Table = ({
             onRowClick={handleRowClick}
             >
             {
-                dataTable?.length > 0 
+                old_Data?.length > 0 
                 ?
-                Object.keys(dataTable?.[0]).map((item,index)=>{
+                Object.keys(old_Data?.[0]).map((item,index)=>{
                     return(
                         header?.[index] &&
                         <Column 
@@ -115,7 +117,7 @@ const Table = ({
                 setCurrentItems={setCurrentItems} 
                 setPageCount={setPageCount} 
                 perpage={perpage}
-                dataTable={dataTable}
+                dataTable={old_Data}
                 pageCount={pageCount}
                 setPerpage={setPerpage}
             />
