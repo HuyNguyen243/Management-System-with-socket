@@ -172,7 +172,7 @@
 }
 
 .warning{
-    color: $color-danger;
+    color: $color-danger !important;
 }
 
 .p-autocomplete-panel{
@@ -262,4 +262,8 @@
     color: $color-black;
     font-weight: bold;
     padding-left: 20px;
+}
+
+.css-juqc2r-MuiPaper-root-MuiAppBar-root{
+    background-color: $color-white !important;
 }
