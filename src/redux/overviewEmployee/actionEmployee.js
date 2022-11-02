@@ -2,15 +2,14 @@ import {  createAsyncThunk } from '@reduxjs/toolkit'
 import { get } from "../../_services/apiRequest"
 
 
-export const dashboardRequest = createAsyncThunk(
+export const dashboardEmployeeRequest = createAsyncThunk(
     'dashboard',
     async () => {
         try {
-            const res = await get("customers")       
-            return res.data;
+            const res = await get("users/data/dashboard")
+            return res.data.data_user;
         } catch (error) {
             return error?.response?.data;
         }
     }
 )
-

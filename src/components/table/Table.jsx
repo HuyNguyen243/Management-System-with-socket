@@ -87,7 +87,7 @@ const Table = ({
             onRowClick={handleRowClick}
             >
             {
-                dataTable.length > 0 
+                dataTable?.length > 0 
                 ?
                 Object.keys(dataTable?.[0]).map((item,index)=>{
                     return(
