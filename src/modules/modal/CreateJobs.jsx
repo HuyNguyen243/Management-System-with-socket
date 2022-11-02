@@ -12,7 +12,7 @@ import { classNames } from 'primereact/utils';
 
 import {type_files, type_status, type_jobs, names} from "./dropDown"
 
-const CreateJobs = ({ isOpenCreateJob, setIsOpenCreateJob }) => {
+const CreateJobs = ({ isOpenCreateJob, setIsOpenCreateJob, setIsOpenCreateCustomer }) => {
     const defaultValues = {
         type_job: null,
         nameCustomer: '',
@@ -51,6 +51,13 @@ const CreateJobs = ({ isOpenCreateJob, setIsOpenCreateJob }) => {
             reset();
         }
     };
+
+    const handleCreateNewCustomer = ()=>{
+        setIsOpenCreateJob(false)
+        setTimeout(()=>{
+            setIsOpenCreateCustomer(true)
+        },100)
+    }
 
   return (
     <Sidebar visible={isOpenCreateJob} position="right" onHide={() => setIsOpenCreateJob(false)} className="create__job">
@@ -92,6 +99,9 @@ const CreateJobs = ({ isOpenCreateJob, setIsOpenCreateJob }) => {
                                 />
                             )} />
                         </span>
+                    </div>
+                    <div className="field col-12 md:col-12 create_new_customer">
+                        <p onClick={handleCreateNewCustomer}>Tạo khách hàng mới</p>
                     </div>
                     <div className="field col-12 md:col-6 create__job--calendar">
                         <span htmlFor="calendar">Chọn ngày:<span className="warning">*</span></span>
@@ -231,11 +241,14 @@ const CreateJobs = ({ isOpenCreateJob, setIsOpenCreateJob }) => {
                             )} />
                         </span>
                     </div>
+                    <div className="field col-12 md:col-12">
+                        
+                    </div>
                 </div>
                 <div className="btn_modal field col-12 md:col-12 grid">
                     <div className="field col-12 md:col-6">
                         <span className="p-float-label">
-                            <Button label="Hủy bỏ" className="p-button-outlined cancel--btn" onClick={()=>setIsOpenCreateJob(false)}/>
+                            <Button label="Hủy bỏ" className="p-button-outlined cancel--btn" onClick={()=>{setIsOpenCreateJob(false);reset()} }/>
                         </span>
                     </div>
                     <div className="field col-12 md:col-6">

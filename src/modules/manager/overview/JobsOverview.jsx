@@ -3,9 +3,13 @@ import Table from "../../../components/table/Table";
 import { table_jobs_overview } from '../../../components/table/header_table';
 import { JOB_DONE,JOB_PENDING,JOB_CANCEL } from '../../../constants';
 import CreateJobs from '../../modal/CreateJobs';
+import CreateCustomer from '../../modal/CreateCustomer';
+import InformationCustomer from '../../modal/InformationCustomer';
 
 const JobsOverview = () => {
   const [isOpenCreateJob,setIsOpenCreateJob] = useState(false)
+  const [isOpenCreateCustomer,setIsOpenCreateCustomer] = useState(false)
+  const [isOpenInformationCustomer,setIsOpenInformationCustomer] = useState(true)
   const DataFilter = (data)=>{
     console.log(data)
   }
@@ -37,7 +41,9 @@ const JobsOverview = () => {
       status_cancel={JOB_CANCEL}
       handleCreateJob={handleCreateJob}
       />
-      <CreateJobs isOpenCreateJob={isOpenCreateJob} setIsOpenCreateJob={setIsOpenCreateJob}/>
+      <CreateJobs isOpenCreateJob={isOpenCreateJob} setIsOpenCreateJob={setIsOpenCreateJob} setIsOpenCreateCustomer={setIsOpenCreateCustomer}/>
+      <CreateCustomer isOpenCreateCustomer={isOpenCreateCustomer} setIsOpenCreateCustomer={setIsOpenCreateCustomer} />
+      <InformationCustomer isOpenInformationCustomer={isOpenInformationCustomer} setIsOpenInformationCustomer={setIsOpenInformationCustomer} />
     </>
   )
 }

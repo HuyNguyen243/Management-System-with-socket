@@ -1,5 +1,5 @@
 export const EMAIL_REGEX = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i
-export const PHONE_REGEX =  /^(0?)(3[2-9]|5[6|8|9]|7[0|6-9]|8[0-6|8|9]|9[0-4|6-9])[0-9]{7}$/
+export const PHONE_REGEX =  /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/
 export const IMAGE_EXTENSIONS = ['jpg', 'jpeg', 'png'];
 
 export const JOB_DONE = "Đã hoàn thành"
