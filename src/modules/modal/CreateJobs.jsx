@@ -10,6 +10,8 @@ import { InputNumber } from 'primereact/inputnumber';
 import { useForm, Controller } from 'react-hook-form';
 import { classNames } from 'primereact/utils';
 
+import {type_files, type_status, type_jobs, names} from "./dropDown"
+
 const CreateJobs = ({ isOpenCreateJob, setIsOpenCreateJob }) => {
     const defaultValues = {
         type_job: null,
@@ -25,33 +27,7 @@ const CreateJobs = ({ isOpenCreateJob, setIsOpenCreateJob }) => {
         note: '',
     }
     const { control, formState: { errors }, handleSubmit, reset } = useForm({ defaultValues });
- 
     const [filteredNameCustomers, setFilteredNameCustomers] = React.useState(null);
-
-    const names =[
-        {"name": "Afghanistan", "code": "AF"},
-        {"name": "Åland Islands", "code": "AX"},
-        {"name": "Albania", "code": "AL"},
-        {"name": "Algeria", "code": "DZ"},
-    ]
-
-    const type_files = [
-        { name: 'JPG', code: 'JPG' },
-        { name: 'SVG', code: 'RSVGM' },
-        { name: 'PSD', code: 'PSD' },
-    ];
-
-    const type_status= [
-        { name: 'Đang yêu cầu', code: 'DONE' },
-        { name: 'Tạm hoãn yêu cầu', code: 'PENDING' },
-        { name: 'Ngưng yêu cầu', code: 'STOP' },
-    ]
-
-    const type_jobs = [
-        { name: 'Tính phí', code: 'CHARGE' },
-        { name: 'Không tính phí', code: 'NO CHARGE' },
-        { name: 'Chỉnh sửa', code: 'EDIT' },
-    ]
 
     const searchName = (event) => {
         setTimeout(() => {
