@@ -2,7 +2,7 @@ import MuiDrawer from '@mui/material/Drawer';
 import MuiAppBar from '@mui/material/AppBar';
 import { styled } from '@mui/material/styles';
 
-const drawerWidth = 240;
+const drawerWidth = 350;
 
 const openedMixin = (theme) => ({
   width: drawerWidth,

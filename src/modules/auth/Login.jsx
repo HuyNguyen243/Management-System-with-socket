@@ -27,7 +27,7 @@ const Login = () => {
       storage.save("1touch_access_token",user?.data?.access_token)
       window.location.href = "/"
     }else if(user?.data?.message && !user?.data?.status){
-      setError("Tên đăng nhập hoặc mật khẩu không chính xác")
+      setError(user?.data?.message )
     }
   },[user])
 
@@ -45,9 +45,9 @@ const Login = () => {
           </div>
           <form  onSubmit={handleSubmit(onSubmit)}>
               <div className="form__email">
-                  <p>Name:</p>
+                  <p>Tên đăng nhập:</p>
                   <div className="form__input">
-                  <input type="text" placeholder="Nhập tên " name="username" id="username"
+                  <input type="text" placeholder="Nhập tên " name="username" id="username"  autoComplete='off'
                      {...register("username", 
                      { required: {value:true,message: "email không được để trống"}, 
                       maxLength: 55, 
@@ -62,11 +62,11 @@ const Login = () => {
               <div className="form__password">
                   <p>Mật khẩu:</p>
                   <div className="form__input">
-                    <input type={haveSeenPwd ? "text" : "password"} placeholder="Nhập tên đăng nhập" name="password" id="password"
+                    <input type={haveSeenPwd ? "text" : "password"} placeholder="Nhập tên đăng nhập" name="password" id="password" autoComplete='off'
                      {...register("password", 
                      { required: {value:true,message: "password không được để trống"}})}
                     />
-                    <img src="../../images/eye.svg" alt="" onClick={()=>setHaveSeenPwd(!haveSeenPwd)}/>
+                    <img className="show__password" src={ haveSeenPwd ? "../../images/closed_eye.svg" :  "../../images/eye.svg"} alt="" onClick={()=>setHaveSeenPwd(!haveSeenPwd)}/>
                   </div>
                   {
                     errors?.password?.message && 
