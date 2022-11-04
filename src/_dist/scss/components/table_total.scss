@@ -6,12 +6,16 @@
 }
 
 .total__block{
-    width: 20%;
-    border: 1px solid $color-bloom;
-    border-radius: 10px;
     height: 84px;
     text-align: center;
-    margin: 20px;
+    width: 20%;
+}
+
+.total__block > div{
+    padding: 15px;
+    margin: 0 5px;
+    border: 1px solid $color-border-input;
+    border-radius: 10px;
 }
 
 .total__block:first-child{
@@ -24,7 +28,6 @@
 
 .total__title{
     color: $color-primary;
-    margin-top: 10px;
     font-size: 14px;
     font-weight: bold;
     line-height: 16px;

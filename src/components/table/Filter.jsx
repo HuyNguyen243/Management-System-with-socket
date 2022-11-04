@@ -1,4 +1,4 @@
-import React from 'react'
+import React,{useEffect} from 'react'
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import InputLabel from '@mui/material/InputLabel';
@@ -6,8 +6,6 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import {arrStatus} from "./status"
-import Button from '@mui/material/Button';
-import Stack from '@mui/material/Stack';
 import DatePicker from "./DatePicker"
 
 const Filter = ({DataFilter}) => {
@@ -26,25 +24,40 @@ const Filter = ({DataFilter}) => {
       return data;
   }
 
-  const handlebtnSubmit = ()=>{
-      let data = {}
-      if(dates?.length > 0){
-          const arr = convertDate(dates)
-          data.startDate = arr[0]
-          data.endDate = arr[1]
-      }
-      if(status !==""){
-          data.status = status
-      }
+  useEffect(()=>{
+    let data = {}
+    if(dates?.length > 0 && dates[1]){
+        const arr = convertDate(dates)
+        data.startDate = arr[0]
+        data.endDate = arr[1]
+    }
+    if(status !==""){
+        data.status = status
+    }
 
-      if(keyword !== ""){
-        data.keyword = keyword
+    if(keyword !== ""){
+      data.keyword = keyword
+    }
+
+    const timeout = setTimeout(() => {
+      if(Object.keys(data).length > 0){
+        DataFilter(data)
       }
-      DataFilter(data)
+      }, 1000);
+    return () => clearTimeout(timeout);
+
+  },[DataFilter,dates,keyword,status])
+
+  const handleReset = ()=>{
+    setDates(undefined)
+    setStatus("")
+    setKeyWord("")
+    DataFilter({})
   }
 
   return (
       <div className="page__filter align-items-center flex grid">
+        <img src="images/reset.svg" alt="" onClick={handleReset}/>
       <Box
       component="form"
       sx={{
@@ -86,9 +99,6 @@ const Filter = ({DataFilter}) => {
         }
         </Select>
       </FormControl>
-      <Stack spacing={2} direction="row" className="filter__button" onClick={handlebtnSubmit}>
-        <Button variant="contained">Tìm kiếm </Button>
-      </Stack>
       </div>
   )
 }

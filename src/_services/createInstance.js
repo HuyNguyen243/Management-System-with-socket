@@ -24,7 +24,11 @@ export const createAxios = (token) =>{
               default_token = refreshtoken?.data?.access_token?.access_token
               storage.save(NAME_SESSION_STORAGE_TOKEN,default_token)
               storage.save(ID_SESSION,decodedToken.id_system)
-            }else{
+            }else if (refreshtoken?.access_token){
+              default_token = refreshtoken?.access_token
+              storage.save(NAME_SESSION_STORAGE_TOKEN,default_token)
+            }
+            else{
               storage.delete(NAME_SESSION_STORAGE_TOKEN)
               setTimeout(() =>{
                 window.location.href("/login")
