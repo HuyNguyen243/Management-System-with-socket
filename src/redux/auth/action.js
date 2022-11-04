@@ -1,5 +1,5 @@
 import {  createAsyncThunk } from '@reduxjs/toolkit'
-import { post } from "../../_services/apiRequest"
+import { post,get } from "../../_services/apiRequest"
 
 
 export const userloginRequest = createAsyncThunk(
@@ -26,3 +26,14 @@ export const userLogoutRequest = createAsyncThunk(
     }
 )
 
+export const userProfile = createAsyncThunk(
+    'userProfile',
+    async (id) => {
+        try {
+            const res = await get(`users/infor/${id}`)
+            return res;
+        } catch (error) {
+            return error?.response?.data;
+        }
+    }
+)

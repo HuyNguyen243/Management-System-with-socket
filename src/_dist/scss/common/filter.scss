@@ -13,7 +13,7 @@
 }
 
 .fiter__status{
-    margin-left: 50px !important;
+    margin-left: 10px !important;
 }
 
 #filter__label,
@@ -116,3 +116,20 @@
          height: 40px;
      }
  }
+
+ .p-calendar{
+     width: 100%;
+}
+
+.image__calendar{
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+#range input{
+    padding: 7px 15px;
+    border-radius: 5px;
+    width: 270px;
+}

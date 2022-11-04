@@ -37,7 +37,7 @@ const Table = ({
         if(header)
         return(
         <div className="table__header-col" >
-        <span className="table__header-name">{header?.name}</span>
+        <span className="table__header-name">{header?.name}
             {
                 header?.haveSort &&
                 <div className="table__sort">
@@ -45,6 +45,8 @@ const Table = ({
                     <img src="../../images/sort_down.svg" alt="" className="sort__down" data-by={sort_value} data-value="DESC" onClick={handleSort}/>
                 </div>
             }
+        </span>
+         
         </div>
     )}
 

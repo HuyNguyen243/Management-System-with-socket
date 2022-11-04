@@ -1,6 +1,7 @@
 import axios from "axios";
 import {storage} from "../_services/sesionStorage"
 import {createAxios} from "../_services/createInstance"
+import { NAME_SESSION_STORAGE_TOKEN } from "../constants";
 
 export const post = async (url, body) => {
     var requestOptions = {
@@ -50,9 +51,9 @@ export const del =  (url) => {
 }
 
 async function apiRequest(url, requestOptions) {
-    const URL = process.env.REACT_APP_DEV_API
+    const URL = process.env.REACT_APP_API || process.env.REACT_APP_DEV_API
     requestOptions.url = URL + "/" + url
-    const token = storage.get("1touch_access_token")
+    const token = storage.get(NAME_SESSION_STORAGE_TOKEN)
     let res ;
     if(token){
         const JWTaxios = createAxios(token)

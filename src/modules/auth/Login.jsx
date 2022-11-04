@@ -2,7 +2,7 @@ import React, { useState,useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import { useForm } from "react-hook-form";
 import { storage } from '../../_services/sesionStorage';
-
+import { NAME_SESSION_STORAGE_TOKEN } from '../../constants';
 import { 
   userloginRequest 
 } from '../../redux/auth/action';
@@ -12,7 +12,7 @@ const Login = () => {
   const navigate = useNavigate()
   const { register, handleSubmit, formState: { errors } } = useForm({});
   const [haveSeenPwd,setHaveSeenPwd] = useState(false)
-  const user = useSelector(state=> state.auth.user)
+  const user = useSelector(state=> state.auth.token)
   const dispatch = useDispatch()
   const [error,setError] = useState("")
 
@@ -24,7 +24,7 @@ const Login = () => {
   
   useEffect(() => {
     if(user?.data?.access_token){
-      storage.save("1touch_access_token",user?.data?.access_token)
+      storage.save(NAME_SESSION_STORAGE_TOKEN,user?.data?.access_token)
       window.location.href = "/"
     }else if(user?.data?.message && !user?.data?.status){
       setError(user?.data?.message )

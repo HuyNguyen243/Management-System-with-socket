@@ -54,7 +54,6 @@
 }
 
 .table__header-col{
-    position: relative;
     line-height: 100%;
     display: flex;
     padding: 0 5px;
@@ -100,18 +99,22 @@
     }
 }
 
-
+.table__sort{
+    position: absolute;
+    right: 0px;
+    top: 7px;
+}
 
 .sort__up {
     position: absolute;
-    top: 0px;
+    top: -8px;
     width: 12px;
     margin-left: 4px;
 }
 
 .sort__down {
     position: absolute;
-    bottom: 0px;
+    bottom: -8px;
     width: 12px;
     margin-left: 4px;
 }
@@ -144,6 +147,10 @@
 
 .table__body-name.text-blue{
     color: $color-primary;
+}
+
+.table__header-name{
+    position: relative;
 }
 
 .table__body-name.btn_success{
@@ -208,6 +215,7 @@
     font-weight: 400 !important;
     align-items: center;
     text-transform: uppercase;
+    height: 65px;
 }
 
 .p-datatable .p-datatable-tbody > tr > td{
@@ -217,4 +225,14 @@
 
 .p-datatable .p-column-header-content{
     justify-content: center !important;
+}
+
+.p-datatable-thead{
+    height: 65px;
+}
+
+.columnheader{
+    display: flex;
+    align-items: center;
+    height: 65px;
 }

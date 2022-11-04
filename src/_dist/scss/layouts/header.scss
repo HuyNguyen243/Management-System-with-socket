@@ -110,6 +110,24 @@
     margin-left: 5px;
 }
 
+.dots_busy{
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: $color-warning;
+    display: block;
+    margin-left: 5px;
+}
+
+.dots_offline{
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: $color-danger;
+    display: block;
+    margin-left: 5px;
+}
+
 .header__menu{
     position: absolute;
     right: 0;

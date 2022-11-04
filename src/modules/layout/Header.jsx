@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useEffect} from 'react';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -9,60 +9,28 @@ import { DrawerHeader, AppBar, Drawer } from "../../libs/muiDrawer"
 import Avatar from '@mui/material/Avatar';
 import Stack from '@mui/material/Stack';
 import { useLocation } from 'react-router';
-import { SlideMenu } from 'primereact/slidemenu';
-import {useDispatch} from "react-redux"
-import {userLogoutRequest} from "../../redux/auth/action"
+import {useDispatch, useSelector} from "react-redux"
+import {userProfile} from "../../redux/auth/action"
+import { storage } from '../../_services/sesionStorage';
+import { NAME_SESSION_STORAGE_TOKEN, ID_SESSION, UserRules } from '../../constants';
+import ToggleMenu from "./ToggleMenu"
 
 export default function Header() {
   const dispatch = useDispatch()
   const [open, setOpen] = React.useState(false);
   const location = useLocation()
   const pathsName = ["/login","/forgot-password"]
-  const [openMenu, setOpenMenu] = React.useState(false); 
+  const [openMenu, setOpenMenu] = React.useState(false);
+  const token =storage.get(NAME_SESSION_STORAGE_TOKEN)
+  const id =storage.get(ID_SESSION)
+  const user = useSelector(state=> state.auth.user)
 
-  const iconMenu = (image)=>{
-    return (
-      <img src={`images/${image}.svg`} alt="" className={`header__menu-icon ${image === "arrow_right" && "flex_right" }`} />
-    )
-  }
-  
-  const items = [
-    {
-        label:'Hoạt động',
-        icon:()=>iconMenu("arrow_right"),
-        items:[
-            {
-                label:'Online',
-                icon:()=>iconMenu("online"),
-            },
-            {
-                label:'Busy',
-                icon:()=>iconMenu("busy"),
-            },
-          
-            {
-                label:'Office',
-                icon:()=>iconMenu("offline"),
-            },
-        ]
-    },
-    {
-        separator:true
-    },
-    {
-      label:'Thông tin cá nhân',
-      command: ()=>{
-        console.log(true)
-      }
-    },
-    {
-        label:'Thoát',
-        command: ()=>{
-          dispatch(userLogoutRequest())
-        }
+  useEffect(()=>{
+    if(id && token){
+      dispatch(userProfile(id))
     }
-];
-  
+  },[dispatch,id,token])
+
   const handleDrawer = () => {
     setOpen(!open);
   };
@@ -111,21 +79,23 @@ export default function Header() {
                     </Stack>
                     <div className="header__right--information">
                         <div className="information__name">
-                            <p>neymar JR.</p>
-                            <span className="dots_online"></span>
+                            <p>{user?.data?.username}</p>
+                            {user?.data?.status === UserRules.STATUS.ONLINE &&  <span className="dots_online"></span>}
+                            {user?.data?.status === UserRules.STATUS.LEAVE &&  <span className="dots_busy"></span>}
+                            {user?.data?.status === UserRules.STATUS.OFFLINE &&  <span className="dots_offline"></span>}
                         </div>
                         <div className="information__roles">
-                            <p>Admin</p>
-                            <img src="../../images/arrow_down_gray.svg" alt=""/>
+                            {user?.data?.id_system.includes(UserRules._ROLE.ADMIN) && <p>Admin</p>}
+                            {user?.data?.id_system.includes(UserRules._ROLE.SALE) && <p>Sale</p>}
+                            {user?.data?.id_system.includes(UserRules._ROLE.EDITOR) && <p>Editor</p>}
+                            {user?.data && <img src="../../images/arrow_down_gray.svg" alt=""/>}
                         </div>
                     </div>
                   </div>
                 </div>
                 {
                   openMenu &&
-                  <div className="header__menu">
-                    <SlideMenu model={items} ></SlideMenu>
-                  </div>
+                  <ToggleMenu />
                 }
               </div>
             

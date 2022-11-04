@@ -101,7 +101,7 @@ const CreateJobs = ({ isOpenCreateJob, setIsOpenCreateJob, setIsOpenCreateCustom
                         </span>
                     </div>
                     <div className="field col-12 md:col-12 create_new_customer">
-                        <p onClick={handleCreateNewCustomer}>Tạo khách hàng mới</p>
+                        <p onClick={handleCreateNewCustomer} style={{width:"max-content"}}>Tạo khách hàng mới</p>
                     </div>
                     <div className="field col-12 md:col-6 create__job--calendar">
                         <span htmlFor="calendar">Chọn ngày:<span className="warning">*</span></span>

@@ -1,7 +1,6 @@
 import React from 'react'
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
-import { DateRangePicker } from 'rsuite';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
@@ -9,9 +8,10 @@ import Select from '@mui/material/Select';
 import {arrStatus} from "./status"
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
+import DatePicker from "./DatePicker"
 
 const Filter = ({DataFilter}) => {
-  const [dates,setDates] = React.useState([])
+  const [dates,setDates] = React.useState(undefined)
   const [status, setStatus] = React.useState('');
   const [keyword,setKeyWord ] = React.useState('');
 
@@ -44,7 +44,7 @@ const Filter = ({DataFilter}) => {
   }
 
   return (
-      <div className="page__filter">
+      <div className="page__filter align-items-center flex">
       <Box
       component="form"
       sx={{
@@ -65,13 +65,7 @@ const Filter = ({DataFilter}) => {
         <img src="../../images/search_blue.svg" alt="" className="filter__btn--search"/>
       </Box>
       
-      <DateRangePicker 
-        appearance="default" 
-        placeholder="Default" 
-        style={{ width: 230 }} 
-        defaultValue={dates}
-        onChange={(time)=>setDates(time)}
-      />
+      <DatePicker dates={dates} setDates={setDates}/>
 
       <FormControl sx={{ m: 1, minWidth: 270 }} size="small" className="fiter__status">
       <InputLabel id="filter__label">Trạng thái</InputLabel>
