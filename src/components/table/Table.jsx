@@ -1,4 +1,5 @@
-import React,{ useState } from 'react'
+import React,{ useState } from 'react';
+import { useLocation } from "react-router-dom"
 
 import Filter from './Filter'
 import TotalTable from './TotalTable'
@@ -6,6 +7,8 @@ import Paginate from './Paginate';
 import PerPage from "./PerPage";
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
+import TableTotal from "../../modules/manager/sale/workFlowManager/TableTotal"
+import TableBody from "./TableBody"
 
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
@@ -17,19 +20,14 @@ const Table = ({
     haveTotalTable,
     header,
     handleRowClick,
-    status_done,
-    status_pending,
-    status_cancel,
     have_btn_add,
     handleCreateJob
 }) => {
-  const [currentItems, setCurrentItems] = useState(null);
-  const [perpage, setPerpage] = React.useState(10);
-  const [pageCount, setPageCount] = useState(0);
-
-    const DONE = ["REQUEST","PAID","COMPLETE","ONLINE"]
-    const PENDING = ["PENDING","UNPAY","INCOMPLETE","LEAVING"]
-    const CANCEL = ["UNREQUEST","CANCEL","FIXED","OFFLINE"]
+    const [currentItems, setCurrentItems] = useState(null);
+    const [perpage, setPerpage] = React.useState(10);
+    const [pageCount, setPageCount] = useState(0);
+    const location = useLocation()
+    const { pathname } = location
 
     const old_Data = Array.isArray(dataTable) ? dataTable : []
     
@@ -50,27 +48,11 @@ const Table = ({
         </div>
     )}
 
-    const bodyTable = (name,item,table)=>{
+    const bodyTable = (rowData,item,table)=>{
         if(table)
-        if(!item.includes("status")){
-            return (
-                <span className={`table__body-name ${table?.element_body_text}`}>{name[item]}</span>
-            )
-        }else{
-            if(DONE.includes(name[item])){
-                return (
-                    <span className="table__body-name center btn_success">{status_done}</span>
-                )
-            }else if(PENDING.includes(name[item])){
-                return (
-                    <span className="table__body-name center btn_pending">{status_pending}</span>
-                )
-            }else if(CANCEL.includes(name[item])){
-                return (
-                    <span className="table__body-name center btn_stop">{status_cancel}</span>
-                )
-            }
-        }
+        return(
+            <TableBody rowData={rowData} item={item}/>
+        )
     }
   return (
     <div className="page">
@@ -82,6 +64,12 @@ const Table = ({
         }
         <br />
         <Filter DataFilter={DataFilter} />
+
+        {
+            pathname === "/workflow-management" &&
+            <TableTotal data={old_Data}/>
+        }
+
         {haveTotalTable && <TotalTable />}
         <div className="table__container">
             <PerPage perpage={perpage} setPerpage={setPerpage}/>

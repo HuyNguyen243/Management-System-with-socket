@@ -1,4 +1,4 @@
-import React,{useEffect} from 'react';
+import React,{useEffect, useState} from 'react';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -17,13 +17,29 @@ import ToggleMenu from "./ToggleMenu"
 
 export default function Header() {
   const dispatch = useDispatch()
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const location = useLocation()
   const pathsName = ["/login","/forgot-password"]
-  const [openMenu, setOpenMenu] = React.useState(false);
+  const [openMenu, setOpenMenu] = useState(false);
+
   const token =storage.get(NAME_SESSION_STORAGE_TOKEN)
   const id =storage.get(ID_SESSION)
   const user = useSelector(state=> state.auth.user)
+
+  useEffect(() => {
+      const handleClickOutsideMenu = (e)=>{
+        const elementChildMenu = document.querySelector(".header__menu")
+        if(openMenu && !elementChildMenu.contains(e.target)){
+          setOpenMenu(false)
+        }
+        
+      }
+      window.addEventListener('mousedown', handleClickOutsideMenu);
+
+      return ()=>{
+        window.removeEventListener('mousedown',handleClickOutsideMenu)
+      }
+  },[openMenu,open])
 
   useEffect(()=>{
     if(id && token){
@@ -45,7 +61,7 @@ export default function Header() {
         !pathsName.includes(location.pathname) &&
         <>
           <CssBaseline />
-          <AppBar position="fixed" open={open} >
+          <AppBar position="fixed" open={open} className="navigation_left">
             <Toolbar>
               <IconButton
                 color="inherit"
@@ -73,7 +89,7 @@ export default function Header() {
                     <img src="../../images/chat.svg" alt=""/>
                     <span className="count_notification">1</span>
                   </div>
-                  <div className="header__right--profile" onClick={()=>setOpenMenu(!openMenu)}>
+                  <div className="header__right--profile" onClick={()=>{setOpenMenu(!openMenu); setOpen(false)}}>
                     <Stack direction="row" spacing={2}>
                       <Avatar alt="" src="../../images/default_avatar.jpeg" />
                     </Stack>
@@ -98,7 +114,6 @@ export default function Header() {
                   <ToggleMenu />
                 }
               </div>
-            
             </Toolbar>
           </AppBar>
           <Drawer variant="permanent" open={open} className="nav__container">

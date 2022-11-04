@@ -157,30 +157,33 @@
     color: $color-success;
     background-color: $color-success-bg;
     border-radius: 5px;
-    padding: 2px 5px;
-    min-width: 120px;
+    padding: 2px 10px;
+    width: max-content;
     display: block;
     text-align: center;
+    margin: auto;
 }
 
 .table__body-name.btn_pending{
     color: $color-warning;
     background-color: #ffc67080;
     border-radius: 5px;
-    padding: 2px 5px;
-    min-width: 120px;
+    padding: 2px 10px;
+    width: max-content;
     display: block;
     text-align: center;
+    margin: auto;
 }
 
 .table__body-name.btn_stop{
     color: $color-danger;
     background-color: #ffbdc9;
     border-radius: 5px;
-    padding: 2px 5px;
-    min-width: 120px;
+    padding: 2px 10px;
+    width: max-content;
     display: block;
     text-align: center;
+    margin: auto;
 }
 
 .paginate{
@@ -225,6 +228,7 @@
 
 .p-datatable .p-column-header-content{
     justify-content: center !important;
+    padding-top: 10px;
 }
 
 .p-datatable-thead{
@@ -235,4 +239,71 @@
     display: flex;
     align-items: center;
     height: 65px;
+}
+
+.table__total--workflow--management{
+    margin: 20px 0;
+}
+
+.chart_donut{
+    position: relative; 
+    width: 70%;
+    margin: auto ;
+    max-width: 300px;
+    min-width: 200px;
+}
+
+.chart__title{
+    font-weight: bold;
+}
+
+.table__analysis{
+    margin-top: 20px;
+}
+
+.chart_bar{
+    width: 100%;
+}
+
+@media (max-width: 767px){
+    .table__analysis > div{
+        height: 100% !important;
+    }
+}
+
+.infor_avatar{
+    width: 350px;
+    height: 350px;
+}
+
+.avatar__block{
+    display: flex;
+    justify-content: center;
+    padding-top: 100px;
+    img{
+        padding: 20px;
+        border: 1px solid $color-border-input;
+    }
+}
+
+#avatar{
+    display: none;
+}
+
+.label_avatar{
+    bottom: 0;
+    padding-left: 135px;
+}
+
+.label_avatar:before{
+    content: "\002B";
+    color: $color-white;
+    font-size: 25px;
+    background-color: $color-warning;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
 }

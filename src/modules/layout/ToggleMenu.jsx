@@ -2,8 +2,10 @@ import React from 'react'
 import {useDispatch} from "react-redux"
 import {userLogoutRequest} from "../../redux/auth/action"
 import { SlideMenu } from 'primereact/slidemenu';
+import { useNavigate } from 'react-router';
 
 const ToggleMenu = () => {
+    const navigate = useNavigate()
     const dispatch = useDispatch()
     const arrMenu = [
         {
@@ -31,7 +33,7 @@ const ToggleMenu = () => {
         {
           label:'Thông tin cá nhân',
           command: ()=>{
-            console.log(true)
+            navigate("/perosonal-information")
           }
         },
         {

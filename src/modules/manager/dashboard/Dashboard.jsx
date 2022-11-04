@@ -1,7 +1,6 @@
 import React,{ useEffect } from 'react'
 import Table from "../../../components/table/Table";
 import { table_dashboard } from '../../../components/table/header_table';
-import { JOB_DONE,JOB_PENDING,JOB_CANCEL } from '../../../constants';
 import { dashboardRequest } from '../../../redux/dashboard/action';
 import {useDispatch} from "react-redux"
 
@@ -36,9 +35,6 @@ const Dashboard = () => {
       haveTotalTable={true}
       header={table_dashboard}
       handleRowClick={handleRowClick}
-      status_done={JOB_DONE}
-      status_pending={JOB_PENDING}
-      status_cancel={JOB_CANCEL}
       />
   )
 }

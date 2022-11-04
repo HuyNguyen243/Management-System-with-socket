@@ -1,10 +1,10 @@
 import React from 'react'
-import Table from "../../../components/table/Table";
-import { table_work_flowManager } from '../../../components/table/header_table';
-import { JOB_DONE,JOB_PENDING,JOB_CANCEL } from '../../../constants';
+import Table from "../../../../components/table/Table";
+import { table_work_flowManager } from '../../../../components/table/header_table';
+import { JOB_DONE,JOB_PENDING,JOB_CANCEL } from '../../../../constants';
 
 //data//////////////////
-import { data_WorkflowManagement } from '../../../dataJson';
+import { data_WorkflowManagement } from '../../../../dataJson';
 //data//////////////////
 
 const WorkflowManagement = () => {
@@ -22,7 +22,7 @@ const WorkflowManagement = () => {
   }
 
   return (
-      <Table 
+    <Table 
       dataTable={data_WorkflowManagement} 
       handleSort={handleSort} 
       DataFilter={DataFilter}
@@ -33,7 +33,7 @@ const WorkflowManagement = () => {
       status_done={JOB_DONE}
       status_pending={JOB_PENDING}
       status_cancel={JOB_CANCEL}
-      />
+    />
   )
 }
 

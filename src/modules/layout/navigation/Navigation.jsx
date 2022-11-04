@@ -6,13 +6,15 @@ import List from '@mui/material/List';
 import { navButtons } from './navButtons';
 import {useNavigate, useLocation} from "react-router-dom"
 import { checkIsActive } from "../../../libs/muiDrawer"
+import Setting from '../../modal/Setting';
 
 const Navigation = ({open, getBtnNavIsOpen}) => {
   const navigate = useNavigate()
   const location = useLocation()
   const [activeRoute,setActiveRoute] = useState([])
+  const [isOpenSetting,setIsOpenSetting] = useState(false)
 
-  const handleRedirect = (isRederect,route,indexElParent)=>{
+  const handleRedirect = (isRederect,route,indexElParent,item)=>{
     if(isRederect && route){
       navigate(route)
     }else{
@@ -23,9 +25,12 @@ const Navigation = ({open, getBtnNavIsOpen}) => {
         setActiveRoute(newArr)
       }
     }
-    
+
     if(!open){
       getBtnNavIsOpen(true)
+    }
+    if(item?.name_image === "setting"){
+      setIsOpenSetting(true)
     }
   }
 
@@ -46,6 +51,7 @@ const Navigation = ({open, getBtnNavIsOpen}) => {
   }
 
   return (
+    <>
     <List>
       {
         navButtons.map((item,index)=>(
@@ -62,7 +68,7 @@ const Navigation = ({open, getBtnNavIsOpen}) => {
                 px: 2.5,
               }}
               className={`nav__button ${!item.haveModal && open && "nav__btn-active "}`}
-              onClick={()=>handleRedirect(item.isRederect,"",index)}
+              onClick={()=>handleRedirect(item.isRederect,"",index,item)}
             >
             <img src={`../../images/${item.name_image}.svg`} alt="" className="nav__icon"/>
             <ListItemText 
@@ -87,6 +93,8 @@ const Navigation = ({open, getBtnNavIsOpen}) => {
         ))
       }
     </List>
+      <Setting isOpenSetting={isOpenSetting} setIsOpenSetting={setIsOpenSetting} />
+    </>
   )
 }
 

@@ -44,7 +44,7 @@ const Filter = ({DataFilter}) => {
   }
 
   return (
-      <div className="page__filter align-items-center flex">
+      <div className="page__filter align-items-center flex grid">
       <Box
       component="form"
       sx={{
@@ -52,7 +52,7 @@ const Filter = ({DataFilter}) => {
       }}
       noValidate
       autoComplete="off"
-      className="filter__search"
+      className="filter__search field col-6 md:col-3"
       >
         <TextField
           label="Tìm kiếm"

@@ -1,7 +1,6 @@
 import React,{useState} from 'react'
 import Table from "../../../components/table/Table";
 import { table_jobs_overview } from '../../../components/table/header_table';
-import { JOB_DONE,JOB_PENDING,JOB_CANCEL } from '../../../constants';
 import CreateJobs from '../../modal/CreateJobs';
 import CreateCustomer from '../../modal/CreateCustomer';
 import InformationCustomer from '../../modal/InformationCustomer';
@@ -43,9 +42,6 @@ const JobsOverview = () => {
       have_btn_add={true}
       header={table_jobs_overview}
       handleRowClick={handleRowClick}
-      status_done={JOB_DONE}
-      status_pending={JOB_PENDING}
-      status_cancel={JOB_CANCEL}
       handleCreateJob={handleCreateJob}
       />
       <CreateJobs isOpenCreateJob={isOpenCreateJob} setIsOpenCreateJob={setIsOpenCreateJob} setIsOpenCreateCustomer={setIsOpenCreateCustomer}/>
