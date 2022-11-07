@@ -26,12 +26,14 @@ const Navigation = ({open, getBtnNavIsOpen}) => {
       }
     }
 
-    if(!open){
+    if(!open && item?.name_image !== "setting"){
       getBtnNavIsOpen(true)
     }
+
     if(item?.name_image === "setting"){
       setIsOpenSetting(true)
     }
+
   }
 
   const showNavChild = (elements) =>{

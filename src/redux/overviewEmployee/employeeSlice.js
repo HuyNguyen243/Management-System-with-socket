@@ -13,16 +13,31 @@ const dashBoardEmployeeReducer = createSlice({
     name: 'dashboard',
     initialState,
     extraReducers:{
-    [dashboardEmployeeRequest.pending]: (state) => {
-        state.dashboard.loading = true;
-    },
-    [dashboardEmployeeRequest.fulfilled]: (state, action) => {
-        if(!action.payload.status){
-            state.dashboard.error = true;
-        }
-        state.dashboard.loading = false;
-        state.dashboard.data = action.payload;
-    },
+        [dashboardEmployeeRequest.pending]: (state) => {
+            Object.assign(state,{},{
+                dashboard:{
+                    loading: true
+                }
+            })
+        },
+        [dashboardEmployeeRequest.fulfilled]: (state, action) => {
+            Object.assign(state,{},{
+                dashboard:{
+                    loading: false,
+                    data: action.payload,
+                    error: false
+                }
+            })
+        },
+        [dashboardEmployeeRequest.rejected]: (state, action) => {
+            Object.assign(state,{},{
+                dashboard:{
+                    loading: false,
+                    data: null,
+                    error: false
+                }
+            })
+        },
     }
 })
 

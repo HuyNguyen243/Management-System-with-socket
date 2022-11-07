@@ -10,8 +10,8 @@ import ForgotPassword from "./modules/auth/ForgotPassword";
 import { Navigate } from 'react-router';
 
 function App() {
-  const user = useSelector(state =>state.auth.token)
-
+  const user = useSelector(state =>state.auth.user)
+  
   return (
    <BrowserRouter>
     <Header />

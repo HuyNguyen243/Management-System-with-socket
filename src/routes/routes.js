@@ -1,6 +1,6 @@
 import Dashboard from "../modules/manager/dashboard/Dashboard";
 import WorkflowManagement from "../modules/manager/sale/workFlowManager/WorkflowManagement";
-import CustomerManager from "../modules/manager/sale/CustomerManager";
+import CustomerManager from "../modules/manager/sale/customerManager/CustomerManager";
 import Payment from "../modules/manager/payment/Payment";
 import EmployeeOverview from "../modules/manager/overview/EmployeeOverview";
 import PaymentManagement from "../modules/manager/overview/PaymentManagement";

@@ -12,12 +12,9 @@ const EmployeeOverview = () => {
   useEffect(() => {
     dispatch(dashboardEmployeeRequest())
   },[dispatch])
+
   const DataFilter = (data)=>{
     console.log(data)
-  }
-
-  const handleSort = (e)=>{
-    console.log(e.currentTarget)
   }
 
   const handleRowClick = (e)=>{
@@ -26,12 +23,14 @@ const EmployeeOverview = () => {
   
   return (
     <Table 
-    dataTable={employees?.data} 
-    handleSort={handleSort} 
-    DataFilter={DataFilter}
-    haveTotalTable={false}
-    header={table_employee_overview}
-    handleRowClick={handleRowClick}
+      dataTable={employees?.data} 
+      loading ={false}
+      DataFilter={DataFilter}
+      haveTotalTable={false}
+      header={table_employee_overview}
+      handleRowClick={handleRowClick}
+      name_btn_add={false}
+      handleCreate= {false}
     />
   )
 }

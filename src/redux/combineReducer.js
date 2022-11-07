@@ -1,11 +1,11 @@
 import { combineReducers } from "redux";
 import userSlice from "./auth/authSlice";
-import dashBoardReducer from "./dashboard/dashboardSlice";
+import dashBoardReducer from "./sale/saleSlice";
 import dashBoardEmployeeReducer from "./overviewEmployee/employeeSlice";
 
 const combineReducer = combineReducers({
     auth: userSlice,
-    dashboard: dashBoardReducer,
+    sale: dashBoardReducer,
     employee: dashBoardEmployeeReducer,
 });
 

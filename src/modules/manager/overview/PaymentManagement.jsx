@@ -12,10 +12,6 @@ const PaymentManagement = () => {
     console.log(data)
   }
 
-  const handleSort = (e)=>{
-    console.log(e.currentTarget)
-  }
-
   const handleRowClick = (e)=>{
     console.log(e)
   }
@@ -23,11 +19,13 @@ const PaymentManagement = () => {
   return (
     <Table 
       dataTable={data_payment_manager} 
-      handleSort={handleSort} 
+      loading ={false}
       DataFilter={DataFilter}
       haveTotalTable={false}
       header={table_payment_managerment}
       handleRowClick={handleRowClick}
+      name_btn_add={false}
+      handleCreate= {false}
       />
   )
 }

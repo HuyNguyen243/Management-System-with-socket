@@ -17,13 +17,13 @@ export const post = async (url, body) => {
 export const put = (url, body) => {
     var requestOptions = {
         method: "PUT",
-        body: body,
+        data: body,
         redirect: "follow",
     };
 
     requestOptions.headers = new Headers()
     requestOptions.headers.append('Accept', 'application/json')
-    requestOptions.headers.append('Content-Type', "application/x-www-form-urlencoded")
+    // requestOptions.headers.append('Content-Type', "application/x-www-form-urlencoded")
 
     return apiRequest(url, requestOptions);
 }

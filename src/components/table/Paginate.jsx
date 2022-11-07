@@ -48,7 +48,7 @@ const Paginate = ({  setCurrentItems, setPageCount, perpage, dataTable, pageCoun
     previousLabel="<"
     renderOnZeroPageCount={null}
     className="paginate"
-    forcePage={myParamURL}
+    // forcePage={myParamURL}
     />
   )
 }

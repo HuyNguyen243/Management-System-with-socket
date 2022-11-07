@@ -8,11 +8,10 @@ import Select from '@mui/material/Select';
 import {arrStatus} from "./status"
 import DatePicker from "./DatePicker"
 
-const Filter = ({DataFilter}) => {
+const Filter = ({DataFilter ,sortBy, sortValue}) => {
   const [dates,setDates] = React.useState(undefined)
   const [status, setStatus] = React.useState('');
   const [keyword,setKeyWord ] = React.useState('');
-
   function convertDate(arr) {
       const data = []
       for (let i = 0; i < arr.length;i++){
@@ -39,6 +38,11 @@ const Filter = ({DataFilter}) => {
       data.keyword = keyword
     }
 
+    if(sortBy !== "" && sortValue !== "" && sortBy){
+      data.sort_by = sortBy
+      data.sort_value = sortValue
+    }
+
     const timeout = setTimeout(() => {
       if(Object.keys(data).length > 0){
         DataFilter(data)
@@ -46,7 +50,7 @@ const Filter = ({DataFilter}) => {
       }, 1000);
     return () => clearTimeout(timeout);
 
-  },[DataFilter,dates,keyword,status])
+  },[DataFilter,dates,keyword,status,sortBy,sortValue])
 
   const handleReset = ()=>{
     setDates(undefined)

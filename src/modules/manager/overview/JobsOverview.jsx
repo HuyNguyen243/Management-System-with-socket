@@ -20,15 +20,11 @@ const JobsOverview = () => {
     console.log(data)
   }
 
-  const handleSort = (e)=>{
-    console.log(e.currentTarget)
-  }
-
   const handleRowClick = (e)=>{
     console.log(e)
   }
 
-  const handleCreateJob = ()=>{
+  const handleCreate = ()=>{
     setIsOpenCreateJob(true)
   }
 
@@ -36,13 +32,13 @@ const JobsOverview = () => {
     <>
       <Table 
       dataTable={[]} 
-      handleSort={handleSort} 
+      loading ={false}
       DataFilter={DataFilter}
       haveTotalTable={false}
-      have_btn_add={true}
       header={table_jobs_overview}
       handleRowClick={handleRowClick}
-      handleCreateJob={handleCreateJob}
+      handleCreate={handleCreate}
+      name_btn_add={"tạo công việc"}
       />
       <CreateJobs isOpenCreateJob={isOpenCreateJob} setIsOpenCreateJob={setIsOpenCreateJob} setIsOpenCreateCustomer={setIsOpenCreateCustomer}/>
       <CreateCustomer isOpenCreateCustomer={isOpenCreateCustomer} setIsOpenCreateCustomer={setIsOpenCreateCustomer} />

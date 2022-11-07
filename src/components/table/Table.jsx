@@ -8,29 +8,36 @@ import PerPage from "./PerPage";
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import TableTotal from "../../modules/manager/sale/workFlowManager/TableTotal"
-import TableBody from "./TableBody"
+import TableBody from "../../modules/manager/sale/customerManager/TableBody"
 
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 
 const Table = ({
     dataTable = [],
-    handleSort,
+    loading,
     DataFilter,
     haveTotalTable,
     header,
     handleRowClick,
-    have_btn_add,
-    handleCreateJob
+    name_btn_add,
+    handleCreate
 }) => {
     const [currentItems, setCurrentItems] = useState(null);
     const [perpage, setPerpage] = React.useState(10);
     const [pageCount, setPageCount] = useState(0);
+    const [sortBy, setSortBy] = useState("");
+    const [sortValue, setSortValue] = useState("");
     const location = useLocation()
     const { pathname } = location
 
     const old_Data = Array.isArray(dataTable) ? dataTable : []
     
+    const handleSort = (e)=>{
+        setSortBy(e.currentTarget.getAttribute("data-by"))
+        setSortValue(e.currentTarget.getAttribute("data-value"))
+    }
+
     const headerTable = (header,sort_value)=>{
         if(header)
         return(
@@ -50,20 +57,25 @@ const Table = ({
 
     const bodyTable = (rowData,item,table)=>{
         if(table)
-        return(
-            <TableBody rowData={rowData} item={item}/>
-        )
+        switch (pathname) {
+            case "/customer-management":
+                return(
+                    <TableBody rowData={rowData} item={item}/>
+                )
+            default:
+                break;
+        }
     }
   return (
     <div className="page">
         {
-            have_btn_add &&
+            name_btn_add &&
             <Stack spacing={2} direction="row">
-                <Button variant="contained" onClick={handleCreateJob}>&#43; Tạo công việc</Button>
+                <Button variant="contained" onClick={handleCreate}>&#43; {name_btn_add}</Button>
             </Stack>
         }
         <br />
-        <Filter DataFilter={DataFilter} />
+        <Filter DataFilter={DataFilter}  sortBy={sortBy} sortValue={sortValue}/>
 
         {
             pathname === "/workflow-management" &&
@@ -73,7 +85,11 @@ const Table = ({
         {haveTotalTable && <TotalTable />}
         <div className="table__container">
             <PerPage perpage={perpage} setPerpage={setPerpage}/>
-            <DataTable value={currentItems} responsiveLayout="stack" breakpoint="1113px" 
+            <DataTable
+            loading={loading}
+            value={currentItems} 
+            responsiveLayout="stack"
+            breakpoint="1113px" 
             onRowClick={handleRowClick}
             >
             {
@@ -86,7 +102,7 @@ const Table = ({
                         key={index}
                         field={item || ""}  
                         body={(rowData)=>( bodyTable(rowData,item,header?.[index]))}
-                        header={()=>headerTable(header?.[index],item.name)}
+                        header={()=>headerTable(header?.[index],item)}
                         />
                     )
                 })

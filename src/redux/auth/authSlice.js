@@ -12,13 +12,12 @@ const token = {access_token: storage.get(NAME_SESSION_STORAGE_TOKEN)};
 
 const initialState = {
     token: {
-        isAuth: token.access_token ? true : false,
         loading: false,
         data : token || null,
         error: false,
     },
     user:{
-        isAuth: false,
+        isAuth: token.access_token ? true : false,
         loading: false,
         data : null,
         error: false,
@@ -28,36 +27,91 @@ const userReducer = createSlice({
     name: 'user',
     initialState,
     extraReducers:{
-
         [userloginRequest.pending]: (state) => {
-            state.token.loading = true;
+            Object.assign(state,{},{
+                token: {
+                    loading : true
+                }
+            })
         },
         [userloginRequest.fulfilled]: (state, action) => {
-            state.token.isAuth = action.payload.status;
-            state.token.error = action.payload.status;
-            state.token.loading = false;
-            state.token.data = action.payload;
+            Object.assign(state.token,{},{
+                token:{
+                    loading : false,
+                    error : false,
+                    data : action.payload,
+                }
+            })
+        },
+        [userloginRequest.rejected]: (state, action) => {
+            Object.assign(state,{},{
+                token: {
+                    loading : false,
+                    error : true,
+                    data : null,
+                }
+            })
         },
 
         [userLogoutRequest.pending]: (state) => {
-            state.token.loading = false;
+            Object.assign(state,{},{
+                token:{
+                    loading : true
+                }
+            })
         },
+        
         [userLogoutRequest.fulfilled]: (state,action) => {
                 storage.delete(NAME_SESSION_STORAGE_TOKEN)
-                state.token.isAuth = false;
-                state.token.error = false;
-                state.token.loading = false;
-                state.token.data = action.payload ? null : state.token.data ;
+                Object.assign(state,{},{
+                    token: {
+                        loading : false,
+                        isAuth: false,
+                        error : false,
+                        data : null,
+                    }
+                })
+        },
+        [userLogoutRequest.rejected]: (state) => {
+            storage.delete(NAME_SESSION_STORAGE_TOKEN)
+            Object.assign(state,{},{
+                token: {
+                    loading : false,
+                    isAuth: false,
+                    error : false,
+                    data : state.token.data
+                }
+            })
         },
 
         [userProfile.pending]: (state) => {
-            state.user.loading = true;
+            Object.assign(state.user,{},{
+                loading : true
+            })
         },
         [userProfile.fulfilled]: (state,action) => {
-            state.user.isAuth = action.payload.status;
-            state.user.error = action.payload.status;
-            state.user.loading = false;
-            state.user.data = action.payload?.data;
+            Object.assign(state.user,{},{
+                loading : false,
+                isAuth: true,
+                error : false,
+                data : action.payload?.data,
+            })
+        },
+        [userProfile.fulfilled]: (state,action) => {
+            Object.assign(state.user,{},{
+                loading : false,
+                isAuth: true,
+                error : false,
+                data : action.payload?.data,
+            })
+        },
+        [userProfile.rejected]: (state,action) => {
+            Object.assign(state.user,{},{
+                loading : false,
+                isAuth: false,
+                error : true,
+                data : null,
+            })
         },
     }
 })
