@@ -37,7 +37,7 @@ const EmployeeOverview = () => {
                 name_btn_add={"Thêm nhân viên"}
                 handleCreate={handleCreate}
             />
-            <CreateUser isOpenCreateCustomer={openModel} setIsOpenCreateCustomer={setModel}/>
+            <CreateUser isOpenCreateUser={openModel} setIsOpenCreateUser={setModel}/>
         </>
 
     )

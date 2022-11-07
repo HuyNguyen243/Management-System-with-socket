@@ -30,3 +30,10 @@ export const customer_status= [
     { name: 'Tạm hoãn yêu cầu', code: CustomerRules.STATUS.PENDING },
     { name: 'Ngưng yêu cầu', code: CustomerRules.STATUS.UNREQUEST },
 ]
+
+export const type_role= [
+    { name: 'Admin', code: 'ADMIN' },
+    { name: 'Leader Editor', code: 'LEADER_EDITOR' },
+    { name: 'Editor', code: 'EDITOR' },
+    { name: 'Saler', code: 'SALE' },
+]
