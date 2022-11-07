@@ -12,8 +12,10 @@ import { useLocation } from 'react-router';
 import {useDispatch, useSelector} from "react-redux"
 import {userProfile} from "../../redux/auth/action"
 import { storage } from '../../_services/sesionStorage';
-import { NAME_SESSION_STORAGE_TOKEN, ID_SESSION, UserRules } from '../../constants';
+import { NAME_SESSION_STORAGE_TOKEN, UserRules } from '../../constants';
 import ToggleMenu from "./ToggleMenu"
+import jwt_decode from "jwt-decode";
+import { profileUserByToken } from "../../redux/auth/authSlice"
 
 export default function Header() {
   const dispatch = useDispatch()
@@ -21,10 +23,16 @@ export default function Header() {
   const location = useLocation()
   const pathsName = ["/login","/forgot-password"]
   const [openMenu, setOpenMenu] = useState(false);
-
-  const token =storage.get(NAME_SESSION_STORAGE_TOKEN)
-  const id =storage.get(ID_SESSION)
   const user = useSelector(state=> state.auth.user)
+  const token =storage.get(NAME_SESSION_STORAGE_TOKEN)
+  const userByToken = useSelector(state=> state.auth.userByToken)
+
+  useEffect(() => {
+    if(token){
+      const decodedToken = jwt_decode(token)
+      dispatch(profileUserByToken(decodedToken))
+    }
+  },[token,dispatch])
 
   useEffect(() => {
       const handleClickOutsideMenu = (e)=>{
@@ -32,7 +40,6 @@ export default function Header() {
         if(openMenu && !elementChildMenu.contains(e.target)){
           setOpenMenu(false)
         }
-        
       }
       window.addEventListener('mousedown', handleClickOutsideMenu);
 
@@ -40,12 +47,12 @@ export default function Header() {
         window.removeEventListener('mousedown',handleClickOutsideMenu)
       }
   },[openMenu,open])
-
+  
   useEffect(()=>{
-    if(id && token){
-      dispatch(userProfile(id))
+    if(userByToken && token){
+      dispatch(userProfile(userByToken?.id_system))
     }
-  },[dispatch,id,token])
+  },[dispatch,token,userByToken])
 
   const handleDrawer = () => {
     setOpen(!open);

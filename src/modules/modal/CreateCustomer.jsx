@@ -65,8 +65,7 @@ const CreateCustomer = ({isOpenCreateCustomer, setIsOpenCreateCustomer}) => {
 
         if(Object.keys(errors).length === 0){
             data.create_by = user?.data?.id_system
-            data.status_customer = CustomerRules.STATUS.PENDING
-            data.status_pay = CustomerRules.STATUS_PAY.UNPAID
+            data.status = CustomerRules.STATUS.PENDING
             dispatch(addCustomerRequest(data))
         }
     };

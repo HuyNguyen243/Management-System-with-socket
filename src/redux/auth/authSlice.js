@@ -9,23 +9,30 @@ import { NAME_SESSION_STORAGE_TOKEN } from '../../constants';
 import { storage } from '../../_services/sesionStorage';
 
 const token = {access_token: storage.get(NAME_SESSION_STORAGE_TOKEN)};
-
 const initialState = {
     token: {
+        isAuth: token.access_token ? true : false,
         loading: false,
         data : token || null,
         error: false,
     },
     user:{
-        isAuth: token.access_token ? true : false,
         loading: false,
         data : null,
         error: false,
-    }
+    },
+    userByToken: null
 }
 const userReducer = createSlice({
     name: 'user',
     initialState,
+    reducers:{
+        profileUserByToken: (state,action)=>{
+            Object.assign(state,{},{
+                userByToken: action.payload
+            })
+        }
+    },
     extraReducers:{
         [userloginRequest.pending]: (state) => {
             Object.assign(state,{},{
@@ -35,17 +42,19 @@ const userReducer = createSlice({
             })
         },
         [userloginRequest.fulfilled]: (state, action) => {
-            Object.assign(state.token,{},{
+            Object.assign(state,{},{
                 token:{
+                    isAuth : true,
                     loading : false,
                     error : false,
                     data : action.payload,
                 }
             })
         },
-        [userloginRequest.rejected]: (state, action) => {
+        [userloginRequest.rejected]: (state) => {
             Object.assign(state,{},{
                 token: {
+                    isAuth : false,
                     loading : false,
                     error : true,
                     data : null,
@@ -63,6 +72,7 @@ const userReducer = createSlice({
         
         [userLogoutRequest.fulfilled]: (state,action) => {
                 storage.delete(NAME_SESSION_STORAGE_TOKEN)
+                window.location.href = "/login"
                 Object.assign(state,{},{
                     token: {
                         loading : false,
@@ -85,35 +95,30 @@ const userReducer = createSlice({
         },
 
         [userProfile.pending]: (state) => {
-            Object.assign(state.user,{},{
-                loading : true
+            Object.assign(state,{},{
+                user:{
+                    loading : true
+                }
             })
         },
         [userProfile.fulfilled]: (state,action) => {
-            Object.assign(state.user,{},{
-                loading : false,
-                isAuth: true,
-                error : false,
-                data : action.payload?.data,
+            Object.assign(state,{},{
+                user: {
+                    loading : false,
+                    error : false,
+                    data : action.payload?.data,
+                }
             })
         },
-        [userProfile.fulfilled]: (state,action) => {
+        [userProfile.rejected]: (state) => {
             Object.assign(state.user,{},{
                 loading : false,
-                isAuth: true,
-                error : false,
-                data : action.payload?.data,
-            })
-        },
-        [userProfile.rejected]: (state,action) => {
-            Object.assign(state.user,{},{
-                loading : false,
-                isAuth: false,
                 error : true,
                 data : null,
             })
         },
     }
 })
+export const { profileUserByToken } = userReducer.actions
 
 export default userReducer.reducer

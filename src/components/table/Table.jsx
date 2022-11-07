@@ -8,7 +8,7 @@ import PerPage from "./PerPage";
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import TableTotal from "../../modules/manager/sale/workFlowManager/TableTotal"
-import TableBody from "../../modules/manager/sale/customerManager/TableBody"
+import TableBody from "./TableBody"
 
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
@@ -23,7 +23,7 @@ const Table = ({
     name_btn_add,
     handleCreate
 }) => {
-    const [currentItems, setCurrentItems] = useState(null);
+    const [currentItems, setCurrentItems] = useState([]);
     const [perpage, setPerpage] = React.useState(10);
     const [pageCount, setPageCount] = useState(0);
     const [sortBy, setSortBy] = useState("");
@@ -32,7 +32,6 @@ const Table = ({
     const { pathname } = location
 
     const old_Data = Array.isArray(dataTable) ? dataTable : []
-    
     const handleSort = (e)=>{
         setSortBy(e.currentTarget.getAttribute("data-by"))
         setSortValue(e.currentTarget.getAttribute("data-value"))
@@ -57,15 +56,11 @@ const Table = ({
 
     const bodyTable = (rowData,item,table)=>{
         if(table)
-        switch (pathname) {
-            case "/customer-management":
-                return(
-                    <TableBody rowData={rowData} item={item}/>
-                )
-            default:
-                break;
-        }
+            return(
+                <TableBody rowData={rowData} item={item}/>
+            )
     }
+    
   return (
     <div className="page">
         {
@@ -81,21 +76,20 @@ const Table = ({
             pathname === "/workflow-management" &&
             <TableTotal data={old_Data}/>
         }
-
         {haveTotalTable && <TotalTable />}
         <div className="table__container">
             <PerPage perpage={perpage} setPerpage={setPerpage}/>
             <DataTable
             loading={loading}
-            value={currentItems} 
+            value={ old_Data.length > 0 ? currentItems : old_Data} 
             responsiveLayout="stack"
-            breakpoint="1113px" 
+            breakpoint="1113px"
             onRowClick={handleRowClick}
             >
             {
                 old_Data?.length > 0 
                 ?
-                Object.keys(old_Data?.[0]).map((item,index)=>{
+                Object?.keys(old_Data?.[0]).map((item,index)=>{
                     return(
                         header?.[index] &&
                         <Column 

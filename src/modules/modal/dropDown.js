@@ -1,3 +1,5 @@
+import { CustomerRules } from "../../constants";
+
 export const type_files = [
     { name: 'JPG', code: 'JPG' },
     { name: 'SVG', code: 'SVG' },
@@ -21,4 +23,10 @@ export const names =[
     {"name": "Åland Islands", "code": "AX"},
     {"name": "Albania", "code": "AL"},
     {"name": "Algeria", "code": "DZ"},
+]
+
+export const customer_status= [
+    { name: 'Đang yêu cầu', code: CustomerRules.STATUS.REQUEST },
+    { name: 'Tạm hoãn yêu cầu', code: CustomerRules.STATUS.PENDING },
+    { name: 'Ngưng yêu cầu', code: CustomerRules.STATUS.UNREQUEST },
 ]

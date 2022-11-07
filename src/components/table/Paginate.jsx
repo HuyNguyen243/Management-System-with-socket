@@ -1,4 +1,4 @@
-import React,{ useEffect,useState } from 'react'
+import React,{ useEffect, useState } from 'react'
 import ReactPaginate from 'react-paginate';
 import {useNavigate,useLocation} from "react-router-dom"
 
@@ -20,7 +20,6 @@ const Paginate = ({  setCurrentItems, setPageCount, perpage, dataTable, pageCoun
     useEffect(() => {
         if(dataTable?.length > 0){
           const endOffset = itemOffset + perpage;
-          
           setCurrentItems(dataTable?.slice(itemOffset, endOffset));
           setPageCount(Math.ceil(dataTable?.length / perpage));
         }

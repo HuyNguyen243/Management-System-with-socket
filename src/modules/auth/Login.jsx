@@ -26,8 +26,8 @@ const Login = () => {
     if(user?.data?.access_token){
       storage.save(NAME_SESSION_STORAGE_TOKEN,user?.data?.access_token)
       window.location.href = "/"
-    }else if(user?.data?.message && !user?.data?.status){
-      setError(user?.data?.message )
+    }else if(user?.error){
+      setError("tài khoản hoặc mật khẩu không chính xác" )
     }
   },[user])
 

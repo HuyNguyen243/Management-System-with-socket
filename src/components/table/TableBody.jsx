@@ -1,11 +1,11 @@
 import React from 'react'
 import { 
-    JobRules,
+    CustomerRules,
     CUSTOMER_REQUEST_DONE,
     CUSTOMER_REQUEST_PENDING,
     CUSTOMER_REQUEST_CANCEL,
- } from '../../../../constants'
-import { formatTimeStamp, formatDate } from '../../../../commons/dateTime'
+ } from '../../constants'
+import { formatTimeStamp, formatDate } from '../../commons/dateTime'
 
 const TableBody = ({rowData, item}) => {
     
@@ -13,18 +13,18 @@ const TableBody = ({rowData, item}) => {
    const HTML = ()=>{
         switch(item){
             case("status"):
-                const status = rowData?.[item]?.status_customer
-                if(status === JobRules.STATUS_CUSTOMER.PENDING){
+                const status = rowData?.[item]
+                if(status === CustomerRules.STATUS.PENDING){
                     return(
                         <span className="table__body-name btn_pending" >{CUSTOMER_REQUEST_PENDING}</span>
                     )
                 }
-                if(status === JobRules.STATUS_CUSTOMER.COMPLETE){
+                if(status === CustomerRules.STATUS.REQUEST){
                     return(
                         <span className="table__body-name btn_success" >{CUSTOMER_REQUEST_DONE}</span>
                     )
                 }
-                if(status === JobRules.STATUS_CUSTOMER.INCOMPLETE){
+                if(status === CustomerRules.STATUS.UNREQUEST){
                     return(
                         <span className="table__body-name btn_stop" >{CUSTOMER_REQUEST_CANCEL}</span>
                     )
@@ -32,7 +32,7 @@ const TableBody = ({rowData, item}) => {
             break;
             case("_create_at"):
                 return(
-                    <span className="table__body-name " >{formatDate(formatTimeStamp(rowData._create_at))}</span>
+                    <span className="table__body-name " >{formatDate(formatTimeStamp(rowData?._create_at))}</span>
                 )
             case("create_by"):
             case("fullname"):

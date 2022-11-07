@@ -4,6 +4,7 @@ import {
     saleCustomerRequest,
     addCustomerRequest,
     editCustomerRequest,
+    deleteCustomerRequest,
  } from './action';
 
 const initialState = {
@@ -22,11 +23,17 @@ const initialState = {
         data : null,
         error: false,
     },
+    deletecustomer:{
+        loading: false,
+        data : null,
+        error: false,
+    },
 }
 const saleSlice = createSlice({
     name: 'saleSlice',
     initialState,
     extraReducers:{
+
         [saleCustomerRequest.pending]: (state) => {
             Object.assign(state,{},{
                 customers:{
@@ -52,6 +59,7 @@ const saleSlice = createSlice({
                 }
             })
         },
+
         [addCustomerRequest.pending]: (state) => {
             Object.assign(state,{},{
                 customer:{
@@ -79,6 +87,7 @@ const saleSlice = createSlice({
                 },
             })
         },
+
         [editCustomerRequest.pending]: (state) => {
             Object.assign(state,{},{
                 editcustomer:{
@@ -101,6 +110,35 @@ const saleSlice = createSlice({
         [editCustomerRequest.rejected]: (state) => {
             Object.assign(state,{},{
                 editcustomer:{
+                    error: true,
+                    data: null,
+                    loading: false
+                },
+            })
+        },
+
+        [deleteCustomerRequest.pending]: (state) => {
+            Object.assign(state,{},{
+                deletecustomer:{
+                    loading: true
+                }
+            })
+        },
+        [deleteCustomerRequest.fulfilled]: (state, action) => {
+            const result = action?.payload
+            Object.assign(state,{},{
+                deletecustomer:{
+                    error: false,
+                    data: result?.data,
+                    loading: false
+                },
+            })
+
+            state.customers.data.splice(result?.index, 1)
+        },
+        [deleteCustomerRequest.rejected]: (state) => {
+            Object.assign(state,{},{
+                deletecustomer:{
                     error: true,
                     data: null,
                     loading: false

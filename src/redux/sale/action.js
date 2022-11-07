@@ -1,5 +1,5 @@
 import {  createAsyncThunk } from '@reduxjs/toolkit'
-import { get, post, put } from "../../_services/apiRequest"
+import { get, post, put, del } from "../../_services/apiRequest"
 
 export const saleCustomerRequest = createAsyncThunk(
     'Customers',
@@ -32,6 +32,21 @@ export const editCustomerRequest = createAsyncThunk(
             let res = await put(`customers/${data?.result?.id_system}`,data?.data)
             if(res){
                 res.data = data?.result
+                res.index = data?.index
+            }
+            return res;
+        } catch (error) {
+            return rejectWithValue(error?.response)
+        }
+    }
+)
+
+export const deleteCustomerRequest = createAsyncThunk(
+    'deleteCustomer',
+    async (data,{ rejectWithValue }) => {
+        try {
+            let res = await del(`customers/${data?.id}`)
+            if(res){
                 res.index = data?.index
             }
             return res;
