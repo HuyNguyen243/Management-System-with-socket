@@ -5,9 +5,9 @@ import {NAME_SESSION_STORAGE_TOKEN} from "../constants"
 
 export const createAxios = (token) =>{
   const URL = process.env.REACT_APP_API || process.env.REACT_APP_DEV_API
-  const refreshToken = async ()=>{
+  const refreshToken = async (formData)=>{
     try{
-      const res = await axios.get(`${URL}/auth/token`,{headers:{ 'Authorization': `1TouchAuthorization ${token}`}});
+      const res = await axios.post(`${URL}/auth/token`,formData,{headers:{ 'Authorization': `1TouchAuthorization ${token}`}});
       return res.data;
     }catch(err){
       return err
@@ -24,10 +24,14 @@ export const createAxios = (token) =>{
     newInstance.interceptors.request.use(
         async(config) => {
             const decodedToken = jwt_decode(token)
+            console.log(decodedToken)
             let date = new Date()
             let default_token = token;
             if(decodedToken.exp < date.getTime()/1000){
-              const refreshtoken = await refreshToken()
+              const formData = {
+                _id_activity : decodedToken._id
+              }
+              const refreshtoken = await refreshToken(formData)
               if(refreshtoken?.data?.access_token){
                 default_token = refreshtoken?.data?.access_token
                 storage.save(NAME_SESSION_STORAGE_TOKEN,default_token)

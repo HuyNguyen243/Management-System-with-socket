@@ -360,3 +360,8 @@
 .p-button:focus {
     box-shadow: none;
 }
+
+.p-inputtext:not(:placeholder-shown) + label {
+    opacity: 1;
+    visibility: visible;
+ }

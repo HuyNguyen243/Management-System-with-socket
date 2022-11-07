@@ -1,4 +1,4 @@
-import React,{useEffect} from 'react'
+import React,{ useEffect,useState } from 'react'
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import InputLabel from '@mui/material/InputLabel';
@@ -7,11 +7,40 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import {customer_status} from "./status"
 import DatePicker from "./DatePicker"
+import { useNavigate, useLocation } from 'react-router';
+import {dateString} from "../../commons/dateTime"
 
-const Filter = ({DataFilter ,sortBy, sortValue}) => {
-  const [dates,setDates] = React.useState(undefined)
-  const [status, setStatus] = React.useState('');
-  const [keyword,setKeyWord ] = React.useState('');
+const Filter = ({DataFilter ,sortBy, sortValue, setSortBy, setSortValue}) => {
+  const queryParams = new URLSearchParams(window.location.search)
+  const keywordURL = queryParams.get("keyword")
+  const sort_byURL = queryParams.get("sort_by")
+  const sortValueURL = queryParams.get("sort_value")
+  const statusURL = queryParams.get("status")
+  const start_dateURL = queryParams.get("start_date")
+  const end_dateURL = queryParams.get("end_date")
+
+  const [dates,setDates] = useState(start_dateURL && end_dateURL ? [new Date(dateString(start_dateURL)),new Date(dateString(end_dateURL))] : undefined)
+  const [status, setStatus] = useState('');
+  const [keyword,setKeyWord ] = useState('');
+  const location = useLocation()
+  const navigate = useNavigate()
+  const { pathname } = location
+
+  useEffect(()=>{
+    if(keywordURL){
+      setKeyWord(keywordURL)
+    }
+
+    if(sort_byURL){
+      setSortBy(sort_byURL)
+    }
+
+    if(sortValueURL){
+      setSortValue(sortValueURL)
+    }
+
+  },[keywordURL, sort_byURL, setSortBy, sortValueURL, setSortValue, statusURL])
+
   function convertDate(arr) {
       const data = []
       for (let i = 0; i < arr.length;i++){
@@ -30,7 +59,7 @@ const Filter = ({DataFilter ,sortBy, sortValue}) => {
         data.start_date = arr[0]
         data.end_date = arr[1]
     }
-    
+
     if(status !==""){
         data.status = status
     }
@@ -56,6 +85,12 @@ const Filter = ({DataFilter ,sortBy, sortValue}) => {
             removeKey = result.replace("&keyword="," ")
             result = removeKey
           }
+
+          navigate({
+            pathname: pathname,
+			      search: result.replace("&","?"),
+          });
+
           DataFilter(result.replace("&","?"))
         }
       }
@@ -63,8 +98,7 @@ const Filter = ({DataFilter ,sortBy, sortValue}) => {
       }, 1000);
     return () => clearTimeout(timeout);
 
-  },[DataFilter,dates,keyword,status,sortBy,sortValue])
-
+  },[DataFilter,dates,keyword,status,sortBy,sortValue,navigate,pathname])
   const handleReset = ()=>{
     setDates(undefined)
     setStatus("")
@@ -95,8 +129,8 @@ const Filter = ({DataFilter ,sortBy, sortValue}) => {
         <img src="../../images/search_blue.svg" alt="" className="filter__btn--search"/>
       </Box>
       
-      <DatePicker dates={dates} setDates={setDates}/>
-
+      <DatePicker dates={dates} setDates={setDates} />
+      
       <FormControl sx={{ m: 1, minWidth: 270 }} size="small" className="fiter__status">
       <InputLabel id="filter__label">Trạng thái</InputLabel>
         <Select

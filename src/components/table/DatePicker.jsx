@@ -29,10 +29,10 @@ const DatePicker = ({dates ,setDates}) => {
         monthNames: ["tháng 1", "tháng 2", "tháng 3", "tháng 4", "tháng 5", "tháng 6", "tháng 7", "tháng 8", "tháng 9", "tháng 10", "tháng 11", "tháng 12"],
         monthNamesShort: ["thg 1", "thg 2", "thg 3", "thg 4", "thg 5", "thg 6", "thg 7", "thg 8", "thg 9", "thg 10", "thg 11", "thg 12"],
     });
-
+    
   return (
     <div className="calendar relative ">
-        <Calendar id="range" value={dates} onChange={e=>setDates(e.value)} selectionMode="range" readOnlyInput placeholder="Select date"/>
+        <Calendar id="range" value={dates} onChange={e=>setDates(e.value)} selectionMode="range" placeholder="Select date"/>
         <img src='images/calendar.svg' alt='' className="image__calendar"/>
     </div>
   )

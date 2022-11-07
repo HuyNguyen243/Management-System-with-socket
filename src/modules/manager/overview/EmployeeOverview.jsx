@@ -20,6 +20,10 @@ const EmployeeOverview = () => {
   const handleRowClick = (e)=>{
     console.log(e)
   }
+
+  const handleCreate =()=>{
+    
+  }
   
   return (
     <Table 
@@ -29,8 +33,8 @@ const EmployeeOverview = () => {
       haveTotalTable={false}
       header={table_employee_overview}
       handleRowClick={handleRowClick}
-      name_btn_add={false}
-      handleCreate= {false}
+      name_btn_add={"Thêm nhân viên"}
+      handleCreate= {handleCreate}
     />
   )
 }

@@ -70,7 +70,13 @@ const Table = ({
             </Stack>
         }
         <br />
-        <Filter DataFilter={DataFilter}  sortBy={sortBy} sortValue={sortValue}/>
+        <Filter 
+        DataFilter={DataFilter}  
+        sortBy={sortBy} 
+        sortValue={sortValue}
+        setSortBy={setSortBy}
+        setSortValue={setSortValue}
+        />
 
         {
             pathname === "/workflow-management" &&

@@ -49,3 +49,11 @@ export function dayToTimeStamp(s) {
     return d && d.getMonth() === b[1]? d : new Date(NaN);
     //return 29389283982832
 }
+
+export const dateString = (date)=>{
+    if(date){
+        const d = date.split('-')
+        const result = `${d[1]}/${d[0]}/${d[2]}`
+        return result
+    }
+}
