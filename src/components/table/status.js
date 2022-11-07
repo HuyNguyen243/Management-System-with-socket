@@ -1,4 +1,6 @@
-export const arrStatus = [
+import { CustomerRules } from "../../constants"
+
+export const customer_status = [
     {
         status: "None",
         image: "",
@@ -7,16 +9,16 @@ export const arrStatus = [
     {
         status: "Đã hoàn thành",
         image: "icon_success",
-        id: 1
+        id: CustomerRules.STATUS.REQUEST
     },
     {
         status: "Tạm hoãn công việc",
         image: "icon_pending",
-        id: 0
+        id: CustomerRules.STATUS.PENDING
     },
     {
         status: "Ngừng công việc",
         image: "icon_close",
-        id: 2
+        id: CustomerRules.STATUS.UNREQUEST
     }
-  ]
+]

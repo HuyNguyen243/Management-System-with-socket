@@ -3,9 +3,10 @@ import { get, post, put, del } from "../../_services/apiRequest"
 
 export const saleCustomerRequest = createAsyncThunk(
     'Customers',
-    async (data,{ rejectWithValue }) => {
+    async (filter,{ rejectWithValue }) => {
         try {
-            const res = await get("customers")       
+            const search = filter || ""
+            const res = await get(`customers${search}`)
             return res;
         } catch (error) {
             return rejectWithValue(error?.response);

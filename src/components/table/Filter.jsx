@@ -5,7 +5,7 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-import {arrStatus} from "./status"
+import {customer_status} from "./status"
 import DatePicker from "./DatePicker"
 
 const Filter = ({DataFilter ,sortBy, sortValue}) => {
@@ -27,16 +27,15 @@ const Filter = ({DataFilter ,sortBy, sortValue}) => {
     let data = {}
     if(dates?.length > 0 && dates[1]){
         const arr = convertDate(dates)
-        data.startDate = arr[0]
-        data.endDate = arr[1]
+        data.start_date = arr[0]
+        data.end_date = arr[1]
     }
+    
     if(status !==""){
         data.status = status
     }
 
-    if(keyword !== ""){
       data.keyword = keyword
-    }
 
     if(sortBy !== "" && sortValue !== "" && sortBy){
       data.sort_by = sortBy
@@ -44,9 +43,23 @@ const Filter = ({DataFilter ,sortBy, sortValue}) => {
     }
 
     const timeout = setTimeout(() => {
+   
       if(Object.keys(data).length > 0){
-        DataFilter(data)
+        let result = "" ;
+        Object.keys(data).forEach((item)=>{
+
+          result += `&${item}=${data[item]}`
+        })
+        if(result !== ""){
+          if(keyword === ""){
+            let removeKey = result.replace("keyword="," ")
+            removeKey = result.replace("&keyword="," ")
+            result = removeKey
+          }
+          DataFilter(result.replace("&","?"))
+        }
       }
+      
       }, 1000);
     return () => clearTimeout(timeout);
 
@@ -94,7 +107,7 @@ const Filter = ({DataFilter ,sortBy, sortValue}) => {
           onChange={(e)=>setStatus(e.target.value)}
         >
         {
-            arrStatus.map((item,index)=>(
+            customer_status.map((item,index)=>(
                 <MenuItem value={item.id} key={index} className="status__option">
                     <img src={`../../images/${item.image}.svg`} alt="" className="status__image"/>
                     <span className="status__content">{item.status}</span>
