@@ -18,8 +18,9 @@ export const addEmployeeRequest = createAsyncThunk(
     'addEmployee',
     async (data,{ rejectWithValue }) => {
         try {
-            const res = await post("users/create")
-            return res.data.data_user;
+            const res = await post("users/create",data)
+            console.log(res);
+            return res.data;
         } catch (error) {
             return rejectWithValue(error?.response?.data);
         }

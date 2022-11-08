@@ -133,9 +133,8 @@
     z-index: 99999 !important;
 }
 
-.create__job--calendar{
+.create__user--calendar,.create__job--calendar{
     position: relative;
-
 }
 
 #calendar{
@@ -266,4 +265,10 @@
 
 .css-juqc2r-MuiPaper-root-MuiAppBar-root{
     background-color: $color-white !important;
+}
+.copy__icon,.readonly-class{
+    cursor: pointer;
+}
+.p-toast-bottom-left {
+    z-index: 100000000000000000000 !important;
 }

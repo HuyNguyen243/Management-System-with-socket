@@ -31,7 +31,7 @@ export const customer_status= [
     { name: 'Ngưng yêu cầu', code: CustomerRules.STATUS.UNREQUEST },
 ]
 
-export const type_role= [
+export const role= [
     { name: 'Admin', code: 'ADMIN' },
     { name: 'Leader Editor', code: 'LEADER_EDITOR' },
     { name: 'Editor', code: 'EDITOR' },

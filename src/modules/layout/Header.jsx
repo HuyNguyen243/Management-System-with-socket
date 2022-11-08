@@ -26,7 +26,7 @@ export default function Header() {
   const user = useSelector(state=> state.auth.user)
   const token =storage.get(NAME_SESSION_STORAGE_TOKEN)
   const userByToken = useSelector(state=> state.auth.userByToken)
-
+  
   useEffect(() => {
     if(token){
       const decodedToken = jwt_decode(token)
