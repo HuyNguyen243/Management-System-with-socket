@@ -1,5 +1,6 @@
-import React,{ useState } from 'react';
-import { useLocation } from "react-router-dom"
+import React,{ useState, useEffect } from 'react';
+import { useLocation } from "react-router-dom";
+import { useDispatch } from "react-redux"
 
 import Filter from './Filter'
 import TotalTable from './TotalTable'
@@ -9,6 +10,7 @@ import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import TableTotal from "../../modules/manager/sale/workFlowManager/TableTotal"
 import TableBody from "./TableBody"
+import { getCountData } from '../../redux/tableSlice';
 
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
@@ -30,12 +32,17 @@ const Table = ({
     const [sortValue, setSortValue] = useState("");
     const location = useLocation()
     const { pathname } = location
-
+    const dispatch = useDispatch()
     const old_Data = Array.isArray(dataTable) ? dataTable : []
+
     const handleSort = (e)=>{
         setSortBy(e.currentTarget.getAttribute("data-by"))
         setSortValue(e.currentTarget.getAttribute("data-value"))
     }
+
+    useEffect(()=>{
+        dispatch(getCountData(currentItems.length))
+    },[dispatch,currentItems])
 
     const headerTable = (header,sort_value)=>{
         if(header)

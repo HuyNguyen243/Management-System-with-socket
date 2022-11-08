@@ -16,9 +16,7 @@ const CustomerManager = () => {
   const [filter,setFilter] = useState(null)
   
   useEffect(()=>{
-    if(filter && filter !== ""){
-      dispatch(saleCustomerRequest(filter))
-    }
+    dispatch(saleCustomerRequest(filter))
   },[dispatch,filter])
 
   const DataFilter = (data)=>{

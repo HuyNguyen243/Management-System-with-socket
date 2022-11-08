@@ -27,6 +27,8 @@ export default function Header() {
   const token =storage.get(NAME_SESSION_STORAGE_TOKEN)
   const userByToken = useSelector(state=> state.auth.userByToken)
 
+
+
   useEffect(() => {
     if(token){
       const decodedToken = jwt_decode(token)
@@ -46,7 +48,25 @@ export default function Header() {
       return ()=>{
         window.removeEventListener('mousedown',handleClickOutsideMenu)
       }
+
   },[openMenu,open])
+
+  useEffect(() => {
+    const handleClickOutNav = (e)=>{
+      const el = document.querySelector(".header__container .MuiDrawer-root .MuiPaper-elevation")
+      if(open && !el.contains(e.target)){
+        setOpen(false)
+      }
+    }
+    window.addEventListener('mousedown', handleClickOutNav);
+
+    return ()=>{
+      window.removeEventListener('mousedown',handleClickOutNav)
+    }
+
+},[openMenu,open])
+
+
   
   useEffect(()=>{
     if(userByToken && token){

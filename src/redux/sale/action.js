@@ -5,7 +5,7 @@ export const saleCustomerRequest = createAsyncThunk(
     'Customers',
     async (filter,{ rejectWithValue }) => {
         try {
-            const search = filter || ""
+            const search = typeof filter === 'string' ? filter : ""
             const res = await get(`customers${search}`)
             return res;
         } catch (error) {

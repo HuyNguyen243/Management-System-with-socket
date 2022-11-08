@@ -85,25 +85,32 @@ const Filter = ({DataFilter ,sortBy, sortValue, setSortBy, setSortValue}) => {
             removeKey = result.replace("&keyword="," ")
             result = removeKey
           }
+          const newResult = result.replace("&","?").trim()
 
           navigate({
             pathname: pathname,
-			      search: result.replace("&","?"),
+			      search: newResult,
           });
-
-          DataFilter(result.replace("&","?"))
+          
+          DataFilter(newResult)
         }
       }
       
       }, 1000);
+
     return () => clearTimeout(timeout);
 
   },[DataFilter,dates,keyword,status,sortBy,sortValue,navigate,pathname])
+
   const handleReset = ()=>{
     setDates(undefined)
     setStatus("")
     setKeyWord("")
     DataFilter({})
+    navigate({
+      pathname: pathname,
+      search: "",
+    });
   }
 
   return (

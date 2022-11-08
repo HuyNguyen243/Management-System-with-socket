@@ -82,7 +82,6 @@ const CreateCustomer = ({isOpenCreateCustomer, setIsOpenCreateCustomer}) => {
                     <div className="field col-12 md:col-12 grid">
                         <div className="field col-12 md:col-12">
                             <span htmlFor="autocomplete">Nhập tên khách hàng: <span className="warning">*</span></span>
-                            <span className="p-float-label">
                                 <Controller name="fullname" 
                                     control={control} 
                                     rules={{ required: true }} render={({ field, fieldState }) => (
@@ -90,27 +89,25 @@ const CreateCustomer = ({isOpenCreateCustomer, setIsOpenCreateCustomer}) => {
                                     id={field.name} 
                                     {...field}
                                     className={classNames({ 'p-invalid': fieldState.invalid })}
+                                    placeholder="Tên khách hàng"
                                     />
                                 )} />
-                            </span>
                         </div>
                         <div className="field col-12 md:col-6 create__job--calendar">
                             <span htmlFor="calendar">Ngày tháng năm sinh:<span className="warning">*</span></span>
-                            <span className="p-float-label ">
                                 <Controller name="birth" 
                                     control={control} 
                                     rules={{ required: false }} render={({ field, fieldState }) => (
                                     <Calendar 
                                     id={field.name} className={classNames({ 'p-invalid': fieldState.invalid })}
                                     value={field.value} onChange={(e) => field.onChange(e.value)}
+                                    placeholder="Ngày sinh"
                                     />
                                 )} />
-                            </span>
                             <img src="/images/calendar.svg" alt="" className="calendar__image"/>
                         </div>
                         <div className="field col-12 md:col-6 ">
                             <span htmlFor="withoutgrouping">Số điện thoại: <span className="warning">*</span></span>
-                            <span className="p-float-label">
                                 <Controller name="phone" 
                                     control={control} 
                                     rules={{ required: true,pattern:{value: PHONE_REGEX} }} render={({ field, fieldState }) => (
@@ -118,13 +115,12 @@ const CreateCustomer = ({isOpenCreateCustomer, setIsOpenCreateCustomer}) => {
                                     id={field.name} 
                                     {...field}
                                     className={classNames({ 'p-invalid': fieldState.invalid })}
+                                    placeholder="Số điện thoại"
                                     />
                                 )} />
-                            </span>
                         </div> 
                         <div className="field col-12 md:col-6">
                             <span htmlFor="original__link">Email: <span className="warning">*</span></span>
-                            <span className="p-float-label">
                                 <Controller name="email" 
                                     control={control} 
                                     rules={{ required: true,pattern:{value:EMAIL_REGEX} }} render={({ field, fieldState }) => (
@@ -132,13 +128,12 @@ const CreateCustomer = ({isOpenCreateCustomer, setIsOpenCreateCustomer}) => {
                                     id={field.name} 
                                     {...field}
                                     className={classNames({ 'p-invalid': fieldState.invalid })}
+                                    placeholder="Nhập email"
                                     />
                                 )} />
-                            </span>
                         </div>
                         <div className="field col-12 md:col-6">
                             <span htmlFor="original__link">Quốc gia: <span className="warning">*</span></span>
-                            <span className="p-float-label">
                                 <Controller name="country" 
                                     control={control} 
                                     rules={{ required: true }} render={({ field, fieldState }) => (
@@ -150,13 +145,12 @@ const CreateCustomer = ({isOpenCreateCustomer, setIsOpenCreateCustomer}) => {
                                     value={field.value} onChange={(e) => field.onChange(e.value)}
                                     className={classNames({ 'p-invalid': fieldState.invalid })}
                                     dropdownAriaLabel="Select name" 
+                                    placeholder="Quốc gia"
                                     />
                                 )} />
-                            </span>
                         </div>
                         <div className="field col-12 md:col-6">
                             <span htmlFor="cost">Thành phố: <span className="warning">*</span></span>
-                            <span className="p-float-label">
                                 <Controller name="city" 
                                     control={control} 
                                     rules={{ required: true }} render={({ field, fieldState }) => (
@@ -167,14 +161,13 @@ const CreateCustomer = ({isOpenCreateCustomer, setIsOpenCreateCustomer}) => {
                                     id={field.name}
                                     value={field.value} onChange={(e) => field.onChange(e.value)}
                                     className={classNames({ 'p-invalid': fieldState.invalid })}
-                                    dropdownAriaLabel="Select name" 
+                                    dropdownAriaLabel="Select name"
+                                    placeholder="Thành phố"
                                     />
                                 )} />
-                            </span>
                         </div>
                         <div className="field col-12 md:col-6">
                             <span htmlFor="employees">Địa chỉ: <span className="warning">*</span></span>
-                            <span className="p-float-label">
                                 <Controller name="address" 
                                     control={control} 
                                     rules={{ required: true }} render={({ field, fieldState }) => (
@@ -182,9 +175,9 @@ const CreateCustomer = ({isOpenCreateCustomer, setIsOpenCreateCustomer}) => {
                                     id={field.name} 
                                     {...field}
                                     className={classNames({ 'p-invalid': fieldState.invalid })}
+                                    placeholder="Địa chỉ"
                                     />
                                 )} />
-                            </span>
                         </div>
                     </div>
                     <div className="btn_modal field col-12 md:col-12 grid position_bottom">

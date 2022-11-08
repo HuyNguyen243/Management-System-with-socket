@@ -24,7 +24,6 @@ export const createAxios = (token) =>{
     newInstance.interceptors.request.use(
         async(config) => {
             const decodedToken = jwt_decode(token)
-            console.log(decodedToken)
             let date = new Date()
             let default_token = token;
             if(decodedToken.exp < date.getTime()/1000){
