@@ -43,8 +43,8 @@ const Table = ({
     useEffect(()=>{
         dispatch(getCountData(currentItems.length))
     },[dispatch,currentItems])
-
-    const headerTable = (header,sort_value)=>{
+    const headerTable = (header,sort_by)=>{
+        const value = typeof sort_by === "string" ? sort_by : ""
         if(header)
         return(
         <div className="table__header-col" >
@@ -52,8 +52,13 @@ const Table = ({
             {
                 header?.haveSort &&
                 <div className="table__sort">
-                    <img src="../../images/sort_up.svg" alt="" className="sort__up" data-by={sort_value} data-value="ASC" onClick={handleSort}/>
-                    <img src="../../images/sort_down.svg" alt="" className="sort__down" data-by={sort_value} data-value="DESC" onClick={handleSort}/>
+                    <img src={`../../images/${sortBy === value && sortValue === "ASC" && value !== "" ? "sort_up_disable":"sort_up"}.svg`} 
+                    alt="" className="sort__up" data-by={value} data-value="ASC" onClick={handleSort}
+                    />
+                    <img src={`../../images/${sortBy === value && sortValue === "DESC" && value !== "" ? "sort_down_disable":"sort_down"}.svg`} 
+                    alt="" className="sort__down" 
+                    data-by={value} data-value="DESC" onClick={handleSort}
+                    />
                 </div>
             }
         </span>

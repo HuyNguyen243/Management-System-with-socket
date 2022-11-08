@@ -14,7 +14,7 @@ const ModalJobEditor = ({isOpenJobEditor, setIsOpenJobEditor}) => {
     }
   return (
     <Sidebar visible={isOpenJobEditor} position="right" onHide={() => setIsOpenJobEditor(false)} className="create__job">
-        <Toast ref={toast} position="bottom-right"/>
+        <Toast ref={toast} position="bottom-left"/>
         <div className="information__job">
             <div className="grid">
                 <div className="field col-12 md:col-6 ">

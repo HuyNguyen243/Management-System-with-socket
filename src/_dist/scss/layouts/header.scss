@@ -63,6 +63,7 @@
 .header__right--notification-msg,
 .header__right--notification{
     position: relative;
+    cursor: pointer;
 }
 
 .header__right--notification-msg img,
@@ -133,6 +134,10 @@
     position: absolute;
     right: 0;
     top: 65px;
+    .p-slidemenu .p-slidemenu-wrapper .p-slidemenu-backward .pi-chevron-left::before{
+        top: 20px;
+        left: 25px;
+    }
 }
 
 .header__menu-icon{

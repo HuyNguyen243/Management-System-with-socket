@@ -12,9 +12,21 @@
     position: relative;
 }
 
-.nav__name.icon_arrow::after{
+.nav__name.icon_arrow-up::after{
     content:"";
     background-image: url("../../../../public/images/arrow_up.svg");
+    width: 15px;
+    height: 15px;
+    display: block;
+    background-repeat: no-repeat;
+    position: absolute;
+    right: 10px;
+    top: 25%;
+}
+
+.nav__name.icon_arrow-down::after{
+    content:"";
+    background-image: url("../../../../public/images/arrow_down.svg");
     width: 15px;
     height: 15px;
     display: block;
@@ -130,6 +142,10 @@
     right: 14px;
 }
 
+.calendar #range .p-inputtext{
+    background-color: $color-white !important;
+}
+
 .p-dropdown-panel{
     z-index: 99999 !important;
 }
@@ -237,11 +253,29 @@
 }
 
 .pi-chevron-left:before {
-    content: "\003C";
+    content: "";
+    background-image: url("../../../../public/images/arrow_left.svg");
+    display: block;
+    width: 15px;
+    height: 15px;
+    background-size: 8px;
+    background-repeat: no-repeat;
+    position: absolute;
+    top: 10px;
+    left: 10px;
 }
 
 .pi-chevron-right:before {
-    content: "\003E";
+    content: "";
+    background-image: url("../../../../public/images/arrow_right.svg");
+    display: block;
+    width: 15px;
+    height: 15px;
+    background-size: 8px;
+    background-repeat: no-repeat;
+    position: absolute;
+    top: 10px;
+    left: 10px;
 }
 
 #city,
@@ -268,3 +302,17 @@
 .css-juqc2r-MuiPaper-root-MuiAppBar-root{
     background-color: $color-white !important;
 }
+
+.p-datepicker .p-datepicker-header {
+    .p-datepicker-prev:focus,
+    .p-datepicker-next:focus {
+        outline: none !important;
+        outline-offset: 0 !important;
+        box-shadow: none !important;
+    }
+}
+
+.p-datepicker table td > span.p-highlight{
+    color : $color-primary;
+}
+

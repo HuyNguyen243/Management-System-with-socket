@@ -11,10 +11,10 @@ import { addCustomerRequest } from '../../redux/sale/action';
 import { useDispatch,useSelector } from 'react-redux';
 import { CustomerRules } from '../../constants';
 import { Toast } from 'primereact/toast';
-
-import {names} from "./dropDown";
+import { getCountries } from '../../commons/getCountry';
 
 import { EMAIL_REGEX, PHONE_REGEX } from '../../constants';
+import { searchDropdown } from '../../commons/searchDropDown';
 
 const CreateCustomer = ({isOpenCreateCustomer, setIsOpenCreateCustomer}) => {
     const toast = useRef(null);
@@ -29,40 +29,31 @@ const CreateCustomer = ({isOpenCreateCustomer, setIsOpenCreateCustomer}) => {
         city: '',
         address: '',
     }
-    const { control, formState: { errors }, handleSubmit, reset } = useForm({ defaultValues });
-    const [filteredNameCustomers, setFilteredNameCustomers] = React.useState(null);
+    const { control, formState: { errors }, handleSubmit, reset, setValue } = useForm({ defaultValues });
     const user = useSelector(state=>state.auth?.user)
     const customer = useSelector(state=>state.sale.customer)
+    const [countries,setCountries] =React.useState(null)
+    const [filteredCountry, setFilteredCountry] = React.useState(null); 
+    const [cities,setCities] = React.useState(null);
+    const [filteredCity, setFilteredCity] = React.useState(null); 
+
+    useEffect(() => {
+        const getcountries = new getCountries()
+        getcountries.get().then(data => setCountries(data));
+    }, []);
 
     useEffect(()=>{
         if(customer?.data){
             reset();
             setIsOpenCreateCustomer(false)
-            toast.current.show({severity:'success',summary: 'Success' , detail:'Tạo khách hàng mới thành công', life: 1000});
+            toast.current.show({severity:'success',summary: 'Thành công' , detail:'Tạo khách hàng mới thành công', life: 1000});
         }
         if(customer?.error){
-            toast.current.show({severity:'error',summary: 'Error' , detail:'Tạo khách hàng mới thất bại', life: 1000});
+            toast.current.show({severity:'error',summary: 'Thất bại' , detail:'Tạo khách hàng mới thất bại', life: 1000});
         }
     },[customer,reset,setIsOpenCreateCustomer])
 
-    const searchName = (event) => {
-        setTimeout(() => {
-            let _filteredNameCustomers;
-            if (!event.query.trim().length) {
-                _filteredNameCustomers = [...names];
-            }
-            else {
-                _filteredNameCustomers = names.filter((item) => {
-                    return item.name.toLowerCase().startsWith(event.query.toLowerCase());
-                });
-            }
-
-            setFilteredNameCustomers(_filteredNameCustomers);
-        }, 50);
-    }
-    
     const onSubmit = (data) => {
-
         if(Object.keys(errors).length === 0){
             data.create_by = user?.data?.id_system
             data.status = CustomerRules.STATUS.PENDING
@@ -70,9 +61,17 @@ const CreateCustomer = ({isOpenCreateCustomer, setIsOpenCreateCustomer}) => {
         }
     };
 
+    const handleChangeCountry = (e,field)=>{
+        setValue("city","")
+        field.onChange(e.value)
+        if(countries[e.value]){
+            setCities(countries[e.value])
+        }
+    }
+
   return (
     <>
-        <Toast ref={toast} position="bottom-right"/>
+        <Toast ref={toast} position="bottom-left"/>
         <Sidebar visible={isOpenCreateCustomer} position="right" onHide={() => setIsOpenCreateCustomer(false)} className="create__job">
             <div className="creat__job">
                 <div className="creat__job--title">
@@ -138,11 +137,11 @@ const CreateCustomer = ({isOpenCreateCustomer, setIsOpenCreateCustomer}) => {
                                     control={control} 
                                     rules={{ required: true }} render={({ field, fieldState }) => (
                                     <AutoComplete 
-                                    suggestions={filteredNameCustomers}
-                                    completeMethod={searchName} field="name"
-                                    aria-label="Countries" 
+                                    suggestions={filteredCountry}
+                                    completeMethod={(e)=>searchDropdown(e,countries,setFilteredCountry)} field=""
+                                    aria-label="Countries"
                                     id={field.name}
-                                    value={field.value} onChange={(e) => field.onChange(e.value)}
+                                    value={field.value} onChange={(e) =>handleChangeCountry(e,field)}
                                     className={classNames({ 'p-invalid': fieldState.invalid })}
                                     dropdownAriaLabel="Select name" 
                                     placeholder="Quốc gia"
@@ -155,11 +154,11 @@ const CreateCustomer = ({isOpenCreateCustomer, setIsOpenCreateCustomer}) => {
                                     control={control} 
                                     rules={{ required: true }} render={({ field, fieldState }) => (
                                     <AutoComplete 
-                                    suggestions={filteredNameCustomers}
-                                    completeMethod={searchName} field="name"
+                                    suggestions={filteredCity}
+                                    completeMethod={(e)=>searchDropdown(e,cities,setFilteredCity)} field=""
                                     aria-label="Cities" 
                                     id={field.name}
-                                    value={field.value} onChange={(e) => field.onChange(e.value)}
+                                    value={field.value} onChange={(e) =>{field.onChange(e.value)}}
                                     className={classNames({ 'p-invalid': fieldState.invalid })}
                                     dropdownAriaLabel="Select name"
                                     placeholder="Thành phố"

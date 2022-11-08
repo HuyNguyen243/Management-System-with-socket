@@ -13,7 +13,7 @@ const CustomerManager = () => {
   const [isOpenInformationCustomer, setIsOpenInformationCustomer] = useState(false)
   const [rowdata, setRowData] = useState(null)
   const customers = useSelector(state=>state.sale.customers)
-  const [filter,setFilter] = useState(null)
+  const [filter,setFilter] = useState("")
   
   useEffect(()=>{
     dispatch(saleCustomerRequest(filter))

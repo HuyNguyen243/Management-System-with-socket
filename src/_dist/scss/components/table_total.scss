@@ -375,3 +375,40 @@
 //     height: 15px;
 //     display:block;
 //  }
+
+
+@media (max-width: 1113px){
+    .table__header-name{
+        color: $color-black !important;
+    }
+    .table__sort{
+        display: none;
+    }
+    .table__body-name.btn_success,
+    .table__body-name.btn_stop,
+    .table__body-name.btn_pending{
+        margin: 0px;
+    }
+    .p-datatable-tbody tr td{
+        padding: 10px !important;
+    }
+    .p-column-title,
+    .table__body-name{
+        font-size: 13px;
+    }
+    .p-datatable-thead{
+        display: none;
+    }
+    .table__limit > span{
+        height: 40px;
+    }
+    .MuiSelect-select{
+        padding: 0;
+    }
+    .paginate{
+        padding: 15px 0;
+    }
+    .p-datatable .p-datatable-tbody > tr > td {
+        background-color: #c7e4f43b !important;
+    }
+}

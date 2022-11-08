@@ -96,7 +96,7 @@ const Filter = ({DataFilter ,sortBy, sortValue, setSortBy, setSortValue}) => {
         }
       }
       
-      }, 1000);
+      }, 700);
 
     return () => clearTimeout(timeout);
 

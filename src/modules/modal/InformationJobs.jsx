@@ -14,7 +14,7 @@ const InformationJobs = ({isOpenInformationJob, setIsOpenInformationJob}) => {
     }
   return (
     <Sidebar visible={isOpenInformationJob} position="right" onHide={() => setIsOpenInformationJob(false)} className="create__job">
-        <Toast ref={toast} position="bottom-right"/>
+        <Toast ref={toast} position="bottom-left"/>
         <div className="information__job">
             <div className="creat__job--title">
                 <h2>Thông tin công việc </h2>

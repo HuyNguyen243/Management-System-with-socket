@@ -1,5 +1,4 @@
 import React,{ useState, useEffect, useRef } from 'react';
-
 import { Sidebar } from 'primereact/sidebar';
 import { InputText } from 'primereact/inputtext';
 import { Calendar } from 'primereact/calendar';
@@ -8,6 +7,7 @@ import { AutoComplete } from 'primereact/autocomplete';
 import { Dropdown } from 'primereact/dropdown';
 import { ConfirmPopup,confirmPopup } from 'primereact/confirmpopup';
 import { useNavigate,useLocation } from 'react-router';
+import { useForm,Controller } from "react-hook-form";
 
 import { EMAIL_REGEX, PHONE_REGEX } from "../../constants"
 import { 
@@ -16,17 +16,14 @@ import {
  } from '../../redux/sale/action';
 import { useDispatch, useSelector } from 'react-redux';
 import { Toast } from 'primereact/toast';
-import { names,customer_status } from "./dropDown";
+import { customer_status } from "./dropDown";
+import { getCountries } from '../../commons/getCountry';
+import { searchDropdown } from '../../commons/searchDropDown';
 
-import { useForm } from "react-hook-form";
 
 const InformationCustomer = ({isOpenInformationCustomer, setIsOpenInformationCustomer, rowdata}) => {
-    const [country, setCountry] = useState("");
-    const [city, setCity] = useState("");
     const [customerStatus, setCustomerStatus] = useState(null);
     const [listJobs, setlistJobs] = useState([]);
-    const [isSubmit,setIsSubmit] = useState(false);
-    const [filteredNameCustomers, setFilteredNameCustomers] = useState(null);
     const urlParams = new URLSearchParams(window.location.search);
     const pageURL = Number(urlParams?.get('page'))
     const navigate = useNavigate()
@@ -37,35 +34,43 @@ const InformationCustomer = ({isOpenInformationCustomer, setIsOpenInformationCus
     const deleteCustomer = useSelector(state =>state.sale.deletecustomer)
     const countDataTable = useSelector(state =>state.table.countData)
 
+    const [cities,setCities] = React.useState(null);
+    const [filteredCity, setFilteredCity] = React.useState(null); 
+    const [countries,setCountries] =React.useState(null)
+    const [filteredCountry, setFilteredCountry] = React.useState(null);
+
     const dispatch = useDispatch()
-    const { register,setValue, handleSubmit, formState: { errors }, reset } = useForm();
+    const {control, register,setValue, handleSubmit, formState: { errors }, reset, } = useForm();
     const toast = useRef(null);
 
     useEffect(() => {
         if(putCustomer?.data){
             setIsOpenInformationCustomer(false)
-            toast.current.show({severity:'success',summary: 'Success' , detail:'Cập nhật thành công', life: 1000});
+            toast.current.show({severity:'success',summary: 'Thành công' , detail:'Cập nhật thành công', life: 1000});
         }
 
         if(putCustomer?.error){
-            toast.current.show({severity:'error',summary: 'Error' , detail:'Cập nhật thất bại', life: 1000});
+            toast.current.show({severity:'error',summary: 'Thất bại' , detail:'Cập nhật thất bại', life: 1000});
         }
 
         if(deleteCustomer?.data){
             setIsOpenInformationCustomer(false)
-            toast.current.show({severity:'success',summary: 'Success' , detail:'Xóa khách hàng thành công', life: 1000});
+            toast.current.show({severity:'success',summary: 'Thành công' , detail:'Xóa khách hàng thành công', life: 1000});
         }
         
         if(deleteCustomer?.error){
-            toast.current.show({severity:'error',summary: 'Error' , detail:'Xóa khách hàng thất bại', life: 1000});
+            toast.current.show({severity:'error',summary: 'Thất bại' , detail:'Xóa khách hàng thất bại', life: 1000});
         }
 
     },[putCustomer, setIsOpenInformationCustomer, deleteCustomer])
 
+    useEffect(() => {
+        const getcountries = new getCountries()
+        getcountries.get().then(data => setCountries(data));
+    }, []);
+
     useEffect(()=>{
         if(rowdata?.data){
-            setCountry(rowdata?.data?.information?.address?.country)
-            setCity(rowdata?.data?.information?.address?.city.toLowerCase())
             setlistJobs(rowdata?.data?.list_jobs)
             setValue("fullname",rowdata?.data?.fullname)
             setValue("phone",rowdata?.data?.information?.phone)
@@ -84,53 +89,41 @@ const InformationCustomer = ({isOpenInformationCustomer, setIsOpenInformationCus
         }
     },[rowdata,setValue])
 
-    const searchName = (event) => {
-        setTimeout(() => {
-            let _filteredNameCustomers;
-            if (!event.query.trim().length) {
-                _filteredNameCustomers = [...names];
-            }
-            else {
-                _filteredNameCustomers = names.filter((item) => {
-                    return item.name.toLowerCase().startsWith(event.query.toLowerCase());
-                });
-            }
-
-            setFilteredNameCustomers(_filteredNameCustomers);
-        }, 50);
+    const handleChangeCountry = (e,field)=>{
+        setValue("city","")
+        field.onChange(e.value)
+        if(countries[e.value]){
+            setCities(countries[e.value])
+        }
     }
 
     const onSubmit = (data) => {
-        setIsSubmit(true)
-        if(city !== "" && country !== ""){
-            const result = Object.assign(rowdata.data,{},{
-                fullname : data.fullname,
-                information: {
-                    phone : data.phone,
-                    birth : data.birth,
-                    email : data.email,
-                    address : {
-                        country: data.country,
-                        city: data.city,
-                        detail : data.address,
-                    }
-                },
-                status: customerStatus?.code,
-                _modified_at: new Date(Date.now())
-            })
-            data.status = customerStatus?.code
-            const formData = {
-                data: data,
-                result: result,
-                index: rowdata?.index
-            }
-            dispatch(editCustomerRequest(formData))
+        const result = Object.assign(rowdata.data,{},{
+            fullname : data.fullname,
+            information: {
+                phone : data.phone,
+                birth : data.birth,
+                email : data.email,
+                address : {
+                    country: data.country,
+                    city: data.city,
+                    detail : data.address,
+                }
+            },
+            status: customerStatus?.code,
+            _modified_at: new Date(Date.now())
+        })
+        data.status = customerStatus?.code
+        const formData = {
+            data: data,
+            result: result,
+            index: rowdata?.index
         }
+        dispatch(editCustomerRequest(formData))
     };
 
     const handleCloseModal = ()=>{
         setIsOpenInformationCustomer(false)
-        setIsSubmit(false)
         reset()
     }
 
@@ -163,7 +156,7 @@ const InformationCustomer = ({isOpenInformationCustomer, setIsOpenInformationCus
   return (
     <>
         <ConfirmPopup />
-        <Toast ref={toast} position="bottom-right"/>
+        <Toast ref={toast} position="bottom-left"/>
         <Sidebar visible={isOpenInformationCustomer} position="right" onHide={handleCloseModal} className="create__job">
             <div className="creat__job">
                 <div className="creat__job--title flex justify-content-between">
@@ -227,32 +220,39 @@ const InformationCustomer = ({isOpenInformationCustomer, setIsOpenInformationCus
                         </div>
                         <div className="field col-12 md:col-6">
                             <span htmlFor="original__link">Quốc gia: <span className="warning">*</span></span>
-                            <span className="p-float-label">
-                                <AutoComplete 
-                                    suggestions={filteredNameCustomers}
-                                    completeMethod={searchName} 
-                                    field="name"
-                                    value={country}
-                                    onChange={(e)=>{setCountry(e.value);setValue("country",e.value)}}
-                                    aria-label="Countries" 
-                                    dropdownAriaLabel="Select name"
-                                    className={isSubmit && country === "" && "p-invalid"}
-                                    
+                                <Controller name="country" 
+                                    control={control} 
+                                    rules={{ required: true }} render={({ field, fieldState }) => (
+                                    <AutoComplete 
+                                        suggestions={filteredCountry}
+                                        completeMethod={(e)=>searchDropdown(e,countries,setFilteredCountry)} field=""
+                                        aria-label="Countries"
+                                        id={field.name}
+                                        value={field.value} onChange={(e) =>handleChangeCountry(e,field)}
+                                        className={errors?.country && "p-invalid"}
+                                        dropdownAriaLabel="Select name" 
+                                        placeholder="Quốc gia"
+                                    />
+                                    )} 
                                 />
-                            </span>
                         </div>
                         <div className="field col-12 md:col-6">
                             <span htmlFor="cost">Thành phố: <span className="warning">*</span></span>
                             <span className="p-float-label">
-                                <AutoComplete 
-                                    suggestions={filteredNameCustomers}
-                                    value={city}
-                                    onChange={(e)=>{setCity(e.value);setValue("city",e.value)}}
-                                    completeMethod={searchName} field="name"
+                                 <Controller name="city" 
+                                    control={control} 
+                                    rules={{ required: true }} render={({ field, fieldState }) => (
+                                    <AutoComplete 
+                                    suggestions={filteredCity}
+                                    completeMethod={(e)=>searchDropdown(e,cities,setFilteredCity)} field=""
                                     aria-label="Cities" 
-                                    dropdownAriaLabel="Select name" 
-                                    className={isSubmit && city === "" && "p-invalid"}
-                                />
+                                    id={field.name}
+                                    value={field.value} onChange={(e) =>{field.onChange(e.value)}}
+                                    className={errors?.city && "p-invalid"}
+                                    dropdownAriaLabel="Select name"
+                                    placeholder="Thành phố"
+                                    />
+                                )} />
                             </span>
                         </div>
                         <div className="field col-12 md:col-6">
