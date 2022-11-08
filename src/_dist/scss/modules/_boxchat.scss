@@ -47,6 +47,7 @@
       li{
         display: flex;
         padding: 5px 10px;
+        justify-content: center;
       }
       li.active{
         background-color: $active-mess;
@@ -285,6 +286,7 @@
       }
       ul li{
         border-bottom: 1px solid $color-white;
+        justify-content: inherit;
       }
       ul li:last-child{
         border-bottom: none;
@@ -449,7 +451,7 @@
 
 .has_seen{
   position: absolute;
-  right: 15px;
+  right: 10px;
   top: 2px;
   font-size: 11px;
   color: $color-white;

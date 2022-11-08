@@ -33,7 +33,7 @@ function App() {
         <Route path="*" element={<Navigate to="/login" replace/>}/>
         </>
       }
-        <Route path="/Login" element={<Login />}/>
+        <Route path="/login" element={<Login />}/>
         <Route path="/forgot-password" element={<ForgotPassword />}/>
       </Routes>
    </BrowserRouter>

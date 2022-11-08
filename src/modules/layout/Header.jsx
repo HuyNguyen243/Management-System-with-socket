@@ -42,9 +42,9 @@ export default function Header() {
       const handleClickOutsideMenu = (e)=>{
         const elementChildMenu = document.querySelector(".header__menu")
         const btn = document.querySelector(".header__right--profile")
-        if(openMenu && !elementChildMenu.contains(e.target)){
+        if(openMenu && !elementChildMenu?.contains(e.target)){
           setOpenMenu(false)
-        }else if (!openMenu && btn.contains(e.target)){
+        }else if (!openMenu && btn?.contains(e.target)){
           setOpenMenu(!openMenu)
         }
       }
@@ -60,7 +60,7 @@ export default function Header() {
   useEffect(() => {
     const handleClickOutSideNav = (e)=>{
       const el = document.querySelector(".header__container .MuiDrawer-root .MuiPaper-elevation")
-      if(open && !el.contains(e.target)){
+      if(open && !el?.contains(e.target)){
         setOpen(false)
       }
     }
@@ -77,9 +77,9 @@ export default function Header() {
     const handleClickOutSideNotification = (e)=>{
       const el = document.querySelector(".notification__container")
       const btn = document.querySelector(".header__right--notification")
-      if(isOpenNotification && !el.contains(e.target)){
+      if(isOpenNotification && !el?.contains(e.target)){
         setisOpenNotification(false)
-      }else if (!isOpenNotification && btn.contains(e.target)){
+      }else if (!isOpenNotification && btn?.contains(e.target)){
         setisOpenNotification(!isOpenNotification)
         setisOpenMessages(false)
       }
@@ -98,7 +98,7 @@ export default function Header() {
       const btn = document.querySelector(".header__right--notification-msg")
       if(isOpenMessages && !el.contains(e.target)){
         setisOpenMessages(false)
-      }else if (!isOpenMessages && btn.contains(e.target)){
+      }else if (!isOpenMessages && btn?.contains(e.target)){
         setisOpenMessages(!isOpenMessages)
         setisOpenNotification(false)
       }
