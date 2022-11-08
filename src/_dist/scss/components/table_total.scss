@@ -166,6 +166,9 @@
     display: block;
     text-align: center;
     margin: auto;
+    .dots_online{
+        margin-right: 20px;
+    }
 }
 
 .table__body-name.btn_pending{
@@ -177,6 +180,9 @@
     display: block;
     text-align: center;
     margin: auto;
+    .dots_offline{
+        margin-right: 20px;
+    }
 }
 
 .table__body-name.btn_stop{
@@ -188,6 +194,9 @@
     display: block;
     text-align: center;
     margin: auto;
+    .dots_offline{
+        margin-right: 20px;
+    }
 }
 
 .paginate{

@@ -4,6 +4,7 @@ import { table_employee_overview } from '../../../components/table/header_table'
 import { dashboardEmployeeRequest } from '../../../redux/overviewEmployee/actionEmployee';
 import { useDispatch, useSelector } from "react-redux"
 import CreateUser from '../../modal/CreateUser';
+import { dataParse } from '../admin/dataParse';
 const EmployeeOverview = () => {
 
     const dispatch = useDispatch()
@@ -14,7 +15,7 @@ const EmployeeOverview = () => {
     }, [dispatch])
 
     const DataFilter = (data) => {
-        console.log(data)
+        // console.log(data)
     }
 
     const handleRowClick = (e) => {
@@ -28,7 +29,7 @@ const EmployeeOverview = () => {
     return (
         <>
             <Table
-                dataTable={employees?.data}
+                dataTable={dataParse(employees?.data)}
                 loading={false}
                 DataFilter={DataFilter}
                 haveTotalTable={false}

@@ -30,13 +30,15 @@ const CreateUser = ({ isOpenCreateUser, setIsOpenCreateUser }) => {
         role: '',
         address: '',
     }
-    const { control, formState: { errors }, handleSubmit, reset, setValue, watch } = useForm({ defaultValues });
+    const { control, formState: { errors }, handleSubmit, reset, setValue } = useForm({ defaultValues });
     const user = useSelector(state => state.auth?.user)
+    const employee = useSelector(state=>state.employee.dashboard)
+    console.log(employee);
     const onSubmit = (data) => {
         if (Object.keys(errors).length === 0) {
             data.create_by = user?.data.id_system;
             data.role = data.role?.code;
-            dispatch(addEmployeeRequest(data))
+            // dispatch(addEmployeeRequest(data))
         }
     };
     const randomString = (length) => {
