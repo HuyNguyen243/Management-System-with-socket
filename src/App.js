@@ -14,8 +14,14 @@ function App() {
   const user = useSelector(state =>state.auth.token)
   return (
    <BrowserRouter>
-    <Header />
-    <BtnMess />
+   {
+     user?.isAuth &&
+     <>
+      <Header />
+      <BtnMess />
+     </>
+   }
+   
       <Routes>
       { 
         user?.isAuth ?

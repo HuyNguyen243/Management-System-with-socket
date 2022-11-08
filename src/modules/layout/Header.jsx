@@ -8,7 +8,6 @@ import Navigation from './navigation/Navigation';
 import { DrawerHeader, AppBar, Drawer } from "../../libs/muiDrawer"
 import Avatar from '@mui/material/Avatar';
 import Stack from '@mui/material/Stack';
-import { useLocation } from 'react-router';
 import {useDispatch, useSelector} from "react-redux"
 import {userProfile} from "../../redux/auth/action"
 import { storage } from '../../_services/sesionStorage';
@@ -22,8 +21,6 @@ import Messages from "./messages/Messages"
 export default function Header() {
   const dispatch = useDispatch()
   const [open, setOpen] = useState(false);
-  const location = useLocation()
-  const pathsName = ["/login","/forgot-password"]
   const [openMenu, setOpenMenu] = useState(false);
   const user = useSelector(state=> state.auth.user)
   const token =storage.get(NAME_SESSION_STORAGE_TOKEN)
@@ -127,8 +124,6 @@ export default function Header() {
 
   return (
     <Box sx={{ display: 'flex' }} className="header__container">
-      {
-        !pathsName.includes(location.pathname) &&
         <>
           <CssBaseline />
           <AppBar position="fixed" open={open} className="navigation_left">
@@ -198,8 +193,6 @@ export default function Header() {
             <Navigation  open={open} getBtnNavIsOpen={getBtnNavIsOpen}/>
           </Drawer>
         </>
-      }
-   
     </Box>
   );
 }
