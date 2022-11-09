@@ -22,7 +22,7 @@ export const ID_SESSION = "1touch_id"
 
 export const UserRules = {
     ROLE: {
-        SALE: 'SALE',
+        SALER: 'SALER',
         ADMIN: 'ADMIN',
         EDITOR: 'EDITOR',
         CUSTOMER: 'CUSTOMER',

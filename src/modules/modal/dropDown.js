@@ -35,5 +35,5 @@ export const role= [
     { name: 'Admin', code: 'ADMIN' },
     { name: 'Leader Editor', code: 'LEADER_EDITOR' },
     { name: 'Editor', code: 'EDITOR' },
-    { name: 'Saler', code: 'SALE' },
+    { name: 'Saler', code: 'SALER' },
 ]

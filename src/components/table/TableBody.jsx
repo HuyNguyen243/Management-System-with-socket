@@ -58,7 +58,7 @@ const TableBody = ({ rowData, item }) => {
                 )
             case ("role"):
                 const role = rowData?.[item]
-                if (role === UserRules.ROLE.SALE) {
+                if (role === UserRules.ROLE.SALER) {
                     return (
                         <span className="table__body-name text-bold" >{UserRules.ROLE_NAME.SALER}</span>
                     )

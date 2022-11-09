@@ -8,6 +8,7 @@ export const dataParse = (data)=>{
                 start_day: item?.start_day,
                 status: item?.status,
                 address: item?.address,
+                births: item?.births,
             }
             return newobject
         })

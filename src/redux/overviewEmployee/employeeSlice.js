@@ -1,9 +1,14 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-import { dashboardEmployeeRequest } from './actionEmployee';
+import { dashboardEmployeeRequest,addEmployeeRequest } from './actionEmployee';
 
 const initialState = {
     dashboard: {
+        loading: false,
+        data : null,
+        error: false,
+    },
+    user: {
         loading: false,
         data : null,
         error: false,
@@ -34,7 +39,34 @@ const dashBoardEmployeeReducer = createSlice({
                 dashboard:{
                     loading: false,
                     data: null,
+                    error: true
+                }
+            })
+        },
+        [addEmployeeRequest.pending]: (state) => {
+            Object.assign(state,{},{
+                user:{
+                    loading: true
+                }
+            })
+        },
+        [addEmployeeRequest.fulfilled]: (state, action) => {
+            console.log(action?.payload);
+            Object.assign(state,{},{
+                user:{
+                    loading: false,
+                    data: action?.payload,
                     error: false
+                }
+            })
+            state.dashboard.data.push(action?.payload)
+        },
+        [addEmployeeRequest.rejected]: (state, action) => {
+            Object.assign(state,{},{
+                user:{
+                    loading: false,
+                    data: action?.payload,
+                    error: true
                 }
             })
         },

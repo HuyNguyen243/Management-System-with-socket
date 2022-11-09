@@ -334,6 +334,10 @@
     display: block;
 }
 
+.cursor__normal{
+    cursor: default;
+}
+
 .image__trash{
     margin-right: 15px;
     cursor: pointer;

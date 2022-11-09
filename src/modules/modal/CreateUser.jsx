@@ -23,8 +23,8 @@ const CreateUser = ({ isOpenCreateUser, setIsOpenCreateUser }) => {
         fullname: '',
         username: '',
         password: '',
-        birth: null,
-        startwork: null,
+        births: null,
+        start_day: null,
         phone: '',
         email: '',
         role: '',
@@ -32,13 +32,12 @@ const CreateUser = ({ isOpenCreateUser, setIsOpenCreateUser }) => {
     }
     const { control, formState: { errors }, handleSubmit, reset, setValue } = useForm({ defaultValues });
     const user = useSelector(state => state.auth?.user)
-    const employee = useSelector(state=>state.employee.dashboard)
-    console.log(employee);
+    const employee = useSelector(state => state.employee?.user)
     const onSubmit = (data) => {
         if (Object.keys(errors).length === 0) {
             data.create_by = user?.data.id_system;
             data.role = data.role?.code;
-            // dispatch(addEmployeeRequest(data))
+            dispatch(addEmployeeRequest(data))
         }
     };
     const randomString = (length) => {
@@ -56,8 +55,20 @@ const CreateUser = ({ isOpenCreateUser, setIsOpenCreateUser }) => {
     useEffect(() => {
         setValue("password", randomPass)
     })
+    useEffect(() => {
+        if (employee?.data) {
+            reset();
+            setIsOpenCreateUser(false)
+            toast.current.show({ severity: 'success', summary: 'Success', detail: 'Tạo khách hàng mới thành công', life: 1000 });
+        }
+        if (employee?.error) {
+            toast.current.show({ severity: 'error', summary: 'Error', detail: employee?.data?.message, life: 1000 });
+        }
+    }, [
+        employee, reset, setIsOpenCreateUser
+    ])
     const copyToClipboard = () => {
-        toast.current.show({ severity: 'success', summary: 'Thành Công' , detail:'Sao chép mật khẩu thành công', life: 1000 });
+        toast.current.show({ severity: 'success', summary: 'Thành Công', detail: 'Sao chép mật khẩu thành công', life: 1000 });
         copy(randomPass);
     }
     return (
@@ -117,7 +128,7 @@ const CreateUser = ({ isOpenCreateUser, setIsOpenCreateUser }) => {
                             <div className="field col-12 md:col-6 create__user--calendar">
                                 <span htmlFor="calendar">Ngày tháng năm sinh:</span>
                                 <span className="p-float-label">
-                                    <Controller name="birth"
+                                    <Controller name="births"
                                         control={control}
                                         rules={{ required: false }} render={({ field, fieldState }) => (
                                             <Calendar
@@ -133,7 +144,7 @@ const CreateUser = ({ isOpenCreateUser, setIsOpenCreateUser }) => {
                             <div className="field col-12 md:col-6 create__user--calendar">
                                 <span htmlFor="calendar">Ngày bắt đầu làm:</span>
                                 <span className="p-float-label ">
-                                    <Controller name="startwork"
+                                    <Controller name="start_day"
                                         control={control}
                                         rules={{ required: false }} render={({ field, fieldState }) => (
                                             <Calendar
