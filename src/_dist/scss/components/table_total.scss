@@ -378,3 +378,11 @@
     opacity: 1;
     visibility: visible;
  }
+.open__modal{
+    color: #1975FF !important;
+    cursor: pointer;
+    padding-top: 40px;
+} 
+.open__modal.text-bold{
+    font-weight: bold;
+}

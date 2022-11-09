@@ -7,8 +7,15 @@ import { Button } from 'primereact/button';
 import { AutoComplete } from 'primereact/autocomplete';
 import { Dropdown } from 'primereact/dropdown';
 import { ConfirmPopup, confirmPopup } from 'primereact/confirmpopup';
-
-import { EMAIL_REGEX, PHONE_REGEX } from "../../constants"
+import { formatTimeStamp, formatDate } from '../../commons/dateTime'
+import {
+    EMAIL_REGEX, 
+    PHONE_REGEX, 
+    UserRules, 
+    USER_IS_ONLINE,
+    USER_IS_STOPPING,
+    USER_IS_OFFLINE
+} from "../../constants"
 import {
     editCustomerRequest,
     deleteCustomerRequest
@@ -19,11 +26,10 @@ import { names, customer_status } from "./dropDown";
 
 import { useForm } from "react-hook-form";
 
-const InformationUser = ({ isOpenInformationUser, setIsOpenInformationUser, rowdata }) => {
+const InformationUser = ({ isOpenInformationUser, setIsOpenInformationUser, rowdata, setIsOpenCreateUser }) => {
     const [country, setCountry] = useState("");
     const [city, setCity] = useState("");
     const [customerStatus, setCustomerStatus] = useState(null);
-    const [listJobs, setlistJobs] = useState([]);
     const [isSubmit, setIsSubmit] = useState(false);
     const [filteredNameCustomers, setFilteredNameCustomers] = useState(null);
     const putCustomer = useSelector(state => state.sale.editcustomer)
@@ -57,15 +63,12 @@ const InformationUser = ({ isOpenInformationUser, setIsOpenInformationUser, rowd
     useEffect(() => {
         console.log(rowdata);
         if (rowdata?.data) {
-            setCountry(rowdata?.data?.information?.address?.country)
-            setCity(rowdata?.data?.information?.address?.city.toLowerCase())
-            setlistJobs(rowdata?.data?.list_jobs)
             setValue("fullname", rowdata?.data?.fullname)
             setValue("phone", rowdata?.data?.information?.phone)
             setValue("births", new Date(rowdata?.data?.information?.births))
+            setValue("start_day", new Date(rowdata?.data?.information?.start_day))
             setValue("address", rowdata?.data?.information?.address?.detail)
-            setValue("country", rowdata?.data?.information?.address?.country)
-            setValue("city", rowdata?.data?.information?.address?.city)
+            setValue("email", rowdata?.data?.information?.email)
             if (rowdata?.data?.status) {
                 for (let item of customer_status) {
                     if (item.code === rowdata?.data?.status) {
@@ -127,7 +130,7 @@ const InformationUser = ({ isOpenInformationUser, setIsOpenInformationUser, rowd
         reset()
     }
 
-    const handleDeleteCustomer = () => {
+    const handleDeleteUser = () => {
         const formdata = {}
         formdata.id = rowdata?.data?.id_system
         formdata.index = rowdata?.index
@@ -139,12 +142,17 @@ const InformationUser = ({ isOpenInformationUser, setIsOpenInformationUser, rowd
             target: event.currentTarget,
             message: 'Bạn có chắc muốn tài khoản nhân viên này?',
             icon: 'pi pi-exclamation-triangle',
-            accept: handleDeleteCustomer,
+            accept: handleDeleteUser,
         });
 
         myConfirm.show();
     }
-
+    const handleCreateNewUser = () => {
+        setIsOpenInformationUser(false)
+        setTimeout(() => {
+            setIsOpenCreateUser(true)
+        }, 100)
+    }
     return (
         <>
             <ConfirmPopup />
@@ -163,12 +171,34 @@ const InformationUser = ({ isOpenInformationUser, setIsOpenInformationUser, rowd
                                     {rowdata?.data?.id_system}
                                 </span>
                             </div>
-                            <div className="field col-12 md:col-6 create__job--calendar">
+                            <div className="field col-12 md:col-6">
+                                <span className="p-float-label open__modal text-bold">
+                                    <span onClick={handleCreateNewUser}>Tạo nhân viên mới</span>
+                                </span>
+                            </div><div className="field col-12 md:col-6 create__job--calendar">
                                 <span htmlFor="calendar">Ngày tháng năm sinh:</span>
                                 <span className="p-float-label pt-3 cursor__normal">
-                                    {rowdata?.data?.births}
+                                    {formatDate(formatTimeStamp(rowdata?.data?.births))}
                                 </span>
-                                <img src="/images/calendar.svg" alt="" className="calendar__image" />
+                            </div>
+                            <div className="field col-12 md:col-6 create__job--calendar">
+                                <span htmlFor="calendar">Ngày bắt đầu làm:</span>
+                                <span className="p-float-label pt-3 cursor__normal">
+                                    {formatDate(formatTimeStamp(rowdata?.data.start_day))}
+                                </span>
+                            </div>
+                            <div className="field col-12 md:col-6">
+                                <span htmlFor="employees">Trạng thái nhân viên:</span>
+                                <span className="p-float-label pt-3">
+                                    {
+                                        rowdata?.data.status === UserRules.STATUS.OFFLINE ? rowdata?.data.status : ''
+                                        // {
+                                        //     // if(rowdata) {
+
+                                        //     // }
+                                        // }
+                                    }
+                                </span>
                             </div>
                             <div className="field col-12 md:col-12 ">
                                 <span htmlFor="autocomplete">Tên nhân viên: <span className="warning">*</span></span>
@@ -185,7 +215,12 @@ const InformationUser = ({ isOpenInformationUser, setIsOpenInformationUser, rowd
                                 <span htmlFor="withoutgrouping">Số điện thoại: <span className="warning">*</span></span>
                                 <span className="p-float-label">
                                     <InputText
-                                        defaultValue={rowdata?.data?.information?.phone}
+                                        onKeyPress={(event) => {
+                                            if (!/[0-9]/.test(event.key)) {
+                                                event.preventDefault();
+                                            }
+                                        }}
+                                        defaultValue={rowdata?.data?.phone}
                                         onChange={(e) => setValue("phone", e.target.value)}
                                         {...register("phone", { required: true, pattern: PHONE_REGEX })}
                                         className={errors?.phone && "p-invalid"}
@@ -196,87 +231,13 @@ const InformationUser = ({ isOpenInformationUser, setIsOpenInformationUser, rowd
                                 <span htmlFor="original__link">Email: <span className="warning">*</span></span>
                                 <span className="p-float-label">
                                     <InputText
-                                        defaultValue={rowdata?.data?.information?.email}
+                                        defaultValue={rowdata?.data?.email}
                                         onChange={(e) => setValue("email", e.target.value)}
                                         {...register("email", { required: true, pattern: EMAIL_REGEX })}
                                         className={errors?.email && "p-invalid"}
                                     />
                                 </span>
                             </div>
-                            <div className="field col-12 md:col-6">
-                                <span htmlFor="original__link">Quốc gia: <span className="warning">*</span></span>
-                                <span className="p-float-label">
-                                    <AutoComplete
-                                        suggestions={filteredNameCustomers}
-                                        completeMethod={searchName}
-                                        field="name"
-                                        value={country}
-                                        onChange={(e) => { setCountry(e.value); setValue("country", e.value) }}
-                                        aria-label="Countries"
-                                        dropdownAriaLabel="Select name"
-                                        className={isSubmit && country === "" && "p-invalid"}
-
-                                    />
-                                </span>
-                            </div>
-                            <div className="field col-12 md:col-6">
-                                <span htmlFor="cost">Thành phố: <span className="warning">*</span></span>
-                                <span className="p-float-label">
-                                    <AutoComplete
-                                        suggestions={filteredNameCustomers}
-                                        value={city}
-                                        onChange={(e) => { setCity(e.value); setValue("city", e.value) }}
-                                        completeMethod={searchName} field="name"
-                                        aria-label="Cities"
-                                        dropdownAriaLabel="Select name"
-                                        className={isSubmit && city === "" && "p-invalid"}
-                                    />
-                                </span>
-                            </div>
-                            <div className="field col-12 md:col-6">
-                                <span htmlFor="employees">Địa chỉ: <span className="warning">*</span></span>
-                                <span className="p-float-label">
-                                    <InputText
-                                        defaultValue={rowdata?.data?.information?.address?.detail}
-                                        onChange={(e) => setValue("address", e.target.value)}
-                                        {...register("address", { required: true })}
-                                        className={errors?.address && "p-invalid"}
-                                    />
-                                </span>
-                            </div>
-                            <div className="field col-12 md:col-6">
-                                <span htmlFor="employees">Trạng thái khách hàng: <span className="warning">*</span></span>
-                                <span className="p-float-label">
-                                    <Dropdown
-                                        options={customer_status}
-                                        optionLabel="name"
-                                        value={customerStatus}
-                                        onChange={e => setCustomerStatus(e.value)}
-                                        placeholder="Trạng thái khách hàng"
-                                    />
-                                </span>
-                            </div>
-                            {
-                                Array.isArray(listJobs) && listJobs.length > 0 &&
-                                <div className="field col-12 md:col-12 grid">
-                                    <div className="field col-12 md:col-12 ">
-                                        <span htmlFor="employees">Mã công việc đang yêu cầu: <span className="warning">*</span></span>
-                                    </div>
-                                    {
-                                        listJobs.map((item) => (
-                                            <div>
-                                                <div className="field col-12 md:col-6 id_jobs">
-                                                    12345.S.67890
-                                                </div>
-                                                <div className="field col-12 md:col-6 btn_information_jobs">
-                                                    Thông tin mã yêu cầu
-                                                </div>
-                                            </div>
-                                        ))
-                                    }
-
-                                </div>
-                            }
                         </div>
                         <div className="btn_modal field col-12 md:col-12 grid position_bottom">
                             <div className="field col-12 md:col-6">

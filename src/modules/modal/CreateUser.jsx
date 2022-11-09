@@ -164,6 +164,11 @@ const CreateUser = ({ isOpenCreateUser, setIsOpenCreateUser }) => {
                                         control={control}
                                         rules={{ required: true, pattern: { value: PHONE_REGEX } }} render={({ field, fieldState }) => (
                                             <InputText
+                                                onKeyPress={(event) => {
+                                                    if (!/[0-9]/.test(event.key)) {
+                                                        event.preventDefault();
+                                                    }
+                                                }}
                                                 autoComplete="disabled"
                                                 id={field.name}
                                                 {...field}

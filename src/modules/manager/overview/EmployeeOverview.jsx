@@ -46,6 +46,7 @@ const EmployeeOverview = () => {
             <InformationUser
                 isOpenInformationUser={isOpenInformationUser}
                 setIsOpenInformationUser={setIsOpenInformationUser}
+                setIsOpenCreateUser={setIsOpenCreateUser}
                 rowdata={rowdata}
             />
         </>
