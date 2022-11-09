@@ -22,7 +22,7 @@ export const ID_SESSION = "1touch_id"
 
 export const UserRules = {
     ROLE: {
-        SALE: 'SALE',
+        SALER: 'SALER',
         ADMIN: 'ADMIN',
         EDITOR: 'EDITOR',
         CUSTOMER: 'CUSTOMER',
@@ -31,7 +31,7 @@ export const UserRules = {
         PAY: 'PAY',
     },
     _ROLE: {
-        SALE: 'S',
+        SALER: 'S',
         ADMIN: 'A',
         EDITOR: 'E',
         CUSTOMER: 'C',
@@ -56,7 +56,7 @@ export const PayRules = {
 
 export const JobRules = {
     ROLE: {
-        SALE: "SALE",
+        SALER: "SALER",
         ADMIN: "ADMIN",
         EDITOR: "EDITOR",
         LEADER_EDITOR: "LEADER_EDITOR",

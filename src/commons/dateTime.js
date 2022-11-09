@@ -1,6 +1,6 @@
 export const formatDate = (value) => {
     //value =  Thu Nov 24 2022 00:00:00 GMT+0700 (Indochina Time)
-    return value.toLocaleDateString('vi-VN', {
+    return value?.toLocaleDateString('vi-VN', {
         day: '2-digit',
         month: '2-digit',
         year: 'numeric',

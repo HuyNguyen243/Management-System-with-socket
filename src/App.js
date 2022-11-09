@@ -18,7 +18,6 @@ function App() {
      user?.isAuth &&
      <>
       <Header />
-      <BtnMess />
      </>
    }
    
@@ -42,6 +41,7 @@ function App() {
         <Route path="/login" element={<Login />}/>
         <Route path="/forgot-password" element={<ForgotPassword />}/>
       </Routes>
+      <BtnMess />
    </BrowserRouter>
   );
 }

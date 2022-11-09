@@ -15,6 +15,7 @@ import { getCountries } from '../../commons/getCountry';
 
 import { EMAIL_REGEX, PHONE_REGEX } from '../../constants';
 import { searchDropdown } from '../../commons/searchDropDown';
+import { toastMsg } from '../../commons/toast'; 
 
 const CreateCustomer = ({isOpenCreateCustomer, setIsOpenCreateCustomer}) => {
     const toast = useRef(null);
@@ -46,10 +47,10 @@ const CreateCustomer = ({isOpenCreateCustomer, setIsOpenCreateCustomer}) => {
         if(customer?.data){
             reset();
             setIsOpenCreateCustomer(false)
-            toast.current.show({severity:'success',summary: 'Thành công' , detail:'Tạo khách hàng mới thành công', life: 1000});
+            toastMsg.success(toast,'Tạo khách hàng mới thành công')
         }
         if(customer?.error){
-            toast.current.show({severity:'error',summary: 'Thất bại' , detail:'Tạo khách hàng mới thất bại', life: 1000});
+            toastMsg.error(toast,'Tạo khách hàng mới thất bại')
         }
     },[customer,reset,setIsOpenCreateCustomer])
 

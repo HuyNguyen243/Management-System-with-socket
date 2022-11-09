@@ -1,5 +1,5 @@
 import {  createAsyncThunk } from '@reduxjs/toolkit'
-import { post, get, del } from "../../_services/apiRequest"
+import { post, get, del, put } from "../../_services/apiRequest"
 
 
 export const userloginRequest = createAsyncThunk(
@@ -31,6 +31,19 @@ export const userProfile = createAsyncThunk(
     async (id,{ rejectWithValue }) => {
         try {
             const res = await get(`users/infor/${id}`)
+            return res;
+        } catch (error) {
+            return rejectWithValue(error?.response?.data);
+        }
+    }
+)
+
+
+export const userEditProfile = createAsyncThunk(
+    'userEditProfile',
+    async (result,{ rejectWithValue }) => {
+        try {
+            const res = await put(`users/infor/update/${result.id}`,result.data)
             return res;
         } catch (error) {
             return rejectWithValue(error?.response?.data);

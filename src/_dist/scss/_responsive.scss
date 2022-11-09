@@ -1,0 +1,128 @@
+
+@media (max-width: 1200px) {
+    .table__total--workflow--management{
+        .table__header-col span{
+            color: $color-name-notification;
+        }
+    }
+    .edit_bank{
+        width: 200px;
+    }
+}
+
+@media (max-width: 1113px) {
+ 
+    .table__limit{
+        > span{
+            padding-bottom: 0px;
+            padding-top: 3px;
+        }
+    }
+    .infor_avatar {
+        width: 280px;
+        height: 280px;
+    }
+    .total__block{
+        width: 50%;
+        margin-bottom: 10px;
+        text-align: inherit;
+    }
+    .total__block:last-child{
+        width: 100%;
+    }
+    .page__filter{
+        flex-direction: column;
+        position: absolute;
+        background-color: $color-white;
+        border: 1px solid $color-border-input;
+        height: 500px;
+        z-index: 10;
+        box-shadow: 3px 4px 4px rgb(0 0 0 / 17%);
+        margin-top: 30px;
+        padding-top: 20px;
+        
+        >img{
+            position: absolute;
+            bottom: 17px;
+            right: 10px;
+        }
+    }
+    .filter__search{
+        width: 100%;
+        margin-bottom: 10px;
+    }
+    .calendar{
+        margin-bottom: 20px;
+    }
+    #filter__label{
+        font-size: 13px;
+    }
+    #outlined-size-small-label{
+        font-size: 13px !important;
+    }
+    .hide_filter{
+        display: none !important;
+    }
+
+    .table__header-name{
+        color: $color-black !important;
+    }
+    .table__sort{
+        display: none;
+    }
+    .table__body-name.btn_success,
+    .table__body-name.btn_stop,
+    .table__body-name.btn_pending{
+        margin: 0px;
+    }
+    .p-datatable-tbody tr td{
+        padding: 10px !important;
+    }
+    .p-column-title,
+    .table__body-name{
+        font-size: 13px;
+    }
+    .p-datatable-thead{
+        display: none;
+    }
+    .table__limit > span{
+        height: 40px;
+    }
+    .MuiSelect-select{
+        padding: 0;
+    }
+    .paginate{
+        padding: 15px 0;
+    }
+    .p-datatable .p-datatable-tbody > tr > td {
+        background-color: #c7e4f43b !important;
+    }
+
+    .btn_filter{
+        display: block;
+        margin-left: 5px;
+    }
+}
+
+@media (max-width: 767px) {
+    .ava_right{
+        margin-top: 255px !important;
+        display:none;
+    }
+    .avatar__block {
+        padding-top: 10px;
+    }
+    .infor_avatar {
+        width: 200px;
+        height: 200px;
+    }
+    .label_avatar {
+        padding-left: 100px;
+    }
+    .ava_res{
+        display: flex;
+    }
+    .text_table_bank{
+        max-width: 180px;
+    }
+}

@@ -18,6 +18,7 @@ const Filter = ({DataFilter ,sortBy, sortValue, setSortBy, setSortValue}) => {
   const statusURL = queryParams.get("status")
   const start_dateURL = queryParams.get("start_date")
   const end_dateURL = queryParams.get("end_date")
+  const [isOpenFilter,setIsOpenFilter] = useState(false)
 
   const [dates,setDates] = useState(start_dateURL && end_dateURL ? [new Date(dateString(start_dateURL)),new Date(dateString(end_dateURL))] : undefined)
   const [status, setStatus] = useState('');
@@ -113,8 +114,25 @@ const Filter = ({DataFilter ,sortBy, sortValue, setSortBy, setSortValue}) => {
     });
   }
 
+  useEffect(() => {
+    const handleClickOutSide = (e)=>{
+      const el = document.querySelector(".page__filter")
+      if(isOpenFilter && !el?.contains(e.target)){
+        setIsOpenFilter(false)
+      }
+    }
+    window.addEventListener('mousedown', handleClickOutSide);
+
+    return ()=>{
+      window.removeEventListener('mousedown',handleClickOutSide)
+    }
+
+  },[isOpenFilter])
+
   return (
-      <div className="page__filter align-items-center flex grid">
+    <>
+      <img src="images/filter_btn.svg" alt="" className="btn_filter" onClick={()=>setIsOpenFilter(!isOpenFilter)}/>
+      <div className={`page__filter align-items-center flex grid ${!isOpenFilter && "hide_filter"} `}>
         <img src="images/reset.svg" alt="" onClick={handleReset}/>
       <Box
       component="form"
@@ -158,6 +176,7 @@ const Filter = ({DataFilter ,sortBy, sortValue, setSortBy, setSortValue}) => {
         </Select>
       </FormControl>
       </div>
+    </>
   )
 }
 

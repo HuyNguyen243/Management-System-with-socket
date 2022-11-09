@@ -19,7 +19,9 @@ import { Toast } from 'primereact/toast';
 import { customer_status } from "./dropDown";
 import { getCountries } from '../../commons/getCountry';
 import { searchDropdown } from '../../commons/searchDropDown';
-
+import { toastMsg } from '../../commons/toast'; 
+import { UserRules } from '../../constants';
+import copy from "copy-to-clipboard"; 
 
 const InformationCustomer = ({isOpenInformationCustomer, setIsOpenInformationCustomer, rowdata}) => {
     const [customerStatus, setCustomerStatus] = useState(null);
@@ -33,6 +35,7 @@ const InformationCustomer = ({isOpenInformationCustomer, setIsOpenInformationCus
     const putCustomer = useSelector(state =>state.sale.editcustomer)
     const deleteCustomer = useSelector(state =>state.sale.deletecustomer)
     const countDataTable = useSelector(state =>state.table.countData)
+    const user = useSelector(state=> state.auth.user)
 
     const [cities,setCities] = React.useState(null);
     const [filteredCity, setFilteredCity] = React.useState(null); 
@@ -46,20 +49,20 @@ const InformationCustomer = ({isOpenInformationCustomer, setIsOpenInformationCus
     useEffect(() => {
         if(putCustomer?.data){
             setIsOpenInformationCustomer(false)
-            toast.current.show({severity:'success',summary: 'Thành công' , detail:'Cập nhật thành công', life: 1000});
+            toastMsg.success(toast,'Cập nhật thành công')
         }
 
         if(putCustomer?.error){
-            toast.current.show({severity:'error',summary: 'Thất bại' , detail:'Cập nhật thất bại', life: 1000});
+            toastMsg.error(toast,'Cập nhật thất bại')
         }
 
         if(deleteCustomer?.data){
             setIsOpenInformationCustomer(false)
-            toast.current.show({severity:'success',summary: 'Thành công' , detail:'Xóa khách hàng thành công', life: 1000});
+            toastMsg.success(toast,'Xóa khách hàng thành công')
         }
         
         if(deleteCustomer?.error){
-            toast.current.show({severity:'error',summary: 'Thất bại' , detail:'Xóa khách hàng thất bại', life: 1000});
+            toastMsg.success(toast,'Xóa khách hàng thất bại')
         }
 
     },[putCustomer, setIsOpenInformationCustomer, deleteCustomer])
@@ -153,13 +156,18 @@ const InformationCustomer = ({isOpenInformationCustomer, setIsOpenInformationCus
         myConfirm.show();
     }
 
+    const copyToClipboard = () => {
+        toastMsg.info(toast,'Copy success')
+        copy(rowdata?.data?.id_system);
+    }
+
   return (
     <>
         <ConfirmPopup />
         <Toast ref={toast} position="bottom-left"/>
         <Sidebar visible={isOpenInformationCustomer} position="right" onHide={handleCloseModal} className="create__job">
             <div className="creat__job">
-                <div className="creat__job--title flex justify-content-between">
+                <div className="creat__job--title flex justify-content-between" style={{marginRight: "10px"}}>
                     <h2>Thông tin khách hàng </h2>
                     <Button onClick={handleRemoveRow}><img src="images/trash.svg" alt="" className="image__trash"/></Button>
                 </div>
@@ -178,10 +186,9 @@ const InformationCustomer = ({isOpenInformationCustomer, setIsOpenInformationCus
                         </div>
                         <div className="field col-12 md:col-6">
                             <span htmlFor="autocomplete">Mã khách hàng: </span>
-                            <span className="p-float-label">
-                                <InputText disabled
-                                    value={rowdata?.data?.id_system}
-                                />
+                            <span className="p-float-label pt-3 flex justify-content-between">
+                                {rowdata?.data?.id_system}
+                                <img src="images/copy.svg" alt="" label="Bottom Right" onClick={copyToClipboard}/>
                             </span>
                         </div>
                         <div className="field col-12 md:col-6 create__job--calendar">
@@ -275,6 +282,7 @@ const InformationCustomer = ({isOpenInformationCustomer, setIsOpenInformationCus
                                     value={customerStatus}
                                     onChange={e=>setCustomerStatus(e.value)}
                                     placeholder="Trạng thái khách hàng"
+                                    disabled={user?.data?.role !== UserRules.ROLE.ADMIN ? true : false}
                                 />
                             </span>
                         </div>

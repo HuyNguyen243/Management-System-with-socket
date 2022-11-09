@@ -3,18 +3,21 @@ import { Sidebar } from 'primereact/sidebar';
 import { Button } from 'primereact/button';
 import { InputTextarea } from 'primereact/inputtextarea';
 import { Toast } from 'primereact/toast';
+import { toastMsg } from '../../commons/toast'; 
 
 import copy from "copy-to-clipboard"; 
 
 const InformationJobs = ({isOpenInformationJob, setIsOpenInformationJob}) => {
     const toast = useRef(null);
+    
     const copyToClipboard = () => {
-        toast.current.show({severity:'success', detail:'Copy success', life: 1000});
+        toastMsg.info(toast,'Copy success')
         copy("any text");
     }
+
   return (
     <Sidebar visible={isOpenInformationJob} position="right" onHide={() => setIsOpenInformationJob(false)} className="create__job">
-        <Toast ref={toast} position="bottom-left"/>
+        <Toast ref={toast} position="bottom-right"/>
         <div className="information__job">
             <div className="creat__job--title">
                 <h2>Thông tin công việc </h2>

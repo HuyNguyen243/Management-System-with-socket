@@ -103,6 +103,7 @@ const Table = ({
             responsiveLayout="stack"
             breakpoint="1113px"
             onRowClick={handleRowClick}
+            lazy
             >
             {
                 old_Data?.length > 0 

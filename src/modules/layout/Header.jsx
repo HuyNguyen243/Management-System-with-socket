@@ -167,7 +167,7 @@ export default function Header() {
                         </div>
                         <div className="information__roles">
                             {user?.data?.id_system?.includes(UserRules._ROLE.ADMIN) && <p>Admin</p>}
-                            {user?.data?.id_system?.includes(UserRules._ROLE.SALE) && <p>Sale</p>}
+                            {user?.data?.id_system?.includes(UserRules._ROLE.SALER) && <p>Saler</p>}
                             {user?.data?.id_system?.includes(UserRules._ROLE.EDITOR) && <p>Editor</p>}
                             {user?.data && <img src={`images/${openMenu ? "arrow_down" : "arrow_up"}.svg`} alt=""/>}
                         </div>
