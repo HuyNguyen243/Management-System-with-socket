@@ -9,9 +9,9 @@ import { Dropdown } from 'primereact/dropdown';
 import { ConfirmPopup, confirmPopup } from 'primereact/confirmpopup';
 import { formatTimeStamp, formatDate } from '../../commons/dateTime'
 import {
-    EMAIL_REGEX, 
-    PHONE_REGEX, 
-    UserRules, 
+    EMAIL_REGEX,
+    PHONE_REGEX,
+    UserRules,
     USER_IS_ONLINE,
     USER_IS_STOPPING,
     USER_IS_OFFLINE
@@ -189,15 +189,8 @@ const InformationUser = ({ isOpenInformationUser, setIsOpenInformationUser, rowd
                             </div>
                             <div className="field col-12 md:col-6">
                                 <span htmlFor="employees">Trạng thái nhân viên:</span>
-                                <span className="p-float-label pt-3">
-                                    {
-                                        rowdata?.data.status === UserRules.STATUS.OFFLINE ? rowdata?.data.status : ''
-                                        // {
-                                        //     // if(rowdata) {
-
-                                        //     // }
-                                        // }
-                                    }
+                                <span className={"p-float-label mt-3 m-0 flex justify-content-between align-items-center " + (rowdata?.data.status === UserRules.STATUS.OFFLINE ? 'btn_stop ' : (rowdata?.data.status === UserRules.STATUS.ONLINE ? 'btn_success' : 'btn_pending'))}>
+                                    <span className={rowdata?.data.status === UserRules.STATUS.OFFLINE ? 'dots_offline ' : (rowdata?.data.status === UserRules.STATUS.ONLINE ? 'dots_online' : 'dots_busy')} ></span>{UserRules._STATUS[rowdata?.data.status]}
                                 </span>
                             </div>
                             <div className="field col-12 md:col-12 ">

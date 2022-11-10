@@ -49,7 +49,12 @@ export const UserRules = {
         ONLINE: 'ONLINE',
         OFFLINE: 'OFFLINE',
         LEAVE: 'LEAVING',
-    }
+    },
+    _STATUS: {
+        ONLINE: USER_IS_ONLINE,
+        OFFLINE: USER_IS_OFFLINE,
+        LEAVE: USER_IS_STOPPING,
+    },
 }
 
 export const PayRules = {
