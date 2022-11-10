@@ -2,42 +2,36 @@ import React, { useState, useEffect, useRef } from 'react';
 
 import { Sidebar } from 'primereact/sidebar';
 import { InputText } from 'primereact/inputtext';
-import { Calendar } from 'primereact/calendar';
 import { Button } from 'primereact/button';
-import { AutoComplete } from 'primereact/autocomplete';
-import { Dropdown } from 'primereact/dropdown';
 import { ConfirmPopup, confirmPopup } from 'primereact/confirmpopup';
 import { formatTimeStamp, formatDate } from '../../commons/dateTime'
 import {
     EMAIL_REGEX,
     PHONE_REGEX,
     UserRules,
-    USER_IS_ONLINE,
-    USER_IS_STOPPING,
-    USER_IS_OFFLINE
 } from "../../constants"
-import {
-    editCustomerRequest,
-    deleteCustomerRequest
-} from '../../redux/sale/action';
+import { toastMsg } from '../../commons/toast';
 import { useDispatch, useSelector } from 'react-redux';
 import { Toast } from 'primereact/toast';
-import { names, customer_status } from "./dropDown";
-
+import copy from "copy-to-clipboard";
 import { useForm } from "react-hook-form";
+import { Dropdown } from 'primereact/dropdown';
+import { role } from "./dropDown";
 
 const InformationUser = ({ isOpenInformationUser, setIsOpenInformationUser, rowdata, setIsOpenCreateUser }) => {
-    const [country, setCountry] = useState("");
-    const [city, setCity] = useState("");
-    const [customerStatus, setCustomerStatus] = useState(null);
     const [isSubmit, setIsSubmit] = useState(false);
-    const [filteredNameCustomers, setFilteredNameCustomers] = useState(null);
+    const [userRole, setUserRole] = useState(null);
+    const [isEditUsername, setEditUsername] = useState(false);
+    const [isEditPhone, setEditPhone] = useState(false);
+    const [isEditEmail, setEditEmail] = useState(false);
+    const [isEditRole, setEditRole] = useState(false);
     const putCustomer = useSelector(state => state.sale.editcustomer)
     const deleteCustomer = useSelector(state => state.sale.deletecustomer)
 
     const dispatch = useDispatch()
     const { register, setValue, handleSubmit, formState: { errors }, reset } = useForm();
     const toast = useRef(null);
+    const user = useSelector(state => state.auth.user)
 
     useEffect(() => {
         if (putCustomer?.data) {
@@ -64,15 +58,15 @@ const InformationUser = ({ isOpenInformationUser, setIsOpenInformationUser, rowd
         console.log(rowdata);
         if (rowdata?.data) {
             setValue("fullname", rowdata?.data?.fullname)
-            setValue("phone", rowdata?.data?.information?.phone)
-            setValue("births", new Date(rowdata?.data?.information?.births))
-            setValue("start_day", new Date(rowdata?.data?.information?.start_day))
-            setValue("address", rowdata?.data?.information?.address?.detail)
-            setValue("email", rowdata?.data?.information?.email)
-            if (rowdata?.data?.status) {
-                for (let item of customer_status) {
-                    if (item.code === rowdata?.data?.status) {
-                        setCustomerStatus(item)
+            setValue("phone", rowdata?.data?.phone)
+            setValue("births", new Date(rowdata?.data?.births))
+            setValue("start_day", new Date(rowdata?.data?.start_day))
+            setValue("address", rowdata?.data?.address)
+            setValue("email", rowdata?.data?.email)
+            if (rowdata?.data?.role) {
+                for (let item of role) {
+                    if (item.code === rowdata?.data?.role) {
+                        setUserRole(item)
                         break
                     }
                 }
@@ -80,53 +74,32 @@ const InformationUser = ({ isOpenInformationUser, setIsOpenInformationUser, rowd
         }
     }, [rowdata, setValue])
 
-    const searchName = (event) => {
-        setTimeout(() => {
-            let _filteredNameCustomers;
-            if (!event.query.trim().length) {
-                _filteredNameCustomers = [...names];
-            }
-            else {
-                _filteredNameCustomers = names.filter((item) => {
-                    return item.name.toLowerCase().startsWith(event.query.toLowerCase());
-                });
-            }
-
-            setFilteredNameCustomers(_filteredNameCustomers);
-        }, 50);
-    }
-
     const onSubmit = (data) => {
         setIsSubmit(true)
-        if (city !== "" && country !== "") {
-            const result = Object.assign(rowdata.data, {}, {
-                fullname: data.fullname,
-                information: {
-                    phone: data.phone,
-                    birth: data.birth,
-                    email: data.email,
-                    address: {
-                        country: data.country,
-                        city: data.city,
-                        detail: data.address,
-                    }
-                },
-                status: customerStatus?.code,
-                _modified_at: new Date(Date.now())
-            })
-            data.status = customerStatus?.code
-            const formData = {
-                data: data,
-                result: result,
-                index: rowdata?.index
-            }
-            dispatch(editCustomerRequest(formData))
-        }
+        const result = Object.assign(rowdata.data, {}, {
+            fullname: data.fullname,
+            role: data.role,
+            phone: data.phone,
+            email: data.email,
+            address: data.address,
+            _modified_at: new Date(Date.now())
+        })
+        // const formData = {
+        //     data: data,
+        //     result: result,
+        //     index: rowdata?.index
+        // }
+        console.log(result);    
+        // dispatch(editCustomerRequest(formData))
     };
 
     const handleCloseModal = () => {
         setIsOpenInformationUser(false)
         setIsSubmit(false)
+        setEditEmail(false)
+        setEditPhone(false)
+        setEditRole(false)
+        setEditUsername(false)
         reset()
     }
 
@@ -134,7 +107,7 @@ const InformationUser = ({ isOpenInformationUser, setIsOpenInformationUser, rowd
         const formdata = {}
         formdata.id = rowdata?.data?.id_system
         formdata.index = rowdata?.index
-        dispatch(deleteCustomerRequest(formdata))
+        // dispatch(deleteCustomerRequest(formdata))
     }
 
     const handleRemoveRow = (event) => {
@@ -153,6 +126,11 @@ const InformationUser = ({ isOpenInformationUser, setIsOpenInformationUser, rowd
             setIsOpenCreateUser(true)
         }, 100)
     }
+
+    const copyToClipboard = () => {
+        toastMsg.success(toast, 'Sao chép mã nhân viên thành công')
+        copy(rowdata?.data?.id_system);
+    }
     return (
         <>
             <ConfirmPopup />
@@ -163,12 +141,13 @@ const InformationUser = ({ isOpenInformationUser, setIsOpenInformationUser, rowd
                         <h2>Thông tin nhân viên </h2>
                         <Button onClick={handleRemoveRow}><img src="images/trash.svg" alt="" className="image__trash" /></Button>
                     </div>
-                    <form className=" grid modal__creat--job no_flex" onSubmit={handleSubmit(onSubmit)}>
+                    <form className=" grid modal__creat--job no_flex" autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
                         <div className="field col-12 md:col-12 grid">
                             <div className="field col-12 md:col-6">
                                 <span htmlFor="autocomplete">Mã nhân viên: </span>
-                                <span className="p-float-label pt-3 cursor__normal">
-                                    {rowdata?.data?.id_system}
+                                <span className="p-float-label pt-3 flex justify-content-between cursor__normal">
+                                    <span className='font-bold'>{rowdata?.data?.id_system}</span>
+                                    <img src="images/copy.svg" alt="" label="Bottom Right" onClick={copyToClipboard} className="cursor-pointer" />
                                 </span>
                             </div>
                             <div className="field col-12 md:col-6">
@@ -177,13 +156,13 @@ const InformationUser = ({ isOpenInformationUser, setIsOpenInformationUser, rowd
                                 </span>
                             </div><div className="field col-12 md:col-6 create__job--calendar">
                                 <span htmlFor="calendar">Ngày tháng năm sinh:</span>
-                                <span className="p-float-label pt-3 cursor__normal">
+                                <span className="p-float-label pt-3 cursor__normal font-bold">
                                     {formatDate(formatTimeStamp(rowdata?.data?.births))}
                                 </span>
                             </div>
                             <div className="field col-12 md:col-6 create__job--calendar">
                                 <span htmlFor="calendar">Ngày bắt đầu làm:</span>
-                                <span className="p-float-label pt-3 cursor__normal">
+                                <span className="p-float-label pt-3 cursor__normal font-bold">
                                     {formatDate(formatTimeStamp(rowdata?.data.start_day))}
                                 </span>
                             </div>
@@ -193,42 +172,93 @@ const InformationUser = ({ isOpenInformationUser, setIsOpenInformationUser, rowd
                                     <span className={rowdata?.data.status === UserRules.STATUS.OFFLINE ? 'dots_offline ' : (rowdata?.data.status === UserRules.STATUS.ONLINE ? 'dots_online' : 'dots_busy')} ></span>{UserRules._STATUS[rowdata?.data.status]}
                                 </span>
                             </div>
+                            <div className="field col-12 md:col-6">
+                                <span htmlFor="employees">Chức vụ nhân viên:<span className="warning">*</span></span>
+                                <span onClick={(e) => setEditRole(true)} className="p-float-label ">
+                                    {isEditRole ?
+                                        (
+                                            <Dropdown
+                                                options={role}
+                                                optionLabel="name"
+                                                defaultValue={userRole}
+                                                value={userRole}
+                                                onChange={e => setUserRole(e.value)}
+                                                disabled={user?.data?.role !== UserRules.ROLE.ADMIN ? true : false}
+                                            />
+                                        ) : (
+                                            <span className='p-float-label mt-3'>
+                                                <span className='font-bold'>{UserRules.ROLE_NAME[rowdata?.data?.role]}</span>
+                                            </span>
+                                        )
+                                    }
+                                </span>
+                            </div>
                             <div className="field col-12 md:col-12 ">
                                 <span htmlFor="autocomplete">Tên nhân viên: <span className="warning">*</span></span>
-                                <span className="p-float-label ">
-                                    <InputText
-                                        defaultValue={rowdata?.data?.fullname}
-                                        onChange={(e) => setValue("fullname", e.target.value)}
-                                        {...register("fullname", { required: true })}
-                                        className={errors?.fullname && "p-invalid"}
-                                    />
+                                <span onClick={(e) => setEditUsername(true)} className="p-float-label cursor__edit mt-3">
+                                    {isEditUsername ?
+                                        (
+                                            < InputText
+                                                defaultValue={rowdata?.data?.fullname}
+                                                onChange={(e) => setValue("fullname", e.target.value)}
+                                                {...register("fullname", { required: true })}
+                                                className={errors?.fullname && "p-invalid"}
+                                            />
+                                        ) : (
+                                            <span className='font-bold'>{rowdata?.data?.fullname}</span>
+                                        )
+                                    }
                                 </span>
                             </div>
                             <div className="field col-12 md:col-6 ">
                                 <span htmlFor="withoutgrouping">Số điện thoại: <span className="warning">*</span></span>
-                                <span className="p-float-label">
-                                    <InputText
-                                        onKeyPress={(event) => {
-                                            if (!/[0-9]/.test(event.key)) {
-                                                event.preventDefault();
-                                            }
-                                        }}
-                                        defaultValue={rowdata?.data?.phone}
-                                        onChange={(e) => setValue("phone", e.target.value)}
-                                        {...register("phone", { required: true, pattern: PHONE_REGEX })}
-                                        className={errors?.phone && "p-invalid"}
-                                    />
+                                <span onClick={(e) => setEditPhone(true)} className="p-float-label cursor__edit mt-3">
+                                    {isEditPhone ?
+                                        (
+                                            <InputText
+                                                onKeyPress={(event) => {
+                                                    if (!/[0-9]/.test(event.key)) {
+                                                        event.preventDefault();
+                                                    }
+                                                }}
+                                                defaultValue={rowdata?.data?.phone}
+                                                onChange={(e) => setValue("phone", e.target.value)}
+                                                {...register("phone", { required: true, pattern: PHONE_REGEX })}
+                                                className={errors?.phone && "p-invalid"}
+                                            />
+                                        ) : (
+                                            <span className='font-bold'>{rowdata?.data?.phone}</span>
+                                        )
+                                    }
                                 </span>
                             </div>
                             <div className="field col-12 md:col-6">
                                 <span htmlFor="original__link">Email: <span className="warning">*</span></span>
-                                <span className="p-float-label">
-                                    <InputText
-                                        defaultValue={rowdata?.data?.email}
-                                        onChange={(e) => setValue("email", e.target.value)}
-                                        {...register("email", { required: true, pattern: EMAIL_REGEX })}
-                                        className={errors?.email && "p-invalid"}
-                                    />
+                                <span onClick={(e) => setEditEmail(true)} className="p-float-label cursor__edit mt-3">
+                                    {isEditEmail ?
+                                        (
+                                            <InputText
+                                                defaultValue={rowdata?.data?.email}
+                                                onChange={(e) => setValue("email", e.target.value)}
+                                                {...register("email", { required: true, pattern: EMAIL_REGEX })}
+                                                className={errors?.email && "p-invalid"}
+                                            />
+                                        ) : (
+                                            <span className='font-bold'>{rowdata?.data?.email}</span>
+                                        )
+                                    }
+                                </span>
+                            </div>
+                            <div className="field col-12 md:col-6">
+                                <span htmlFor="original__link">Địa chỉ: <span className="warning">*</span></span>
+                                <span className="p-float-label cursor__normal mt-3">
+                                    {rowdata?.data?.address ? (<span className='font-bold'>{rowdata?.data?.address}</span>) : (<span className=''>Trống</span>)}
+                                </span>
+                            </div>
+                            <div className="field col-12 md:col-12">
+                                <span htmlFor="original__link">Danh sách công việc:</span>
+                                <span className="p-float-label cursor__normal mt-3">
+                                    <span className='font-bold'>{rowdata?.data?.address}</span>
                                 </span>
                             </div>
                         </div>

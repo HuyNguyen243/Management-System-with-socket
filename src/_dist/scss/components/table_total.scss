@@ -340,6 +340,10 @@
     cursor: default;
 }
 
+.cursor__edit:hover{
+    cursor: url("../../images/edit.svg"), auto,
+}
+
 .image__trash{
     margin-right: 15px;
     cursor: pointer;

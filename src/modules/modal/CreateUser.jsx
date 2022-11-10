@@ -12,6 +12,7 @@ import { Toast } from 'primereact/toast';
 import { Dropdown } from 'primereact/dropdown';
 import copy from "copy-to-clipboard";
 import { role } from "./dropDown";
+import { toastMsg } from '../../commons/toast';
 
 import { EMAIL_REGEX, PHONE_REGEX } from '../../constants';
 
@@ -59,16 +60,16 @@ const CreateUser = ({ isOpenCreateUser, setIsOpenCreateUser }) => {
         if (employee?.data) {
             reset();
             setIsOpenCreateUser(false)
-            toast.current.show({ severity: 'success', summary: 'Success', detail: 'Tạo khách hàng mới thành công', life: 1000 });
+            toastMsg.success(toast, 'Tạo khách hàng mới thành công')
         }
         if (employee?.error) {
-            toast.current.show({ severity: 'error', summary: 'Error', detail: employee?.data?.message, life: 1000 });
+            toastMsg.error(toast, employee?.data?.message)
         }
     }, [
         employee, reset, setIsOpenCreateUser
     ])
     const copyToClipboard = () => {
-        toast.current.show({ severity: 'success', summary: 'Thành Công', detail: 'Sao chép mật khẩu thành công', life: 1000 });
+        toastMsg.success(toast, 'Sao chép mật khẩu thành công')
         copy(randomPass);
     }
     return (
