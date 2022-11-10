@@ -76,7 +76,12 @@ const Navigation = ({open, getBtnNavIsOpen}) => {
             <ListItemText 
               primary={item.name} 
               sx={{ opacity: open ? 1 : 0 }} 
-              className={`nav__name ${!item.isRederect && !item.haveModal && "icon_arrow"} `}
+              className={
+                `nav__name 
+                ${!item.isRederect && !item.haveModal && !activeRoute.includes(index) && "icon_arrow-up"}
+                ${activeRoute.includes(index) && item.name !== "Cài đặt" && "icon_arrow-down"}
+                `
+              }
             />
           </ListItemButton>
               {

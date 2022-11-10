@@ -3,6 +3,7 @@ import {
     userloginRequest ,
     userLogoutRequest,
     userProfile,
+    userEditProfile,
 } from './action'
 import { NAME_SESSION_STORAGE_TOKEN } from '../../constants';
 
@@ -17,6 +18,11 @@ const initialState = {
         error: false,
     },
     user:{
+        loading: false,
+        data : null,
+        error: false,
+    },
+    editUser:{
         loading: false,
         data : null,
         error: false,
@@ -69,7 +75,6 @@ const userReducer = createSlice({
                 }
             })
         },
-        
         [userLogoutRequest.fulfilled]: (state,action) => {
                 storage.delete(NAME_SESSION_STORAGE_TOKEN)
                 window.location.href = "/login"
@@ -102,6 +107,7 @@ const userReducer = createSlice({
             })
         },
         [userProfile.fulfilled]: (state,action) => {
+            storage.save("birth",action?.payload?.data?.births)
             Object.assign(state,{},{
                 user: {
                     loading : false,
@@ -111,10 +117,40 @@ const userReducer = createSlice({
             })
         },
         [userProfile.rejected]: (state) => {
-            Object.assign(state.user,{},{
-                loading : false,
-                error : true,
-                data : null,
+            Object.assign(state,{},{
+                user: {
+                    loading : false,
+                    error : true,
+                    data : null,
+                }
+            })
+        },
+
+        [userEditProfile.pending]: (state) => {
+            Object.assign(state,{},{
+                editUser:{
+                    loading : true
+                }
+            })
+        },
+        [userEditProfile.fulfilled]: (state,action) => {
+            storage.save("birth",action?.payload?.data?.births)
+            Object.assign(state,{},{
+                editUser: {
+                    loading : false,
+                    error : false,
+                    data : action.payload?.data,
+                }
+            })
+            state.user.data = action.payload?.data
+        },
+        [userEditProfile.rejected]: (state) => {
+            Object.assign(state,{},{
+                editUser: {
+                    loading : false,
+                    error : true,
+                    data : null,
+                }
             })
         },
     }

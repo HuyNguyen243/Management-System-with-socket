@@ -90,6 +90,7 @@
         display: flex;
         align-items: center;
         height: 80px;
+        padding-bottom: 5px;
     }
 }
 
@@ -257,6 +258,7 @@
 
 .table__total--workflow--management{
     margin: 20px 0;
+    margin-bottom: 105px;
 }
 
 .chart_donut{
@@ -385,4 +387,81 @@
 } 
 .open__modal.text-bold{
     font-weight: bold;
+}
+//  .pi-chevron-down:before{
+//     content:"";
+//     background-image: url("../../../../public/images/arrow_down.svg");
+//     background-repeat: no-repeat;
+//     background-position:center;
+//     width: 15px;
+//     height: 15px;
+//     display:block;
+//  }
+
+.p-datatable-emptymessage td{
+    justify-content: center;
+    font-size: 20px;
+    color: $color-light-bloom;
+}
+
+.ava_res{
+    display: none;
+}
+
+.p-datatable .p-datatable-tbody > tr > .table__total{
+    cursor: url("../../../../public/images/edit.svg"),auto !important;
+    background-color: $color-input !important;
+    padding:15px 10px;
+}
+
+.p-datatable .p-datatable-tbody > tr > .table__total:first-child{
+    cursor: auto !important;
+}
+
+.edit_bank{
+    padding: 2px;
+    width: 80%;
+}
+
+.text_table_bank{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    max-width: 170px;
+    display: block;
+}
+
+.p-password{
+    width: 100%;
+}
+
+.pi-eye-slash:before {
+    content: "";
+    background-image: url("../../../../public/images/eye.svg");
+    background-repeat: no-repeat;
+    background-position:center;
+    width: 20px;
+    height: 20px;
+    background-size: 20px;
+    display: block;
+}
+
+.pi-eye:before {
+    content: "";
+    background-image: url("../../../../public/images/closed_eye.svg");
+    background-repeat: no-repeat;
+    background-position:center;
+    width: 20px;
+    height: 20px;
+    background-size: 20px;
+    display: block;
+}
+
+.p-toast{
+    z-index: 9999999999  !important;
+}
+
+.btn_filter{
+    display: none;
 }

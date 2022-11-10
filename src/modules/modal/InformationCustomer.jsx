@@ -1,5 +1,4 @@
 import React,{ useState, useEffect, useRef } from 'react';
-
 import { Sidebar } from 'primereact/sidebar';
 import { InputText } from 'primereact/inputtext';
 import { Calendar } from 'primereact/calendar';
@@ -7,6 +6,8 @@ import { Button } from 'primereact/button';
 import { AutoComplete } from 'primereact/autocomplete';
 import { Dropdown } from 'primereact/dropdown';
 import { ConfirmPopup,confirmPopup } from 'primereact/confirmpopup';
+import { useNavigate,useLocation } from 'react-router';
+import { useForm,Controller } from "react-hook-form";
 
 import { EMAIL_REGEX, PHONE_REGEX } from "../../constants"
 import { 
@@ -15,49 +16,64 @@ import {
  } from '../../redux/sale/action';
 import { useDispatch, useSelector } from 'react-redux';
 import { Toast } from 'primereact/toast';
-import { names,customer_status } from "./dropDown";
-
-import { useForm } from "react-hook-form";
+import { customer_status } from "./dropDown";
+import { getCountries } from '../../commons/getCountry';
+import { searchDropdown } from '../../commons/searchDropDown';
+import { toastMsg } from '../../commons/toast'; 
+import { UserRules } from '../../constants';
+import copy from "copy-to-clipboard"; 
 
 const InformationCustomer = ({isOpenInformationCustomer, setIsOpenInformationCustomer, rowdata}) => {
-    const [country, setCountry] = useState("");
-    const [city, setCity] = useState("");
     const [customerStatus, setCustomerStatus] = useState(null);
     const [listJobs, setlistJobs] = useState([]);
-    const [isSubmit,setIsSubmit] = useState(false);
-    const [filteredNameCustomers, setFilteredNameCustomers] = useState(null);
+    const urlParams = new URLSearchParams(window.location.search);
+    const pageURL = Number(urlParams?.get('page'))
+    const navigate = useNavigate()
+    const location = useLocation()
+    const { pathname } = location
+
     const putCustomer = useSelector(state =>state.sale.editcustomer)
     const deleteCustomer = useSelector(state =>state.sale.deletecustomer)
+    const countDataTable = useSelector(state =>state.table.countData)
+    const user = useSelector(state=> state.auth.user)
+
+    const [cities,setCities] = React.useState(null);
+    const [filteredCity, setFilteredCity] = React.useState(null); 
+    const [countries,setCountries] =React.useState(null)
+    const [filteredCountry, setFilteredCountry] = React.useState(null);
 
     const dispatch = useDispatch()
-    const { register,setValue, handleSubmit, formState: { errors }, reset } = useForm();
+    const {control, register,setValue, handleSubmit, formState: { errors }, reset, } = useForm();
     const toast = useRef(null);
 
     useEffect(() => {
         if(putCustomer?.data){
             setIsOpenInformationCustomer(false)
-            toast.current.show({severity:'success',summary: 'Success' , detail:'Cập nhật thành công', life: 1000});
+            toastMsg.success(toast,'Cập nhật thành công')
         }
 
         if(putCustomer?.error){
-            toast.current.show({severity:'error',summary: 'Error' , detail:'Cập nhật thất bại', life: 1000});
+            toastMsg.error(toast,'Cập nhật thất bại')
         }
 
         if(deleteCustomer?.data){
             setIsOpenInformationCustomer(false)
-            toast.current.show({severity:'success',summary: 'Success' , detail:'Xóa khách hàng thành công', life: 1000});
+            toastMsg.success(toast,'Xóa khách hàng thành công')
         }
         
         if(deleteCustomer?.error){
-            toast.current.show({severity:'error',summary: 'Error' , detail:'Xóa khách hàng thất bại', life: 1000});
+            toastMsg.success(toast,'Xóa khách hàng thất bại')
         }
 
     },[putCustomer, setIsOpenInformationCustomer, deleteCustomer])
 
+    useEffect(() => {
+        const getcountries = new getCountries()
+        getcountries.get().then(data => setCountries(data));
+    }, []);
+
     useEffect(()=>{
         if(rowdata?.data){
-            setCountry(rowdata?.data?.information?.address?.country)
-            setCity(rowdata?.data?.information?.address?.city.toLowerCase())
             setlistJobs(rowdata?.data?.list_jobs)
             setValue("fullname",rowdata?.data?.fullname)
             setValue("phone",rowdata?.data?.information?.phone)
@@ -76,53 +92,41 @@ const InformationCustomer = ({isOpenInformationCustomer, setIsOpenInformationCus
         }
     },[rowdata,setValue])
 
-    const searchName = (event) => {
-        setTimeout(() => {
-            let _filteredNameCustomers;
-            if (!event.query.trim().length) {
-                _filteredNameCustomers = [...names];
-            }
-            else {
-                _filteredNameCustomers = names.filter((item) => {
-                    return item.name.toLowerCase().startsWith(event.query.toLowerCase());
-                });
-            }
-
-            setFilteredNameCustomers(_filteredNameCustomers);
-        }, 50);
+    const handleChangeCountry = (e,field)=>{
+        setValue("city","")
+        field.onChange(e.value)
+        if(countries[e.value]){
+            setCities(countries[e.value])
+        }
     }
 
     const onSubmit = (data) => {
-        setIsSubmit(true)
-        if(city !== "" && country !== ""){
-            const result = Object.assign(rowdata.data,{},{
-                fullname : data.fullname,
-                information: {
-                    phone : data.phone,
-                    birth : data.birth,
-                    email : data.email,
-                    address : {
-                        country: data.country,
-                        city: data.city,
-                        detail : data.address,
-                    }
-                },
-                status: customerStatus?.code,
-                _modified_at: new Date(Date.now())
-            })
-            data.status = customerStatus?.code
-            const formData = {
-                data: data,
-                result: result,
-                index: rowdata?.index
-            }
-            dispatch(editCustomerRequest(formData))
+        const result = Object.assign(rowdata.data,{},{
+            fullname : data.fullname,
+            information: {
+                phone : data.phone,
+                birth : data.birth,
+                email : data.email,
+                address : {
+                    country: data.country,
+                    city: data.city,
+                    detail : data.address,
+                }
+            },
+            status: customerStatus?.code,
+            _modified_at: new Date(Date.now())
+        })
+        data.status = customerStatus?.code
+        const formData = {
+            data: data,
+            result: result,
+            index: rowdata?.index
         }
+        dispatch(editCustomerRequest(formData))
     };
 
     const handleCloseModal = ()=>{
         setIsOpenInformationCustomer(false)
-        setIsSubmit(false)
         reset()
     }
 
@@ -131,6 +135,14 @@ const InformationCustomer = ({isOpenInformationCustomer, setIsOpenInformationCus
         formdata.id = rowdata?.data?.id_system
         formdata.index = rowdata?.index
         dispatch(deleteCustomerRequest(formdata))
+        if(pageURL && pageURL > 1){
+            if(countDataTable > 5){
+                navigate({
+                    pathname: pathname,
+                    search: `?page=${pageURL - 1}`,
+                });
+            }
+        }
     }
 
     const handleRemoveRow = (event) => {
@@ -144,13 +156,18 @@ const InformationCustomer = ({isOpenInformationCustomer, setIsOpenInformationCus
         myConfirm.show();
     }
 
+    const copyToClipboard = () => {
+        toastMsg.info(toast,'Copy success')
+        copy(rowdata?.data?.id_system);
+    }
+
   return (
     <>
         <ConfirmPopup />
-        <Toast ref={toast} position="bottom-right"/>
+        <Toast ref={toast} position="bottom-left"/>
         <Sidebar visible={isOpenInformationCustomer} position="right" onHide={handleCloseModal} className="create__job">
             <div className="creat__job">
-                <div className="creat__job--title flex justify-content-between">
+                <div className="creat__job--title flex justify-content-between" style={{marginRight: "10px"}}>
                     <h2>Thông tin khách hàng </h2>
                     <Button onClick={handleRemoveRow}><img src="images/trash.svg" alt="" className="image__trash"/></Button>
                 </div>
@@ -169,10 +186,9 @@ const InformationCustomer = ({isOpenInformationCustomer, setIsOpenInformationCus
                         </div>
                         <div className="field col-12 md:col-6">
                             <span htmlFor="autocomplete">Mã khách hàng: </span>
-                            <span className="p-float-label">
-                                <InputText disabled
-                                    value={rowdata?.data?.id_system}
-                                />
+                            <span className="p-float-label pt-3 flex justify-content-between">
+                                {rowdata?.data?.id_system}
+                                <img src="images/copy.svg" alt="" label="Bottom Right" onClick={copyToClipboard}/>
                             </span>
                         </div>
                         <div className="field col-12 md:col-6 create__job--calendar">
@@ -211,32 +227,39 @@ const InformationCustomer = ({isOpenInformationCustomer, setIsOpenInformationCus
                         </div>
                         <div className="field col-12 md:col-6">
                             <span htmlFor="original__link">Quốc gia: <span className="warning">*</span></span>
-                            <span className="p-float-label">
-                                <AutoComplete 
-                                    suggestions={filteredNameCustomers}
-                                    completeMethod={searchName} 
-                                    field="name"
-                                    value={country}
-                                    onChange={(e)=>{setCountry(e.value);setValue("country",e.value)}}
-                                    aria-label="Countries" 
-                                    dropdownAriaLabel="Select name"
-                                    className={isSubmit && country === "" && "p-invalid"}
-                                    
+                                <Controller name="country" 
+                                    control={control} 
+                                    rules={{ required: true }} render={({ field, fieldState }) => (
+                                    <AutoComplete 
+                                        suggestions={filteredCountry}
+                                        completeMethod={(e)=>searchDropdown(e,countries,setFilteredCountry)} field=""
+                                        aria-label="Countries"
+                                        id={field.name}
+                                        value={field.value} onChange={(e) =>handleChangeCountry(e,field)}
+                                        className={errors?.country && "p-invalid"}
+                                        dropdownAriaLabel="Select name" 
+                                        placeholder="Quốc gia"
+                                    />
+                                    )} 
                                 />
-                            </span>
                         </div>
                         <div className="field col-12 md:col-6">
                             <span htmlFor="cost">Thành phố: <span className="warning">*</span></span>
                             <span className="p-float-label">
-                                <AutoComplete 
-                                    suggestions={filteredNameCustomers}
-                                    value={city}
-                                    onChange={(e)=>{setCity(e.value);setValue("city",e.value)}}
-                                    completeMethod={searchName} field="name"
+                                 <Controller name="city" 
+                                    control={control} 
+                                    rules={{ required: true }} render={({ field, fieldState }) => (
+                                    <AutoComplete 
+                                    suggestions={filteredCity}
+                                    completeMethod={(e)=>searchDropdown(e,cities,setFilteredCity)} field=""
                                     aria-label="Cities" 
-                                    dropdownAriaLabel="Select name" 
-                                    className={isSubmit && city === "" && "p-invalid"}
-                                />
+                                    id={field.name}
+                                    value={field.value} onChange={(e) =>{field.onChange(e.value)}}
+                                    className={errors?.city && "p-invalid"}
+                                    dropdownAriaLabel="Select name"
+                                    placeholder="Thành phố"
+                                    />
+                                )} />
                             </span>
                         </div>
                         <div className="field col-12 md:col-6">
@@ -259,6 +282,7 @@ const InformationCustomer = ({isOpenInformationCustomer, setIsOpenInformationCus
                                     value={customerStatus}
                                     onChange={e=>setCustomerStatus(e.value)}
                                     placeholder="Trạng thái khách hàng"
+                                    disabled={user?.data?.role !== UserRules.ROLE.ADMIN ? true : false}
                                 />
                             </span>
                         </div>

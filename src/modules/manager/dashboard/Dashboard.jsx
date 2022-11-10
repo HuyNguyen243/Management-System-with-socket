@@ -2,7 +2,6 @@ import React from 'react'
 import Table from "../../../components/table/Table";
 import { table_dashboard } from '../../../components/table/header_table';
 
-
 const Dashboard = () => {
 
   const DataFilter = (data)=>{

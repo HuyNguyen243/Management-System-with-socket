@@ -8,12 +8,19 @@ import { useSelector } from "react-redux";
 import Login from "./modules/auth/Login";
 import ForgotPassword from "./modules/auth/ForgotPassword";
 import { Navigate } from 'react-router';
+import BtnMess from "./modules/layout/messages/BtnMess";
 
 function App() {
   const user = useSelector(state =>state.auth.token)
   return (
    <BrowserRouter>
-    <Header />
+   {
+     user?.isAuth &&
+     <>
+      <Header />
+     </>
+   }
+   
       <Routes>
       { 
         user?.isAuth ?
@@ -31,9 +38,10 @@ function App() {
         <Route path="*" element={<Navigate to="/login" replace/>}/>
         </>
       }
-        <Route path="/Login" element={<Login />}/>
+        <Route path="/login" element={<Login />}/>
         <Route path="/forgot-password" element={<ForgotPassword />}/>
       </Routes>
+      <BtnMess />
    </BrowserRouter>
   );
 }

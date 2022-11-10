@@ -37,7 +37,7 @@ export const UserRules = {
         LEADER_EDITOR: "LEADER EDITOR",
     },
     _ROLE: {
-        SALE: 'S',
+        SALER: 'S',
         ADMIN: 'A',
         EDITOR: 'E',
         CUSTOMER: 'C',
@@ -67,7 +67,7 @@ export const PayRules = {
 
 export const JobRules = {
     ROLE: {
-        SALE: "SALE",
+        SALER: "SALER",
         ADMIN: "ADMIN",
         EDITOR: "EDITOR",
         LEADER_EDITOR: "LEADER_EDITOR",

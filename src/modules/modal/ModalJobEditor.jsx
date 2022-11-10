@@ -3,13 +3,14 @@ import { Sidebar } from 'primereact/sidebar';
 import { Button } from 'primereact/button';
 import { InputTextarea } from 'primereact/inputtextarea';
 import { Toast } from 'primereact/toast';
+import { toastMsg } from '../../commons/toast'; 
 
 import copy from "copy-to-clipboard"; 
 
 const ModalJobEditor = ({isOpenJobEditor, setIsOpenJobEditor}) => {
     const toast = useRef(null);
     const copyToClipboard = () => {
-        toast.current.show({severity:'success', detail:'Copy success', life: 1000});
+        toastMsg.info(toast,'Copy success')
         copy("any text");
     }
   return (

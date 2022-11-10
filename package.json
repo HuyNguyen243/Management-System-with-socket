@@ -16,7 +16,6 @@
     "copy-to-clipboard": "^3.3.2",
     "jwt-decode": "^3.1.2",
     "primeflex": "^3.2.1",
-    "primeicons": "^6.0.1",
     "primereact": "^8.7.0",
     "react": "^18.2.0",
     "react-date-range": "^1.4.0",

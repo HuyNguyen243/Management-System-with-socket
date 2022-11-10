@@ -1,5 +1,6 @@
-import React,{ useState } from 'react';
-import { useLocation } from "react-router-dom"
+import React,{ useState, useEffect } from 'react';
+import { useLocation } from "react-router-dom";
+import { useDispatch } from "react-redux"
 
 import Filter from './Filter'
 import TotalTable from './TotalTable'
@@ -9,6 +10,7 @@ import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import TableTotal from "../../modules/manager/sale/workFlowManager/TableTotal"
 import TableBody from "./TableBody"
+import { getCountData } from '../../redux/tableSlice';
 
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
@@ -30,14 +32,19 @@ const Table = ({
     const [sortValue, setSortValue] = useState("");
     const location = useLocation()
     const { pathname } = location
-
+    const dispatch = useDispatch()
     const old_Data = Array.isArray(dataTable) ? dataTable : []
+
     const handleSort = (e)=>{
         setSortBy(e.currentTarget.getAttribute("data-by"))
         setSortValue(e.currentTarget.getAttribute("data-value"))
     }
 
-    const headerTable = (header,sort_value)=>{
+    useEffect(()=>{
+        dispatch(getCountData(currentItems.length))
+    },[dispatch,currentItems])
+    const headerTable = (header,sort_by)=>{
+        const value = typeof sort_by === "string" ? sort_by : ""
         if(header)
         return(
         <div className="table__header-col" >
@@ -45,8 +52,13 @@ const Table = ({
             {
                 header?.haveSort &&
                 <div className="table__sort">
-                    <img src="../../images/sort_up.svg" alt="" className="sort__up" data-by={sort_value} data-value="ASC" onClick={handleSort}/>
-                    <img src="../../images/sort_down.svg" alt="" className="sort__down" data-by={sort_value} data-value="DESC" onClick={handleSort}/>
+                    <img src={`../../images/${sortBy === value && sortValue === "ASC" && value !== "" ? "sort_up_disable":"sort_up"}.svg`} 
+                    alt="" className="sort__up" data-by={value} data-value="ASC" onClick={handleSort}
+                    />
+                    <img src={`../../images/${sortBy === value && sortValue === "DESC" && value !== "" ? "sort_down_disable":"sort_down"}.svg`} 
+                    alt="" className="sort__down" 
+                    data-by={value} data-value="DESC" onClick={handleSort}
+                    />
                 </div>
             }
         </span>
@@ -91,6 +103,7 @@ const Table = ({
             responsiveLayout="stack"
             breakpoint="1113px"
             onRowClick={handleRowClick}
+            lazy
             >
             {
                 old_Data?.length > 0 

@@ -242,15 +242,15 @@ export const table_personal_information = [
     haveSort: false,
   },
   {
-      name: "Tên ngân hàng",
-      haveSort: false,
+    name: "Tên ngân hàng",
+    haveSort: false,
   },
   {
     name: "Số tài khoản",
     haveSort: false,
   },
   {
-    name: "Chi nhánh",
+    name: "Tên chủ tài khoản",
     haveSort: false,
   },
 ]
