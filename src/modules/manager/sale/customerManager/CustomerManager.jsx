@@ -5,7 +5,8 @@ import CreateCustomer from '../../../modal/CreateCustomer';
 import { saleCustomerRequest } from '../../../../redux/sale/action';
 import { useDispatch, useSelector } from 'react-redux';
 import { dataParse } from './dataParse';
-import InformationCustomer from "../../../modal/InformationCustomer"
+import InformationCustomer from "../../../modal/InformationCustomer";
+import { overlay } from "../../../../commons/overlay"
 
 const CustomerManager = () => {
   const dispatch = useDispatch()
@@ -18,6 +19,14 @@ const CustomerManager = () => {
   useEffect(()=>{
     dispatch(saleCustomerRequest(filter))
   },[dispatch,filter])
+
+  useEffect(()=>{
+      if(isOpenCreateCustomer || isOpenInformationCustomer){
+        overlay.disable()
+      }else{
+        overlay.enable()
+      }
+  })
 
   const DataFilter = (data)=>{
     setFilter(data)

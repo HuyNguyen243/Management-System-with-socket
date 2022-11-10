@@ -75,27 +75,29 @@ const userReducer = createSlice({
                 }
             })
         },
-        [userLogoutRequest.fulfilled]: (state,action) => {
-                storage.delete(NAME_SESSION_STORAGE_TOKEN)
-                window.location.href = "/login"
+        [userLogoutRequest.fulfilled]: (state) => {
                 Object.assign(state,{},{
                     token: {
                         loading : false,
                         isAuth: false,
                         error : false,
                         data : null,
-                    }
+                    },
+                    user: {
+                        loading : false,
+                        error : false,
+                        data : null
+                    },
                 })
         },
         [userLogoutRequest.rejected]: (state) => {
-            storage.delete(NAME_SESSION_STORAGE_TOKEN)
             Object.assign(state,{},{
                 token: {
                     loading : false,
                     isAuth: false,
                     error : false,
                     data : state.token.data
-                }
+                },
             })
         },
 
@@ -107,7 +109,6 @@ const userReducer = createSlice({
             })
         },
         [userProfile.fulfilled]: (state,action) => {
-            storage.save("birth",action?.payload?.data?.births)
             Object.assign(state,{},{
                 user: {
                     loading : false,
@@ -134,7 +135,6 @@ const userReducer = createSlice({
             })
         },
         [userEditProfile.fulfilled]: (state,action) => {
-            storage.save("birth",action?.payload?.data?.births)
             Object.assign(state,{},{
                 editUser: {
                     loading : false,

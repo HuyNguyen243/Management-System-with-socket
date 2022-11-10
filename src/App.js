@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React,{ useState } from 'react';
 import "./App.scss";
 import { routes } from "./routes/routes";
 import { Routes, Route, BrowserRouter } from "react-router-dom"
@@ -12,9 +12,17 @@ import BtnMess from "./modules/layout/messages/BtnMess";
 
 function App() {
   const user = useSelector(state =>state.auth.token)
+  const [userIsAuth,setUserIsAuth] = useState(false)
+
+  React.useEffect(()=>{
+      setTimeout(()=>{
+        setUserIsAuth(user?.isAuth)
+      },300)
+  },[user?.isAuth])
+  
   return (
    <BrowserRouter>
-   { user?.isAuth && <Header /> }
+   { userIsAuth && <Header /> }
       <Routes>
       { 
         user?.isAuth ?
@@ -35,7 +43,7 @@ function App() {
         <Route path="/login" element={<Login />}/>
         <Route path="/forgot-password" element={<ForgotPassword />}/>
       </Routes>
-      { user?.isAuth && <BtnMess /> }
+      { userIsAuth && <BtnMess /> }
    </BrowserRouter>
   );
 }

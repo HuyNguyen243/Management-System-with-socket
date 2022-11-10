@@ -1,55 +1,47 @@
-import React,{ useEffect, useState } from 'react'
-import ReactPaginate from 'react-paginate';
-import {useNavigate,useLocation} from "react-router-dom"
+import { Ripple } from 'primereact/ripple';
+import { Dropdown } from 'primereact/dropdown';
+import { classNames } from 'primereact/utils';
 
-const Paginate = ({  setCurrentItems, setPageCount, perpage, dataTable, pageCount, setPerpage }) => {
-    const navigate = useNavigate();
-    const location = useLocation();
-    const { pathname } = location;
-    const [itemOffset, setItemOffset] = useState(0);
-    const urlParams = new URLSearchParams(window.location.search);
-    const myParamURL = Number(urlParams?.get('page')) ? Number(urlParams?.get('page')) - 1 : 0
-    const ParamPerpage = Number(urlParams?.get('perpage'))
+export const paginate = {
+  layout: 'PrevPageLink PageLinks NextPageLink RowsPerPageDropdown CurrentPageReport',
+  'PrevPageLink': (options) => {
+      return (
+          <button type="button" className={options.className} onClick={options.onClick} disabled={options.disabled}>
+              <span className="p-3">&lt;</span>
+              <Ripple />
+          </button>
+      )
+  },
+  'NextPageLink': (options) => {
+      return (
+          <button type="button" className={options.className} onClick={options.onClick} disabled={options.disabled}>
+              <span className="p-3">&gt;</span>
+              <Ripple />
+          </button>
+      )
+  },
+  'PageLinks': (options) => {
+      if ((options.view.startPage === options.page && options.view.startPage !== 0) || (options.view.endPage === options.page && options.page + 1 !== options.totalPages)) {
+          const className = classNames(options.className, { 'p-disabled': true });
 
-    useEffect(() => {
-      if(ParamPerpage){
-        setPerpage(ParamPerpage)
-      }
-    },[setPerpage,ParamPerpage])
-
-    useEffect(() => {
-        if(dataTable?.length > 0){
-          const endOffset = itemOffset + perpage;
-          setCurrentItems(dataTable?.slice(itemOffset, endOffset));
-          setPageCount(Math.ceil(dataTable?.length / perpage));
-        }
-      }, [itemOffset, perpage, dataTable, setCurrentItems, setPageCount]);
-
-    useEffect(() => {
-        const newOffset = (myParamURL * perpage) % dataTable?.length;
-        setItemOffset(newOffset);
-    },[setItemOffset,myParamURL,dataTable,perpage])
-    
-      const handlePageClick = (event) => {
-        navigate({
-          pathname: pathname,
-          search: '?page=' + (event.selected + 1) + "&perpage=" + perpage,
-        });
+          return <span className={className} style={{ userSelect: 'none' }}>...</span>;
       }
 
-  return (
-    <ReactPaginate
-    breakLabel="..."
-    nextLabel=">"
-    onPageChange={handlePageClick}
-    pageRangeDisplayed={5}
-    pageCount={pageCount}
-    previousLabel="<"
-    renderOnZeroPageCount={null}
-    className="paginate"
-    // forcePage={myParamURL}
-    />
-  )
+      return (
+          <button type="button" className={options.className} onClick={options.onClick}>
+              {options.page + 1}
+              <Ripple />
+          </button>
+      )
+  },
+  'RowsPerPageDropdown': (options) => {
+      const dropdownOptions = [
+          { label: 10, value: 10 },
+          { label: 25, value: 25 },
+          { label: 50, value: 50 },
+          { label: 'All', value: options.totalRecords }
+      ];
+
+      return <Dropdown value={options.value} options={dropdownOptions} onChange={options.onChange} className="select__perpage"/>;
+  },
 }
-
-export default Paginate

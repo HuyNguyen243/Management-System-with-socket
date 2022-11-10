@@ -10,7 +10,7 @@ import DatePicker from "./DatePicker"
 import { useNavigate, useLocation } from 'react-router';
 import {dateString} from "../../commons/dateTime"
 
-const Filter = ({DataFilter ,sortBy, sortValue, setSortBy, setSortValue}) => {
+const Filter = ({DataFilter ,sortBy, sortValue, setSortBy, setSortValue, search, setsearch}) => {
   const queryParams = new URLSearchParams(window.location.search)
   const keywordURL = queryParams.get("keyword")
   const sort_byURL = queryParams.get("sort_by")
@@ -19,6 +19,8 @@ const Filter = ({DataFilter ,sortBy, sortValue, setSortBy, setSortValue}) => {
   const start_dateURL = queryParams.get("start_date")
   const end_dateURL = queryParams.get("end_date")
   const [isOpenFilter,setIsOpenFilter] = useState(false)
+  const pageURL = Number(queryParams?.get('page'))
+  const perpageURL = Number(queryParams?.get('perpage'))
 
   const [dates,setDates] = useState(start_dateURL && end_dateURL ? [new Date(dateString(start_dateURL)),new Date(dateString(end_dateURL))] : undefined)
   const [status, setStatus] = useState('');
@@ -53,56 +55,6 @@ const Filter = ({DataFilter ,sortBy, sortValue, setSortBy, setSortValue}) => {
       return data;
   }
 
-  useEffect(()=>{
-    let data = {}
-    if(dates?.length > 0 && dates[1]){
-        const arr = convertDate(dates)
-        data.start_date = arr[0]
-        data.end_date = arr[1]
-    }
-
-    if(status !==""){
-        data.status = status
-    }
-
-      data.keyword = keyword
-
-    if(sortBy !== "" && sortValue !== "" && sortBy){
-      data.sort_by = sortBy
-      data.sort_value = sortValue
-    }
-
-    const timeout = setTimeout(() => {
-   
-      if(Object.keys(data).length > 0){
-        let result = "" ;
-        Object.keys(data).forEach((item)=>{
-
-          result += `&${item}=${data[item]}`
-        })
-        if(result !== ""){
-          if(keyword === ""){
-            let removeKey = result.replace("keyword="," ")
-            removeKey = result.replace("&keyword="," ")
-            result = removeKey
-          }
-          const newResult = result.replace("&","?").trim()
-
-          navigate({
-            pathname: pathname,
-			      search: newResult,
-          });
-          
-          DataFilter(newResult)
-        }
-      }
-      
-      }, 700);
-
-    return () => clearTimeout(timeout);
-
-  },[DataFilter,dates,keyword,status,sortBy,sortValue,navigate,pathname])
-
   const handleReset = ()=>{
     setDates(undefined)
     setStatus("")
@@ -113,6 +65,70 @@ const Filter = ({DataFilter ,sortBy, sortValue, setSortBy, setSortValue}) => {
       search: "",
     });
   }
+
+  useEffect(()=>{
+    let data = {}
+    if(dates?.length > 0 && dates[1]){
+        const arr = convertDate(dates)
+        data.start_date = arr[0]
+        data.end_date = arr[1]
+    }
+
+    if(status !==""){
+        data.status = status.trim()
+    }
+
+      data.keyword = keyword
+
+    if(sortBy !== "" && sortValue !== "" && sortBy){
+      data.sort_by = sortBy
+      data.sort_value = sortValue
+    }
+
+    if(Object.keys(data)?.length > 0){
+      let result = "" ;
+      Object.keys(data).forEach((item)=>{
+        result += `&${item}=${data[item]}`
+      })
+      if(result !== ""){
+        if(keyword === ""){
+          let removeKey = result.replace("keyword=","")
+          removeKey = result.replace("&keyword=","")
+          result = removeKey
+        }
+        
+        const newResult = result.replace("&","?").trim()
+        setsearch(newResult)
+      }
+    }
+  },[dates, keyword, sortBy, sortValue, status, setsearch])
+
+  const sendFilter = React.useCallback(()=>{
+    let result = search
+    if(pageURL){
+      result += `&page=${pageURL}`
+    }
+    if(perpageURL){
+      result += `&perpage=${perpageURL}`
+    }
+
+    navigate({
+      pathname: pathname,
+      search: result,
+    });
+
+    DataFilter(search)
+
+  },[search, navigate, pathname, DataFilter, pageURL, perpageURL])
+
+  useEffect(()=>{
+    const timeout = setTimeout(() => {
+      sendFilter()
+    }, 700);
+
+    return () => clearTimeout(timeout);
+
+  },[sendFilter])
 
   useEffect(() => {
     const handleClickOutSide = (e)=>{

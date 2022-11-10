@@ -2,6 +2,7 @@ import axios from "axios";
 import jwt_decode from "jwt-decode";
 import {storage} from "./sesionStorage"
 import {NAME_SESSION_STORAGE_TOKEN} from "../constants"
+import { Cookie } from "../commons/cookie"
 
 export const createAxios = (token) =>{
   const URL = process.env.REACT_APP_API || process.env.REACT_APP_DEV_API
@@ -13,17 +14,16 @@ export const createAxios = (token) =>{
       return err
     }
   }
-
   const logout = ()=>{
     storage.delete(NAME_SESSION_STORAGE_TOKEN)
     setTimeout(() =>{
       window.location.href = "/login"
     },300)
-  }
+  } 
     const newInstance = axios.create()
     newInstance.interceptors.request.use(
         async(config) => {
-            const decodedToken = jwt_decode(token)
+            const decodedToken = jwt_decode(token.trim())
             let date = new Date()
             let default_token = token;
             if(decodedToken.exp < date.getTime()/1000){
@@ -34,14 +34,17 @@ export const createAxios = (token) =>{
               if(refreshtoken?.data?.access_token){
                 default_token = refreshtoken?.data?.access_token
                 storage.save(NAME_SESSION_STORAGE_TOKEN,default_token)
+                Cookie.set(default_token)
               }
               else{
                 logout()
+                Cookie.delete()
               }
             }
 
             if(!decodedToken?._id || !decodedToken?.id_system || !decodedToken?.role){
               logout()
+              Cookie.delete()
             }
             
             config.headers["Authorization"] = "1TouchAuthorization " + default_token
