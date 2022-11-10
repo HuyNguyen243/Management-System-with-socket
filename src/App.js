@@ -14,13 +14,7 @@ function App() {
   const user = useSelector(state =>state.auth.token)
   return (
    <BrowserRouter>
-   {
-     user?.isAuth &&
-     <>
-      <Header />
-     </>
-   }
-   
+   { user?.isAuth && <Header /> }
       <Routes>
       { 
         user?.isAuth ?
@@ -41,7 +35,7 @@ function App() {
         <Route path="/login" element={<Login />}/>
         <Route path="/forgot-password" element={<ForgotPassword />}/>
       </Routes>
-      <BtnMess />
+      { user?.isAuth && <BtnMess /> }
    </BrowserRouter>
   );
 }

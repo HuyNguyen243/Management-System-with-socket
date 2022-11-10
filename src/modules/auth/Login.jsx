@@ -7,15 +7,15 @@ import {
   userloginRequest 
 } from '../../redux/auth/action';
 import {useDispatch,useSelector} from "react-redux"
-
+import { setCookie } from '../../commons/cookie';
 const Login = () => {
   const navigate = useNavigate()
   const { register, handleSubmit, formState: { errors } } = useForm({});
   const [haveSeenPwd,setHaveSeenPwd] = useState(false)
+  const [checked,setChecked] = useState(false)
   const user = useSelector(state=> state.auth.token)
   const dispatch = useDispatch()
   const [error,setError] = useState("")
-
   const onSubmit = data => {
     if(data){
       dispatch(userloginRequest(data))
@@ -24,12 +24,15 @@ const Login = () => {
   
   useEffect(() => {
     if(user?.data?.access_token){
-      storage.save(NAME_SESSION_STORAGE_TOKEN,user?.data?.access_token)
-      window.location.href = "/"
+      setCookie(user?.data?.access_token)
+      // storage.save(NAME_SESSION_STORAGE_TOKEN,user?.data?.access_token)
+      // window.location.href = "/"
     }else if(user?.error){
       setError("tài khoản hoặc mật khẩu không chính xác" )
     }
-  },[user])
+  },[user,])
+
+
 
   return (
     <div className="login__container">
@@ -39,6 +42,7 @@ const Login = () => {
           <div className="login__title">
             <p>Hệ thống quản lý</p>
             <p>One Touch</p>
+            <span className="login__note">Chào mừng bạn đến với hệ thống quản lý của One Touch</span>
           </div>
           <div className="login__route">
               Đăng nhập
@@ -79,7 +83,7 @@ const Login = () => {
               </div>
               <div className="form__save--information">
                   <div className="save__me">
-                    <input type="checkbox" />
+                    <input type="checkbox" onChange={()=>setChecked(!checked)}/>
                     <p>Lưu tài khoản</p>
                   </div>
                   <p className="form__btn-forgotpwd" onClick ={()=>navigate("/forgot-password")}>Quên mật khẩu</p>

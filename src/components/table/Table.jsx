@@ -89,7 +89,7 @@ const Table = ({
         setSortBy={setSortBy}
         setSortValue={setSortValue}
         />
-
+        
         {
             pathname === "/workflow-management" &&
             <TableTotal data={old_Data}/>

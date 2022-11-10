@@ -11,7 +11,6 @@
 }
 
 @media (max-width: 1113px) {
- 
     .table__limit{
         > span{
             padding-bottom: 0px;
@@ -102,6 +101,69 @@
         display: block;
         margin-left: 5px;
     }
+    .login__container{
+        background-image: url("../../../public/images/bg_mb.jpeg");
+        background-repeat: no-repeat;
+        width: 100%;
+        height: 100vh;
+        background-position: center center;
+    }
+    .login__bg{
+        display: none;
+    }
+    .login__form{
+        background-color: $color-white;
+        padding: 20px;
+        border-radius: 20px;
+        box-shadow: 13px 24px 14px rgb(0 0 0 / 23%);
+        position: relative;
+    }
+    .login__container .login__route{
+        font-size: 40px;
+        margin-bottom: 10px;
+    }
+    .login__container .login__form .login__title {
+        flex-direction: column;
+        p:first-child{
+            display: none;
+        }
+        p:nth-child(2){
+            margin-bottom: 5px;
+        }
+    }
+    .login__note{
+        display: block;
+    }
+    .forgotpassword__bg{
+        display: none;
+    }
+    .login__container:before{
+        content: "";
+        background-color: #9090904f;
+        width: 100vw;
+        height: 100vh;
+        display: block;
+        position: absolute;
+    }
+
+    .btn_forgot{
+        position: absolute;
+        left: 20px;
+        right: 20px;
+        bottom: 90px;
+    }
+
+    .form__message{
+        position: absolute;
+        left: 0px;
+        right: 0px;
+        bottom: 20px;
+        margin: 0 20px;
+        width: auto;
+    }
+    .forgot__form{
+        margin-top: 40px;
+    }
 }
 
 @media (max-width: 767px) {
@@ -124,5 +186,23 @@
     }
     .text_table_bank{
         max-width: 180px;
+    }
+
+    .login__container .login__route {
+        font-size: 30px;
+        margin-bottom: 30px;
+        line-height: 50px;
+    }
+    .login__container form .form__email {
+        margin-bottom: 30px;
+    }
+    .form__forgot-pwd{
+        min-height: 475px;
+    }
+}
+
+@media (max-width: 520px) {
+    .login__form{
+        margin: auto 20px !important;
     }
 }
