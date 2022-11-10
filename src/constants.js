@@ -15,7 +15,7 @@ export const PAY_PENDING = "Chưa thanh toán"
 
 export const USER_IS_ONLINE = "Đang hoạt động"
 export const USER_IS_STOPPING = "Tạm ngưng hoạt động"
-export const USER_IS_OFFLINE = "không hoạt động"
+export const USER_IS_OFFLINE = "Không hoạt động"
 
 export const NAME_SESSION_STORAGE_TOKEN = "1touch_access_token"
 export const ID_SESSION = "1touch_id"
@@ -30,6 +30,12 @@ export const UserRules = {
         JOB: 'JOB',
         PAY: 'PAY',
     },
+    ROLE_NAME: {
+        SALER: "SALER",
+        ADMIN: "ADMIN",
+        EDITOR: "EDITOR",
+        LEADER_EDITOR: "LEADER EDITOR",
+    },
     _ROLE: {
         SALER: 'S',
         ADMIN: 'A',
@@ -43,7 +49,12 @@ export const UserRules = {
         ONLINE: 'ONLINE',
         OFFLINE: 'OFFLINE',
         LEAVE: 'LEAVING',
-    }
+    },
+    _STATUS: {
+        ONLINE: USER_IS_ONLINE,
+        OFFLINE: USER_IS_OFFLINE,
+        LEAVE: USER_IS_STOPPING,
+    },
 }
 
 export const PayRules = {
