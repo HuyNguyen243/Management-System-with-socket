@@ -17,7 +17,7 @@ import copy from "copy-to-clipboard";
 import { useForm } from "react-hook-form";
 import { Dropdown } from 'primereact/dropdown';
 import { role } from "./dropDown";
-
+import { editEmployeeRequest } from "../../redux/overviewEmployee/actionEmployee";
 const InformationUser = ({ isOpenInformationUser, setIsOpenInformationUser, rowdata, setIsOpenCreateUser }) => {
     const [isSubmit, setIsSubmit] = useState(false);
     const [userRole, setUserRole] = useState(null);
@@ -55,7 +55,6 @@ const InformationUser = ({ isOpenInformationUser, setIsOpenInformationUser, rowd
     }, [putCustomer, setIsOpenInformationUser, deleteCustomer])
 
     useEffect(() => {
-        console.log(rowdata);
         if (rowdata?.data) {
             setValue("fullname", rowdata?.data?.fullname)
             setValue("phone", rowdata?.data?.phone)
@@ -78,19 +77,18 @@ const InformationUser = ({ isOpenInformationUser, setIsOpenInformationUser, rowd
         setIsSubmit(true)
         const result = Object.assign(rowdata.data, {}, {
             fullname: data.fullname,
-            role: data.role,
             phone: data.phone,
             email: data.email,
             address: data.address,
             _modified_at: new Date(Date.now())
         })
-        // const formData = {
-        //     data: data,
-        //     result: result,
-        //     index: rowdata?.index
-        // }
+        const formData = {
+            data: data,
+            result: result,
+            index: rowdata?.index
+        }
         console.log(result);    
-        // dispatch(editCustomerRequest(formData))
+        dispatch(editEmployeeRequest(formData))
     };
 
     const handleCloseModal = () => {

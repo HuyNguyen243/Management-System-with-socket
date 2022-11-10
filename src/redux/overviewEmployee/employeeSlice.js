@@ -51,7 +51,6 @@ const dashBoardEmployeeReducer = createSlice({
             })
         },
         [addEmployeeRequest.fulfilled]: (state, action) => {
-            console.log(action?.payload);
             Object.assign(state,{},{
                 user:{
                     loading: false,

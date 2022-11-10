@@ -1,5 +1,5 @@
 import {  createAsyncThunk } from '@reduxjs/toolkit'
-import { get,post } from "../../_services/apiRequest"
+import { get,post,put } from "../../_services/apiRequest"
 
 
 export const dashboardEmployeeRequest = createAsyncThunk(
@@ -22,6 +22,19 @@ export const addEmployeeRequest = createAsyncThunk(
             return res.data;
         } catch (error) {
             return rejectWithValue(error?.response?.data);
+        }
+    }
+)
+
+export const editEmployeeRequest = createAsyncThunk(
+    'addEmployee',
+    async (result,{ rejectWithValue }) => {
+        try {
+            console.log(result);
+            // const res = await put("/infor/update/",result)
+            // return res;
+        } catch (error) {
+            return rejectWithValue(error?.response?.result);
         }
     }
 )
