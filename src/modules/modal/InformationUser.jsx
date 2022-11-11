@@ -17,7 +17,7 @@ import copy from "copy-to-clipboard";
 import { useForm } from "react-hook-form";
 import { Dropdown } from 'primereact/dropdown';
 import { role } from "./dropDown";
-import { editEmployeeRequest } from "../../redux/overviewEmployee/actionEmployee";
+import { editEmployeeRequest, deleteEmployeeRequest } from "../../redux/overviewEmployee/actionEmployee";
 const InformationUser = ({ isOpenInformationUser, setIsOpenInformationUser, rowdata, setIsOpenCreateUser }) => {
     const [isSubmit, setIsSubmit] = useState(false);
     const [userRole, setUserRole] = useState(null);
@@ -25,8 +25,8 @@ const InformationUser = ({ isOpenInformationUser, setIsOpenInformationUser, rowd
     const [isEditPhone, setEditPhone] = useState(false);
     const [isEditEmail, setEditEmail] = useState(false);
     const [isEditRole, setEditRole] = useState(false);
-    const putCustomer = useSelector(state => state.sale.editcustomer)
-    const deleteCustomer = useSelector(state => state.sale.deletecustomer)
+    const putUser = useSelector(state => state.employee?.edituser)
+    const deleteUser = useSelector(state => state.employee?.deleteuser)
 
     const dispatch = useDispatch()
     const { register, setValue, handleSubmit, formState: { errors }, reset } = useForm();
@@ -34,25 +34,29 @@ const InformationUser = ({ isOpenInformationUser, setIsOpenInformationUser, rowd
     const user = useSelector(state => state.auth.user)
 
     useEffect(() => {
-        if (putCustomer?.data) {
+        if (putUser?.data) {
             setIsOpenInformationUser(false)
-            toast.current.show({ severity: 'success', summary: 'Success', detail: 'Cập nhật thành công', life: 1000 });
+            toastMsg.success(toast, 'Cập nhật thành công')
         }
 
-        if (putCustomer?.error) {
-            toast.current.show({ severity: 'error', summary: 'Error', detail: 'Cập nhật thất bại', life: 1000 });
+        if (putUser?.error) {
+            toastMsg.error(toast, 'Cập nhật thất bại')
         }
 
-        if (deleteCustomer?.data) {
+
+
+    }, [putUser, setIsOpenInformationUser])
+
+    useEffect(() => {
+        if (deleteUser?.data) {
             setIsOpenInformationUser(false)
-            toast.current.show({ severity: 'success', summary: 'Success', detail: 'Xóa khách hàng thành công', life: 1000 });
+            toastMsg.success(toast, 'Xóa khách hàng thành công')
         }
 
-        if (deleteCustomer?.error) {
-            toast.current.show({ severity: 'error', summary: 'Error', detail: 'Xóa khách hàng thất bại', life: 1000 });
+        if (deleteUser?.error) {
+            toastMsg.error(toast, 'Xóa khách hàng thất bại')
         }
-
-    }, [putCustomer, setIsOpenInformationUser, deleteCustomer])
+    }, [deleteUser, setIsOpenInformationUser])
 
     useEffect(() => {
         if (rowdata?.data) {
@@ -75,20 +79,23 @@ const InformationUser = ({ isOpenInformationUser, setIsOpenInformationUser, rowd
 
     const onSubmit = (data) => {
         setIsSubmit(true)
-        const result = Object.assign(rowdata.data, {}, {
-            fullname: data.fullname,
-            phone: data.phone,
-            email: data.email,
-            address: data.address,
-            _modified_at: new Date(Date.now())
-        })
-        const formData = {
-            data: data,
-            result: result,
-            index: rowdata?.index
+        delete data["births"];
+        delete data["start_day"];
+        const formDataPut = {}
+        Object.keys(data).forEach(item => {
+            if (data[item] !== rowdata?.data[item]) {
+                Object.assign(formDataPut, { [item]: data[item] })
+            }
+        });
+        if (Object.keys(formDataPut).length > 0) {
+            Object.assign(formDataPut, { id_system: rowdata?.data?.id_system })
+            const formData = {
+                data: data,
+                result: formDataPut,
+                index: rowdata?.index
+            }
+            dispatch(editEmployeeRequest(formData))
         }
-        console.log(result);    
-        dispatch(editEmployeeRequest(formData))
     };
 
     const handleCloseModal = () => {
@@ -105,15 +112,17 @@ const InformationUser = ({ isOpenInformationUser, setIsOpenInformationUser, rowd
         const formdata = {}
         formdata.id = rowdata?.data?.id_system
         formdata.index = rowdata?.index
-        // dispatch(deleteCustomerRequest(formdata))
+        dispatch(deleteEmployeeRequest(formdata))
     }
 
     const handleRemoveRow = (event) => {
         const myConfirm = confirmPopup({
             target: event.currentTarget,
-            message: 'Bạn có chắc muốn tài khoản nhân viên này?',
+            message: 'Bạn có chắc muốn xóa tài khoản nhân viên này?',
             icon: 'pi pi-exclamation-triangle',
             accept: handleDeleteUser,
+            acceptLabel: "Đồng ý",
+            rejectLabel: "Hủy bỏ"
         });
 
         myConfirm.show();

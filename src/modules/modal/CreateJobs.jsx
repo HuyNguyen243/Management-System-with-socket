@@ -76,12 +76,11 @@ const CreateJobs = ({ isOpenCreateJob, setIsOpenCreateJob, setIsOpenCreateCustom
                                 <AutoComplete 
                                 suggestions={filteredNameCustomers}
                                 completeMethod={searchName} field="name"
-                                aria-label="Countries" 
                                 id={field.name}
                                 value={field.value} onChange={(e) => field.onChange(e.value)}
                                 className={classNames({ 'p-invalid': fieldState.invalid })}
                                 dropdownAriaLabel="Select name" 
-                                placeholder="Select"
+                                placeholder="Nhập tên khách hàng cần tìm"
                                 />
                             )} />
                         </span>

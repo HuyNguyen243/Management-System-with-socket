@@ -63,6 +63,7 @@ const CreateUser = ({ isOpenCreateUser, setIsOpenCreateUser }) => {
             toastMsg.success(toast, 'Tạo khách hàng mới thành công')
         }
         if (employee?.error) {
+            setIsOpenCreateUser(true)
             toastMsg.error(toast, employee?.data?.message)
         }
     }, [
@@ -75,12 +76,12 @@ const CreateUser = ({ isOpenCreateUser, setIsOpenCreateUser }) => {
     return (
         <>
             <Toast ref={toast} position="bottom-left" />
-            <Sidebar visible={isOpenCreateUser} position="right" onHide={() => setIsOpenCreateUser(false)} className="create__job">
+            <Sidebar visible={isOpenCreateUser} position="right" onHide={() => { setIsOpenCreateUser(false); reset() }} className="create__job">
                 <div className="creat__job">
                     <div className="creat__job--title">
                         <h2>Tạo nhân viên mới</h2>
                     </div>
-                    <form className=" grid modal__creat--job no_flex" autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
+                    <form className=" grid modal__creat--job no_flex" autoComplete="off" onSubmit={handleSubmit(onSubmit)}  onKeyDown="return event.key != 'Enter';">
                         <div className="field col-12 md:col-12 grid">
                             <div className="field col-12 md:col-12">
                                 <span >Nhập tên nhân viên: <span className="warning">*</span></span>
@@ -104,6 +105,11 @@ const CreateUser = ({ isOpenCreateUser, setIsOpenCreateUser }) => {
                                         control={control}
                                         rules={{ required: true }} render={({ field, fieldState }) => (
                                             <InputText
+                                                onKeyPress={(event) => {
+                                                    if (event.key === " ") {
+                                                        event.preventDefault();
+                                                    }
+                                                }}
                                                 autoComplete="off"
                                                 id={field.name}
                                                 {...field}
