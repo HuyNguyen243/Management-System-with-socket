@@ -4,9 +4,10 @@ import { get,post,put,del } from "../../_services/apiRequest"
 
 export const dashboardEmployeeRequest = createAsyncThunk(
     'dashboard',
-    async (data,{ rejectWithValue }) => {
+    async (filter,{ rejectWithValue }) => {
         try {
-            const res = await get("users/data/dashboard")
+            const search = typeof filter === 'string' ? filter : ""
+            const res = await get(`users/data/dashboard/${search}`)
             return res.data.data_user;
         } catch (error) {
             return rejectWithValue(error?.response?.data);

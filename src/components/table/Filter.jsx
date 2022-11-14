@@ -1,183 +1,183 @@
-import React,{ useEffect,useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-import {customer_status} from "./status"
 import DatePicker from "./DatePicker"
 import { useNavigate, useLocation } from 'react-router';
-import {dateString} from "../../commons/dateTime"
+import { dateString } from "../../commons/dateTime"
 
-const Filter = ({DataFilter ,sortBy, sortValue, setSortBy, setSortValue}) => {
-  const queryParams = new URLSearchParams(window.location.search)
-  const keywordURL = queryParams.get("keyword")
-  const sort_byURL = queryParams.get("sort_by")
-  const sortValueURL = queryParams.get("sort_value")
-  const statusURL = queryParams.get("status")
-  const start_dateURL = queryParams.get("start_date")
-  const end_dateURL = queryParams.get("end_date")
-  const [isOpenFilter,setIsOpenFilter] = useState(false)
+const Filter = ({ DataFilter, sortBy, sortValue, setSortBy, setSortValue, setDropDown }) => {
+    const queryParams = new URLSearchParams(window.location.search)
+    const keywordURL = queryParams.get("keyword")
+    const sort_byURL = queryParams.get("sort_by")
+    const sortValueURL = queryParams.get("sort_value")
+    const statusURL = queryParams.get("status")
+    const start_dateURL = queryParams.get("start_date")
+    const end_dateURL = queryParams.get("end_date")
+    const [isOpenFilter, setIsOpenFilter] = useState(false)
 
-  const [dates,setDates] = useState(start_dateURL && end_dateURL ? [new Date(dateString(start_dateURL)),new Date(dateString(end_dateURL))] : undefined)
-  const [status, setStatus] = useState('');
-  const [keyword,setKeyWord ] = useState('');
-  const location = useLocation()
-  const navigate = useNavigate()
-  const { pathname } = location
+    const [dates, setDates] = useState(start_dateURL && end_dateURL ? [new Date(dateString(start_dateURL)), new Date(dateString(end_dateURL))] : undefined)
+    const [status, setStatus] = useState('');
+    const [keyword, setKeyWord] = useState('');
+    const location = useLocation()
+    const navigate = useNavigate()
+    const { pathname } = location
 
-  useEffect(()=>{
-    if(keywordURL){
-      setKeyWord(keywordURL)
+    useEffect(() => {
+        if (keywordURL) {
+            setKeyWord(keywordURL)
+        }
+
+        if (sort_byURL) {
+            setSortBy(sort_byURL)
+        }
+
+        if (sortValueURL) {
+            setSortValue(sortValueURL)
+        }
+
+    }, [keywordURL, sort_byURL, setSortBy, sortValueURL, setSortValue, statusURL])
+
+    function convertDate(arr) {
+        const data = []
+        for (let i = 0; i < arr.length; i++) {
+            const date = new Date(arr[i]),
+                mnth = ("0" + (date.getMonth() + 1)).slice(-2),
+                day = ("0" + date.getDate()).slice(-2);
+            data.push([day, mnth, date.getFullYear()].join("-"))
+        }
+        return data;
     }
 
-    if(sort_byURL){
-      setSortBy(sort_byURL)
-    }
+    useEffect(() => {
+        let data = {}
+        if (dates?.length > 0 && dates[1]) {
+            const arr = convertDate(dates)
+            data.start_date = arr[0]
+            data.end_date = arr[1]
+        }
 
-    if(sortValueURL){
-      setSortValue(sortValueURL)
-    }
+        if (status !== "") {
+            data.status = status
+        }
 
-  },[keywordURL, sort_byURL, setSortBy, sortValueURL, setSortValue, statusURL])
+        data.keyword = keyword
 
-  function convertDate(arr) {
-      const data = []
-      for (let i = 0; i < arr.length;i++){
-        const date = new Date(arr[i]),
-        mnth = ("0" + (date.getMonth() + 1)).slice(-2),
-        day = ("0" + date.getDate()).slice(-2);
-        data.push([day, mnth, date.getFullYear()].join("-"))
-      }
-      return data;
-  }
+        if (sortBy !== "" && sortValue !== "" && sortBy) {
+            data.sort_by = sortBy
+            data.sort_value = sortValue
+        }
 
-  useEffect(()=>{
-    let data = {}
-    if(dates?.length > 0 && dates[1]){
-        const arr = convertDate(dates)
-        data.start_date = arr[0]
-        data.end_date = arr[1]
-    }
+        const timeout = setTimeout(() => {
 
-    if(status !==""){
-        data.status = status
-    }
+            if (Object.keys(data).length > 0) {
+                let result = "";
+                Object.keys(data).forEach((item) => {
 
-      data.keyword = keyword
+                    result += `&${item}=${data[item]}`
+                })
+                if (result !== "") {
+                    if (keyword === "") {
+                        let removeKey = result.replace("keyword=", " ")
+                        removeKey = result.replace("&keyword=", " ")
+                        result = removeKey
+                    }
+                    const newResult = result.replace("&", "?").trim()
 
-    if(sortBy !== "" && sortValue !== "" && sortBy){
-      data.sort_by = sortBy
-      data.sort_value = sortValue
-    }
+                    navigate({
+                        pathname: pathname,
+                        search: newResult,
+                    });
 
-    const timeout = setTimeout(() => {
-   
-      if(Object.keys(data).length > 0){
-        let result = "" ;
-        Object.keys(data).forEach((item)=>{
+                    DataFilter(newResult)
+                }
+            }
 
-          result += `&${item}=${data[item]}`
-        })
-        if(result !== ""){
-          if(keyword === ""){
-            let removeKey = result.replace("keyword="," ")
-            removeKey = result.replace("&keyword="," ")
-            result = removeKey
-          }
-          const newResult = result.replace("&","?").trim()
+        }, 700);
 
-          navigate({
+        return () => clearTimeout(timeout);
+
+    }, [DataFilter, dates, keyword, status, sortBy, sortValue, navigate, pathname])
+
+    const handleReset = () => {
+        setDates(undefined)
+        setStatus("")
+        setKeyWord("")
+        DataFilter({})
+        navigate({
             pathname: pathname,
-			      search: newResult,
-          });
-          
-          DataFilter(newResult)
-        }
-      }
-      
-      }, 700);
-
-    return () => clearTimeout(timeout);
-
-  },[DataFilter,dates,keyword,status,sortBy,sortValue,navigate,pathname])
-
-  const handleReset = ()=>{
-    setDates(undefined)
-    setStatus("")
-    setKeyWord("")
-    DataFilter({})
-    navigate({
-      pathname: pathname,
-      search: "",
-    });
-  }
-
-  useEffect(() => {
-    const handleClickOutSide = (e)=>{
-      const el = document.querySelector(".page__filter")
-      if(isOpenFilter && !el?.contains(e.target)){
-        setIsOpenFilter(false)
-      }
-    }
-    window.addEventListener('mousedown', handleClickOutSide);
-
-    return ()=>{
-      window.removeEventListener('mousedown',handleClickOutSide)
+            search: "",
+        });
     }
 
-  },[isOpenFilter])
-
-  return (
-    <>
-      <img src="images/filter_btn.svg" alt="" className="btn_filter" onClick={()=>setIsOpenFilter(!isOpenFilter)}/>
-      <div className={`page__filter align-items-center flex grid ${!isOpenFilter && "hide_filter"} `}>
-        <img src="images/reset.svg" alt="" onClick={handleReset}/>
-      <Box
-      component="form"
-      sx={{
-        '& .MuiTextField-root': { m: 1, width: '25ch' },
-      }}
-      noValidate
-      autoComplete="off"
-      className="filter__search field col-6 md:col-3"
-      >
-        <TextField
-          label="Tìm kiếm"
-          id="outlined-size-small"
-          value={keyword}
-          size="small"
-          className="filter__input--search"
-          onChange={(e)=>setKeyWord(e.target.value)}
-        />
-        <img src="../../images/search_blue.svg" alt="" className="filter__btn--search"/>
-      </Box>
-      
-      <DatePicker dates={dates} setDates={setDates} />
-      
-      <FormControl sx={{ m: 1, minWidth: 270 }} size="small" className="fiter__status">
-      <InputLabel id="filter__label">Trạng thái</InputLabel>
-        <Select
-          labelId="demo-controlled-open-select-label"
-          id="status__select"
-          value={status}
-          label="Age"
-          onChange={(e)=>setStatus(e.target.value)}
-        >
-        {
-            customer_status.map((item,index)=>(
-                <MenuItem value={item.id} key={index} className="status__option">
-                    <img src={`../../images/${item.image}.svg`} alt="" className="status__image"/>
-                    <span className="status__content">{item.status}</span>
-                </MenuItem>
-            ))
+    useEffect(() => {
+        const handleClickOutSide = (e) => {
+            const el = document.querySelector(".page__filter")
+            if (isOpenFilter && !el?.contains(e.target)) {
+                setIsOpenFilter(false)
+            }
         }
-        </Select>
-      </FormControl>
-      </div>
-    </>
-  )
+        window.addEventListener('mousedown', handleClickOutSide);
+
+        return () => {
+            window.removeEventListener('mousedown', handleClickOutSide)
+        }
+
+    }, [isOpenFilter])
+    return (
+        <>
+            <img src="images/filter_btn.svg" alt="" className="btn_filter" onClick={() => setIsOpenFilter(!isOpenFilter)} />
+            <div className={`page__filter align-items-center flex grid ${!isOpenFilter && "hide_filter"} `}>
+                <img src="images/reset.svg" alt="" onClick={handleReset} />
+                <Box
+                    component="form"
+                    sx={{
+                        '& .MuiTextField-root': { m: 1, width: '25ch' },
+                    }}
+                    noValidate
+                    autoComplete="off"
+                    className="filter__search field col-6 md:col-3"
+                >
+                    <TextField
+                        label="Tìm kiếm"
+                        id="outlined-size-small"
+                        value={keyword}
+                        size="small"
+                        className="filter__input--search"
+                        onChange={(e) => setKeyWord(e.target.value)}
+                    />
+                    <img src="../../images/search_blue.svg" alt="" className="filter__btn--search" />
+                </Box>
+
+                <DatePicker dates={dates} setDates={setDates} />
+
+                <FormControl sx={{ m: 1, minWidth: 270 }} size="small" className="fiter__status">
+                    <InputLabel id="filter__label">Trạng thái</InputLabel>
+                    <Select
+                        labelId="demo-controlled-open-select-label"
+                        id="status__select"
+                        value={status}
+                        label="Age"
+                        onChange={(e) => setStatus(e.target.value)}
+                    >
+                        {
+                            setDropDown.map((item, index) => (
+                                <MenuItem value={item.id} key={index} className="status__option">
+                                    {item.image ? 
+                                    <img src={`../../images/${item.image}.svg`} alt="" className="status__image" /> :
+                                    <span className={item.css_status?.dots + " mr-4"}></span>}
+                                    <span className="status__content">{item.status}</span>
+                                </MenuItem>
+                            ))
+                        }
+                    </Select>
+                </FormControl>
+            </div>
+        </>
+    )
 }
 
 export default Filter 

@@ -13,12 +13,14 @@ const EmployeeOverview = () => {
     const [isOpenCreateUser, setIsOpenCreateUser] = useState(false)
     const [isOpenInformationUser, setIsOpenInformationUser] = useState(false)
     const [rowdata, setRowData] = useState(null)
+    const [filter, setFilter] = useState("")
+
     useEffect(() => {
-        dispatch(dashboardEmployeeRequest())
-    }, [dispatch])
+        dispatch(dashboardEmployeeRequest(filter))
+    }, [dispatch,filter])
 
     const DataFilter = (data) => {
-        // console.log(data)
+        setFilter(data)
     }
 
     const handleRowClick = (rowData) => {

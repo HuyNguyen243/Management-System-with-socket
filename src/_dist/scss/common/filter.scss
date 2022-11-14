@@ -107,9 +107,13 @@
     }
  }
 
+ .status__option.status__dots{
+    margin-right: 10px;
+ }
+
  #status__select{
-     display: flex;
-     
+    display: flex !important;
+    align-items: center;
  }
 
  .filter__button{

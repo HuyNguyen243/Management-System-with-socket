@@ -1,7 +1,7 @@
 import React,{ useState, useEffect } from 'react';
 import { useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux"
-
+import { customer_status,user_status } from "./status"
 import Filter from './Filter'
 import TotalTable from './TotalTable'
 import Paginate from './Paginate';
@@ -30,6 +30,7 @@ const Table = ({
     const [pageCount, setPageCount] = useState(0);
     const [sortBy, setSortBy] = useState("");
     const [sortValue, setSortValue] = useState("");
+    const [ dropdown,setDropDown ] = useState(customer_status);
     const location = useLocation()
     const { pathname } = location
     const dispatch = useDispatch()
@@ -65,7 +66,12 @@ const Table = ({
          
         </div>
     )}
-
+    useEffect(() => {
+        if(pathname.split('/')[1].split('-')[0] === "employee")
+        {
+            setDropDown(user_status);
+        } 
+    },[pathname])
     const bodyTable = (rowData,item,table)=>{
         if(table)
             return(
@@ -88,6 +94,7 @@ const Table = ({
         sortValue={sortValue}
         setSortBy={setSortBy}
         setSortValue={setSortValue}
+        setDropDown={dropdown}
         />
 
         {

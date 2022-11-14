@@ -24,7 +24,7 @@ const initialState = {
         error: false,
     },
 }
-const dashBoardEmployeeReducer = createSlice({
+const employeeReducer = createSlice({
     name: 'dashboard',
     initialState,
     extraReducers:{
@@ -135,4 +135,4 @@ const dashBoardEmployeeReducer = createSlice({
     }
 })
 
-export default dashBoardEmployeeReducer.reducer
+export default employeeReducer.reducer
