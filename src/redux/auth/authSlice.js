@@ -27,7 +27,8 @@ const initialState = {
         data : null,
         error: false,
     },
-    userByToken: null
+    userByToken: null,
+    newMessages: {}
 }
 const userReducer = createSlice({
     name: 'user',
@@ -37,6 +38,16 @@ const userReducer = createSlice({
             Object.assign(state,{},{
                 userByToken: action.payload
             })
+        },
+        addNotifications: (state,{ payload })=>{
+            if(state.newMessages[payload]){
+                state.newMessages[payload] = state.newMessages[payload] + 1
+            }else{
+                state.newMessages[payload] = 1
+            }
+        },
+        resetNotifications: (state,{ payload })=>{
+            delete state.newMessages[payload]
         }
     },
     extraReducers:{
@@ -155,6 +166,6 @@ const userReducer = createSlice({
         },
     }
 })
-export const { profileUserByToken } = userReducer.actions
+export const { profileUserByToken, addNotifications, resetNotifications } = userReducer.actions
 
 export default userReducer.reducer

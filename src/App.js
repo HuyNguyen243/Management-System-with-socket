@@ -12,7 +12,7 @@ import BtnMess from "./modules/layout/messages/BtnMess";
 
 function App() {
   const user = useSelector(state =>state.auth.token)
-  const [userIsAuth,setUserIsAuth] = useState(false)
+  const [userIsAuth,setUserIsAuth]= useState(false)
 
   React.useEffect(()=>{
       setTimeout(()=>{
@@ -21,30 +21,30 @@ function App() {
   },[user?.isAuth])
   
   return (
-   <BrowserRouter>
-   { userIsAuth && <Header /> }
-      <Routes>
-      { 
-        user?.isAuth ?
-        routes.map((route, index) =>
-          (
-            <Route
-              key={index}
-              path={route.path}
-              element={<route.main />}
-            />
-          )
-        )
-        :
-        <>
-        <Route path="*" element={<Navigate to="/login" replace/>}/>
-        </>
-      }
-        <Route path="/login" element={<Login />}/>
-        <Route path="/forgot-password" element={<ForgotPassword />}/>
-      </Routes>
-      { userIsAuth && <BtnMess /> }
-   </BrowserRouter>
+    <BrowserRouter>
+      { userIsAuth && <Header /> }
+          <Routes>
+          { 
+            user?.isAuth ?
+            routes.map((route, index) =>
+              (
+                <Route
+                  key={index}
+                  path={route.path}
+                  element={<route.main />}
+                />
+              )
+            )
+            :
+            <>
+            <Route path="*" element={<Navigate to="/login" replace/>}/>
+            </>
+          }
+            <Route path="/login" element={<Login />}/>
+            <Route path="/forgot-password" element={<ForgotPassword />}/>
+          </Routes>
+          { userIsAuth && <BtnMess /> }
+    </BrowserRouter>
   );
 }
 

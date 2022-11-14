@@ -6,7 +6,6 @@ import { Button } from 'primereact/button';
 import { AutoComplete } from 'primereact/autocomplete';
 import { Dropdown } from 'primereact/dropdown';
 import { ConfirmPopup,confirmPopup } from 'primereact/confirmpopup';
-import { useNavigate,useLocation } from 'react-router';
 import { useForm,Controller } from "react-hook-form";
 
 import { EMAIL_REGEX, PHONE_REGEX } from "../../constants"
@@ -26,15 +25,9 @@ import copy from "copy-to-clipboard";
 const InformationCustomer = ({isOpenInformationCustomer, setIsOpenInformationCustomer, rowdata}) => {
     const [customerStatus, setCustomerStatus] = useState(null);
     const [listJobs, setlistJobs] = useState([]);
-    const urlParams = new URLSearchParams(window.location.search);
-    const pageURL = Number(urlParams?.get('page'))
-    const navigate = useNavigate()
-    const location = useLocation()
-    const { pathname } = location
 
     const putCustomer = useSelector(state =>state.sale.editcustomer)
     const deleteCustomer = useSelector(state =>state.sale.deletecustomer)
-    const countDataTable = useSelector(state =>state.table.countData)
     const user = useSelector(state=> state.auth.user)
 
     const [cities,setCities] = React.useState(null);
@@ -135,14 +128,6 @@ const InformationCustomer = ({isOpenInformationCustomer, setIsOpenInformationCus
         formdata.id = rowdata?.data?.id_system
         formdata.index = rowdata?.index
         dispatch(deleteCustomerRequest(formdata))
-        if(pageURL && pageURL > 1){
-            if(countDataTable > 5){
-                navigate({
-                    pathname: pathname,
-                    search: `?page=${pageURL - 1}`,
-                });
-            }
-        }
     }
 
     const handleRemoveRow = (event) => {
