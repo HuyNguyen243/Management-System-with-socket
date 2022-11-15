@@ -1,11 +1,10 @@
-import React,{ useEffect,useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-import {customer_status} from "./status"
 import DatePicker from "./DatePicker"
 import { useNavigate, useLocation } from 'react-router';
 import {dateString} from "../../commons/dateTime"
@@ -34,13 +33,13 @@ const Filter = ({DataFilter ,sortBy, sortValue, setSortBy, setSortValue, search,
       setKeyWord(keywordURL)
     }
 
-    if(sort_byURL){
-      setSortBy(sort_byURL)
-    }
+        if (sort_byURL) {
+            setSortBy(sort_byURL)
+        }
 
-    if(sortValueURL){
-      setSortValue(sortValueURL)
-    }
+        if (sortValueURL) {
+            setSortValue(sortValueURL)
+        }
 
   },[keywordURL, sort_byURL, setSortBy, sortValueURL, setSortValue, statusURL])
 
@@ -78,12 +77,17 @@ const Filter = ({DataFilter ,sortBy, sortValue, setSortBy, setSortValue, search,
         data.status = status.trim()
     }
 
-      data.keyword = keyword
+    useEffect(() => {
+        let data = {}
+        if (dates?.length > 0 && dates[1]) {
+            const arr = convertDate(dates)
+            data.start_date = arr[0]
+            data.end_date = arr[1]
+        }
 
-    if(sortBy !== "" && sortValue !== "" && sortBy){
-      data.sort_by = sortBy
-      data.sort_value = sortValue
-    }
+        if (status !== "") {
+            data.status = status
+        }
 
     if(Object.keys(data)?.length > 0){
       let result = "" ;
@@ -139,61 +143,113 @@ const Filter = ({DataFilter ,sortBy, sortValue, setSortBy, setSortValue, search,
     }
     window.addEventListener('mousedown', handleClickOutSide);
 
-    return ()=>{
-      window.removeEventListener('mousedown',handleClickOutSide)
+        const timeout = setTimeout(() => {
+
+            if (Object.keys(data).length > 0) {
+                let result = "";
+                Object.keys(data).forEach((item) => {
+
+                    result += `&${item}=${data[item]}`
+                })
+                if (result !== "") {
+                    if (keyword === "") {
+                        let removeKey = result.replace("keyword=", " ")
+                        removeKey = result.replace("&keyword=", " ")
+                        result = removeKey
+                    }
+                    const newResult = result.replace("&", "?").trim()
+
+                    navigate({
+                        pathname: pathname,
+                        search: newResult,
+                    });
+
+                    DataFilter(newResult)
+                }
+            }
+
+        }, 700);
+
+        return () => clearTimeout(timeout);
+
+    }, [DataFilter, dates, keyword, status, sortBy, sortValue, navigate, pathname])
+
+    const handleReset = () => {
+        setDates(undefined)
+        setStatus("")
+        setKeyWord("")
+        DataFilter({})
+        navigate({
+            pathname: pathname,
+            search: "",
+        });
     }
 
-  },[isOpenFilter])
-
-  return (
-    <>
-      <img src="images/filter_btn.svg" alt="" className="btn_filter" onClick={()=>setIsOpenFilter(!isOpenFilter)}/>
-      <div className={`page__filter align-items-center flex grid ${!isOpenFilter && "hide_filter"} `}>
-        <img src="images/reset.svg" alt="" onClick={handleReset}/>
-      <Box
-      component="form"
-      sx={{
-        '& .MuiTextField-root': { m: 1, width: '25ch' },
-      }}
-      noValidate
-      autoComplete="off"
-      className="filter__search field col-6 md:col-3"
-      >
-        <TextField
-          label="Tìm kiếm"
-          id="outlined-size-small"
-          value={keyword}
-          size="small"
-          className="filter__input--search"
-          onChange={(e)=>setKeyWord(e.target.value)}
-        />
-        <img src="../../images/search_blue.svg" alt="" className="filter__btn--search"/>
-      </Box>
-      
-      <DatePicker dates={dates} setDates={setDates} />
-      
-      <FormControl sx={{ m: 1, minWidth: 270 }} size="small" className="fiter__status">
-      <InputLabel id="filter__label">Trạng thái</InputLabel>
-        <Select
-          labelId="demo-controlled-open-select-label"
-          id="status__select"
-          value={status}
-          label="Age"
-          onChange={(e)=>setStatus(e.target.value)}
-        >
-        {
-            customer_status.map((item,index)=>(
-                <MenuItem value={item.id} key={index} className="status__option">
-                    <img src={`../../images/${item.image}.svg`} alt="" className="status__image"/>
-                    <span className="status__content">{item.status}</span>
-                </MenuItem>
-            ))
+    useEffect(() => {
+        const handleClickOutSide = (e) => {
+            const el = document.querySelector(".page__filter")
+            if (isOpenFilter && !el?.contains(e.target)) {
+                setIsOpenFilter(false)
+            }
         }
-        </Select>
-      </FormControl>
-      </div>
-    </>
-  )
+        window.addEventListener('mousedown', handleClickOutSide);
+
+        return () => {
+            window.removeEventListener('mousedown', handleClickOutSide)
+        }
+
+    }, [isOpenFilter])
+    return (
+        <>
+            <img src="images/filter_btn.svg" alt="" className="btn_filter" onClick={() => setIsOpenFilter(!isOpenFilter)} />
+            <div className={`page__filter align-items-center flex grid ${!isOpenFilter && "hide_filter"} `}>
+                <img src="images/reset.svg" alt="" onClick={handleReset} />
+                <Box
+                    component="form"
+                    sx={{
+                        '& .MuiTextField-root': { m: 1, width: '25ch' },
+                    }}
+                    noValidate
+                    autoComplete="off"
+                    className="filter__search field col-6 md:col-3"
+                >
+                    <TextField
+                        label="Tìm kiếm"
+                        id="outlined-size-small"
+                        value={keyword}
+                        size="small"
+                        className="filter__input--search"
+                        onChange={(e) => setKeyWord(e.target.value)}
+                    />
+                    <img src="../../images/search_blue.svg" alt="" className="filter__btn--search" />
+                </Box>
+
+                <DatePicker dates={dates} setDates={setDates} />
+
+                <FormControl sx={{ m: 1, minWidth: 270 }} size="small" className="fiter__status">
+                    <InputLabel id="filter__label">Trạng thái</InputLabel>
+                    <Select
+                        labelId="demo-controlled-open-select-label"
+                        id="status__select"
+                        value={status}
+                        label="Age"
+                        onChange={(e) => setStatus(e.target.value)}
+                    >
+                        {
+                            setDropDown.map((item, index) => (
+                                <MenuItem value={item.id} key={index} className="status__option">
+                                    {item.image ? 
+                                    <img src={`../../images/${item.image}.svg`} alt="" className="status__image" /> :
+                                    <span className={item.css_status?.dots + " mr-4"}></span>}
+                                    <span className="status__content">{item.status}</span>
+                                </MenuItem>
+                            ))
+                        }
+                    </Select>
+                </FormControl>
+            </div>
+        </>
+    )
 }
 
 export default Filter 

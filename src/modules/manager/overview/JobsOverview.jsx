@@ -17,7 +17,7 @@ const JobsOverview = () => {
   const [isOpenUpdateInformationJob, setIsOpenUpdateInformationJob] = useState(false)
 
   const DataFilter = (data)=>{
-    console.log(data)
+    // console.log(data)
   }
 
   const handleRowClick = (e)=>{

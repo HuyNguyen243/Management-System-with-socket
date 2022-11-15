@@ -49,6 +49,10 @@ const InformationCustomer = ({isOpenInformationCustomer, setIsOpenInformationCus
             toastMsg.error(toast,'Cập nhật thất bại')
         }
 
+
+    },[putCustomer, setIsOpenInformationCustomer ])
+
+    useEffect(() => {
         if(deleteCustomer?.data){
             setIsOpenInformationCustomer(false)
             toastMsg.success(toast,'Xóa khách hàng thành công')
@@ -57,9 +61,7 @@ const InformationCustomer = ({isOpenInformationCustomer, setIsOpenInformationCus
         if(deleteCustomer?.error){
             toastMsg.success(toast,'Xóa khách hàng thất bại')
         }
-
-    },[putCustomer, setIsOpenInformationCustomer, deleteCustomer])
-
+    },[ deleteCustomer, setIsOpenInformationCustomer ])
     useEffect(() => {
         const getcountries = new getCountries()
         getcountries.get().then(data => setCountries(data));

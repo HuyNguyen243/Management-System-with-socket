@@ -340,6 +340,10 @@
     cursor: default;
 }
 
+.cursor__edit:hover{
+    cursor: url("../../images/edit.svg"), auto,
+}
+
 .image__trash{
     margin-right: 15px;
     cursor: pointer;
@@ -366,7 +370,11 @@
 .p-button:enabled:active{
     background: $color-white;
 }
-
+.p-confirm-popup-accept:hover{
+    background: #4F46E5 !important;
+    border: none;
+    // font-size: 0.9rem !important;
+}
 .p-button:enabled:hover{
     // background: $color-white;
     // border: none;
