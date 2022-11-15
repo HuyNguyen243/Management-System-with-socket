@@ -38,10 +38,9 @@ export const get =  (url) => {
     return apiRequest(url, requestOptions);
 }
 
-export const del =  (url,body) => {
+export const del =  (url) => {
     var requestOptions = {
         method: "DELETE",
-        data: body,
         redirect: "follow",
     };
     requestOptions.headers = new Headers()

@@ -5,6 +5,11 @@ import TextField from '@mui/material/TextField';
 
 const Messages = ({isOpenMessages}) => {
     const [keyword,setKeyWord] = useState("")
+
+     //GET MSG
+
+    //------------------------------
+
   return (
     <div className={`notification-message__container ${!isOpenMessages && "hidden"}`}>
         <div className="notification-message__title">

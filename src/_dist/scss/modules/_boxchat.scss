@@ -100,6 +100,7 @@
       border-bottom: 2px solid $color-white;
       display: flex;
       position: relative;
+      height: 71px;
       img {
         float: left;
       }
@@ -131,7 +132,7 @@
       padding: 10px 10px 20px;
       border-bottom: 2px solid white;
       overflow-y: scroll;
-      height: 300px;
+      height: 325px;
       
       .message-data {
         margin-bottom: 15px;
@@ -192,7 +193,7 @@
     }
     
     .chat-message {
-      padding: 15px;
+      padding: 15px 0px 0 15px;
       display: flex;
       textarea {
         width: 100%;
@@ -517,4 +518,20 @@
   right: 5px;
   color: gray;
   font-size: 12px;
+}
+
+.title_members{
+  font-size: 10px;
+  color: gray;
+  text-align: center;
+  display: block;
+}
+
+.logo_chat{
+  width: 200px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0.2;
 }

@@ -1,5 +1,5 @@
 import React from 'react'
-import { useDispatch,useSelector } from "react-redux"
+import { useDispatch } from "react-redux"
 import {userLogoutRequest} from "../../redux/auth/action"
 import { SlideMenu } from 'primereact/slidemenu';
 import { useNavigate } from 'react-router';
@@ -7,8 +7,6 @@ import { useNavigate } from 'react-router';
 const ToggleMenu = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
-    const notifications = useSelector(state=> state.auth.newMessages)
-    const user = useSelector(state=> state.auth.user)
     const arrMenu = [
         {
             label:'Hoạt động',
@@ -41,11 +39,7 @@ const ToggleMenu = () => {
         {
             label:'Thoát',
             command: ()=>{
-              const req = {
-                id_system: user?.data?.id_system,
-                newMessages: notifications
-              }
-              dispatch(userLogoutRequest(req))
+              dispatch(userLogoutRequest())
             }
         }
     ];

@@ -2,7 +2,7 @@ import {  createAsyncThunk } from '@reduxjs/toolkit'
 import { post, get, del, put } from "../../_services/apiRequest"
 import { storage } from '../../_services/sesionStorage';
 import { Cookie } from '../../commons/cookie';
-import { NAME_SESSION_STORAGE_TOKEN } from '../../constants';
+import { NAME_SESSION_STORAGE_TOKEN, ROOM_SESSION_MESSAGES } from '../../constants';
 
 export const userloginRequest = createAsyncThunk(
     'user_login',
@@ -25,13 +25,13 @@ export const userLogoutRequest = createAsyncThunk(
     'user_logout',
     async (data,{ rejectWithValue }) => {
         try {
-            const res = await del("auth/logout",data)
+            const res = await del("auth/logout")
             Cookie.delete()
             setTimeout(() => {
                 storage.delete(NAME_SESSION_STORAGE_TOKEN)
+                storage.delete(ROOM_SESSION_MESSAGES)
                 storage.delete("birth")
             },300)
-
             return res.data;
         } catch (error) {
             return rejectWithValue(error?.response?.data);
