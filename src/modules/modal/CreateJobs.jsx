@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Sidebar } from 'primereact/sidebar';
 import { InputText } from 'primereact/inputtext';
 import { Dropdown } from 'primereact/dropdown';
@@ -9,8 +9,10 @@ import { AutoComplete } from 'primereact/autocomplete';
 import { InputNumber } from 'primereact/inputnumber';
 import { useForm, Controller } from 'react-hook-form';
 import { classNames } from 'primereact/utils';
-
-import { type_files, type_status, type_jobs, names } from "./dropDown"
+import { saleCustomerRequest } from "../../redux/sale/action";
+import { type_files, type_status, type_jobs } from "./dropDown"
+import { useDispatch, useSelector } from 'react-redux';
+import { dataParse } from '../manager/jobs/dataParse';
 
 const CreateJobs = ({ isOpenCreateJob, setIsOpenCreateJob, setIsOpenCreateCustomer }) => {
     const defaultValues = {
@@ -28,22 +30,33 @@ const CreateJobs = ({ isOpenCreateJob, setIsOpenCreateJob, setIsOpenCreateCustom
     }
     const { control, formState: { errors }, handleSubmit, reset } = useForm({ defaultValues });
     const [filteredNameCustomers, setFilteredNameCustomers] = React.useState(null);
+    const [customerSelect, setCustomerSelect] = React.useState(null);
+    const customers = useSelector(state => state.sale.customers)
 
+    const dispatch = useDispatch()
+    let customerName = dataParse(customers?.data)
     const searchName = (event) => {
         setTimeout(() => {
-            let _filteredNameCustomers;
+            let suggestionsList;
             if (!event.query.trim().length) {
-                _filteredNameCustomers = [...names];
-            }
-            else {
-                _filteredNameCustomers = names.filter((item) => {
-                    return item.name.toLowerCase().startsWith(event.query.toLowerCase());
+                suggestionsList = [...customerName];
+            } else {
+                suggestionsList = [...customerName].filter((list) => {
+                    return (
+                        list.name.toLowerCase().startsWith(event.query.toLowerCase())
+                        || list.email.toLowerCase().startsWith(event.query.toLowerCase())
+                        || list.phone.toLowerCase().startsWith(event.query.toLowerCase())
+                        || list.create_by.toLowerCase().startsWith(event.query.toLowerCase())
+                        || list.id_system.toLowerCase().startsWith(event.query.toLowerCase())
+                        );
                 });
             }
-            console.log(_filteredNameCustomers);
-            setFilteredNameCustomers(_filteredNameCustomers);
+            setFilteredNameCustomers(suggestionsList)
         }, 50);
     }
+    useEffect(() => {
+        dispatch(saleCustomerRequest(filteredNameCustomers));
+    }, [dispatch, filteredNameCustomers])
 
     const onSubmit = (data) => {
         if (Object.keys(errors).length === 0) {
@@ -77,13 +90,22 @@ const CreateJobs = ({ isOpenCreateJob, setIsOpenCreateJob, setIsOpenCreateCustom
                                             suggestions={filteredNameCustomers}
                                             completeMethod={searchName} field="name"
                                             id={field.name}
-                                            value={field.value} onChange={(e) => field.onChange(e.value)}
+                                            value={customerSelect} onChange={(e) => {setCustomerSelect(e.value);}}
                                             className={classNames({ 'p-invalid': fieldState.invalid })}
                                             dropdownAriaLabel="Select name"
                                             placeholder="Nhập tên khách hàng cần tìm"
                                         />
                                     )} />
                             </span>
+                        </div>
+                        <div className="field col-12 md:col-6">
+                            <span htmlFor="type_job">Mã khách hàng: <span className="warning">*</span></span>
+                            <span className="p-float-label pt-3 flex justify-content-between cursor__normal">
+                                <span className='font-bold'>{customerSelect?.id_system}</span>
+                            </span>
+                        </div>
+                        <div className="field col-12 md:col-12 create_new_customer">
+                            <p onClick={handleCreateNewCustomer} style={{ width: "max-content" }}>Tạo khách hàng mới</p>
                         </div>
                         <div className="field col-12 md:col-6">
                             <span htmlFor="type_job">Loại công việc: <span className="warning">*</span></span>
@@ -100,9 +122,7 @@ const CreateJobs = ({ isOpenCreateJob, setIsOpenCreateJob, setIsOpenCreateCustom
                                     )} />
                             </span>
                         </div>
-                        <div className="field col-12 md:col-12 create_new_customer">
-                            <p onClick={handleCreateNewCustomer} style={{ width: "max-content" }}>Tạo khách hàng mới</p>
-                        </div>
+                        
                         <div className="field col-12 md:col-6 create__job--calendar">
                             <span htmlFor="calendar">Chọn ngày:<span className="warning">*</span></span>
                             <span className="p-float-label ">

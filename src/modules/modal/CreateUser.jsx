@@ -76,7 +76,7 @@ const CreateUser = ({ isOpenCreateUser, setIsOpenCreateUser }) => {
     return (
         <>
             <Toast ref={toast} position="bottom-left" />
-            <Sidebar visible={isOpenCreateUser} position="right" onHide={() => { setIsOpenCreateUser(false); reset() }} className="create__job">
+            <Sidebar visible={isOpenCreateUser} position="right" onHide={() => { setIsOpenCreateUser(false); reset() }}  className="create__job">
                 <div className="creat__job">
                     <div className="creat__job--title">
                         <h2>Tạo nhân viên mới</h2>

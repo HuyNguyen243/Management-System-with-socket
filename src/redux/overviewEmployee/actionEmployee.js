@@ -7,7 +7,7 @@ export const dashboardEmployeeRequest = createAsyncThunk(
     async (filter,{ rejectWithValue }) => {
         try {
             const search = typeof filter === 'string' ? filter : ""
-            const res = await get(`users/data/dashboard/${search}`)
+            const res = await get(`users/data/dashboard${search}`)
             return res.data.data_user;
         } catch (error) {
             return rejectWithValue(error?.response?.data);

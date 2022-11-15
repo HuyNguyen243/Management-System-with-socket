@@ -38,7 +38,7 @@ const JobsOverview = () => {
       header={table_jobs_overview}
       handleRowClick={handleRowClick}
       handleCreate={handleCreate}
-      name_btn_add={"tạo công việc"}
+      name_btn_add={"Tạo công việc"}
       />
       <CreateJobs isOpenCreateJob={isOpenCreateJob} setIsOpenCreateJob={setIsOpenCreateJob} setIsOpenCreateCustomer={setIsOpenCreateCustomer}/>
       <CreateCustomer isOpenCreateCustomer={isOpenCreateCustomer} setIsOpenCreateCustomer={setIsOpenCreateCustomer} />

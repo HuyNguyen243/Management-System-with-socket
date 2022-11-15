@@ -1,5 +1,4 @@
 import React,{ useState, useEffect } from 'react';
-import { useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux"
 import { customer_status,user_status } from "./status"
 import Filter from './Filter'
@@ -30,8 +29,6 @@ const Table = ({
     const [sortBy, setSortBy] = useState("");
     const [sortValue, setSortValue] = useState("");
     const [ dropdown,setDropDown ] = useState(customer_status);
-    const location = useLocation()
-    const { pathname } = location
     const dispatch = useDispatch()
     const old_Data = Array.isArray(dataTable) ? dataTable : []
     const [currentLocation, setCurrentLocation] = useState(0);

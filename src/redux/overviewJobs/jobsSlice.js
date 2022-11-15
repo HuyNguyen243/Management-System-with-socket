@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-import { dashboardJobsRequest } from './actionJobs';
+import { dashboardJobsRequest,addJobsRequest } from './actionJobs';
 
 const initialState = {
     dashboard: {
@@ -8,17 +8,7 @@ const initialState = {
         data : null,
         error: false,
     },
-    user: {
-        loading: false,
-        data : null,
-        error: false,
-    },
-    edituser: {
-        loading: false,
-        data : null,
-        error: false,
-    },
-    deleteuser: {
+    addjobs: {
         loading: false,
         data : null,
         error: false,
@@ -52,7 +42,33 @@ const jobsReducer = createSlice({
                     error: true
                 }
             })
-        }
+        },
+        [addJobsRequest.pending]: (state) => {
+            Object.assign(state,{},{
+                user:{
+                    loading: true
+                }
+            })
+        },
+        [addJobsRequest.fulfilled]: (state, action) => {
+            Object.assign(state,{},{
+                user:{
+                    loading: false,
+                    data: action?.payload,
+                    error: false
+                }
+            })
+            state.dashboard.data.push(action?.payload)
+        },
+        [addJobsRequest.rejected]: (state, action) => {
+            Object.assign(state,{},{
+                user:{
+                    loading: false,
+                    data: action?.payload,
+                    error: true
+                }
+            })
+        },
 
     }
 })
