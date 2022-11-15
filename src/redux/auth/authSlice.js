@@ -5,11 +5,12 @@ import {
     userProfile,
     userEditProfile,
 } from './action'
-import { NAME_SESSION_STORAGE_TOKEN } from '../../constants';
+import { NAME_SESSION_STORAGE_TOKEN, NAME_SESION_NOTIFICATIONS } from '../../constants';
 
 import { storage } from '../../_services/sesionStorage';
 
 const token = {access_token: storage.get(NAME_SESSION_STORAGE_TOKEN)};
+const notification = JSON.parse(storage.get(NAME_SESION_NOTIFICATIONS))
 const initialState = {
     token: {
         isAuth: token.access_token ? true : false,
@@ -28,7 +29,7 @@ const initialState = {
         error: false,
     },
     userByToken: null,
-    newMessages: {}
+    newMessages: notification || {},
 }
 const userReducer = createSlice({
     name: 'user',
@@ -48,7 +49,7 @@ const userReducer = createSlice({
         },
         resetNotifications: (state,{ payload })=>{
             delete state.newMessages[payload]
-        }
+        },
     },
     extraReducers:{
         [userloginRequest.pending]: (state) => {

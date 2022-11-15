@@ -18,6 +18,7 @@ export const USER_IS_STOPPING = "Tạm ngưng hoạt động"
 export const USER_IS_OFFLINE = "Không hoạt động"
 
 export const NAME_SESSION_STORAGE_TOKEN = "1touch_access_token"
+export const NAME_SESION_NOTIFICATIONS = "notifications_1touch"
 export const ID_SESSION = "1touch_id"
 
 export const UserRules = {

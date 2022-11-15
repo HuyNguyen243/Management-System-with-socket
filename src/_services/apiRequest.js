@@ -35,13 +35,13 @@ export const get =  (url) => {
     };
     requestOptions.headers = new Headers()
     requestOptions.headers.append('Accept', 'application/json')
-
     return apiRequest(url, requestOptions);
 }
 
-export const del =  (url) => {
+export const del =  (url,body) => {
     var requestOptions = {
         method: "DELETE",
+        data: body,
         redirect: "follow",
     };
     requestOptions.headers = new Headers()

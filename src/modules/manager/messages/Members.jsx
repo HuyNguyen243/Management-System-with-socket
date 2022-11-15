@@ -1,10 +1,10 @@
 import React,{ useState, useEffect } from 'react'
 import TextField from '@mui/material/TextField';
-import { Avatar } from 'primereact/avatar';
 import { useSelector } from "react-redux"
 import { orderIds } from '../../../commons/message.common';
 import { socket } from "../../../_services/socket";
-
+import { storage } from '../../../_services/sesionStorage';
+import { NAME_SESION_NOTIFICATIONS } from '../../../constants';
   //Avatar have attribute data= [ ONLINE ,LEAVING ,OFFLINE ]
   // <li></li> has className active if handle click them 
 
@@ -19,14 +19,13 @@ const Members = (
     setRole,
     setCurrentUser,
     setMembers,
-    joinRoom
+    joinRoom,
   }
   ) => {
   const [keyword,setKeyWord] = useState("")
   const user = useSelector(state=> state.auth.user)
   const notifications = useSelector(state=> state.auth.newMessages)
   const getFirstRoom = orderIds(currentUser?.id_system, members?.[0]?.id_system)
-    console.log(notifications)
   ///set first room 
   useEffect(() => {
     if(user?.data){
@@ -37,6 +36,12 @@ const Members = (
   },[user, getFirstRoom, joinRoom])
 
   useEffect(() => {
+    if(Object.keys(notifications).length > 0){
+      storage.save(NAME_SESION_NOTIFICATIONS,JSON.stringify(notifications))
+    }
+  },[notifications])
+
+  useEffect(() => {
     setCurrentRoom(getFirstRoom)
     setPrivateMemberMsg(members?.[0]?.id_system)
     setRole(members?.[0]?.role)
@@ -45,22 +50,20 @@ const Members = (
 
   //GET ALL USER
   socket.off('new-user').on('new-user', (payload)=>{
-    if(payload){
       payload.forEach((member)=>{
         if(member?.id_system === user?.data?.id_system){
           setCurrentUser(member)
         }
       })
       setMembers(payload)
-    }
-  })
+ })
   //-----------------------------------//
 
   const handlePrivateUser = (member)=>{
     setPrivateMemberMsg(member?.id_system)
     setRole(member?.role)
     const roomId = orderIds(currentUser.id_system, member.id_system)
-    joinRoom(roomId, false)
+    joinRoom(roomId)
   }
 
   return (
@@ -77,7 +80,7 @@ const Members = (
             <img src="../../images/search_blue.svg" alt="" className="filter__btn--search"/>
           </div>
           <div className="flex flex-column justify-content-center">
-            <Avatar image="images/default_avatar.jpeg" size="normal" shape="circle" data="ONLINE" className="chat_img avatar_me"/>
+            <div className="chat_img avatar_me" data="ONLINE" role={currentUser?.id_system?.split(".")?.[1]}></div>
           </div>
       </div>
       <ul className="list">
@@ -87,20 +90,22 @@ const Members = (
               {
                 member?.id_system !== currentUser?.id_system &&
                 <li className={privateMemberMsg === member.id_system ? "active" : ""} onClick={()=>handlePrivateUser(member) }>
-                  <Avatar image="images/default_avatar.jpeg" size="large" shape="circle" data={member?.status} className="chat_img"/>
+                  {/* <Avatar image="images/default_avatar.jpeg" size="large" shape="circle" data={member?.status} className="chat_img" /> */}
+                  <div className="chat_img" data={member?.status} role={member.id_system?.split(".")?.[1]} ></div>
                   <div className="about">
-                    <div className="name">{member?.id_system}</div>
+                  <div className="name">{member?.id_system}</div>
                     {
-                      currentRoom !== Object.keys(notifications)?.[0] 
-                      && 
-                      orderIds(currentUser?.id_system, member?.id_system) === Object.keys(notifications)?.[0]
-                      && 
-                      <span className="has_seen">!</span>
+                      Object?.keys(notifications)?.map((room,index2)=>{
+                        return(
+                          <div key={index2}>
+                            {
+                              currentRoom !== room && orderIds(currentUser?.id_system, member?.id_system) === room && 
+                              <span className="has_seen">{notifications?.[room]}</span>
+                            }
+                          </div>
+                        )
+                      })
                     }
-                   {/* <div className="status">
-                      left 7 mins ago
-                    </div>
-                  */}
                   </div>
                 </li>
               }

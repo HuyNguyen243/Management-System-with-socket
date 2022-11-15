@@ -25,7 +25,7 @@ export const userLogoutRequest = createAsyncThunk(
     'user_logout',
     async (data,{ rejectWithValue }) => {
         try {
-            const res = await del("auth/logout")
+            const res = await del("auth/logout",data)
             Cookie.delete()
             setTimeout(() => {
                 storage.delete(NAME_SESSION_STORAGE_TOKEN)
