@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-import { dashboardEmployeeRequest,addEmployeeRequest } from './actionEmployee';
+import { dashboardEmployeeRequest,addEmployeeRequest,editEmployeeRequest,deleteEmployeeRequest } from './actionEmployee';
 
 const initialState = {
     dashboard: {
@@ -13,8 +13,18 @@ const initialState = {
         data : null,
         error: false,
     },
+    edituser: {
+        loading: false,
+        data : null,
+        error: false,
+    },
+    deleteuser: {
+        loading: false,
+        data : null,
+        error: false,
+    },
 }
-const dashBoardEmployeeReducer = createSlice({
+const employeeReducer = createSlice({
     name: 'dashboard',
     initialState,
     extraReducers:{
@@ -51,7 +61,6 @@ const dashBoardEmployeeReducer = createSlice({
             })
         },
         [addEmployeeRequest.fulfilled]: (state, action) => {
-            console.log(action?.payload);
             Object.assign(state,{},{
                 user:{
                     loading: false,
@@ -70,7 +79,60 @@ const dashBoardEmployeeReducer = createSlice({
                 }
             })
         },
+        [editEmployeeRequest.pending]: (state) => {
+            Object.assign(state,{},{
+                edituser:{
+                    loading: true
+                }
+            })
+        },
+        [editEmployeeRequest.fulfilled]: (state, action) => {
+            Object.assign(state,{},{
+                edituser:{
+                    loading: false,
+                    data: action?.payload?.data,
+                    error: false
+                }
+            })
+            state.dashboard.data.splice(action?.payload?.index, 1, action?.payload?.data)
+        },
+        [editEmployeeRequest.rejected]: (state, action) => {
+            Object.assign(state,{},{
+                edituser:{
+                    loading: false,
+                    data: null,
+                    error: true
+                }
+            })
+        },
+        [deleteEmployeeRequest.pending]: (state) => {
+            Object.assign(state,{},{
+                deleteuser:{
+                    loading: true
+                }
+            })
+        },
+        [deleteEmployeeRequest.fulfilled]: (state, action) => {
+            Object.assign(state,{},{
+                deleteuser:{
+                    loading: false,
+                    data: action?.payload?.data,
+                    error: false
+                }
+            })
+            state.dashboard.data.splice(action?.payload?.index, 1)
+        },
+        [deleteEmployeeRequest.rejected]: (state, action) => {
+            Object.assign(state,{},{
+                deleteuser:{
+                    loading: false,
+                    data: null,
+                    error: true
+                }
+            })
+        },
+
     }
 })
 
-export default dashBoardEmployeeReducer.reducer
+export default employeeReducer.reducer

@@ -5,12 +5,11 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-import {customer_status} from "./status"
 import DatePicker from "./DatePicker"
 import { useNavigate, useLocation } from 'react-router';
 import {dateString} from "../../commons/dateTime"
 
-const Filter = ({DataFilter ,sortBy, sortValue, setSortBy, setSortValue, search, setsearch}) => {
+const Filter = ({DataFilter ,sortBy, sortValue, setSortBy, setSortValue, search, setsearch ,setDropDown}) => {
   const queryParams = new URLSearchParams(window.location.search)
   const keywordURL = queryParams.get("keyword")
   const sort_byURL = queryParams.get("sort_by")
@@ -182,9 +181,11 @@ const Filter = ({DataFilter ,sortBy, sortValue, setSortBy, setSortValue, search,
           onChange={(e)=>setStatus(e.target.value)}
         >
         {
-            customer_status.map((item,index)=>(
+            setDropDown.map((item, index) => (
                 <MenuItem value={item.id} key={index} className="status__option">
-                    <img src={`../../images/${item.image}.svg`} alt="" className="status__image"/>
+                    {item.image ? 
+                    <img src={`../../images/${item.image}.svg`} alt="" className="status__image" /> :
+                    <span className={item.css_status?.dots + " mr-4"}></span>}
                     <span className="status__content">{item.status}</span>
                 </MenuItem>
             ))
@@ -197,3 +198,7 @@ const Filter = ({DataFilter ,sortBy, sortValue, setSortBy, setSortValue, search,
 }
 
 export default Filter 
+
+
+
+

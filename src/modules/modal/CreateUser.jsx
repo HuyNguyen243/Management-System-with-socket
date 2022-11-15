@@ -12,6 +12,7 @@ import { Toast } from 'primereact/toast';
 import { Dropdown } from 'primereact/dropdown';
 import copy from "copy-to-clipboard";
 import { role } from "./dropDown";
+import { toastMsg } from '../../commons/toast';
 
 import { EMAIL_REGEX, PHONE_REGEX } from '../../constants';
 
@@ -59,27 +60,28 @@ const CreateUser = ({ isOpenCreateUser, setIsOpenCreateUser }) => {
         if (employee?.data) {
             reset();
             setIsOpenCreateUser(false)
-            toast.current.show({ severity: 'success', summary: 'Success', detail: 'Tạo khách hàng mới thành công', life: 1000 });
+            toastMsg.success(toast, 'Tạo khách hàng mới thành công')
         }
         if (employee?.error) {
-            toast.current.show({ severity: 'error', summary: 'Error', detail: employee?.data?.message, life: 1000 });
+            setIsOpenCreateUser(true)
+            toastMsg.error(toast, employee?.data?.message)
         }
     }, [
         employee, reset, setIsOpenCreateUser
     ])
     const copyToClipboard = () => {
-        toast.current.show({ severity: 'success', summary: 'Thành Công', detail: 'Sao chép mật khẩu thành công', life: 1000 });
+        toastMsg.success(toast, 'Sao chép mật khẩu thành công')
         copy(randomPass);
     }
     return (
         <>
             <Toast ref={toast} position="bottom-left" />
-            <Sidebar visible={isOpenCreateUser} position="right" onHide={() => setIsOpenCreateUser(false)} className="create__job">
+            <Sidebar visible={isOpenCreateUser} position="right" onHide={() => { setIsOpenCreateUser(false); reset() }}  className="create__job">
                 <div className="creat__job">
                     <div className="creat__job--title">
                         <h2>Tạo nhân viên mới</h2>
                     </div>
-                    <form className=" grid modal__creat--job no_flex" autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
+                    <form className=" grid modal__creat--job no_flex" autoComplete="off" onSubmit={handleSubmit(onSubmit)}  onKeyDown="return event.key != 'Enter';">
                         <div className="field col-12 md:col-12 grid">
                             <div className="field col-12 md:col-12">
                                 <span >Nhập tên nhân viên: <span className="warning">*</span></span>
@@ -103,6 +105,11 @@ const CreateUser = ({ isOpenCreateUser, setIsOpenCreateUser }) => {
                                         control={control}
                                         rules={{ required: true }} render={({ field, fieldState }) => (
                                             <InputText
+                                                onKeyPress={(event) => {
+                                                    if (event.key === " ") {
+                                                        event.preventDefault();
+                                                    }
+                                                }}
                                                 autoComplete="off"
                                                 id={field.name}
                                                 {...field}
