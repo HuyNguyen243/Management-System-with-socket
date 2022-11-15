@@ -1,4 +1,4 @@
-const TIME = 1000
+const TIME = 2000
 
 export const toastMsg = {
     success : (toast,messages)=>{

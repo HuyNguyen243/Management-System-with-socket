@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React,{ useState } from 'react';
 import "./App.scss";
 import { routes } from "./routes/routes";
 import { Routes, Route, BrowserRouter } from "react-router-dom"
@@ -12,37 +12,39 @@ import BtnMess from "./modules/layout/messages/BtnMess";
 
 function App() {
   const user = useSelector(state =>state.auth.token)
+  const [userIsAuth,setUserIsAuth]= useState(false)
+
+  React.useEffect(()=>{
+      setTimeout(()=>{
+        setUserIsAuth(user?.isAuth)
+      },300)
+  },[user?.isAuth])
+  
   return (
-   <BrowserRouter>
-   {
-     user?.isAuth &&
-     <>
-      <Header />
-     </>
-   }
-   
-      <Routes>
-      { 
-        user?.isAuth ?
-        routes.map((route, index) =>
-          (
-            <Route
-              key={index}
-              path={route.path}
-              element={<route.main />}
-            />
-          )
-        )
-        :
-        <>
-        <Route path="*" element={<Navigate to="/login" replace/>}/>
-        </>
-      }
-        <Route path="/login" element={<Login />}/>
-        <Route path="/forgot-password" element={<ForgotPassword />}/>
-      </Routes>
-      <BtnMess />
-   </BrowserRouter>
+    <BrowserRouter>
+      { userIsAuth && <Header /> }
+          <Routes>
+          { 
+            user?.isAuth ?
+            routes.map((route, index) =>
+              (
+                <Route
+                  key={index}
+                  path={route.path}
+                  element={<route.main />}
+                />
+              )
+            )
+            :
+            <>
+            <Route path="*" element={<Navigate to="/login" replace/>}/>
+            </>
+          }
+            <Route path="/login" element={<Login />}/>
+            <Route path="/forgot-password" element={<ForgotPassword />}/>
+          </Routes>
+          { userIsAuth && <BtnMess /> }
+    </BrowserRouter>
   );
 }
 

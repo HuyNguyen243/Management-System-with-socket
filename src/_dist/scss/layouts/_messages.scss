@@ -109,3 +109,17 @@
         right: 10px;
     }
 }
+
+.message_time{
+    position: absolute;
+    font-size: 9px;
+    bottom: 10px;
+    opacity: 0;
+}
+
+.msg__by--user:hover{
+    .message_time{
+        opacity: 1;
+        transition: 0.5s linear;
+    }
+}

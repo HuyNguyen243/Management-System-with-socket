@@ -11,15 +11,15 @@ const ForgotPassword = () => {
 
   return (
     <div className="login__container">
-        <div className="login__form">
+        <div className="login__form form__forgot-pwd">
           <div className="login__title">
             <p>Hệ thống quản lý</p>
             <p>One Touch</p>
           </div>
-          <div className="login__route">
+          <div className="login__route forgot__title">
               Khôi phục mật khẩu
           </div>
-          <form onSubmit={handleSubmit(onSubmit)}>
+          <form onSubmit={handleSubmit(onSubmit)} className="forgot__form">
               <div className="form__email">
                   <p>Email:</p>
                   <div className="form__input">
@@ -41,7 +41,7 @@ const ForgotPassword = () => {
               <div className="form__forgotpwd">
                   <p className="form__btn-forgotpwd" onClick ={()=>navigate("/login")}>Quay lại trang đăng nhập</p>
               </div>
-              <div className="form__btn-submit">
+              <div className="form__btn-submit btn_forgot">
                 <button type="submit" >Khôi phục mật khẩu</button>
               </div>
           </form>

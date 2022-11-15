@@ -78,7 +78,7 @@ const CreateCustomer = ({isOpenCreateCustomer, setIsOpenCreateCustomer}) => {
                 <div className="creat__job--title">
                     <h2>Tạo khách hàng mới</h2>
                 </div>
-                <form className=" grid modal__creat--job no_flex" onSubmit={handleSubmit(onSubmit)}>
+                <form className=" grid modal__creat--job " onSubmit={handleSubmit(onSubmit)}>
                     <div className="field col-12 md:col-12 grid">
                         <div className="field col-12 md:col-12">
                             <span htmlFor="autocomplete">Nhập tên khách hàng: <span className="warning">*</span></span>

@@ -7,29 +7,31 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import DatePicker from "./DatePicker"
 import { useNavigate, useLocation } from 'react-router';
-import { dateString } from "../../commons/dateTime"
+import {dateString} from "../../commons/dateTime"
 
-const Filter = ({ DataFilter, sortBy, sortValue, setSortBy, setSortValue, setDropDown }) => {
-    const queryParams = new URLSearchParams(window.location.search)
-    const keywordURL = queryParams.get("keyword")
-    const sort_byURL = queryParams.get("sort_by")
-    const sortValueURL = queryParams.get("sort_value")
-    const statusURL = queryParams.get("status")
-    const start_dateURL = queryParams.get("start_date")
-    const end_dateURL = queryParams.get("end_date")
-    const [isOpenFilter, setIsOpenFilter] = useState(false)
+const Filter = ({DataFilter ,sortBy, sortValue, setSortBy, setSortValue, search, setsearch}) => {
+  const queryParams = new URLSearchParams(window.location.search)
+  const keywordURL = queryParams.get("keyword")
+  const sort_byURL = queryParams.get("sort_by")
+  const sortValueURL = queryParams.get("sort_value")
+  const statusURL = queryParams.get("status")
+  const start_dateURL = queryParams.get("start_date")
+  const end_dateURL = queryParams.get("end_date")
+  const [isOpenFilter,setIsOpenFilter] = useState(false)
+  const pageURL = Number(queryParams?.get('page'))
+  const perpageURL = Number(queryParams?.get('perpage'))
 
-    const [dates, setDates] = useState(start_dateURL && end_dateURL ? [new Date(dateString(start_dateURL)), new Date(dateString(end_dateURL))] : undefined)
-    const [status, setStatus] = useState('');
-    const [keyword, setKeyWord] = useState('');
-    const location = useLocation()
-    const navigate = useNavigate()
-    const { pathname } = location
+  const [dates,setDates] = useState(start_dateURL && end_dateURL ? [new Date(dateString(start_dateURL)),new Date(dateString(end_dateURL))] : undefined)
+  const [status, setStatus] = useState('');
+  const [keyword,setKeyWord ] = useState('');
+  const location = useLocation()
+  const navigate = useNavigate()
+  const { pathname } = location
 
-    useEffect(() => {
-        if (keywordURL) {
-            setKeyWord(keywordURL)
-        }
+  useEffect(()=>{
+    if(keywordURL){
+      setKeyWord(keywordURL)
+    }
 
         if (sort_byURL) {
             setSortBy(sort_byURL)
@@ -39,17 +41,40 @@ const Filter = ({ DataFilter, sortBy, sortValue, setSortBy, setSortValue, setDro
             setSortValue(sortValueURL)
         }
 
-    }, [keywordURL, sort_byURL, setSortBy, sortValueURL, setSortValue, statusURL])
+  },[keywordURL, sort_byURL, setSortBy, sortValueURL, setSortValue, statusURL])
 
-    function convertDate(arr) {
-        const data = []
-        for (let i = 0; i < arr.length; i++) {
-            const date = new Date(arr[i]),
-                mnth = ("0" + (date.getMonth() + 1)).slice(-2),
-                day = ("0" + date.getDate()).slice(-2);
-            data.push([day, mnth, date.getFullYear()].join("-"))
-        }
-        return data;
+  function convertDate(arr) {
+      const data = []
+      for (let i = 0; i < arr.length;i++){
+        const date = new Date(arr[i]),
+        mnth = ("0" + (date.getMonth() + 1)).slice(-2),
+        day = ("0" + date.getDate()).slice(-2);
+        data.push([day, mnth, date.getFullYear()].join("-"))
+      }
+      return data;
+  }
+
+  const handleReset = ()=>{
+    setDates(undefined)
+    setStatus("")
+    setKeyWord("")
+    DataFilter({})
+    navigate({
+      pathname: pathname,
+      search: "",
+    });
+  }
+
+  useEffect(()=>{
+    let data = {}
+    if(dates?.length > 0 && dates[1]){
+        const arr = convertDate(dates)
+        data.start_date = arr[0]
+        data.end_date = arr[1]
+    }
+
+    if(status !==""){
+        data.status = status.trim()
     }
 
     useEffect(() => {
@@ -64,12 +89,59 @@ const Filter = ({ DataFilter, sortBy, sortValue, setSortBy, setSortValue, setDro
             data.status = status
         }
 
-        data.keyword = keyword
-
-        if (sortBy !== "" && sortValue !== "" && sortBy) {
-            data.sort_by = sortBy
-            data.sort_value = sortValue
+    if(Object.keys(data)?.length > 0){
+      let result = "" ;
+      Object.keys(data).forEach((item)=>{
+        result += `&${item}=${data[item]}`
+      })
+      if(result !== ""){
+        if(keyword === ""){
+          let removeKey = result.replace("keyword=","")
+          removeKey = result.replace("&keyword=","")
+          result = removeKey
         }
+        
+        const newResult = result.replace("&","?").trim()
+        setsearch(newResult)
+      }
+    }
+  },[dates, keyword, sortBy, sortValue, status, setsearch])
+
+  const sendFilter = React.useCallback(()=>{
+    let result = search
+    if(pageURL){
+      result += `&page=${pageURL}`
+    }
+    if(perpageURL){
+      result += `&perpage=${perpageURL}`
+    }
+
+    navigate({
+      pathname: pathname,
+      search: result,
+    });
+
+    DataFilter(search)
+
+  },[search, navigate, pathname, DataFilter, pageURL, perpageURL])
+
+  useEffect(()=>{
+    const timeout = setTimeout(() => {
+      sendFilter()
+    }, 700);
+
+    return () => clearTimeout(timeout);
+
+  },[sendFilter])
+
+  useEffect(() => {
+    const handleClickOutSide = (e)=>{
+      const el = document.querySelector(".page__filter")
+      if(isOpenFilter && !el?.contains(e.target)){
+        setIsOpenFilter(false)
+      }
+    }
+    window.addEventListener('mousedown', handleClickOutSide);
 
         const timeout = setTimeout(() => {
 

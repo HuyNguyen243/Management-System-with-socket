@@ -160,7 +160,7 @@ export default function Header() {
                     </Stack>
                     <div className="header__right--information">
                         <div className="information__name">
-                            <p>{user?.data?.username}</p>
+                            <p>{user?.data?.fullname}</p>
                             {user?.data?.status === UserRules.STATUS.ONLINE &&  <span className="dots_online"></span>}
                             {user?.data?.status === UserRules.STATUS.LEAVE &&  <span className="dots_busy"></span>}
                             {user?.data?.status === UserRules.STATUS.OFFLINE &&  <span className="dots_offline"></span>}

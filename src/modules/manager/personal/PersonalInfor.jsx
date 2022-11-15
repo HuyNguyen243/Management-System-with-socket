@@ -87,10 +87,10 @@ const PersonalInfor = () => {
         if(user?.data){
             const { data } = user
             if(data?.username){
-                setUserName(data?.username)
+                setUserName(data?.fullname)
             }
             if(data?.fullname){
-                setFullname(data?.fullname)
+                setFullname(data?.username)
             }
             if(data?.role){
                 setRole(data?.role)

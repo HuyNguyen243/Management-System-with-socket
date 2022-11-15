@@ -4,16 +4,14 @@ import { useDispatch } from "react-redux"
 import { customer_status,user_status } from "./status"
 import Filter from './Filter'
 import TotalTable from './TotalTable'
-import Paginate from './Paginate';
-import PerPage from "./PerPage";
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import TableTotal from "../../modules/manager/sale/workFlowManager/TableTotal"
 import TableBody from "./TableBody"
-import { getCountData } from '../../redux/tableSlice';
-
-import Button from '@mui/material/Button';
+import { Button } from 'primereact/button';
+import { paginate } from "./paginate"
 import Stack from '@mui/material/Stack';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const Table = ({
     dataTable = [],
@@ -25,9 +23,10 @@ const Table = ({
     name_btn_add,
     handleCreate
 }) => {
-    const [currentItems, setCurrentItems] = useState([]);
+    const navigate = useNavigate()
+    const location = useLocation()
+    const { pathname } = location
     const [perpage, setPerpage] = React.useState(10);
-    const [pageCount, setPageCount] = useState(0);
     const [sortBy, setSortBy] = useState("");
     const [sortValue, setSortValue] = useState("");
     const [ dropdown,setDropDown ] = useState(customer_status);
@@ -35,15 +34,44 @@ const Table = ({
     const { pathname } = location
     const dispatch = useDispatch()
     const old_Data = Array.isArray(dataTable) ? dataTable : []
+    const [currentLocation, setCurrentLocation] = useState(0);
+    const [search,setsearch ] = useState('');
 
+    const urlParams = new URLSearchParams(window.location.search);
+    const pageURL = Number(urlParams?.get('page'))
+    const perpageURL = Number(urlParams?.get('perpage'))
+
+    useEffect(()=>{
+        if(perpageURL){
+            setPerpage(perpageURL)
+        }
+        if(pageURL){
+            setCurrentLocation(pageURL * perpageURL - perpageURL)
+        }
+    },[perpageURL, pageURL])
+
+
+
+    const handleSetPage = (event) => {
+        setCurrentLocation(event.first);
+        setPerpage(event.rows);
+        let result = "";
+        if(search === ""){
+            result = `page=${event.page + 1}&perpage=${event.rows}`
+        }else{
+            result = `${search}&page=${event.page + 1}&perpage=${event.rows}`
+        }
+        navigate({
+            pathname: pathname,
+            search: result
+        })
+    }
+    
     const handleSort = (e)=>{
         setSortBy(e.currentTarget.getAttribute("data-by"))
         setSortValue(e.currentTarget.getAttribute("data-value"))
     }
 
-    useEffect(()=>{
-        dispatch(getCountData(currentItems.length))
-    },[dispatch,currentItems])
     const headerTable = (header,sort_by)=>{
         const value = typeof sort_by === "string" ? sort_by : ""
         if(header)
@@ -63,7 +91,6 @@ const Table = ({
                 </div>
             }
         </span>
-         
         </div>
     )}
     useEffect(() => {
@@ -78,7 +105,7 @@ const Table = ({
                 <TableBody rowData={rowData} item={item}/>
             )
     }
-    
+  
   return (
     <div className="page">
         {
@@ -95,22 +122,30 @@ const Table = ({
         setSortBy={setSortBy}
         setSortValue={setSortValue}
         setDropDown={dropdown}
+        search={search}
+        setsearch={setsearch}
         />
-
+        
         {
             pathname === "/workflow-management" &&
             <TableTotal data={old_Data}/>
         }
         {haveTotalTable && <TotalTable />}
         <div className="table__container">
-            <PerPage perpage={perpage} setPerpage={setPerpage}/>
+            <div className="table__perpage" >
+                {Object.keys(old_Data).length > 0 && <span>Rows per page:</span>}
+            </div>
             <DataTable
             loading={loading}
-            value={ old_Data.length > 0 ? currentItems : old_Data} 
+            value={ old_Data } 
             responsiveLayout="stack"
             breakpoint="1113px"
             onRowClick={handleRowClick}
-            lazy
+            paginator 
+            paginatorTemplate={Object.keys(old_Data).length > 0 ? paginate : false} 
+            first={currentLocation}
+            rows={perpage} 
+            onPage={handleSetPage}
             >
             {
                 old_Data?.length > 0 
@@ -139,14 +174,6 @@ const Table = ({
                 })
             }
             </DataTable>
-            <Paginate 
-                setCurrentItems={setCurrentItems} 
-                setPageCount={setPageCount} 
-                perpage={perpage}
-                dataTable={old_Data}
-                pageCount={pageCount}
-                setPerpage={setPerpage}
-            />
         </div>
     </div>
   )
