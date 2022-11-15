@@ -1,6 +1,5 @@
-import React,{ useState } from 'react';
+import React,{ useState, useRef, useEffect } from 'react';
 import Members from './Members';
-import { Avatar } from 'primereact/avatar';
 import { socket } from "../../../_services/socket";
 import { getFormattedDate } from '../../../commons/message.common';
 import {addNotifications, resetNotifications } from "../../../redux/auth/authSlice"
@@ -10,11 +9,20 @@ const BoxChat = ({isOpen, setIsOpen}) => {
   const dispatch = useDispatch()
   const [members, setMembers] = useState([])
   const [currentUser, setCurrentUser] = useState({})
-  const [currentRoom, setCurrentRoom] = useState({})
+  const [currentRoom, setCurrentRoom] = useState(undefined)
   const [messages, setMessages] = useState("")
   const [messagesOnRoom, setMessageOnRoom] = useState([])
   const [privateMemberMsg, setPrivateMemberMsg] = useState("")
   const [role, setRole] = useState("")
+  const messageEndRef = useRef(null);
+
+  useEffect(() => {
+      scrollToBottom();
+  }, [messagesOnRoom]);
+
+  const scrollToBottom = () => {
+    messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }
 
   const joinRoom = React.useCallback((room) => {
       socket.emit("join-room", room)
@@ -23,7 +31,9 @@ const BoxChat = ({isOpen, setIsOpen}) => {
   },[dispatch, setCurrentRoom])
 
   socket.off('notifications').on('notifications',(room)=>{
-      dispatch(addNotifications(room))
+      if(room !== currentRoom){
+        dispatch(addNotifications(room))
+      }
   })
 
   socket.off('room-messages').on('room-messages', (payload)=>{
@@ -31,7 +41,7 @@ const BoxChat = ({isOpen, setIsOpen}) => {
   })
 
   const handleSubmit = (e)=>{
-    e.preventDefault()
+    e?.preventDefault()
     if(messages !== ""){
       const today = new Date()
       const minutes = today.getMinutes() < 10 ? "0" + today.getMinutes() : today.getMinutes()
@@ -42,6 +52,20 @@ const BoxChat = ({isOpen, setIsOpen}) => {
       setMessages("")
     }
   }
+
+  useEffect(() => {
+    const submitForm= (event)=>{
+      const btn = document.querySelector(".btn__sendChat")
+      if(btn !== null && event.key === "Enter"){
+        event.preventDefault();
+        handleSubmit()
+      }
+    }
+    window.addEventListener("keypress",submitForm)
+    return ()=>{
+      window.removeEventListener('keypress',submitForm)
+    }
+  })
 
   const showMessages = ()=>{
     if(messagesOnRoom?.length > 0){
@@ -68,20 +92,21 @@ const BoxChat = ({isOpen, setIsOpen}) => {
                             <div className="message my-message ">
                               <p>{message?.content}</p>
                             </div>
-                            <Avatar image="images/default_avatar.jpeg" size="small" shape="circle" className="my-mess"/>
+                            <div className="chat_img my-mess" role={privateMemberMsg?.split(".")[1]} data-size="small"></div>
                             <span className="message_time">
                               {message?.time}
                             </span>
                           </>
                           :
                           <>
-                            <Avatar image="images/default_avatar.jpeg" size="small" shape="circle" className="your-mess"/>
+                            <div className="chat_img your-mess" role={privateMemberMsg?.split(".")[1]} data-size="small"></div>
                             <div className="message other-message ">
                               <p>{message?.content}</p>
                             </div>
                             <span className="message_time">
                               {message?.time}
                             </span>
+                            
                           </>
                         }
                       </div>
@@ -89,15 +114,15 @@ const BoxChat = ({isOpen, setIsOpen}) => {
                   )
                 })
               }
+              <div ref={messageEndRef} />
               </>
             }
-            
           </div>
         )
       })
     }
   }
- 
+
   return (
     <div className={`chat-container page ${!isOpen && "hidden"}`}>
       <Members 
@@ -117,7 +142,8 @@ const BoxChat = ({isOpen, setIsOpen}) => {
     <div className="chat">
       <div className="chat-header ">
         <div className="chat__close" onClick={()=>setIsOpen(false)}></div>
-        <Avatar image="images/default_avatar.jpeg" size="large" shape="circle" data="ONLINE" className="chat_img"/>
+        <div className="chat_img" data="ONLINE" role={privateMemberMsg?.split(".")[1]} ></div>
+        {currentUser?.id_system && <span className="id__me">{currentUser?.id_system}</span>}
         <div className="chat-about">
           <div className="chat-with">{privateMemberMsg}</div>
           <div className="chat-num-messages">{role}</div>
@@ -136,7 +162,7 @@ const BoxChat = ({isOpen, setIsOpen}) => {
           <textarea name="message-to-send" id="message-to-send" 
           placeholder="Type your message" rows={1} value={messages} onChange={(e)=>setMessages(e.target.value)}
           />
-          <button>
+          <button className={`${isOpen && "btn__sendChat"} ""`}>
             <img src="images/send.svg" alt=""/>
           </button>
         </form>
