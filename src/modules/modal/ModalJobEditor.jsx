@@ -3,18 +3,23 @@ import { Sidebar } from 'primereact/sidebar';
 import { Button } from 'primereact/button';
 import { InputTextarea } from 'primereact/inputtextarea';
 import { Toast } from 'primereact/toast';
-import { toastMsg } from '../../commons/toast'; 
+import { toastMsg } from '../../commons/toast';
+import { setIsOpenModalJobEditor } from '../../redux/modal/modalSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
 import copy from "copy-to-clipboard"; 
 
-const ModalJobEditor = ({isOpenJobEditor, setIsOpenJobEditor}) => {
+const ModalJobEditor = () => {
     const toast = useRef(null);
+    const dispatch = useDispatch();
     const copyToClipboard = () => {
         toastMsg.info(toast,'Copy success')
         copy("any text");
     }
+    const isOpenJobEditor = useSelector(state => state.modal.isOpenModalJobEditor)
+    
   return (
-    <Sidebar visible={isOpenJobEditor} position="right" onHide={() => setIsOpenJobEditor(false)} className="create__job">
+    <Sidebar visible={isOpenJobEditor} position="right" onHide={() => dispatch(setIsOpenModalJobEditor(false))} className="create__job">
         <Toast ref={toast} position="bottom-right"/>
         <div className="information__job">
             <div className="grid">
@@ -117,7 +122,7 @@ const ModalJobEditor = ({isOpenJobEditor, setIsOpenJobEditor}) => {
                 <div className="btn_modal field col-12 md:col-12 grid ">
                     <div className="field col-12 md:col-12">
                         <span className="p-float-label">
-                            <Button label="Hủy bỏ" className="p-button-outlined cancel--btn" onClick={()=>{setIsOpenJobEditor(false)} }/>
+                            <Button label="Hủy bỏ" className="p-button-outlined cancel--btn" onClick={()=>{dispatch(setIsOpenModalJobEditor(false))} }/>
                         </span>
                     </div>
                  

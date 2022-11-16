@@ -3,16 +3,17 @@ import Table from "../../../components/table/Table";
 import { table_employee_overview } from '../../../components/table/header_table';
 import { dashboardEmployeeRequest } from '../../../redux/overviewEmployee/actionEmployee';
 import { useDispatch, useSelector } from "react-redux"
-import CreateUser from '../../modal/CreateUser';
 import { dataParse } from '../admin/dataParse';
-import InformationUser from '../../modal/InformationUser';
+import { 
+    setIsOpenModalCreateUser,
+    setIsOpenModalInformationUser,
+    setDataModalInformationUser,
+ } from '../../../redux/modal/modalSlice';
+ 
 const EmployeeOverview = () => {
 
     const dispatch = useDispatch()
     const employees = useSelector(state => state.employee.dashboard)
-    const [isOpenCreateUser, setIsOpenCreateUser] = useState(false)
-    const [isOpenInformationUser, setIsOpenInformationUser] = useState(false)
-    const [rowdata, setRowData] = useState(null)
     const [filter, setFilter] = useState("")
 
     useEffect(() => {
@@ -24,12 +25,12 @@ const EmployeeOverview = () => {
     }
 
     const handleRowClick = (rowData) => {
-        setIsOpenInformationUser(true)
-        setRowData(rowData)
+        dispatch(setIsOpenModalInformationUser(true))
+        dispatch(setDataModalInformationUser(rowData))
     }
 
     const handleCreate = () => {
-        setIsOpenCreateUser(true)
+        dispatch(setIsOpenModalCreateUser(true))
     }
 
     return (
@@ -43,13 +44,6 @@ const EmployeeOverview = () => {
                 handleRowClick={handleRowClick}
                 name_btn_add={"Thêm nhân viên"}
                 handleCreate={handleCreate}
-            />
-            <CreateUser isOpenCreateUser={isOpenCreateUser} setIsOpenCreateUser={setIsOpenCreateUser} />
-            <InformationUser
-                isOpenInformationUser={isOpenInformationUser}
-                setIsOpenInformationUser={setIsOpenInformationUser}
-                setIsOpenCreateUser={setIsOpenCreateUser}
-                rowdata={rowdata}
             />
         </>
 

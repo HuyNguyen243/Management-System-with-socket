@@ -9,10 +9,11 @@ import { AutoComplete } from 'primereact/autocomplete';
 import { InputNumber } from 'primereact/inputnumber';
 import { useForm, Controller } from 'react-hook-form';
 import { classNames } from 'primereact/utils';
+import { setIsOpenModalUpdateJob } from "../../redux/modal/modalSlice";
+import {type_files, type_status, type_jobs, names} from "./dropDown";
+import { useDispatch, useSelector } from 'react-redux';
 
-import {type_files, type_status, type_jobs, names} from "./dropDown"
-
-const UpdateInformationJob = ({ isOpenUpdateInformationJob, setIsOpenUpdateInformationJob }) => {
+const UpdateInformationJob = () => {
     const defaultValues = {
         type_job: null,
         nameCustomer: '',
@@ -32,6 +33,9 @@ const UpdateInformationJob = ({ isOpenUpdateInformationJob, setIsOpenUpdateInfor
     }
     const { control, formState: { errors }, handleSubmit, reset } = useForm({ defaultValues });
     const [filteredNameCustomers, setFilteredNameCustomers] = React.useState(null);
+    const isOpenUpdateInformationJob = useSelector(state=> state.modal.isOpenModalUpdateJob)
+    // const rowdata = useSelector(state => state.modal.dataModalUpdateJob)
+    const dispatch = useDispatch()
 
     const searchName = (event) => {
         setTimeout(() => {
@@ -57,7 +61,7 @@ const UpdateInformationJob = ({ isOpenUpdateInformationJob, setIsOpenUpdateInfor
     };
 
   return (
-    <Sidebar visible={isOpenUpdateInformationJob} position="right" onHide={() => setIsOpenUpdateInformationJob(false)} className="create__job">
+    <Sidebar visible={isOpenUpdateInformationJob} position="right" onHide={() => dispatch(setIsOpenModalUpdateJob(false))} className="create__job">
         <div className="creat__job">
             <div className="creat__job--title">
                 <div className="grid">
@@ -316,7 +320,7 @@ const UpdateInformationJob = ({ isOpenUpdateInformationJob, setIsOpenUpdateInfor
                 <div className="btn_modal field col-12 md:col-12 grid">
                     <div className="field col-12 md:col-6">
                         <span className="p-float-label">
-                            <Button label="Hủy bỏ" className="p-button-outlined cancel--btn" onClick={()=>{setIsOpenUpdateInformationJob(false);reset()} }/>
+                            <Button label="Hủy bỏ" className="p-button-outlined cancel--btn" onClick={()=>{dispatch(setIsOpenModalUpdateJob(false));reset()} }/>
                         </span>
                     </div>
                     <div className="field col-12 md:col-6">

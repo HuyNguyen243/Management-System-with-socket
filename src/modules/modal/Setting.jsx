@@ -5,8 +5,13 @@ import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 import { useForm, Controller } from 'react-hook-form';
 import { classNames } from 'primereact/utils';
+import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { setIsOpenModalSetting } from '../../redux/modal/modalSlice';
 
-const Setting = ({isOpenSetting, setIsOpenSetting}) => {
+const Setting = () => {
+    const isOpenSetting = useSelector(state => state.modal.isOpenModalSetting)
+    const dispatch = useDispatch()
     const defaultValues = {
         text_1: '',
         text_2: "",
@@ -22,7 +27,7 @@ const Setting = ({isOpenSetting, setIsOpenSetting}) => {
     };
 
   return (
-    <Sidebar visible={isOpenSetting} position="right" onHide={() => setIsOpenSetting(false)} className="create__job">
+    <Sidebar visible={isOpenSetting} position="right" onHide={() => dispatch(setIsOpenModalSetting(false))} className="create__job">
         <div className="creat__job">
             <div className="creat__job--title">
                 <h2>Cài đặt</h2>
@@ -75,7 +80,9 @@ const Setting = ({isOpenSetting, setIsOpenSetting}) => {
                 <div className="btn_modal field col-12 md:col-12 grid position_bottom">
                     <div className="field col-12 md:col-6">
                         <span className="p-float-label">
-                            <Button label="Hủy bỏ" className="p-button-outlined cancel--btn" onClick={()=>{setIsOpenSetting(false);reset()} }/>
+                            <Button label="Hủy bỏ" className="p-button-outlined cancel--btn" 
+                            onClick={()=>{dispatch(setIsOpenModalSetting(false));reset()} }
+                            />
                         </span>
                     </div>
                     <div className="field col-12 md:col-6">

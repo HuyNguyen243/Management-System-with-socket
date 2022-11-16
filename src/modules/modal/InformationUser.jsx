@@ -18,8 +18,13 @@ import { useForm } from "react-hook-form";
 import { Dropdown } from 'primereact/dropdown';
 import { role } from "./dropDown";
 import { editEmployeeRequest, deleteEmployeeRequest } from "../../redux/overviewEmployee/actionEmployee";
-const InformationUser = ({ isOpenInformationUser, setIsOpenInformationUser, rowdata, setIsOpenCreateUser }) => {
-    const [isSubmit, setIsSubmit] = useState(false);
+import { 
+    setIsOpenModalCreateUser,
+    setIsOpenModalInformationUser,
+ } from '../../redux/modal/modalSlice';
+
+
+const InformationUser = () => {
     const [userRole, setUserRole] = useState(null);
     const [isEditUsername, setEditUsername] = useState(false);
     const [isEditPhone, setEditPhone] = useState(false);
@@ -27,7 +32,9 @@ const InformationUser = ({ isOpenInformationUser, setIsOpenInformationUser, rowd
     const [isEditRole, setEditRole] = useState(false);
     const putUser = useSelector(state => state.employee?.edituser)
     const deleteUser = useSelector(state => state.employee?.deleteuser)
-
+    const isOpenInformationUse = useSelector(state => state.modal?.isOpenModalInformationUser)
+    const rowdata = useSelector(state => state.modal?.dataModalInformationUser)
+    
     const dispatch = useDispatch()
     const { register, setValue, handleSubmit, formState: { errors }, reset } = useForm();
     const toast = useRef(null);
@@ -35,28 +42,24 @@ const InformationUser = ({ isOpenInformationUser, setIsOpenInformationUser, rowd
 
     useEffect(() => {
         if (putUser?.data) {
-            setIsOpenInformationUser(false)
+            dispatch(setIsOpenModalInformationUser(false))
             toastMsg.success(toast, 'Cập nhật thành công')
         }
 
         if (putUser?.error) {
             toastMsg.error(toast, 'Cập nhật thất bại')
         }
-
-
-
-    }, [putUser, setIsOpenInformationUser])
+    }, [putUser, dispatch])
 
     useEffect(() => {
         if (deleteUser?.data) {
-            setIsOpenInformationUser(false)
+            dispatch(setIsOpenModalInformationUser(false))
             toastMsg.success(toast, 'Xóa khách hàng thành công')
         }
-
         if (deleteUser?.error) {
             toastMsg.error(toast, 'Xóa khách hàng thất bại')
         }
-    }, [deleteUser, setIsOpenInformationUser])
+    }, [deleteUser, dispatch])
 
     useEffect(() => {
         if (rowdata?.data) {
@@ -78,7 +81,6 @@ const InformationUser = ({ isOpenInformationUser, setIsOpenInformationUser, rowd
     }, [rowdata, setValue])
 
     const onSubmit = (data) => {
-        setIsSubmit(true)
         delete data["births"];
         delete data["start_day"];
         const formDataPut = {}
@@ -99,8 +101,7 @@ const InformationUser = ({ isOpenInformationUser, setIsOpenInformationUser, rowd
     };
 
     const handleCloseModal = () => {
-        setIsOpenInformationUser(false)
-        setIsSubmit(false)
+        dispatch(setIsOpenModalInformationUser(false))
         setEditEmail(false)
         setEditPhone(false)
         setEditRole(false)
@@ -128,9 +129,9 @@ const InformationUser = ({ isOpenInformationUser, setIsOpenInformationUser, rowd
         myConfirm.show();
     }
     const handleCreateNewUser = () => {
-        setIsOpenInformationUser(false)
+        dispatch(setIsOpenModalInformationUser(false))
         setTimeout(() => {
-            setIsOpenCreateUser(true)
+            dispatch(setIsOpenModalCreateUser(true))
         }, 100)
     }
 
@@ -142,7 +143,7 @@ const InformationUser = ({ isOpenInformationUser, setIsOpenInformationUser, rowd
         <>
             <ConfirmPopup />
             <Toast ref={toast} position="bottom-left" />
-            <Sidebar visible={isOpenInformationUser} position="right" onHide={handleCloseModal} className="create__job">
+            <Sidebar visible={isOpenInformationUse} position="right" onHide={handleCloseModal} className="create__job">
                 <div className="creat__job">
                     <div className="creat__job--title flex justify-content-between">
                         <h2>Thông tin nhân viên </h2>

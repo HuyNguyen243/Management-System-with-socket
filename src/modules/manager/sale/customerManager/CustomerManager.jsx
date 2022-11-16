@@ -1,18 +1,17 @@
 import React,{ useState,useEffect } from 'react'
 import Table from "../../../../components/table/Table";
 import { table_customer_management } from '../../../../components/table/header_table';
-import CreateCustomer from '../../../modal/CreateCustomer';
 import { saleCustomerRequest } from '../../../../redux/sale/action';
 import { useDispatch, useSelector } from 'react-redux';
 import { dataParse } from './dataParse';
-import InformationCustomer from "../../../modal/InformationCustomer";
-import { overlay } from "../../../../commons/overlay"
+import { 
+  setIsOpenModalCreateCustomer,
+  setIsOpenModalInformationCustomer,
+  setDataModalInformationCustomer,
+ } from '../../../../redux/modal/modalSlice';
 
 const CustomerManager = () => {
   const dispatch = useDispatch()
-  const [isOpenCreateCustomer,setIsOpenCreateCustomer] = useState(false)
-  const [isOpenInformationCustomer, setIsOpenInformationCustomer] = useState(false)
-  const [rowdata, setRowData] = useState(null)
   const customers = useSelector(state=>state.sale.customers)
   const [filter,setFilter] = useState("")
   
@@ -20,25 +19,16 @@ const CustomerManager = () => {
     dispatch(saleCustomerRequest(filter))
   },[dispatch,filter])
 
-  useEffect(()=>{
-      if(isOpenCreateCustomer || isOpenInformationCustomer){
-        overlay.disable()
-      }else{
-        overlay.enable()
-      }
-  })
-
   const DataFilter = (data)=>{
     setFilter(data)
   }
 
   const handleRowClick = (rowData)=>{
-    setIsOpenInformationCustomer(true)
-    setRowData(rowData)
+    dispatch(setIsOpenModalInformationCustomer(true))
+    dispatch(setDataModalInformationCustomer(rowData))
   }
-
   const handleCreate = ()=>{
-    setIsOpenCreateCustomer(true)
+    dispatch(setIsOpenModalCreateCustomer(true))
   }
   
   return (
@@ -52,12 +42,6 @@ const CustomerManager = () => {
       handleRowClick={handleRowClick}
       name_btn_add={"tạo khách hàng mới"}
       handleCreate={handleCreate}
-      />
-      <CreateCustomer isOpenCreateCustomer={isOpenCreateCustomer} setIsOpenCreateCustomer={setIsOpenCreateCustomer} />
-      <InformationCustomer 
-        isOpenInformationCustomer={isOpenInformationCustomer} 
-        setIsOpenInformationCustomer={setIsOpenInformationCustomer} 
-        rowdata={rowdata}
       />
     </>
   )

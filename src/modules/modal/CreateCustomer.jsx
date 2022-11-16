@@ -15,11 +15,12 @@ import { getCountries } from '../../commons/getCountry';
 
 import { EMAIL_REGEX, PHONE_REGEX } from '../../constants';
 import { searchDropdown } from '../../commons/searchDropDown';
-import { toastMsg } from '../../commons/toast'; 
+import { toastMsg } from '../../commons/toast';
+import { setIsOpenModalCreateCustomer } from '../../redux/modal/modalSlice';
 
-const CreateCustomer = ({isOpenCreateCustomer, setIsOpenCreateCustomer}) => {
+const CreateCustomer = () => {
     const toast = useRef(null);
-
+    const isOpenCreateCustomer = useSelector(state => state.modal.isOpenModalCreateCustomer)
     const dispatch = useDispatch()
     const defaultValues = {
         fullname: '',
@@ -46,13 +47,13 @@ const CreateCustomer = ({isOpenCreateCustomer, setIsOpenCreateCustomer}) => {
     useEffect(()=>{
         if(customer?.data){
             reset();
-            setIsOpenCreateCustomer(false)
+            dispatch(setIsOpenModalCreateCustomer(false))
             toastMsg.success(toast,'Tạo khách hàng mới thành công')
         }
         if(customer?.error){
             toastMsg.error(toast,'Tạo khách hàng mới thất bại')
         }
-    },[customer,reset,setIsOpenCreateCustomer])
+    },[customer,reset,dispatch])
 
     const onSubmit = (data) => {
         if(Object.keys(errors).length === 0){
@@ -73,7 +74,7 @@ const CreateCustomer = ({isOpenCreateCustomer, setIsOpenCreateCustomer}) => {
   return (
     <>
         <Toast ref={toast} position="bottom-left"/>
-        <Sidebar visible={isOpenCreateCustomer} position="right" onHide={() => setIsOpenCreateCustomer(false)} className="create__job">
+        <Sidebar visible={isOpenCreateCustomer} position="right" onHide={() => dispatch(setIsOpenModalCreateCustomer(false))} className="create__job">
             <div className="creat__job">
                 <div className="creat__job--title">
                     <h2>Tạo khách hàng mới</h2>
@@ -183,7 +184,9 @@ const CreateCustomer = ({isOpenCreateCustomer, setIsOpenCreateCustomer}) => {
                     <div className="btn_modal field col-12 md:col-12 grid position_bottom">
                         <div className="field col-12 md:col-6">
                             <span className="p-float-label">
-                                <Button label="Hủy bỏ" className="p-button-outlined cancel--btn" onClick={()=>{setIsOpenCreateCustomer(false);reset()} }/>
+                                <Button label="Hủy bỏ" className="p-button-outlined cancel--btn" 
+                                onClick={()=>{dispatch(setIsOpenModalCreateCustomer(false));reset()} }
+                                />
                             </span>
                         </div>
                         <div className="field col-12 md:col-6">
