@@ -114,3 +114,8 @@ export const CustomerRules = {
         CANCEL: "CANCEL",
     },
 };
+
+export const NAME_ROOM = {
+    USER: "USER",
+    GROUP: "GROUP",
+}

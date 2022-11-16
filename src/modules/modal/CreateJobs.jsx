@@ -13,8 +13,13 @@ import { saleCustomerRequest } from "../../redux/sale/action";
 import { type_files, type_jobs } from "./dropDown"
 import { useDispatch, useSelector } from 'react-redux';
 import { dataParseCustomer } from '../manager/jobs/dataParse';
+import { dataParse } from '../manager/jobs/dataParse';
+import { 
+    setIsOpenModalCreateJob,
+    setIsOpenModalCreateCustomer,
+ } from '../../redux/modal/modalSlice';
 
-const CreateJobs = ({ isOpenCreateJob, setIsOpenCreateJob, setIsOpenCreateCustomer }) => {
+const CreateJobs = () => {
     const defaultValues = {
         type_job: null,
         nameCustomer: '',
@@ -33,6 +38,7 @@ const CreateJobs = ({ isOpenCreateJob, setIsOpenCreateJob, setIsOpenCreateCustom
     const [customerSelect, setCustomerSelect] = React.useState(null);
     const customers = useSelector(state => state.sale.customers)
     let minDate = new Date();
+    const isOpenCreateJob = useSelector(state => state.modal.isOpenModalCreateJob)
 
     const dispatch = useDispatch()
     let customerName = dataParseCustomer(customers?.data)
@@ -67,14 +73,14 @@ const CreateJobs = ({ isOpenCreateJob, setIsOpenCreateJob, setIsOpenCreateCustom
     };
 
     const handleCreateNewCustomer = () => {
-        setIsOpenCreateJob(false)
+        dispatch(setIsOpenModalCreateJob(false))
         setTimeout(() => {
-            setIsOpenCreateCustomer(true)
+            dispatch(setIsOpenModalCreateCustomer(true))
         }, 100)
     }
 
     return (
-        <Sidebar visible={isOpenCreateJob} position="right" onHide={() => setIsOpenCreateJob(false)} className="create__job">
+        <Sidebar visible={isOpenCreateJob} position="right" onHide={() => dispatch(setIsOpenModalCreateJob(false))} className="create__job">
             <div className="creat__job">
                 <div className="creat__job--title">
                     <h2>Tạo công việc mới</h2>
@@ -258,7 +264,7 @@ const CreateJobs = ({ isOpenCreateJob, setIsOpenCreateJob, setIsOpenCreateCustom
                     <div className="btn_modal field col-12 md:col-12 grid">
                         <div className="field col-12 md:col-6">
                             <span className="p-float-label">
-                                <Button label="Hủy bỏ" className="p-button-outlined cancel--btn" onClick={() => { setIsOpenCreateJob(false); reset() }} />
+                                <Button label="Hủy bỏ" className="p-button-outlined cancel--btn" onClick={() => { dispatch(setIsOpenModalCreateJob(false)); reset() }} />
                             </span>
                         </div>
                         <div className="field col-12 md:col-6">

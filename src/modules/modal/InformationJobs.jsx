@@ -4,19 +4,22 @@ import { Button } from 'primereact/button';
 import { InputTextarea } from 'primereact/inputtextarea';
 import { Toast } from 'primereact/toast';
 import { toastMsg } from '../../commons/toast'; 
+import copy from "copy-to-clipboard";
+import { setIsOpenInformationJob } from '../../redux/modal/modalSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
-import copy from "copy-to-clipboard"; 
-
-const InformationJobs = ({isOpenInformationJob, setIsOpenInformationJob}) => {
+const InformationJobs = () => {
     const toast = useRef(null);
-    
+    const dispatch = useDispatch()
+    const isOpenInformationJob = useSelector(state => state.modal.isOpenInformationJob)
+
     const copyToClipboard = () => {
         toastMsg.info(toast,'Copy success')
         copy("any text");
     }
-
+    
   return (
-    <Sidebar visible={isOpenInformationJob} position="right" onHide={() => setIsOpenInformationJob(false)} className="create__job">
+    <Sidebar visible={isOpenInformationJob} position="right" onHide={() => dispatch(setIsOpenInformationJob(false))} className="create__job">
         <Toast ref={toast} position="bottom-right"/>
         <div className="information__job">
             <div className="creat__job--title">
@@ -107,7 +110,7 @@ const InformationJobs = ({isOpenInformationJob, setIsOpenInformationJob}) => {
                 <div className="btn_modal field col-12 md:col-12 grid position_bottom">
                     <div className="field col-12 md:col-12">
                         <span className="p-float-label">
-                            <Button label="Hủy bỏ" className="p-button-outlined cancel--btn" onClick={()=>{setIsOpenInformationJob(false)} }/>
+                            <Button label="Hủy bỏ" className="p-button-outlined cancel--btn" onClick={()=>{dispatch(setIsOpenInformationJob(false))} }/>
                         </span>
                     </div>
                  

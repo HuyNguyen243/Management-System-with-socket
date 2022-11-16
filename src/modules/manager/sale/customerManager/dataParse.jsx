@@ -8,9 +8,7 @@ export const dataParse = (data)=>{
                 _create_at: item?._create_at,
                 status: item?.status,
                 information: item?.information,
-                list_jobs: item?.list_jobs,
-                _id: item?._id,
-                _modified_at: item?._modified_at
+                list_jobs: item?.list_jobs || {},
             }
             return newobject
         })

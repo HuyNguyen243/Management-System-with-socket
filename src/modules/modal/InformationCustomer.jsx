@@ -21,15 +21,16 @@ import { searchDropdown } from '../../commons/searchDropDown';
 import { toastMsg } from '../../commons/toast'; 
 import { UserRules } from '../../constants';
 import copy from "copy-to-clipboard"; 
+import { setIsOpenModalInformationCustomer } from '../../redux/modal/modalSlice';
 
-const InformationCustomer = ({isOpenInformationCustomer, setIsOpenInformationCustomer, rowdata}) => {
+const InformationCustomer = () => {
     const [customerStatus, setCustomerStatus] = useState(null);
     const [listJobs, setlistJobs] = useState([]);
-
+    const rowdata = useSelector(state=>state.modal.dataModalInformationCustomer)
     const putCustomer = useSelector(state =>state.sale.editcustomer)
     const deleteCustomer = useSelector(state =>state.sale.deletecustomer)
+    const isOpenInformationCustome = useSelector(state =>state.modal.isOpenModalInformationCustomer)
     const user = useSelector(state=> state.auth.user)
-
     const [cities,setCities] = React.useState(null);
     const [filteredCity, setFilteredCity] = React.useState(null); 
     const [countries,setCountries] =React.useState(null)
@@ -41,7 +42,7 @@ const InformationCustomer = ({isOpenInformationCustomer, setIsOpenInformationCus
 
     useEffect(() => {
         if(putCustomer?.data){
-            setIsOpenInformationCustomer(false)
+            dispatch(setIsOpenModalInformationCustomer(false))
             toastMsg.success(toast,'Cập nhật thành công')
         }
 
@@ -50,18 +51,18 @@ const InformationCustomer = ({isOpenInformationCustomer, setIsOpenInformationCus
         }
 
 
-    },[putCustomer, setIsOpenInformationCustomer ])
+    },[putCustomer, dispatch ])
 
     useEffect(() => {
         if(deleteCustomer?.data){
-            setIsOpenInformationCustomer(false)
+            dispatch(setIsOpenModalInformationCustomer(false))
             toastMsg.success(toast,'Xóa khách hàng thành công')
         }
         
         if(deleteCustomer?.error){
             toastMsg.success(toast,'Xóa khách hàng thất bại')
         }
-    },[ deleteCustomer, setIsOpenInformationCustomer ])
+    },[ deleteCustomer, dispatch ])
     useEffect(() => {
         const getcountries = new getCountries()
         getcountries.get().then(data => setCountries(data));
@@ -96,7 +97,7 @@ const InformationCustomer = ({isOpenInformationCustomer, setIsOpenInformationCus
     }
 
     const onSubmit = (data) => {
-        const result = Object.assign(rowdata.data,{},{
+        const result = {
             fullname : data.fullname,
             information: {
                 phone : data.phone,
@@ -109,8 +110,11 @@ const InformationCustomer = ({isOpenInformationCustomer, setIsOpenInformationCus
                 }
             },
             status: customerStatus?.code,
-            _modified_at: new Date(Date.now())
-        })
+            create_by: rowdata?.data?.create_by,
+            id_system: rowdata?.data?.id_system,
+            list_jobs: rowdata?.data?.list_jobs,
+            _create_at: rowdata?.data?._create_at,
+        }
         data.status = customerStatus?.code
         const formData = {
             data: data,
@@ -121,7 +125,7 @@ const InformationCustomer = ({isOpenInformationCustomer, setIsOpenInformationCus
     };
 
     const handleCloseModal = ()=>{
-        setIsOpenInformationCustomer(false)
+        dispatch(setIsOpenModalInformationCustomer(false))
         reset()
     }
 
@@ -152,7 +156,7 @@ const InformationCustomer = ({isOpenInformationCustomer, setIsOpenInformationCus
     <>
         <ConfirmPopup />
         <Toast ref={toast} position="bottom-left"/>
-        <Sidebar visible={isOpenInformationCustomer} position="right" onHide={handleCloseModal} className="create__job">
+        <Sidebar visible={isOpenInformationCustome} position="right" onHide={handleCloseModal} className="create__job">
             <div className="creat__job">
                 <div className="creat__job--title flex justify-content-between" style={{marginRight: "10px"}}>
                     <h2>Thông tin khách hàng </h2>

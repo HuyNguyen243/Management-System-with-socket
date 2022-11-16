@@ -9,12 +9,16 @@
     background: $color-white;
     box-shadow: 3px 4px 14px rgb(0 0 0 / 23%);
     border-radius: 0 0 10px 10px;
+
+.mess_notification{
     max-height: 300px;
+    overflow-y: auto;
+}
 }
 
 .notification-message__block{
     height: 100%;
-    overflow: auto;
+    border-bottom: 1px solid $color-border-input;
 }
 
 .notification-message__title{
@@ -56,15 +60,28 @@
     -webkit-line-clamp: 2;
 }
 
+.notification-message__note.active{
+    font-weight: bold;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    white-space: nowrap;
+    max-width: 100%;
+}
+
 .notification-message__i{
     display: flex;
     justify-content: space-between;
 }
 
 .notification-message_item{
-    border-bottom: 1px solid $color-border-input;
     padding: 5px 10px;
     cursor: pointer;
+    width: 100%;
+}
+
+.notification-message__it.active{
+    background-color: $color-input;
 }
 
 .notification-message__it:hover{

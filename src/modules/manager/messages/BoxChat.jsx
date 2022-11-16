@@ -2,8 +2,14 @@ import React,{ useState, useRef, useEffect } from 'react';
 import Members from './Members';
 import { socket } from "../../../_services/socket";
 import { getFormattedDate } from '../../../commons/message.common';
+import { NAME_ROOM } from '../../../constants';
+import { timeAgo } from '../../../commons/message.common';
+import { useDispatch, useSelector } from 'react-redux';
+import { setIsOpenChat } from '../../../redux/messages/messageSlice';
+import { storage } from '../../../_services/sesionStorage';
+import { ROOM_SESSION_MESSAGES } from '../../../constants';
 
-const BoxChat = ({isOpen, setIsOpen}) => {
+const BoxChat = () => {
     const [members, setMembers] = useState([])
     const [currentUser, setCurrentUser] = useState({})
     const [currentRoom, setCurrentRoom] = useState(undefined)
@@ -12,6 +18,8 @@ const BoxChat = ({isOpen, setIsOpen}) => {
     const [privateMemberMsg, setPrivateMemberMsg] = useState("")
     const [role, setRole] = useState("")
     const messageEndRef = useRef(null);
+    const isOpenChat = useSelector(state=>state.message.isOpenChat)
+    const dispatch = useDispatch()
 
     //scroll bottom
     useEffect(() => {
@@ -36,24 +44,22 @@ const BoxChat = ({isOpen, setIsOpen}) => {
         }
     })
     //------------------------------
-
     //GET MSG
     socket.off('room-messages').on('room-messages', (payload)=>{
-        console.log(payload)
         setMessageOnRoom(payload)
+        socket.emit('rooms-by-user',currentUser?.id_system)
     })
     //------------------------------
-
+   
     //SUBMIT MESSAGE
     const handleSubmit = (e)=>{
         e?.preventDefault()
         if(messages !== ""){
-        const today = new Date()
-        const minutes = today.getMinutes() < 10 ? "0" + today.getMinutes() : today.getMinutes()
-        const hour = today.getHours() + ":" + minutes
+        const time = new Date().getTime()
         const roomId = currentRoom
         const toDayDate = getFormattedDate()
-        socket.emit('message-room', roomId, messages, currentUser?.id_system, hour, toDayDate)
+        const allmembers = [privateMemberMsg, currentUser?.id_system]
+        socket.emit('message-room', roomId, messages, currentUser?.id_system,time, toDayDate, allmembers, NAME_ROOM.USER)
         setMessages("")
         }
     }
@@ -100,7 +106,7 @@ const BoxChat = ({isOpen, setIsOpen}) => {
                                 </div>
                                 <div className="chat_img my-mess" role={privateMemberMsg?.split(".")[1]} data-size="small"></div>
                                 <span className="message_time">
-                                {message?.time}
+                                {timeAgo(message?.time)}
                                 </span>
                             </>
                             :
@@ -110,7 +116,7 @@ const BoxChat = ({isOpen, setIsOpen}) => {
                                 <p>{message?.content}</p>
                                 </div>
                                 <span className="message_time">
-                                {message?.time}
+                                {timeAgo(message?.time)}
                                 </span>
                             </>
                             }
@@ -130,8 +136,17 @@ const BoxChat = ({isOpen, setIsOpen}) => {
         }
     }
 
+    const handlecloseChat = ()=>{
+        dispatch(setIsOpenChat(false))
+        storage.delete(ROOM_SESSION_MESSAGES)
+        setCurrentRoom(undefined)
+        setRole("")
+        setPrivateMemberMsg("")
+        setMessageOnRoom([])
+    }
+
   return (
-    <div className={`chat-container page ${!isOpen && "hidden"}`}>
+    <div className={`chat-container page ${!isOpenChat && "hidden"}`}>
         <Members 
             members={members} 
             setCurrentUser={setCurrentUser} 
@@ -148,7 +163,7 @@ const BoxChat = ({isOpen, setIsOpen}) => {
 
     <div className="chat">
         <div className="chat-header ">
-            <div className="chat__close" onClick={()=>setIsOpen(false)}></div>
+            <div className="chat__close" onClick={handlecloseChat}></div>
             {
                 privateMemberMsg !== "" && <div className="chat_img" data="ONLINE" role={privateMemberMsg?.split(".")[1]} ></div>
             }
@@ -171,7 +186,7 @@ const BoxChat = ({isOpen, setIsOpen}) => {
             <textarea name="message-to-send" id="message-to-send" 
             placeholder="Type your message" rows={1} value={messages} onChange={(e)=>setMessages(e.target.value)}
             />
-            <button className={`${isOpen && "btn__sendChat"} ""`}>
+            <button className={`${isOpenChat && "btn__sendChat"} ""`}>
                 <img src="images/send.svg" alt=""/>
             </button>
             </form>

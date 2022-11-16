@@ -57,3 +57,17 @@ export const dateString = (date)=>{
         return result
     }
 }
+
+export const timezoneToDate = (date)=>{
+    console.log(date)
+    if(date){
+        let newDate = new Date(date);
+        const arr = newDate.toLocaleString().split(",");
+        const newArr = arr[0].split("/");
+     
+        const month = newArr[0] <= 9 ? "0" + newArr[0] : newArr[0];
+        const day = newArr[1] <= 9 ? "0" + newArr[1] : newArr[1];
+        const year = newArr[2];
+        return day + "/" + month + "/" + year
+    }
+}

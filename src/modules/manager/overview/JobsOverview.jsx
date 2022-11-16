@@ -21,6 +21,20 @@ const JobsOverview = () => {
     const jobs = useSelector(state => state.jobs.dashboard)
     const dispatch = useDispatch()
 
+import React from 'react'
+import Table from "../../../components/table/Table";
+import { table_jobs_overview } from '../../../components/table/header_table';
+import { 
+  setIsOpenModalCreateJob,
+  setIsOpenModalUpdateJob,
+  setDataModalUpdateJob,
+ } from '../../../redux/modal/modalSlice';
+import { useDispatch } from 'react-redux';
+
+
+const JobsOverview = () => {
+  const dispatch = useDispatch()
+
     useEffect(()=>{
         dispatch(dashboardJobsRequest(filter))
     },[dispatch,filter])
@@ -49,14 +63,32 @@ const JobsOverview = () => {
                 handleCreate={handleCreate}
                 name_btn_add={"Tạo công việc"}
             />
-            <CreateJobs isOpenCreateJob={isOpenCreateJob} setIsOpenCreateJob={setIsOpenCreateJob} setIsOpenCreateCustomer={setIsOpenCreateCustomer} />
-            <CreateCustomer isOpenCreateCustomer={isOpenCreateCustomer} setIsOpenCreateCustomer={setIsOpenCreateCustomer} />
-            <InformationCustomer isOpenInformationCustomer={isOpenInformationCustomer} setIsOpenInformationCustomer={setIsOpenInformationCustomer} />
-            <InformationJobs isOpenInformationJob={isOpenInformationJob} setIsOpenInformationJob={setIsOpenInformationJob} />
-            <ModalJobEditor isOpenJobEditor={isOpenJobEditor} setIsOpenJobEditor={setIsOpenJobEditor} />
-            <UpdateInformationJob isOpenUpdateInformationJob={isOpenUpdateInformationJob} setIsOpenUpdateInformationJob={setIsOpenUpdateInformationJob} />
         </>
     )
+
+  const handleRowClick = (rowdata)=>{
+    dispatch(setIsOpenModalUpdateJob(true))
+    dispatch(setDataModalUpdateJob(rowdata))
+  }
+
+  const handleCreate = ()=>{
+    dispatch(setIsOpenModalCreateJob(true))
+  }
+
+  return (
+    <>
+      <Table 
+      dataTable={[]} 
+      loading ={false}
+      DataFilter={DataFilter}
+      haveTotalTable={false}
+      header={table_jobs_overview}
+      handleRowClick={handleRowClick}
+      handleCreate={handleCreate}
+      name_btn_add={"Tạo công việc"}
+      />
+    </>
+  )
 }
 
 export default JobsOverview

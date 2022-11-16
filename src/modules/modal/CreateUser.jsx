@@ -13,13 +13,14 @@ import { Dropdown } from 'primereact/dropdown';
 import copy from "copy-to-clipboard";
 import { role } from "./dropDown";
 import { toastMsg } from '../../commons/toast';
-
 import { EMAIL_REGEX, PHONE_REGEX } from '../../constants';
+import { setIsOpenModalCreateUser } from '../../redux/modal/modalSlice';
 
-const CreateUser = ({ isOpenCreateUser, setIsOpenCreateUser }) => {
+const CreateUser = () => {
     const toast = useRef(null);
     let maxDate = new Date();
     const dispatch = useDispatch()
+    const isOpenCreateUser = useSelector(state => state.modal.isOpenModalCreateUser)
     const defaultValues = {
         fullname: '',
         username: '',
@@ -59,15 +60,15 @@ const CreateUser = ({ isOpenCreateUser, setIsOpenCreateUser }) => {
     useEffect(() => {
         if (employee?.data) {
             reset();
-            setIsOpenCreateUser(false)
+            dispatch(setIsOpenModalCreateUser(false))
             toastMsg.success(toast, 'Tạo khách hàng mới thành công')
         }
         if (employee?.error) {
-            setIsOpenCreateUser(true)
+            dispatch(setIsOpenModalCreateUser(true))
             toastMsg.error(toast, employee?.data?.message)
         }
     }, [
-        employee, reset, setIsOpenCreateUser
+        employee, reset, dispatch
     ])
     const copyToClipboard = () => {
         toastMsg.success(toast, 'Sao chép mật khẩu thành công')
@@ -76,7 +77,7 @@ const CreateUser = ({ isOpenCreateUser, setIsOpenCreateUser }) => {
     return (
         <>
             <Toast ref={toast} position="bottom-left" />
-            <Sidebar visible={isOpenCreateUser} position="right" onHide={() => { setIsOpenCreateUser(false); reset() }}  className="create__job">
+            <Sidebar visible={isOpenCreateUser} position="right" onHide={() => { dispatch(setIsOpenModalCreateUser(false)); reset() }}  className="create__job">
                 <div className="creat__job">
                     <div className="creat__job--title">
                         <h2>Tạo nhân viên mới</h2>
@@ -234,7 +235,8 @@ const CreateUser = ({ isOpenCreateUser, setIsOpenCreateUser }) => {
                         <div className="btn_modal field col-12 md:col-12 grid position_bottom">
                             <div className="field col-12 md:col-6">
                                 <span className="p-float-label">
-                                    <Button label="Hủy bỏ" className="p-button-outlined cancel--btn" onClick={() => { reset(); setIsOpenCreateUser(false); }} />
+                                    <Button label="Hủy bỏ" className="p-button-outlined cancel--btn" 
+                                    onClick={() => { reset(); dispatch(setIsOpenModalCreateUser(false)); }} />
                                 </span>
                             </div>
                             <div className="field col-12 md:col-6">

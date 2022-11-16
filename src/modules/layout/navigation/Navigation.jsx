@@ -5,14 +5,15 @@ import ListItemText from '@mui/material/ListItemText';
 import List from '@mui/material/List';
 import { navButtons } from './navButtons';
 import {useNavigate, useLocation} from "react-router-dom"
-import { checkIsActive } from "../../../libs/muiDrawer"
-import Setting from '../../modal/Setting';
+import { checkIsActive } from "../../../libs/muiDrawer";
+import { useDispatch } from 'react-redux';
+import { setIsOpenModalSetting } from '../../../redux/modal/modalSlice';
 
 const Navigation = ({open, getBtnNavIsOpen}) => {
   const navigate = useNavigate()
   const location = useLocation()
   const [activeRoute,setActiveRoute] = useState([])
-  const [isOpenSetting,setIsOpenSetting] = useState(false)
+  const dispatch = useDispatch()
 
   const handleRedirect = (isRederect,route,indexElParent,item)=>{
     if(isRederect && route){
@@ -31,7 +32,7 @@ const Navigation = ({open, getBtnNavIsOpen}) => {
     }
 
     if(item?.name_image === "setting"){
-      setIsOpenSetting(true)
+      dispatch(setIsOpenModalSetting(true))
     }
 
   }
@@ -100,7 +101,6 @@ const Navigation = ({open, getBtnNavIsOpen}) => {
         ))
       }
     </List>
-      <Setting isOpenSetting={isOpenSetting} setIsOpenSetting={setIsOpenSetting} />
     </>
   )
 }
