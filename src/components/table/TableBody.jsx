@@ -9,7 +9,7 @@ import {
     USER_IS_STOPPING,
     USER_IS_OFFLINE
 } from '../../constants'
-import { formatTimeStamp, formatDate } from '../../commons/dateTime'
+import { timezoneToDate } from '../../commons/dateTime'
 
 const TableBody = ({ rowData, item }) => {
     //btn_success , btn_pending, btn_stop , normal, text-bold ,text-blue
@@ -50,11 +50,11 @@ const TableBody = ({ rowData, item }) => {
                 break;
             case ("_create_at"):
                 return (
-                    <span className="table__body-name " >{formatDate(formatTimeStamp(rowData?._create_at))}</span>
+                    <span className="table__body-name " >{timezoneToDate(rowData?._create_at)}</span>
                 )
             case ("start_day"):
                 return (
-                    <span className="table__body-name text-bold" >{formatDate(formatTimeStamp(rowData?.start_day))}</span>
+                    <span className="table__body-name text-bold" >{timezoneToDate(rowData?.start_day)}</span>
                 )
             case ("role"):
                 const role = rowData?.[item]
