@@ -161,19 +161,23 @@ export const table_payment_managerment = [
 
 export const table_jobs_overview = [
   {
-    name: "Id",
+    name: "Id Công việc",
     haveSort: false,
   },
   {
-      name: "Tên khách hàng",
-      haveSort: true,
+      name: "ID khách hàng",
+      haveSort: false,
   },
   {
-    name: "Saler",
-    haveSort: true,
+    name: "ID Saler",
+    haveSort: false,
   },
   {
-    name: "Số tiền nhận được",
+    name: "ID Editor",
+    haveSort: false,
+  },
+  {
+    name: "Chi phí ban đầu",
     haveSort: true,
   },
   {

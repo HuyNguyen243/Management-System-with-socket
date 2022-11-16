@@ -1,6 +1,6 @@
 import React,{ useState, useEffect } from 'react';
-import { useDispatch } from "react-redux"
-import { customer_status,user_status } from "./status"
+// import { useDispatch } from "react-redux"
+import { customer_status,user_status,jobs_status } from "./status"
 import Filter from './Filter'
 import TotalTable from './TotalTable'
 import { DataTable } from 'primereact/datatable';
@@ -29,7 +29,7 @@ const Table = ({
     const [sortBy, setSortBy] = useState("");
     const [sortValue, setSortValue] = useState("");
     const [ dropdown,setDropDown ] = useState(customer_status);
-    const dispatch = useDispatch()
+    // const dispatch = useDispatch()
     const old_Data = Array.isArray(dataTable) ? dataTable : []
     const [currentLocation, setCurrentLocation] = useState(0);
     const [search,setsearch ] = useState('');
@@ -91,10 +91,14 @@ const Table = ({
         </div>
     )}
     useEffect(() => {
-        if(pathname.split('/')[1].split('-')[0] === "employee")
+        if(pathname === "/employee-overview")
         {
             setDropDown(user_status);
         } 
+        if(pathname === "/jobs-overview")
+        {
+            setDropDown(jobs_status);
+        }
     },[pathname])
     const bodyTable = (rowData,item,table)=>{
         if(table)

@@ -3,8 +3,8 @@ export const PHONE_REGEX =  /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/
 export const IMAGE_EXTENSIONS = ['jpg', 'jpeg', 'png'];
 
 export const JOB_DONE = "Đã hoàn thành"
-export const JOB_PENDING = "Tạm hoãn"
-export const JOB_CANCEL = "Ngưng"
+export const JOB_INCOMPLETE= "Chưa hoàn thành"
+export const JOB_PENDING = "Tạm hoãn công việc"
 
 export const CUSTOMER_REQUEST_DONE = "Đang yêu cầu"
 export const CUSTOMER_REQUEST_PENDING = "Tạm hoãn yêu cầu"
