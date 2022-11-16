@@ -1,10 +1,15 @@
 import React,{ useState, useEffect } from 'react'
 import TextField from '@mui/material/TextField';
-import { useSelector } from "react-redux"
+import { useSelector,useDispatch } from "react-redux"
 import { orderIds } from '../../../commons/message.common';
 import { socket } from "../../../_services/socket";
 import { storage } from '../../../_services/sesionStorage';
 import { ROOM_SESSION_MESSAGES } from '../../../constants';
+import {
+    getCurrentUser
+} from "../../../redux/messages/messageSlice"
+import { getCurrentRoom } from '../../../redux/messages/messageSlice';
+
   //Avatar have attribute data= [ ONLINE ,LEAVING ,OFFLINE ]
   // <li></li> has className active if handle click them 
 
@@ -22,9 +27,33 @@ const Members = (
       joinRoom,
   }
   ) => {
-  const [keyword,setKeyWord] = useState("")
-  const [OldMembers,setOldMembers] = useState([])
-  const user = useSelector(state=> state.auth.user)
+    const [keyword,setKeyWord] = useState("")
+    const [OldMembers,setOldMembers] = useState([])
+    const user = useSelector(state=> state.auth.user)
+    const currentRoomByNotifications = useSelector(state=>state.message.curentRoom)
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+        if(currentRoomByNotifications){
+            setCurrentRoom(currentRoomByNotifications.room)
+            setRole(currentRoomByNotifications?.role)
+            setPrivateMemberMsg(currentRoomByNotifications?.private_member)
+            joinRoom(currentRoomByNotifications.room)
+            storage.save(ROOM_SESSION_MESSAGES,currentRoomByNotifications)
+            if(currentUser?.newMessages && Object?.keys(currentUser?.newMessages).includes(currentRoomByNotifications?.room)){
+                socket.emit("reset-notifications",currentRoomByNotifications.room, currentUser?.id_system)
+            }
+        }
+    },[currentRoomByNotifications, setCurrentRoom, setRole, setPrivateMemberMsg, joinRoom, currentUser])
+
+    useEffect(() => {
+        if(!currentRoomByNotifications){
+            setTimeout(() => {
+                dispatch(getCurrentRoom(null))
+            }, 500);
+        }
+
+    },[currentRoomByNotifications, dispatch, currentUser])
 
   ///set first room 
     useEffect(() => {
@@ -38,6 +67,7 @@ const Members = (
         payload.forEach((member)=>{
             if(member?.id_system === user?.data?.id_system){
                 setCurrentUser(member)
+                dispatch(getCurrentUser(member))
             }
         })
         setMembers(payload)
@@ -52,7 +82,6 @@ const Members = (
         }
     })
     //-----------------------------------//
-
     const handlePrivateUser = (member)=>{
         setPrivateMemberMsg(member?.id_system)
         setRole(member?.role)

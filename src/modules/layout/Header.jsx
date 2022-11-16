@@ -27,6 +27,7 @@ export default function Header() {
   const userByToken = useSelector(state=> state.auth.userByToken)
   const [isOpenNotification, setisOpenNotification] = useState(false)
   const [isOpenMessages, setisOpenMessages] = useState(false)
+  const currentUser = useSelector(state=> state.message.currentUser)
 
   useEffect(() => {
     if(token){
@@ -152,7 +153,12 @@ export default function Header() {
                   </div>
                   <div className="header__right--notification-msg">
                     <img src="../../images/chat.svg" alt=""/>
-                    <span className="count_notification">1</span>
+                    {
+                      currentUser?.newMessages && Object.keys(currentUser?.newMessages).length > 0
+                      && 
+                      <span className="count_notification">{Object.keys(currentUser?.newMessages).length}</span>
+                    }
+
                   </div>
                   <div className="header__right--profile" onClick={()=>{ setOpen(false)}}>
                     <Stack direction="row" spacing={2}>
@@ -180,7 +186,7 @@ export default function Header() {
                 }
               </div>
               <Notification isOpenNotification={isOpenNotification}/>
-              <Messages isOpenMessages={isOpenMessages}/>
+              <Messages isOpenMessages={isOpenMessages} setisOpenMessages={setisOpenMessages}/>
             </Toolbar>
           </AppBar>
           <Drawer variant="permanent" open={open} className="nav__container">

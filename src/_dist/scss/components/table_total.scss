@@ -542,3 +542,13 @@
 .p-button{
     background-color: $color-primary;
 }
+
+.empty_data{
+    text-align: center;
+    width: 100%;
+    padding: 10px;
+    text-transform: uppercase;
+    color: $color-border-input;
+    font-weight: bold;
+    font-size: 18px;
+}
