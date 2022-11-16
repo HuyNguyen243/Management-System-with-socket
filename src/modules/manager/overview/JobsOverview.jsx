@@ -24,6 +24,7 @@ const JobsOverview = () => {
     useEffect(()=>{
         dispatch(dashboardJobsRequest(filter))
     },[dispatch,filter])
+    
     const DataFilter = (data) => {
         setFilter(data)
     }
@@ -44,7 +45,7 @@ const JobsOverview = () => {
                 DataFilter={DataFilter}
                 haveTotalTable={false}
                 header={table_jobs_overview}
-                // handleRowClick={handleRowClick}
+                handleRowClick={handleRowClick}
                 handleCreate={handleCreate}
                 name_btn_add={"Tạo công việc"}
             />

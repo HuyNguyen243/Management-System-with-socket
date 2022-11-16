@@ -1,4 +1,4 @@
-import { CustomerRules, UserRules } from "../../constants";
+import { CustomerRules, UserRules, JobRules } from "../../constants";
 
 export const customer_status = [
     {
@@ -52,5 +52,28 @@ export const user_status = [
             dots: "dots_offline",
         },
         id: UserRules.STATUS.OFFLINE,
+    },
+];
+
+export const jobs_status = [
+    {
+        status: "None",
+        image: "",
+        id: "",
+    },
+    {
+        status: "Đã hoàn thành",
+        image: "icon_success",
+        id: JobRules.STATUS_JOBS.COMPLETE,
+    },
+    {
+        status: "Tạm hoãn công việc",
+        image: "icon_pending",
+        id: JobRules.STATUS_JOBS.PENDING,
+    },
+    {
+        status: "Chưa hoàn thành",
+        image: "icon_close",
+        id: JobRules.STATUS_JOBS.INCOMPLETE,
     },
 ];

@@ -11,7 +11,7 @@ import {
     JobRules,
     JOB_DONE,
     JOB_PENDING,
-    JOB_CANCEL
+    JOB_INCOMPLETE
 } from '../../constants'
 import { formatTimeStamp, formatDate } from '../../commons/dateTime'
 
@@ -56,17 +56,17 @@ const TableBody = ({ rowData, item }) => {
                 const status_jobs = rowData?.[item]
                 if (status_jobs === JobRules.STATUS_JOBS.COMPLETE) {
                     return (
-                        <span className="table__body-name btn_pending" >{JOB_PENDING}</span>
+                        <span className="table__body-name btn_success flex justify-content-center" ><img src={`../../images/icon_success.svg`} alt="" className="status__image" /> {JOB_DONE}</span>
                     )
                 }
                 if (status_jobs === JobRules.STATUS_JOBS.INCOMPLETE) {
                     return (
-                        <span className="table__body-name btn_success" >{JOB_DONE}</span>
+                        <span className="table__body-name btn_stop flex justify-content-center" ><img src={`../../images/icon_close.svg`} alt="" className="status__image" />{JOB_INCOMPLETE}</span>
                     )
                 }
                 if (status_jobs === JobRules.STATUS_JOBS.PENDING) {
                     return (
-                        <span className="table__body-name btn_stop" >{JOB_CANCEL}</span>
+                        <span className="table__body-name btn_pending flex justify-content-center" ><img src={`../../images/icon_pending.svg`} alt="" className="status__image" />{JOB_PENDING}</span>
                     )
                 }
                 break;
