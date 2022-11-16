@@ -13,7 +13,7 @@ import { saleCustomerRequest } from "../../redux/sale/action";
 import { type_files, type_jobs } from "./dropDown"
 import { useDispatch, useSelector } from 'react-redux';
 import { dataParseCustomer } from '../manager/jobs/dataParse';
-import { dataParse } from '../manager/jobs/dataParse';
+// import { dataParse } from '../manager/jobs/dataParse';
 import { 
     setIsOpenModalCreateJob,
     setIsOpenModalCreateCustomer,
