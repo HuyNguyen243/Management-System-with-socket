@@ -59,9 +59,9 @@ export const dateString = (date)=>{
 }
 
 export const timezoneToDate = (date)=>{
-    console.log(date)
     if(date){
         let newDate = new Date(date);
+        newDate.setHours(newDate.getHours() - 7);
         const arr = newDate.toLocaleString().split(",");
         const newArr = arr[0].split("/");
      
