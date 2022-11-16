@@ -10,9 +10,9 @@ import { InputNumber } from 'primereact/inputnumber';
 import { useForm, Controller } from 'react-hook-form';
 import { classNames } from 'primereact/utils';
 import { saleCustomerRequest } from "../../redux/sale/action";
-import { type_files, type_status, type_jobs } from "./dropDown"
+import { type_files, type_jobs } from "./dropDown"
 import { useDispatch, useSelector } from 'react-redux';
-import { dataParse } from '../manager/jobs/dataParse';
+import { dataParseCustomer } from '../manager/jobs/dataParse';
 
 const CreateJobs = ({ isOpenCreateJob, setIsOpenCreateJob, setIsOpenCreateCustomer }) => {
     const defaultValues = {
@@ -20,7 +20,7 @@ const CreateJobs = ({ isOpenCreateJob, setIsOpenCreateJob, setIsOpenCreateCustom
         nameCustomer: '',
         date: null,
         type_image: "",
-        count: "",
+        quality: "",
         original_link: '',
         type_file: '',
         cost: '',
@@ -32,9 +32,10 @@ const CreateJobs = ({ isOpenCreateJob, setIsOpenCreateJob, setIsOpenCreateCustom
     const [filteredNameCustomers, setFilteredNameCustomers] = React.useState(null);
     const [customerSelect, setCustomerSelect] = React.useState(null);
     const customers = useSelector(state => state.sale.customers)
+    let minDate = new Date();
 
     const dispatch = useDispatch()
-    let customerName = dataParse(customers?.data)
+    let customerName = dataParseCustomer(customers?.data)
     const searchName = (event) => {
         setTimeout(() => {
             let suggestionsList;
@@ -48,7 +49,7 @@ const CreateJobs = ({ isOpenCreateJob, setIsOpenCreateJob, setIsOpenCreateCustom
                         || list.phone.toLowerCase().startsWith(event.query.toLowerCase())
                         || list.create_by.toLowerCase().startsWith(event.query.toLowerCase())
                         || list.id_system.toLowerCase().startsWith(event.query.toLowerCase())
-                        );
+                    );
                 });
             }
             setFilteredNameCustomers(suggestionsList)
@@ -81,7 +82,7 @@ const CreateJobs = ({ isOpenCreateJob, setIsOpenCreateJob, setIsOpenCreateCustom
                 <form className=" grid modal__creat--job" onSubmit={handleSubmit(onSubmit)}>
                     <div className="field col-12 md:col-12 grid">
                         <div className="field col-12 md:col-6">
-                            <span htmlFor="autocomplete">Nhập tên khách hàng: <span className="warning">*</span></span>
+                            <span htmlFor="autocomplete">Tìm thông tin khách hàng: <span className="warning">*</span></span>
                             <span className="p-float-label">
                                 <Controller name="nameCustomer"
                                     control={control}
@@ -90,16 +91,16 @@ const CreateJobs = ({ isOpenCreateJob, setIsOpenCreateJob, setIsOpenCreateCustom
                                             suggestions={filteredNameCustomers}
                                             completeMethod={searchName} field="name"
                                             id={field.name}
-                                            value={customerSelect} onChange={(e) => {setCustomerSelect(e.value);}}
+                                            value={customerSelect} onChange={(e) => { setCustomerSelect(e.value); }}
                                             className={classNames({ 'p-invalid': fieldState.invalid })}
                                             dropdownAriaLabel="Select name"
-                                            placeholder="Nhập tên khách hàng cần tìm"
+                                            placeholder="Nhập thông tin khách hàng cần tìm"
                                         />
                                     )} />
                             </span>
                         </div>
                         <div className="field col-12 md:col-6">
-                            <span htmlFor="type_job">Mã khách hàng: <span className="warning">*</span></span>
+                            <span>Mã khách hàng: </span>
                             <span className="p-float-label pt-3 flex justify-content-between cursor__normal">
                                 <span className='font-bold'>{customerSelect?.id_system}</span>
                             </span>
@@ -122,17 +123,18 @@ const CreateJobs = ({ isOpenCreateJob, setIsOpenCreateJob, setIsOpenCreateCustom
                                     )} />
                             </span>
                         </div>
-                        
+
                         <div className="field col-12 md:col-6 create__job--calendar">
                             <span htmlFor="calendar">Chọn ngày:<span className="warning">*</span></span>
                             <span className="p-float-label ">
                                 <Controller name="date"
                                     control={control}
-                                    rules={{ required: true }} render={({ field, fieldState }) => (
+                                    rules={{ required: false }} render={({ field, fieldState }) => (
                                         <Calendar
+                                            readOnlyInput
+                                            minDate={minDate}
                                             id={field.name} className={classNames({ 'p-invalid': fieldState.invalid })}
                                             value={field.value} onChange={(e) => field.onChange(e.value)}
-                                            dateFormat="dd/mm/yy" mask="99/99/9999"
                                         />
                                     )} />
                             </span>
@@ -154,16 +156,19 @@ const CreateJobs = ({ isOpenCreateJob, setIsOpenCreateJob, setIsOpenCreateCustom
                         <div className="field col-12 md:col-3 ">
                             <span htmlFor="withoutgrouping">Số lượng: <span className="warning">*</span></span>
                             <span className="p-float-label">
-                                <Controller name="count"
+                                <Controller name="quality"
                                     control={control}
                                     rules={{ required: true }} render={({ field, fieldState }) => (
-                                        <InputNumber id="count "
-                                            inputId="withoutgrouping"
-                                            value={field.value} onChange={(e) => field.onChange(e.value)}
-                                            mode="decimal"
-                                            useGrouping={false}
+                                        <InputNumber 
+                                            onKeyPress={(event) => {
+                                                if (!/[0-9]/.test(event.key)) {
+                                                    event.preventDefault();
+                                                }
+                                            }}
+                                            autoComplete="disabled"
+                                            id={field.name}
+                                            {...field}
                                             className={classNames({ 'p-invalid': fieldState.invalid })}
-                                            placeholder="sss"
                                         />
                                     )} />
                             </span>
@@ -212,21 +217,6 @@ const CreateJobs = ({ isOpenCreateJob, setIsOpenCreateJob, setIsOpenCreateCustom
                                             useGrouping={false}
                                             className={classNames({ 'p-invalid': fieldState.invalid })}
                                             placeholder="Nhập tên"
-                                        />
-                                    )} />
-                            </span>
-                        </div>
-                        <div className="field col-12 md:col-6">
-                            <span htmlFor="employees">Trạng thái: <span className="warning">*</span></span>
-                            <span className="p-float-label">
-                                <Controller name="status"
-                                    control={control}
-                                    rules={{ required: true }} render={({ field, fieldState }) => (
-                                        <Dropdown
-                                            options={type_status}
-                                            optionLabel="name"
-                                            value={field.value} onChange={(e) => field.onChange(e.value)}
-                                            className={classNames({ 'p-invalid': fieldState.invalid }, "create__job_type")}
                                         />
                                     )} />
                             </span>

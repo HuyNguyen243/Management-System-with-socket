@@ -7,7 +7,11 @@ import {
     UserRules,
     USER_IS_ONLINE,
     USER_IS_STOPPING,
-    USER_IS_OFFLINE
+    USER_IS_OFFLINE,
+    JobRules,
+    JOB_DONE,
+    JOB_PENDING,
+    JOB_CANCEL
 } from '../../constants'
 import { formatTimeStamp, formatDate } from '../../commons/dateTime'
 
@@ -48,13 +52,31 @@ const TableBody = ({ rowData, item }) => {
                     )
                 }
                 break;
-            case ("_create_at"):
-                return (
-                    <span className="table__body-name " >{formatDate(formatTimeStamp(rowData?._create_at))}</span>
-                )
+            case ("status_jobs"):
+                const status_jobs = rowData?.[item]
+                if (status_jobs === JobRules.STATUS_JOBS.COMPLETE) {
+                    return (
+                        <span className="table__body-name btn_pending" >{JOB_PENDING}</span>
+                    )
+                }
+                if (status_jobs === JobRules.STATUS_JOBS.INCOMPLETE) {
+                    return (
+                        <span className="table__body-name btn_success" >{JOB_DONE}</span>
+                    )
+                }
+                if (status_jobs === JobRules.STATUS_JOBS.PENDING) {
+                    return (
+                        <span className="table__body-name btn_stop" >{JOB_CANCEL}</span>
+                    )
+                }
+                break;
             case ("start_day"):
                 return (
                     <span className="table__body-name text-bold" >{formatDate(formatTimeStamp(rowData?.start_day))}</span>
+                )
+            case ("end_day"):
+                return (
+                    <span className="table__body-name text-bold" >{formatDate(formatTimeStamp(rowData?.end_day))}</span>
                 )
             case ("role"):
                 const role = rowData?.[item]
@@ -77,6 +99,26 @@ const TableBody = ({ rowData, item }) => {
             case ("id_system"):
                 return (
                     <span className="table__body-name" >{rowData?.[item]}</span>
+                )
+            case ("id_customer"):
+                return (
+                    <span className="table__body-name text-bold" >{rowData?.[item]}</span>
+                )
+            case ("id_editor"):
+                return (
+                    <span className="table__body-name text-bold" >{rowData?.[item]}</span>
+                )
+            case ("id_saler"):
+                return (
+                    <span className="table__body-name text-bold" >{rowData?.[item]}</span>
+                )
+            case ("total_cost"):
+                return (
+                    <span className="table__body-name text-bold btn_success" >{rowData?.[item]} $</span>
+                )
+            case ("quality"):
+                return (
+                    <span className="table__body-name text-bold text-blue" >{rowData?.[item]}</span>
                 )
             case ("fullname"):
                 return (

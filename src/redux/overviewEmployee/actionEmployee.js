@@ -31,7 +31,7 @@ export const editEmployeeRequest = createAsyncThunk(
     'updateEmployee',
     async (data,{ rejectWithValue }) => {
         try {
-            const res = await put(`users/update/${data?.result.id_system}`,data?.result)
+            const res = await put(`users/${data?.result.id_system}`,data?.result)
             if(res){
                 res.data_user = data?.result
                 res.index = data?.index
@@ -47,7 +47,7 @@ export const deleteEmployeeRequest = createAsyncThunk(
     'deleteEmployee',
     async (data,{ rejectWithValue }) => {
         try {
-            const res = await del(`users/delete/${data.id}`)
+            const res = await del(`users/${data.id}`)
             if(res){
                 res.index = data?.index
             }
