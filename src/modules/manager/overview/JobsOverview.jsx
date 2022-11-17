@@ -7,13 +7,15 @@ import {
   setIsOpenModalCreateJob,
   setIsOpenModalUpdateJob,
   setDataModalUpdateJob,
+  setIsOpenModalInformationCustomer,
  } from '../../../redux/modal/modalSlice';
- import { dashboardJobsRequest } from "../../../redux/overviewJobs/actionJobs";
+import { dashboardJobsRequest } from "../../../redux/overviewJobs/actionJobs";
 
 
 const JobsOverview = () => {
   const dispatch = useDispatch()
   const [filter, setFilter] = useState("")
+  const [rowData, setRowData] = useState("")
   const jobs = useSelector(state => state.jobs.dashboard)
 
     useEffect(()=>{
@@ -25,9 +27,34 @@ const JobsOverview = () => {
     }
 
     const handleRowClick = (rowdata) => {
-        dispatch(setIsOpenModalUpdateJob(true))
-        dispatch(setDataModalUpdateJob(rowdata))
+        setRowData(rowData)
     }
+
+    useEffect(() => {
+        const handleClickOutSide = (e)=>{
+            const  customer= document.querySelector(".id_customer").closest("td")
+            const sale = document.querySelector(".id_saler").closest("td")
+            const editor = document.querySelector(".id_editor").closest("td")
+            const table = document.querySelector(".p-datatable-tbody")
+
+            if(customer?.contains(e.target)){
+                dispatch(setIsOpenModalInformationCustomer(true))
+            }else if(sale?.contains(e.target)){
+
+            }else if(editor?.contains(e.target)){
+
+            }else if(!editor?.contains(e.target) && !sale?.contains(e.target) && !customer?.contains(e.target) &&  table?.contains(e.target)){
+                dispatch(setIsOpenModalUpdateJob(true))
+                dispatch(setDataModalUpdateJob(rowData))
+            }
+        }
+
+        window.addEventListener('mousedown', handleClickOutSide);
+        return ()=>{
+          window.removeEventListener('mousedown',handleClickOutSide)
+        }
+      
+    })
 
     const handleCreate = () => {
         dispatch(setIsOpenModalCreateJob(true))

@@ -4,8 +4,8 @@ import { useSelector, useDispatch } from "react-redux"
 import { socket } from "../../../_services/socket";
 import { NAME_ROOM } from '../../../constants';
 import { UserRules } from '../../../constants';
-import { getCurrentRoom } from '../../../redux/messages/messageSlice';
-import { setIsOpenChat } from '../../../redux/messages/messageSlice';
+import { getCurrentRoom, setIsOpenChat } from '../../../redux/messages/messageSlice';
+import { timeAgo } from '../../../commons/message.common';
 
 const Messages = ({isOpenMessages, setisOpenMessages}) => {
     const [keyword,setKeyWord] = useState("")
@@ -86,8 +86,9 @@ const Messages = ({isOpenMessages, setisOpenMessages}) => {
                                 style={{paddingLeft: "10px"}}>
                                     <div className="chat_img" data="ADMIN" role={replaceId(item?._id)?.split(".")?.[1]}></div>
                                     <div className="notification-message_item">
-                                        <p className="notification-message__name">
+                                        <p className="notification-message__name flex justify-content-between">
                                             {item?.type === NAME_ROOM.USER ? replaceId(item?._id) : item?._id }
+                                            <span className="notification__time">{timeAgo(item?.time)}</span>
                                         </p>
                                         <div className="notification-message__i">
                                             <p className={`

@@ -61,13 +61,14 @@
     display: flex;
     padding: 0 5px;
     box-sizing: border-box;
+    font-size: 12px;
     span{
         color: $color-white;
         font-weight: 400;
         display: flex;
         align-items: center;
         text-transform: uppercase;
-
+        line-height: 16px;
     }
 }
 
@@ -134,6 +135,10 @@
     font-size: 14px;
 }
 
+.table__body-name{
+    font-size: 12px;
+}
+
 .table__body-col.center{
     justify-content: center;
 }
@@ -141,6 +146,7 @@
 .table__header-name.haft-text{
     width: 60%;
 }
+
 
 .table__body-name.center{
     text-align: center;
@@ -232,7 +238,7 @@
     font-weight: 400 !important;
     align-items: center;
     text-transform: uppercase;
-    height: 65px;
+    height: 45px;
 }
 
 .p-datatable .p-datatable-tbody > tr > td{
@@ -243,11 +249,10 @@
 
 .p-datatable .p-column-header-content{
     justify-content: center !important;
-    padding-top: 10px;
 }
 
 .p-datatable-thead{
-    height: 65px;
+    height: 45px;
 }
 
 .columnheader{

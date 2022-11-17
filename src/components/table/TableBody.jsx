@@ -105,16 +105,10 @@ const TableBody = ({ rowData, item }) => {
                     <span className="table__body-name" >{rowData?.[item]}</span>
                 )
             case ("id_customer"):
-                return (
-                    <span className="table__body-name text-bold" >{rowData?.[item]}</span>
-                )
             case ("id_editor"):
-                return (
-                    <span className="table__body-name text-bold" >{rowData?.[item]}</span>
-                )
             case ("id_saler"):
                 return (
-                    <span className="table__body-name text-bold" >{rowData?.[item]}</span>
+                    <span className={`table__body-name text-bold ${item}`} >{rowData?.[item]}</span>
                 )
             case ("total_cost"):
                 return (
