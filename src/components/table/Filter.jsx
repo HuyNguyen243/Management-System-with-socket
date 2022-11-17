@@ -183,9 +183,6 @@ const Filter = ({DataFilter ,sortBy, sortValue, setSortBy, setSortValue, search,
         {
             setDropDown.map((item, index) => (
                 <MenuItem value={item.id} key={index} className="status__option">
-                    {item.image ? 
-                    <img src={`../../images/${item.image}.svg`} alt="" className="status__image" /> :
-                    <span className={item.css_status?.dots + " mr-4"}></span>}
                     <span className="status__content">{item.status}</span>
                 </MenuItem>
             ))

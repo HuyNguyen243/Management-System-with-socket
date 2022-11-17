@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
     isOpenModalSetting: false,
@@ -9,56 +9,52 @@ const initialState = {
     isOpenModalInformationUser: false,
     dataModalInformationUser: null,
     isOpenModalCreateJob: false,
-    isOpenModalUpdateJob: false,
-    dataModalUpdateJob: null,
     isOpenModalJobEditor: false,
     isOpenInformationJob: false,
-}
+    dataModalInformationJob: null,
+};
 
 const modalSlice = createSlice({
-    name: 'modal',
+    name: "modal",
     initialState,
-    reducers : {
-        setIsOpenModalSetting: (state, { payload })=>{
-            state.isOpenModalSetting = payload
+    reducers: {
+        setIsOpenModalSetting: (state, { payload }) => {
+            state.isOpenModalSetting = payload;
         },
-        setIsOpenModalCreateCustomer: (state, { payload })=>{
-            state.isOpenModalCreateCustomer = payload
+        setIsOpenModalCreateCustomer: (state, { payload }) => {
+            state.isOpenModalCreateCustomer = payload;
         },
-        setIsOpenModalInformationCustomer: (state, { payload })=>{
-            state.isOpenModalInformationCustomer = payload
+        setIsOpenModalInformationCustomer: (state, { payload }) => {
+            state.isOpenModalInformationCustomer = payload;
         },
-        setDataModalInformationCustomer: (state, { payload })=>{
-            state.dataModalInformationCustomer = payload
+        setDataModalInformationCustomer: (state, { payload }) => {
+            state.dataModalInformationCustomer = payload;
         },
-        setIsOpenModalCreateUser: (state, { payload })=>{
-            state.isOpenModalCreateUser = payload
+        setIsOpenModalCreateUser: (state, { payload }) => {
+            state.isOpenModalCreateUser = payload;
         },
-        setIsOpenModalInformationUser: (state, { payload })=>{
-            state.isOpenModalInformationUser = payload
+        setIsOpenModalInformationUser: (state, { payload }) => {
+            state.isOpenModalInformationUser = payload;
         },
-        setDataModalInformationUser: (state, { payload })=>{
-            state.dataModalInformationUser = payload
+        setDataModalInformationUser: (state, { payload }) => {
+            state.dataModalInformationUser = payload;
         },
-        setIsOpenModalCreateJob: (state, { payload })=>{
-            state.isOpenModalCreateJob = payload
+        setIsOpenModalCreateJob: (state, { payload }) => {
+            state.isOpenModalCreateJob = payload;
         },
-        setIsOpenModalUpdateJob: (state, { payload })=>{
-            state.isOpenModalUpdateJob = payload
+        setIsOpenModalJobEditor: (state, { payload }) => {
+            state.isOpenModalJobEditor = payload;
         },
-        setDataModalUpdateJob: (state, { payload })=>{
-            state.dataModalUpdateJob = payload
+        setIsOpenInformationJob: (state, { payload }) => {
+            state.isOpenInformationJob = payload;
         },
-        setIsOpenModalJobEditor: (state, { payload })=>{
-            state.isOpenModalJobEditor = payload
+        setDataModalInformationJob: (state, { payload }) => {
+            state.dataModalInformationJob = payload;
         },
-        setIsOpenInformationJob: (state, { payload })=>{
-            state.isOpenInformationJob = payload
-        },
-    }
-})
+    },
+});
 
-export const { 
+export const {
     setIsOpenModalSetting,
     setIsOpenModalCreateCustomer,
     setIsOpenModalInformationCustomer,
@@ -67,9 +63,8 @@ export const {
     setIsOpenModalInformationUser,
     setDataModalInformationUser,
     setIsOpenModalCreateJob,
-    setIsOpenModalUpdateJob,
-    setDataModalUpdateJob,
     setIsOpenModalJobEditor,
     setIsOpenInformationJob,
- } = modalSlice.actions
-export default modalSlice.reducer
+    setDataModalInformationJob,
+} = modalSlice.actions;
+export default modalSlice.reducer;

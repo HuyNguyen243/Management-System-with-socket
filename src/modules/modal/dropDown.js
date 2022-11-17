@@ -1,9 +1,11 @@
 import { CustomerRules } from "../../constants";
 
 export const type_files = [
-    { name: 'JPG', code: 'JPG' },
-    { name: 'SVG', code: 'SVG' },
+    { name: 'PNG', code: 'PNG' },
+    { name: 'JPEG', code: 'JPEG' },
+    { name: 'TIFF', code: 'TIFF' },
     { name: 'PSD', code: 'PSD' },
+    { name: 'RAW', code: 'RAW' },
 ];
 
 export const type_status= [
@@ -12,9 +14,15 @@ export const type_status= [
     { name: 'Ngưng yêu cầu', code: 'STOP' },
 ]
 
+export const type_status_jobs= [
+    { name: 'Đã hoàn thành', code: 'COMPLETE' },
+    { name: 'Tạm hoãn công việc', code: 'PENDING' },
+    { name: 'Chưa hoàn thành', code: 'INCOMPLETE' },
+]
+
 export const type_jobs = [
-    { name: 'Tính phí', code: 'CHARGE' },
-    { name: 'Không tính phí', code: 'NO CHARGE' },
+    { name: 'Tính phí', code: 'FEE' },
+    { name: 'Không tính phí', code: 'FREE' },
     { name: 'Chỉnh sửa', code: 'EDIT' },
 ]
 
@@ -32,7 +40,7 @@ export const customer_status= [
 ]
 
 export const role= [
-    { name: 'Admin', code: 'ADMIN' },
+    // { name: 'Admin', code: 'ADMIN' },
     { name: 'Leader Editor', code: 'LEADER_EDITOR' },
     { name: 'Editor', code: 'EDITOR' },
     { name: 'Saler', code: 'SALER' },

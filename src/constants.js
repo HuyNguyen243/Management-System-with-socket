@@ -78,6 +78,11 @@ export const JobRules = {
         INCOMPLETE: "INCOMPLETE",
         PENDING: "PENDING",
     },
+    STATUS_JOBS_NAME: {
+        COMPLETE: JOB_DONE,
+        INCOMPLETE: JOB_INCOMPLETE,
+        PENDING: JOB_PENDING,
+    },
     STATUS_EDITOR: {
         COMPLETE: "COMPLETE",
         INCOMPLETE: "INCOMPLETE",
@@ -87,6 +92,12 @@ export const JobRules = {
     JOBS_TYPES: {
         FEE: "FEE",
         FREE: "FREE",
+        EDIT: "EDIT",
+    },
+    JOBS_TYPES_NAME: {
+        FEE: "Tính phí",
+        FREE: "Không tính phí",
+        EDIT: "Chỉnh sửa",
     },
     PHOTO_TYPES: {
         PNG: "PNG",

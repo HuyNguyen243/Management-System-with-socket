@@ -182,7 +182,7 @@ const InformationUser = () => {
                             </div>
                             <div className="field col-12 md:col-6">
                                 <span htmlFor="employees">Chức vụ nhân viên:<span className="warning">*</span></span>
-                                <span onClick={(e) => setEditRole(true)} className="p-float-label ">
+                                <span onClick={(e) => setEditRole(true)} className="p-float-label cursor__edit ">
                                     {isEditRole ?
                                         (
                                             <Dropdown
