@@ -14,10 +14,10 @@ import { type_files, type_jobs } from "./dropDown"
 import { useDispatch, useSelector } from 'react-redux';
 import { dataParseCustomer } from '../manager/jobs/dataParse';
 // import { dataParse } from '../manager/jobs/dataParse';
-import { 
+import {
     setIsOpenModalCreateJob,
     setIsOpenModalCreateCustomer,
- } from '../../redux/modal/modalSlice';
+} from '../../redux/modal/modalSlice';
 
 const CreateJobs = () => {
     const defaultValues = {
@@ -62,8 +62,10 @@ const CreateJobs = () => {
         }, 50);
     }
     useEffect(() => {
-        dispatch(saleCustomerRequest(filteredNameCustomers));
-    }, [dispatch, filteredNameCustomers])
+        if (isOpenCreateJob) {
+            dispatch(saleCustomerRequest(filteredNameCustomers));
+        }
+    }, [dispatch, filteredNameCustomers, isOpenCreateJob])
 
     const onSubmit = (data) => {
         if (Object.keys(errors).length === 0) {
@@ -89,7 +91,7 @@ const CreateJobs = () => {
                     <div className="field col-12 md:col-12 grid">
                         <div className="field col-12 md:col-6">
                             <span htmlFor="autocomplete">Tìm thông tin khách hàng: <span className="warning">*</span></span>
-                            <span className="p-float-label">
+                            <span className="">
                                 <Controller name="nameCustomer"
                                     control={control}
                                     rules={{ required: true }} render={({ field, fieldState }) => (
@@ -98,9 +100,8 @@ const CreateJobs = () => {
                                             completeMethod={searchName} field="name"
                                             id={field.name}
                                             value={customerSelect} onChange={(e) => { setCustomerSelect(e.value); }}
-                                            className={classNames({ 'p-invalid': fieldState.invalid })}
+                                            className={classNames({ 'p-invalid': fieldState.invalid }, "icon__search")}
                                             dropdownAriaLabel="Select name"
-                                            placeholder="Nhập thông tin khách hàng cần tìm"
                                         />
                                     )} />
                             </span>
@@ -116,7 +117,7 @@ const CreateJobs = () => {
                         </div>
                         <div className="field col-12 md:col-6">
                             <span htmlFor="type_job">Loại công việc: <span className="warning">*</span></span>
-                            <span className="p-float-label">
+                            <span className="">
                                 <Controller name="type_job"
                                     control={control}
                                     rules={{ required: true }} render={({ field, fieldState }) => (
@@ -165,7 +166,7 @@ const CreateJobs = () => {
                                 <Controller name="quality"
                                     control={control}
                                     rules={{ required: true }} render={({ field, fieldState }) => (
-                                        <InputNumber 
+                                        <InputNumber
                                             onKeyPress={(event) => {
                                                 if (!/[0-9]/.test(event.key)) {
                                                     event.preventDefault();

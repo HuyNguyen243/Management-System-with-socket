@@ -10,9 +10,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from "react-hook-form";
 import { Dropdown } from 'primereact/dropdown';
 import { type_status_jobs, type_jobs, type_files } from "./dropDown";
-import { UserRules, JobRules } from "../../constants";
+import { UserRules, JobRules, NOT_SET_ADMIN } from "../../constants";
 import { InputText } from 'primereact/inputtext';
 import { timezoneToDate } from '../../commons/dateTime';
+import { ConfirmPopup, confirmPopup } from 'primereact/confirmpopup';
+import { AutoComplete } from 'primereact/autocomplete';
+import { dataParseEditor } from '../manager/jobs/dataParse';
+import { dashboardEmployeeRequest } from "../../redux/overviewEmployee/actionEmployee"
 
 
 const InformationJobs = () => {
@@ -25,15 +29,22 @@ const InformationJobs = () => {
     const [editModels, setEditModels] = useState(false);
     const [editFile, setEditTypeFile] = useState(false);
     const [editOrgLink, setEditOrgLink] = useState(false);
+    const [editDoneLink, setEditDoneLink] = useState(false);
+    const [editTotalCost, setEditTotalCost] = useState(false);
+    const [editEditorCost, setEditEditorCost] = useState(false);
+    const [editEditor, setEditEditor] = useState(false);
 
     const [typeFile, setTypeFile] = useState(false);
     const [statusJobs, setStatusJobs] = useState(false);
     const [typeJobs, setTypeJobs] = useState(false);
+    const [selectEditor, setSelectEditor] = useState(false);
+    const [filteredNameEditor, setFilteredNameEditor] = React.useState(null);
 
     const user = useSelector(state => state.auth.user)
     const isOpenInformationJob = useSelector(state => state.modal.isOpenInformationJob)
     const rowdata = useSelector(state => state.modal?.dataModalInformationJob)
     const { register, setValue, handleSubmit, formState: { errors }, reset } = useForm();
+    let editorName = dataParseEditor()
 
 
     useEffect(() => {
@@ -62,6 +73,32 @@ const InformationJobs = () => {
             }
         }
     }, [rowdata, setValue])
+
+    const searchName = (event) => {
+        setTimeout(() => {
+            let suggestionsList;
+            if (!event.query.trim().length) {
+                suggestionsList = [...editorName];
+            } else {
+                suggestionsList = [...editorName].filter((list) => {
+                    return (
+                        list.name.toLowerCase().startsWith(event.query.toLowerCase())
+                        || list.email.toLowerCase().startsWith(event.query.toLowerCase())
+                        || list.phone.toLowerCase().startsWith(event.query.toLowerCase())
+                        || list.create_by.toLowerCase().startsWith(event.query.toLowerCase())
+                        || list.id_system.toLowerCase().startsWith(event.query.toLowerCase())
+                    );
+                });
+            }
+            setFilteredNameEditor(suggestionsList)
+        }, 50);
+    }
+    useEffect(() => {
+        if (isOpenInformationJob) {
+            dispatch(dashboardEmployeeRequest(selectEditor));
+        }
+        console.log(selectEditor);
+    }, [dispatch, selectEditor, isOpenInformationJob])
     const onSubmit = (data) => {
 
         // delete data["births"];
@@ -91,7 +128,24 @@ const InformationJobs = () => {
         setEditQuality(false);
         setEditTypeFile(false);
         setEditOrgLink(false);
+        setEditDoneLink(false);
+        setEditTotalCost(false);
+        setEditEditorCost(false);
+        setEditEditor(false);
         reset()
+    }
+
+    const handleRemoveRow = (event) => {
+        const myConfirm = confirmPopup({
+            target: event.currentTarget,
+            message: 'Bạn có chắc muốn xóa công việc này?',
+            icon: 'pi pi-exclamation-triangle',
+            // accept: handleDeleteUser,
+            acceptLabel: "Đồng ý",
+            rejectLabel: "Hủy bỏ"
+        });
+
+        myConfirm.show();
     }
 
     const copyToClipboard = () => {
@@ -101,11 +155,13 @@ const InformationJobs = () => {
 
     return (
         <>
+            <ConfirmPopup />
             <Toast ref={toast} position="bottom-left" />
             <Sidebar visible={isOpenInformationJob} position="right" onHide={handleCloseModal} className="create__job">
                 <div className="creat__job">
-                    <div className="creat__job--title">
+                    <div className="creat__job--title flex justify-content-between">
                         <h2>Thông tin công việc </h2>
+                        <Button onClick={handleRemoveRow}><img src="images/trash.svg" alt="" className="image__trash" /></Button>
                     </div>
                     <form className=" grid modal__creat--job no_flex" autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
                         <div className="field col-12 md:col-12 grid">
@@ -160,7 +216,7 @@ const InformationJobs = () => {
                                 </span>
                             </div>
                             <div className="field col-12 md:col-6">
-                                <span htmlFor="statusjobs">Trạng thái công việc ( SALER ):<span className="warning">*</span></span>
+                                <span htmlFor="status_jobs">Trạng thái công việc ( SALER ) :<span className="warning">*</span></span>
                                 <span onClick={(e) => setEditStatusJobs(true)} className="p-float-label cursor__edit">
                                     {editStatusJobs ?
                                         (
@@ -169,7 +225,7 @@ const InformationJobs = () => {
                                                 optionLabel="name"
                                                 defaultValue={statusJobs}
                                                 value={statusJobs}
-                                                onChange={e => setStatusJobs(e.value)}
+                                                onChange={(e) => { setStatusJobs(e.value); setValue("status_jobs", e.value.code); }}
                                                 disabled={(user?.data?.role === UserRules.ROLE.EDITOR && user?.data?.role === UserRules.ROLE.LEADER_EDITOR) ? true : false}
                                             />
                                         ) : (
@@ -181,7 +237,7 @@ const InformationJobs = () => {
                                 </span>
                             </div>
                             <div className="field col-12 md:col-6">
-                                <span htmlFor="typejobs">Loại công việc :<span className="warning">*</span></span>
+                                <span htmlFor="work_types">Loại công việc :<span className="warning">*</span></span>
                                 <span onClick={(e) => setEditTypeJobs(true)} className="p-float-label cursor__edit">
                                     {editTypeJobs ?
                                         (
@@ -190,7 +246,7 @@ const InformationJobs = () => {
                                                 optionLabel="name"
                                                 defaultValue={typeJobs}
                                                 value={typeJobs}
-                                                onChange={e => setTypeJobs(e.value)}
+                                                onChange={(e) => { setTypeJobs(e.value); setValue("work_types", e.value.code); }}
                                                 disabled={(user?.data?.role === UserRules.ROLE.EDITOR && user?.data?.role === UserRules.ROLE.LEADER_EDITOR) ? true : false}
                                             />
                                         ) : (
@@ -202,19 +258,19 @@ const InformationJobs = () => {
                                 </span>
                             </div>
                             <div className="field col-12 md:col-6 create__job--calendar">
-                                <span htmlFor="start_day">Ngày tạo công việc:</span>
+                                <span htmlFor="start_day">Ngày tạo công việc :</span>
                                 <span className="p-float-label pt-3 cursor__normal font-bold">
                                     {timezoneToDate(rowdata?.data.start_day)}
                                 </span>
                             </div>
                             <div className="field col-12 md:col-6 create__job--calendar">
-                                <span htmlFor="end_day">Ngày hạn chót công việc: <span className="warning">*</span></span>
+                                <span htmlFor="end_day">Ngày hạn chót công việc : <span className="warning">*</span></span>
                                 <span className="p-float-label pt-3 cursor__normal font-bold">
                                     {timezoneToDate(rowdata?.data.end_day)}
                                 </span>
                             </div>
                             <div className="field col-12 md:col-6">
-                                <span htmlFor="statusjobs">Định dạng file:<span className="warning">*</span></span>
+                                <span htmlFor="photo_types">Định dạng file :<span className="warning">*</span></span>
                                 <span onClick={(e) => setEditTypeFile(true)} className="p-float-label cursor__edit">
                                     {editFile ?
                                         (
@@ -223,7 +279,7 @@ const InformationJobs = () => {
                                                 optionLabel="name"
                                                 defaultValue={typeFile}
                                                 value={typeFile}
-                                                onChange={e => setTypeFile(e.value)}
+                                                onChange={(e) => { setTypeFile(e.value); setValue("photo_types", e.value.code); }}
                                                 disabled={(user?.data?.role === UserRules.ROLE.EDITOR && user?.data?.role === UserRules.ROLE.LEADER_EDITOR) ? true : false}
                                             />
                                         ) : (
@@ -235,87 +291,145 @@ const InformationJobs = () => {
                                 </span>
                             </div>
                             <div className="field col-12 md:col-6">
-                                <span htmlFor="statusjobs">Editor:<span className="warning">*</span></span>
-                                <span onClick={(e) => setEditTypeFile(true)} className="p-float-label cursor__edit">
-                                    {editFile ?
+                                <span htmlFor="id_editor">Editor :<span className="warning">*</span></span>
+                                <span onClick={(e) => setEditEditor(true)} className="p-float-label cursor__edit">
+                                    {editEditor ?
                                         (
-                                            <Dropdown
-                                                options={type_files}
-                                                optionLabel="name"
-                                                defaultValue={typeFile}
-                                                value={typeFile}
-                                                onChange={e => setTypeFile(e.value)}
-                                                disabled={(user?.data?.role === UserRules.ROLE.EDITOR && user?.data?.role === UserRules.ROLE.LEADER_EDITOR) ? true : false}
+                                            <AutoComplete
+                                                suggestions={filteredNameEditor}
+                                                completeMethod={searchName} field="name"
+                                                {...register("id_editor", { required: true })}
+                                                id={"id_editor"}
+                                                value={selectEditor} onChange={(e) => { setSelectEditor(e.value); }}
+                                                className={"icon__search"}
+                                                dropdownAriaLabel="Select name"
                                             />
                                         ) : (
-                                            <span className="p-float-label mt-3 flex justify-content-between align-items-center font-bold" >
-                                                {JobRules.PHOTO_TYPES[rowdata?.data?.photo_types]}
+                                            <span className="p-float-label mt-3" >
+                                                {rowdata?.data?.id_editor ?  rowdata?.data?.id_editor : "Chưa giao việc"}
                                             </span>
                                         )
                                     }
                                 </span>
                             </div>
                             <div className="field col-12 md:col-6 create__job--calendar">
-                                <span htmlFor="start_day">Link ảnh gốc:<span className="warning">*</span></span>
+                                <span htmlFor="org_link">Link ảnh gốc :<span className="warning">*</span></span>
                                 <span onClick={(e) => setEditOrgLink(true)} className="p-float-label mt-3 cursor__edit">
                                     {editOrgLink ?
                                         (
                                             <InputText
                                                 defaultValue={rowdata?.data?.org_link}
                                                 onChange={(e) => setValue("org_link", e.target.value)}
-                                                {...register("org_link", { required: true, min: 1 })}
-                                                className={errors?.quality && "p-invalid"}
+                                                {...register("org_link", { required: true })}
+                                                className={errors?.org_link && "p-invalid"}
                                             />
                                         ) : (
-                                            <span className='font-bold cursor__normal'>
+                                            <span className=''>
                                                 <a href={rowdata?.data.org_link} target="_blank" rel="noreferrer">Link liên kết</a>
                                             </span>
                                         )
                                     }
-
                                 </span>
                             </div>
                             <div className="field col-12 md:col-6 create__job--calendar">
-                                <span htmlFor="start_day">Link ảnh gốc:<span className="warning">*</span></span>
-                                <span onClick={(e) => setEditOrgLink(true)} className="p-float-label mt-3 cursor__edit">
-                                    {editOrgLink ?
+                                <span htmlFor="finished_link">Link ảnh hoàn thành :<span className="warning">*</span></span>
+                                <span onClick={(e) => setEditDoneLink(true)} className="p-float-label mt-3 cursor__edit">
+                                    {editDoneLink ?
                                         (
                                             <InputText
-                                                defaultValue={rowdata?.data?.org_link}
-                                                onChange={(e) => setValue("org_link", e.target.value)}
-                                                {...register("org_link", { required: true, min: 1 })}
-                                                className={errors?.quality && "p-invalid"}
+                                                defaultValue={rowdata?.data?.finished_link === NOT_SET_ADMIN ? "" : rowdata?.data?.finished_link}
+                                                onChange={(e) => setValue("finished_link", e.target.value)}
+                                                {...register("finished_link", { required: true })}
+                                                className={errors?.finished_link && "p-invalid"}
                                             />
                                         ) : (
-                                            <span className='font-bold cursor__normal'>
-                                                <a href={rowdata?.data.org_link} target="_blank" rel="noreferrer">Link liên kết</a>
+                                            <span className=''>
+                                                {rowdata?.data.finished_link === NOT_SET_ADMIN ?
+                                                    "Trống"
+                                                    :
+                                                    < a href={rowdata?.data.finished_link} target="_blank" rel="noreferrer">Link liên kết</a>
+                                                }
                                             </span>
                                         )
                                     }
+                                </span>
+                            </div>
+                            <div className="field col-12 md:col-6">
+                                <span htmlFor="total_cost">Chi phí tổng :<span className="warning">*</span></span>
+                                <span onClick={(e) => setEditTotalCost(true)} className="p-float-label mt-3 cursor__edit">
+                                    {editTotalCost ?
+                                        (
+                                            <InputText
+                                                defaultValue={rowdata?.data?.total_cost}
+                                                onChange={(e) => setValue("total_cost", e.target.value)}
+                                                {...register("total_cost", { required: true })}
+                                                className={errors?.total_cost && "p-invalid"}
+                                            />
+                                        ) : (
+                                            <span className='font-bold'>
+                                                {rowdata?.data.total_cost} $
+                                            </span>
+                                        )
+                                    }
+                                </span>
+                            </div>
+                            <div className="field col-12 md:col-6">
+                                <span htmlFor="editor_cost">Chi phí Editor :<span className="warning">*</span></span>
+                                <span onClick={(e) => setEditEditorCost(true)} className="p-float-label mt-3 cursor__edit">
+                                    {editEditorCost ?
+                                        (
+                                            <InputText
+                                                defaultValue={rowdata?.data?.total_cost}
+                                                onChange={(e) => setValue("editor_cost", e.target.value)}
+                                                {...register("editor_cost", { required: true })}
+                                                className={errors?.editor_cost && "p-invalid"}
+                                            />
+                                        ) : (
+                                            <span className='font-bold'>
+                                                {rowdata?.data.editor_cost}
+                                            </span>
+                                        )
+                                    }
+                                </span>
+                            </div>
+                            <div className="field col-12 md:col-6">
+                                <span htmlFor="saler_cost">Chi phí Saler :</span>
+                                <span className="p-float-label mt-3 cursor__normal">
+                                    <span className='font-bold'>
+                                        {rowdata?.data.saler_cost} $
+                                    </span>
+                                </span>
 
+                            </div>
+                            <div className="field col-12 md:col-6">
+                                <span htmlFor="saler_cost">Lợi nhuận :</span>
+                                <span className="p-float-label mt-3 cursor__normal">
+                                    <span className='font-bold'>
+                                        {rowdata?.data.admin_cost}
+                                    </span>
                                 </span>
                             </div>
                             <div className="field col-12 md:col-12">
-                                <span className="p-float-label">
-                                    <span className="information_job_title">Nội dung yêu cầu :</span>
-                                    <InputTextarea
-                                        autoResize
-                                        className="aria_content"
-                                        disabled
-                                        style={{ height: "150px" }}
-                                    />
-                                </span>
+                                <span htmlFor="request_content">Nội dung yêu cầu :<span className="warning">*</span></span>
+                                <InputTextarea
+                                    autoResize
+                                    className="aria_content mt-3"
+                                    defaultValue={rowdata?.data.request_content}
+                                    onChange={(e) => setValue("request_content", e.target.value)}
+                                    {...register("request_content", { required: true })}
+                                    style={{ height: "150px" }}
+                                />
                             </div>
                             <div className="field col-12 md:col-12">
-                                <span className="p-float-label">
-                                    <span className="information_job_title">Yêu cầu của khách hàng :</span>
-                                    <InputTextarea
-                                        autoResize
-                                        className="aria_note"
-                                        disabled
-                                        style={{ height: "150px" }}
-                                    />
-                                </span>
+                                <span htmlFor="work_notes">Yêu cầu của khách hàng :<span className="warning">*</span></span>
+                                <InputTextarea
+                                    autoResize
+                                    className="aria_note mt-3"
+                                    defaultValue={rowdata?.data.request_content}
+                                    onChange={(e) => setValue("request_content", e.target.value)}
+                                    {...register("work_notes", { work_notes: true })}
+                                    style={{ height: "150px" }}
+                                />
                             </div>
                         </div>
                         <div className="btn_modal field col-12 md:col-12 grid position_bottom">
@@ -332,7 +446,7 @@ const InformationJobs = () => {
                         </div>
                     </form>
                 </div>
-            </Sidebar>
+            </Sidebar >
         </>
     )
 }
