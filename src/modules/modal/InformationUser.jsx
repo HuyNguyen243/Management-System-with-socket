@@ -4,7 +4,7 @@ import { Sidebar } from 'primereact/sidebar';
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 import { ConfirmPopup, confirmPopup } from 'primereact/confirmpopup';
-import { formatTimeStamp, formatDate } from '../../commons/dateTime'
+import { timezoneToDate } from '../../commons/dateTime'
 import {
     EMAIL_REGEX,
     PHONE_REGEX,
@@ -18,10 +18,10 @@ import { useForm } from "react-hook-form";
 import { Dropdown } from 'primereact/dropdown';
 import { role } from "./dropDown";
 import { editEmployeeRequest, deleteEmployeeRequest } from "../../redux/overviewEmployee/actionEmployee";
-import { 
+import {
     setIsOpenModalCreateUser,
     setIsOpenModalInformationUser,
- } from '../../redux/modal/modalSlice';
+} from '../../redux/modal/modalSlice';
 
 
 const InformationUser = () => {
@@ -34,7 +34,7 @@ const InformationUser = () => {
     const deleteUser = useSelector(state => state.employee?.deleteuser)
     const isOpenInformationUse = useSelector(state => state.modal?.isOpenModalInformationUser)
     const rowdata = useSelector(state => state.modal?.dataModalInformationUser)
-    
+
     const dispatch = useDispatch()
     const { register, setValue, handleSubmit, formState: { errors }, reset } = useForm();
     const toast = useRef(null);
@@ -63,12 +63,12 @@ const InformationUser = () => {
 
     useEffect(() => {
         if (rowdata?.data) {
-            setValue("fullname", rowdata?.data?.fullname)
-            setValue("phone", rowdata?.data?.phone)
-            setValue("births", new Date(rowdata?.data?.births))
-            setValue("start_day", new Date(rowdata?.data?.start_day))
-            setValue("address", rowdata?.data?.address)
-            setValue("email", rowdata?.data?.email)
+            // setValue("fullname", rowdata?.data?.fullname)
+            // setValue("phone", rowdata?.data?.phone)
+            // setValue("births", new Date(rowdata?.data?.births))
+            // setValue("start_day", new Date(rowdata?.data?.start_day))
+            // setValue("address", rowdata?.data?.address)
+            // setValue("email", rowdata?.data?.email)
             if (rowdata?.data?.role) {
                 for (let item of role) {
                     if (item.code === rowdata?.data?.role) {
@@ -165,13 +165,13 @@ const InformationUser = () => {
                             </div><div className="field col-12 md:col-6 create__job--calendar">
                                 <span htmlFor="calendar">Ngày tháng năm sinh:</span>
                                 <span className="p-float-label pt-3 cursor__normal font-bold">
-                                    {formatDate(formatTimeStamp(rowdata?.data?.births))}
+                                    {timezoneToDate(rowdata?.data?.births)}
                                 </span>
                             </div>
                             <div className="field col-12 md:col-6 create__job--calendar">
                                 <span htmlFor="calendar">Ngày bắt đầu làm:</span>
                                 <span className="p-float-label pt-3 cursor__normal font-bold">
-                                    {formatDate(formatTimeStamp(rowdata?.data.start_day))}
+                                    {timezoneToDate(rowdata?.data.start_day)    }
                                 </span>
                             </div>
                             <div className="field col-12 md:col-6">
@@ -182,7 +182,7 @@ const InformationUser = () => {
                             </div>
                             <div className="field col-12 md:col-6">
                                 <span htmlFor="employees">Chức vụ nhân viên:<span className="warning">*</span></span>
-                                <span onClick={(e) => setEditRole(true)} className="p-float-label ">
+                                <span onClick={(e) => setEditRole(true)} className="p-float-label cursor__edit ">
                                     {isEditRole ?
                                         (
                                             <Dropdown
@@ -190,8 +190,9 @@ const InformationUser = () => {
                                                 optionLabel="name"
                                                 defaultValue={userRole}
                                                 value={userRole}
-                                                onChange={e => setUserRole(e.value)}
+                                                onChange={(e) => { setValue("role", e.value.code); setUserRole(e.value) }}
                                                 disabled={user?.data?.role !== UserRules.ROLE.ADMIN ? true : false}
+                                                className="mt-1"
                                             />
                                         ) : (
                                             <span className='p-float-label mt-3'>

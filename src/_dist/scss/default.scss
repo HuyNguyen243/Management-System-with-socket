@@ -70,3 +70,9 @@ textarea:focus-visible,
 button:focus-visible {
     outline: none;
 }
+a:visited{
+	color: blue;
+}
+a:active{
+	color: red;
+}

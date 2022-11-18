@@ -28,6 +28,15 @@ export const dataParse = (data) => {
                 end_day: item?.infor?.end_day,
                 quality: item?.infor?.quality,
                 status_jobs: item?.infor?.status_jobs,
+                work_types: item?.infor?.work_types,
+                work_notes: item?.infor?.work_notes,
+                request_content: item?.infor?.request_content,
+                photo_types: item?.infor?.photo_types,
+                org_link: item?.infor?.org_link,
+                finished_link: item?.infor?.finished_link,
+                status_editor: item?.infor?.status_editor,
+                status_customer: item?.infor?.status_customer,
+                type_models: item?.infor?.type_models,
             }
             return newobject
         })
