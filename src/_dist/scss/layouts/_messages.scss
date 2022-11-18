@@ -140,3 +140,12 @@
         transition: 0.5s linear;
     }
 }
+
+.edit__group{
+    position: absolute;
+    top: 19px;
+    padding-left: 95px;
+    height: 13px;
+    cursor: pointer;
+    opacity: .7;
+}

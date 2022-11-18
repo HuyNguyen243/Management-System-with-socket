@@ -129,4 +129,6 @@ export const CustomerRules = {
 export const NAME_ROOM = {
     USER: "USER",
     GROUP: "GROUP",
+    EDIT: "EDIT",
+    CREATE: "CREATE",
 }

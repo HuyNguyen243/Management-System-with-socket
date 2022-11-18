@@ -557,3 +557,113 @@
     font-weight: bold;
     font-size: 18px;
 }
+
+.pi-times-circle{
+    position: relative;
+}
+
+.pi-times-circle:before {
+    content: "x";
+    color: $color-primary;
+    font-size: 12px;
+    position: absolute;
+    bottom: 10px;
+    background-color: $color-white;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 12px;
+    height: 12px;
+    opacity: .8;
+    right: -15px;
+}
+
+.p-chips-token-label{
+    color: $color-white;
+}
+
+.p-chips-token{
+    background-color: $color-primary !important;
+}
+
+.p-chips .p-chips-multiple-container:not(.p-disabled):hover {
+    border-color: none !important;
+}
+
+.p-chips .p-chips-multiple-container:not(.p-disabled).p-focus{
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.p-dialog-header-icons:after{
+    content:"x";
+}
+
+.p-listbox .p-listbox-list .p-listbox-item:focus {
+    outline: none;
+    outline-offset: 0;
+    box-shadow: none;
+}
+
+.p-listbox-filter-icon{
+    padding-left: 10px;
+}
+
+.pi-search:before{
+    content: "";
+    background-image: url("../../../../public/images/search_blue.svg");
+    width: 20px;
+    height: 20px;
+    display: block;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.member__search .p-listbox-header {
+    background-color:  $color-white;
+    .p-listbox-filter-container{
+        background-color: #d0d5dd1c;
+        border-radius: 10px;
+        border: 1px solid #b2b2b2;
+    }
+    .p-listbox-filter-container input {
+        width: 95%;
+        background-color: #d0d5dd1c;
+        border: none;
+        border-radius: 10px;
+    }
+}
+.member__search .p-listbox-list-wrapper{
+    max-height: 150px;
+    overflow-y: auto;
+}
+
+.members-item{
+    position: relative;
+}
+.members-item.active::after{
+    content: "";
+    right: 0px;
+    top: 12px;
+    width: 10px;
+    height: 2px;
+    border-width: 0 3px 2px 0;
+    transform: rotate(40deg);
+    background-color: $color-primary;
+    display: block;
+    position: absolute;
+}
+
+.members-item.active::before{
+    content: "";
+    right: -10px;
+    top: 10px;
+    width: 15px;
+    height: 2px;
+    border-width: 0 3px 2px 0;
+    transform: rotate(-45deg);
+    background-color: $color-primary;
+    display: block;
+    position: absolute;
+}

@@ -56,14 +56,24 @@ const modalSlice = createSlice({
 
 export const {
     setIsOpenModalSetting,
+
     setIsOpenModalCreateCustomer,
+
     setIsOpenModalInformationCustomer,
     setDataModalInformationCustomer,
+
     setIsOpenModalCreateUser,
+
     setIsOpenModalInformationUser,
     setDataModalInformationUser,
+
     setIsOpenModalCreateJob,
+
+    setIsOpenModalUpdateJob,
+    setDataModalUpdateJob,
+
     setIsOpenModalJobEditor,
+
     setIsOpenInformationJob,
     setDataModalInformationJob,
 } = modalSlice.actions;

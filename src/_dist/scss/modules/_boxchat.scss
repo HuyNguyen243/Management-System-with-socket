@@ -6,6 +6,7 @@
   z-index: 9999;
   box-shadow: -2px 8px 8px rgb(0 0 0 / 30%);
   border-radius: 10px;
+  height: 475px;
 }
 
 .list{
@@ -25,7 +26,7 @@
     }
 
     .message__title{
-      padding: 10.5px 10px;
+      padding: 12px 10px;
       border-bottom: 2px solid $color-white;
       display: flex;
       justify-content: center;
@@ -44,8 +45,8 @@
     }
     
     ul {
-        height: 382px;
         overflow-y: auto;
+        max-height: 400px;
       li{
         display: flex;
         padding: 5px 10px;
@@ -322,7 +323,8 @@
 
 .chat_img{
   position: relative;
-  height: 48px;
+  height: 45px;
+  border-radius: 50%;
 }
 
 .chat_img:after {
@@ -330,8 +332,8 @@
   width: 45px;
   height: 45px;
   border-radius: 50%;
-  background-color: $color-border-input;
   display: flex;
+  background-color: $color-border-input;
   color: $color-white;
   justify-content: center;
   align-items: center;
@@ -534,4 +536,29 @@
   left: 50%;
   transform: translate(-50%, -50%);
   opacity: 0.2;
+}
+
+.chat__createGroup:after{
+    content: "+";
+    position: absolute;
+    left: -40px;
+    width: 40px;
+    height: 40px;
+    background: $color-primary;
+    font-size: 25px;
+    border-radius: 5px 0 0 5px;
+    color: $color-white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: -3px 4px 4px rgb(0 0 0 / 17%);
+    cursor: pointer;
+}
+
+.p-dialog .p-dialog-header{
+    padding: 10px 20px;
+}
+
+.p-chips .p-chips-multiple-container .p-chips-token{
+  margin: 5px;
 }

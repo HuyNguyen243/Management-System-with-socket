@@ -25,6 +25,10 @@ const Members = (
       setCurrentUser,
       setMembers,
       joinRoom,
+      setGroups,
+      groups,
+      setMembersInGroup,
+      setGroups_ids,
   }
   ) => {
     const [keyword,setKeyWord] = useState("")
@@ -59,6 +63,7 @@ const Members = (
     useEffect(() => {
         if(user?.data){
         socket.emit('new-user')
+        socket.emit('groups')
         }
     },[user])
     //-----------------------------------//
@@ -79,9 +84,20 @@ const Members = (
             setRole(data?.role)
             setPrivateMemberMsg(data?.private_member)
             joinRoom(data?.room)
+            if(data?.members){
+                setMembersInGroup(data?.members)
+            }
+            if(data?.group_id){
+                setGroups_ids(data?.group_id)
+            }
         }
     })
     //-----------------------------------//
+
+    socket.off('groups').on("groups", (payload)=>{
+        setGroups(payload)
+    })
+
     const handlePrivateUser = (member)=>{
         setPrivateMemberMsg(member?.id_system)
         setRole(member?.role)
@@ -92,6 +108,23 @@ const Members = (
             role: member?.role,
             private_member: member?.id_system,
             room: roomId
+        }
+        storage.save(ROOM_SESSION_MESSAGES,data)
+    }
+
+    const handlePriveGroup = (group)=>{
+        setGroups_ids(group._id)
+        setPrivateMemberMsg(group?.name)
+        setRole(group.type)
+        joinRoom(group?.name)
+        setMembersInGroup(group?.members)
+        socket.emit("reset-notifications",group?.name, currentUser?.id_system)
+        const data ={
+            role: group.type,
+            private_member: group?.name,
+            room: group?.name,
+            members: group?.members,
+            group_id: group._id,
         }
         storage.save(ROOM_SESSION_MESSAGES,data)
     }
@@ -112,6 +145,7 @@ const Members = (
             setMembers(OldMembers)
         }
     }
+
     return (
         <div className="people-list" id="people-list">
         <div className="message__title">
@@ -129,8 +163,43 @@ const Members = (
                 <div className="chat_img avatar_me" data="ONLINE" role={currentUser?.id_system?.split(".")?.[1]}></div>
             </div>
         </div>
-        <span className="title_members">Thành viên</span>
         <ul className="list">
+            {
+                groups.length > 0 &&
+                <li>
+                    <span className="title_members">Nhóm</span>
+                </li>
+            }
+            { 
+                groups.map((group,index)=>(
+                    <div key={index}>
+                    {
+                        group?.members.includes(user?.data?.id_system) &&
+                        <li className={privateMemberMsg === group.name ? "active" : ""} onClick={()=>handlePriveGroup(group) }>
+                        <div className="chat_img"  role={group.name.slice(0,2)} ></div>
+                        <div className="about">
+                        <div className="name">{group?.name}</div>
+                            {
+                            currentUser?.newMessages && Object?.keys(currentUser?.newMessages)?.map((room,index2)=>{
+                                return(
+                                <div key={index2}>
+                                    {
+                                    currentRoom !== room && room === group.name &&
+                                    <span className="has_seen">{currentUser?.newMessages?.[room]}</span>
+                                    } 
+                                </div>
+                                )
+                            })
+                            }
+                        </div>
+                        </li>
+                    }
+                    </div>
+                ))
+            }
+            <li>
+                <span className="title_members">Thành viên</span>
+            </li>
             { 
                 members.map((member,index)=>(
                     <div key={index}>

@@ -3,7 +3,7 @@ import { get,post,put,del } from "../../_services/apiRequest"
 
 
 export const dashboardEmployeeRequest = createAsyncThunk(
-    'dashboard',
+    'getEmployee',
     async (filter,{ rejectWithValue }) => {
         try {
             const search = typeof filter === 'string' ? filter : ""

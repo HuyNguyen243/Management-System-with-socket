@@ -45,3 +45,10 @@ export const role= [
     { name: 'Editor', code: 'EDITOR' },
     { name: 'Saler', code: 'SALER' },
 ]
+
+
+export const roleGroup= [
+    { name: 'Leader Editor', code: 'LEADER_EDITOR' },
+    { name: 'Editor', code: 'EDITOR' },
+    { name: 'Saler', code: 'SALER' },
+]
