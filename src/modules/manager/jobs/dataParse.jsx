@@ -22,8 +22,8 @@ export const dataParseEditor = (data) => {
                 name: item?.fullname,
                 id_system: item?.id_system,
                 create_by: item?.create_by,
-                email: item?.information?.email,
-                phone: item?.information?.phone,
+                email: item?.email,
+                phone: item?.phone,
                 status: item?.status
             }
             return newobject

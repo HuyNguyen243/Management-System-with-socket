@@ -16,8 +16,9 @@ import { timezoneToDate } from '../../commons/dateTime';
 import { ConfirmPopup, confirmPopup } from 'primereact/confirmpopup';
 import { AutoComplete } from 'primereact/autocomplete';
 import { dataParseEditor } from '../manager/jobs/dataParse';
-import { dashboardEmployeeRequest } from "../../redux/overviewEmployee/actionEmployee"
-
+import { dashboardEmployeeRequest } from "../../redux/overviewEmployee/actionEmployee";
+import { deleteJobsRequest } from "../../redux/overviewJobs/actionJobs";
+import { itemUserTemplate } from "../modal/TemplateDropDown";
 
 const InformationJobs = () => {
     const toast = useRef(null);
@@ -43,8 +44,12 @@ const InformationJobs = () => {
     const user = useSelector(state => state.auth.user)
     const isOpenInformationJob = useSelector(state => state.modal.isOpenInformationJob)
     const rowdata = useSelector(state => state.modal?.dataModalInformationJob)
+    const deletejobs = useSelector(state => state.jobs?.deletejobs)
+
     const { register, setValue, handleSubmit, formState: { errors }, reset } = useForm();
-    let editorName = dataParseEditor()
+    const employees = useSelector(state => state.employee?.dashboard)
+
+    let editorName = dataParseEditor(employees?.data)
 
 
     useEffect(() => {
@@ -74,7 +79,18 @@ const InformationJobs = () => {
         }
     }, [rowdata, setValue])
 
+    useEffect(() => {
+        if (deletejobs?.data) {
+            dispatch(setIsOpenInformationJob(false))
+            toastMsg.success(toast, 'Xóa khách hàng thành công')
+        }
+        if (deletejobs?.error) {
+            toastMsg.error(toast, 'Xóa khách hàng thất bại')
+        }
+    }, [deletejobs, dispatch])
+
     const searchName = (event) => {
+        setFilteredNameEditor(editorName);
         setTimeout(() => {
             let suggestionsList;
             if (!event.query.trim().length) {
@@ -83,10 +99,8 @@ const InformationJobs = () => {
                 suggestionsList = [...editorName].filter((list) => {
                     return (
                         list.name.toLowerCase().startsWith(event.query.toLowerCase())
-                        || list.email.toLowerCase().startsWith(event.query.toLowerCase())
-                        || list.phone.toLowerCase().startsWith(event.query.toLowerCase())
-                        || list.create_by.toLowerCase().startsWith(event.query.toLowerCase())
                         || list.id_system.toLowerCase().startsWith(event.query.toLowerCase())
+                        || list.email.toLowerCase().startsWith(event.query.toLowerCase())
                     );
                 });
             }
@@ -94,11 +108,10 @@ const InformationJobs = () => {
         }, 50);
     }
     useEffect(() => {
-        if (isOpenInformationJob) {
-            dispatch(dashboardEmployeeRequest(selectEditor));
-        }
-        console.log(selectEditor);
-    }, [dispatch, selectEditor, isOpenInformationJob])
+        let keyword = "?keyword=Editor";
+        dispatch(dashboardEmployeeRequest(keyword));
+    }, [dispatch, filteredNameEditor])
+
     const onSubmit = (data) => {
 
         // delete data["births"];
@@ -134,13 +147,19 @@ const InformationJobs = () => {
         setEditEditor(false);
         reset()
     }
+    const handleDeleteJobs = () => {
+        const formdata = {}
+        formdata.id = rowdata?.data?.id_system
+        formdata.index = rowdata?.index
+        dispatch(deleteJobsRequest(formdata))
+    }
 
     const handleRemoveRow = (event) => {
         const myConfirm = confirmPopup({
             target: event.currentTarget,
             message: 'Bạn có chắc muốn xóa công việc này?',
             icon: 'pi pi-exclamation-triangle',
-            // accept: handleDeleteUser,
+            accept: handleDeleteJobs,
             acceptLabel: "Đồng ý",
             rejectLabel: "Hủy bỏ"
         });
@@ -292,12 +311,15 @@ const InformationJobs = () => {
                             </div>
                             <div className="field col-12 md:col-6">
                                 <span htmlFor="id_editor">Editor :<span className="warning">*</span></span>
-                                <span onClick={(e) => setEditEditor(true)} className="p-float-label cursor__edit">
+                                <span onClick={(e) => setEditEditor(true)} className="cursor__edit">
                                     {editEditor ?
                                         (
                                             <AutoComplete
                                                 suggestions={filteredNameEditor}
                                                 completeMethod={searchName} field="name"
+                                                dropdown
+                                                forceSelection
+                                                itemTemplate={itemUserTemplate}
                                                 {...register("id_editor", { required: true })}
                                                 id={"id_editor"}
                                                 value={selectEditor} onChange={(e) => { setSelectEditor(e.value); }}
@@ -306,7 +328,7 @@ const InformationJobs = () => {
                                             />
                                         ) : (
                                             <span className="p-float-label mt-3" >
-                                                {rowdata?.data?.id_editor ?  rowdata?.data?.id_editor : "Chưa giao việc"}
+                                                {rowdata?.data?.id_editor ? rowdata?.data?.id_editor : "Chưa giao việc"}
                                             </span>
                                         )
                                     }

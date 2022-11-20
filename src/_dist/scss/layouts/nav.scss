@@ -238,6 +238,8 @@
 }
 #id_editor input,#nameCustomer input{
     padding-right: 40px;
+    border-radius: 5px;
+
 }
 .icon__search{
     position: relative;
@@ -255,6 +257,14 @@
     background-size: 25px;
     right: 5px;
     top: 5px;
+}
+
+#id_editor button,#nameCustomer button{
+    background-color: unset !important;
+    position: absolute;
+    right: 0px;
+    border: white;
+    border-radius: 5px;
 }
 .modal__creat--job .field div span textarea,
 .modal__creat--job .field div span .p-dropdown,
