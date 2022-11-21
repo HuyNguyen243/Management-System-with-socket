@@ -52,7 +52,7 @@ const Messages = ({ messagesOnRoom, currentUser }) => {
             )
         })
         }else{
-            return <img src="images/chat_logo.png" alt="" className="logo_chat"></img>
+            return <img src="images/btn_chat.svg" alt="" className="logo_chat"></img>
         }
     }
 

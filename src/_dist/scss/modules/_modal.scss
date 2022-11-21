@@ -51,6 +51,12 @@
 
 .btn__close{
     position: absolute;
-    right: 120px;
+    right: 140px;
     bottom: 33px;
+}
+
+.p-button.p-button-text:enabled:hover, .p-button.p-button-text:not(button):not(a):not(.p-disabled):hover {
+    background: transparent;
+    color: none;
+    border-color: none;
 }

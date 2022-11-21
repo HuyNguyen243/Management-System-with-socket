@@ -5,8 +5,7 @@ import { getFormattedDate } from '../../../commons/message.common';
 import { NAME_ROOM } from '../../../constants';
 import { useDispatch, useSelector } from 'react-redux';
 import { setIsOpenChat } from '../../../redux/messages/messageSlice';
-// import { storage } from '../../../_services/sesionStorage';
-// import { ROOM_SESSION_MESSAGES } from '../../../constants';
+
 import Modal from "./Modal";
 import { UserRules } from '../../../constants';
 import Messages from './Messages';
@@ -43,7 +42,6 @@ const BoxChat = () => {
     const scrollToBottom = () => {
         messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
     }
-
     //------------------------------
     //join room
     const joinRoom = React.useCallback((room) => {
@@ -132,7 +130,18 @@ const BoxChat = () => {
             members: membersInGroup,
             group_id: groups_id
         }
+        console.log(data)
         setEditDataGroup(data)
+    }
+
+    const replaceName = (id)=>{
+        if(currentUser?.role === UserRules.ROLE.ADMIN){
+            for(const member of members){
+                if(member?.id_system === id){
+                    return member?.fullname
+                }
+            }
+        }
     }
 
   return (
@@ -169,10 +178,12 @@ const BoxChat = () => {
             joinRoom={joinRoom}
             setGroups={setGroups}
             groups={groups}
+            membersInGroup={membersInGroup}
             setMembersInGroup={setMembersInGroup}
             setGroups_id={setGroups_id}
             setNamePrivateRoom={setNamePrivateRoom}
         />
+ 
     <div className="chat">
         <div className="chat-header ">
             <div className="chat__close" onClick={handlecloseChat}></div>
@@ -181,7 +192,9 @@ const BoxChat = () => {
             }
             <span className="id__me">{currentUser?.id_system}</span>
             <div className="chat-about">
-            <div className="chat-with">{privateMemberMsg || namePrivateRoom}</div>
+            <div className="chat-with">
+                {( currentUser?.role === UserRules.ROLE.ADMIN ? replaceName(privateMemberMsg) : privateMemberMsg ) || namePrivateRoom}
+            </div>
             <div className="chat-num-messages">{role}</div>
             {
                 user?.data?.role === UserRules.ROLE.ADMIN && currentRoom && currentRoom?.includes(NAME_ROOM.GROUP) &&
@@ -190,14 +203,14 @@ const BoxChat = () => {
             </div>
         </div> 
         {/* end chat-header */}
-        <div className={`chat-history relative`}>
+        <div className={`chat-history relative ${ !currentRoom ? "full_chat" : ""}`}>
             <ul>
                 <Messages messagesOnRoom={messagesOnRoom}  currentUser={currentUser}/>
             </ul>
             <div ref={messageEndRef} />
         </div> 
         {/* end chat-history */}
-            <form className="chat-message clearfix" onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} className={`chat-message clearfix ${!currentRoom ? "hidden" : ""}`}>
                 <div className="chat__file">
                     <input type="file" className="hidden" id="file_chat"/>
                     <label htmlFor="file_chat"></label>

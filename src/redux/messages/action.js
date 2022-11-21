@@ -1,5 +1,5 @@
 import {  createAsyncThunk } from '@reduxjs/toolkit'
-import { post , put } from "../../_services/apiRequest"
+import { post , put, del } from "../../_services/apiRequest"
 
 
 export const createGroupMsgRequest = createAsyncThunk(
@@ -21,7 +21,6 @@ export const updateGroupMsgRequest = createAsyncThunk(
             await put(`group/${data.id}`,data.data)
             return data.data;
         } catch (error) {
-            console.log(error)
             return rejectWithValue(error?.response?.data);
         }
     }
@@ -31,7 +30,7 @@ export const deleteGroupMsgRequest = createAsyncThunk(
     'deleteGroup',
     async (id,{ rejectWithValue }) => {
         try {
-            await put(`group/${id}`)
+            await del(`group/${id}`)
             return true;
         } catch (error) {
             return rejectWithValue(error?.response?.data);

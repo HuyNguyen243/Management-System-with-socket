@@ -12,13 +12,12 @@ import { NAME_ROOM } from '../../../constants';
 import { 
     createGroupMsgRequest,
     updateGroupMsgRequest,
+    deleteGroupMsgRequest,
  } from '../../../redux/messages/action';
 import { Toast } from 'primereact/toast';
 import { toastMsg } from '../../../commons/toast';
 import { useForm, Controller } from "react-hook-form";
-
-// import { storage } from '../../../_services/sesionStorage';
-// import { ROOM_SESSION_MESSAGES } from '../../../constants';
+import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog';
 
 const Modal = ({isOpenCreateGroup, setIsOpenCreateGroup, nameModal , editDataGroup, setEditDataGroup, setMembersInGroup}) => {
     const dispatch = useDispatch()
@@ -32,12 +31,6 @@ const Modal = ({isOpenCreateGroup, setIsOpenCreateGroup, nameModal , editDataGro
     const { control, formState: { errors }, handleSubmit, reset, setValue, register, watch } = useForm();
 
     const dataWatch = watch()
-
-    useEffect(() => {
-        if(user?.data){
-            setValue("members",[user?.data?.id_system])
-        }
-    },[user, setValue])
 
     const resetModal = React.useCallback(()=>{
         setIsOpenCreateGroup(false)
@@ -54,10 +47,10 @@ const Modal = ({isOpenCreateGroup, setIsOpenCreateGroup, nameModal , editDataGro
             setValue("role",roleGroup?.[0]?.code)
         }else{
             setValue("name","")
-            setValue("members",[])
+            setValue("members",[user?.data?.id_system])
             setValue("role",{})
         }
-    },[editDataGroup, setValue, nameModal])
+    },[editDataGroup, setValue, nameModal, user])
     useEffect(() => {
         if(createGroup?.data){
             toastMsg.success(toast,'Tạo nhóm thành công')
@@ -127,9 +120,23 @@ const Modal = ({isOpenCreateGroup, setIsOpenCreateGroup, nameModal , editDataGro
         );
     }
 
+    const handleDeleteGroup = ()=>{
+        confirmDialog({
+            message: 'Bạn có chắc muốn xóa nhóm này không ?',
+            header: 'Xóa nhóm',
+            icon: 'pi pi-info-circle',
+            acceptClassName: 'p-button-danger',
+            accept: ()=>{
+                dispatch(deleteGroupMsgRequest(editDataGroup?.group_id))
+            },
+            reject: ()=>{}
+        });
+    }
+
     return (
         <>
             <Toast ref={toast} position="bottom-left"/>
+            <ConfirmDialog />
             <Dialog 
                 header={nameModal === NAME_ROOM.CREATE ? "Tạo nhóm:" : "Sửa nhóm:" }
                 visible={isOpenCreateGroup} 
@@ -138,7 +145,7 @@ const Modal = ({isOpenCreateGroup, setIsOpenCreateGroup, nameModal , editDataGro
                 style={{width: '50vw'}} 
             >
                 <form className="grid" onSubmit={handleSubmit(onSubmit)}>
-                    <div className="field col-12 md:col-12">
+                    <div className={`field col-12 md:col-${nameModal === NAME_ROOM.EDIT ? "11" : "12"}`}>
                         <span htmlFor="autocomplete">
                             Tên group:
                         <span className="warning">*</span>
@@ -155,6 +162,16 @@ const Modal = ({isOpenCreateGroup, setIsOpenCreateGroup, nameModal , editDataGro
                         errors?.name &&  <span className="warning" style={{fontSize:"12px"}}>{errors?.name.message}</span>
                         }
                     </div>
+                    {
+                        nameModal === NAME_ROOM.EDIT &&
+                        <div className="field col-12 md:col-1 relative">
+                            <img 
+                                src="images/trash.svg" alt="" 
+                                className="absolute top-50 " style={{ right: "12px", cursor: "pointer" }} 
+                                onClick={handleDeleteGroup}
+                            />
+                        </div>
+                    }
                     <div className="field col-12 md:col-12">
                         <span htmlFor="autocomplete">Thành viên trong group: <span className="warning">*</span></span>
                         <Controller name="members"

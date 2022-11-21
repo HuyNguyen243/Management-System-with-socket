@@ -6,10 +6,12 @@ import { NAME_ROOM } from '../../../constants';
 import { getCurrentRoom, setIsOpenChat } from '../../../redux/messages/messageSlice';
 import { timeAgo } from '../../../commons/message.common';
 import { CharacterRoom } from '../../../commons/message.common';
+import { UserRules } from '../../../constants';
 
 const Messages = ({isOpenMessages, setisOpenMessages}) => {
     const [keyword,setKeyWord] = useState("")
     const [messages,setMessages] = useState([])
+    const [originalMessages,setOriginalMessages] = useState([])
     const user = useSelector(state=> state.auth.user)
     const currentUser = useSelector(state=> state.message.currentUser)
     const dispatch = useDispatch()
@@ -24,16 +26,25 @@ const Messages = ({isOpenMessages, setisOpenMessages}) => {
 
     socket.off("messages-by-id-system").on("messages-by-id-system", (payload)=>{
         setMessages(payload)
+        setOriginalMessages(payload)
     })
 
     socket.off("user-send-message").on("user-send-message", (payload)=>{
         socket.emit('messages-by-id-system',user?.data?.id_system)
     })
 
-    const replaceId = (id)=>{
+    const replaceName = (id)=>{
         if(id.includes(NAME_ROOM.USER)){
             const newID = id.replace(user?.data?.id_system,"").replace(/-/g,"").replace(NAME_ROOM.USER,"")
-            return newID
+            if(currentUser?.role === UserRules.ROLE.ADMIN){
+                for(const member of members){
+                    if(member?.id_system === newID){
+                        return member?.fullname
+                    }
+                }
+            }else{
+                return newID
+            }
         }
         if(id.includes(NAME_ROOM.GROUP)){
             const newId = id.replace(/-/g,"").replace(NAME_ROOM.GROUP,"")
@@ -42,12 +53,10 @@ const Messages = ({isOpenMessages, setisOpenMessages}) => {
                     if(newId === group?._id){
                             return group?.name
                     }
-    
                 }
             }
         }
     }
-
 
     const handleOpenMessages =(room,nameRoom)=>{
         const result = {
@@ -86,6 +95,20 @@ const Messages = ({isOpenMessages, setisOpenMessages}) => {
             }
         }
     }
+
+    const searchMessages = (e)=>{
+        const { value } = e.target
+        setKeyWord(value)
+        const newMessages = messages.filter(message=>{
+            return replaceName(message?._id).toLowerCase().includes(value.toLowerCase())
+        })
+        
+        if(value !== ""){
+            setMessages(newMessages)
+        }else{
+            setMessages(originalMessages)
+        }
+    }
     
     return (
         <div className={`notification-message__container ${!isOpenMessages && "hidden"}`}>
@@ -97,7 +120,7 @@ const Messages = ({isOpenMessages, setisOpenMessages}) => {
                     id="outlined-size-small"
                     value={keyword}
                     size="small"
-                    onChange={(e)=>setKeyWord(e.target.value)}
+                    onChange={searchMessages}
                 />
                     <img src="../../images/search_blue.svg" alt="" className="filter__btn--search"/>
                 </div>
@@ -109,16 +132,16 @@ const Messages = ({isOpenMessages, setisOpenMessages}) => {
                         return(
                             <div className="notification-message__block " 
                                 key={index} 
-                                onClick={()=>handleOpenMessages(item._id,replaceId(item?._id) )}
+                                onClick={()=>handleOpenMessages(item._id,replaceName(item?._id))}
                             >
                                 <div 
                                 className={`notification-message__it align-items-center 
                                 ${currentUser?.newMessages && Object.keys(currentUser?.newMessages)?.includes(item?._id) && "active"}`} 
                                 style={{paddingLeft: "10px"}}>
-                                    <div className="chat_img" data="ADMIN" role={setCharacterForImage(replaceId(item?._id),item.type)}></div>
+                                    <div className="chat_img" data="ADMIN" role={setCharacterForImage(replaceName(item?._id),item.type)}></div>
                                     <div className="notification-message_item">
                                         <p className="notification-message__name flex justify-content-between">
-                                            {replaceId(item?._id)}
+                                            {replaceName(item?._id) }
                                             <span className="notification__time">{timeAgo(item?.time)}</span>
                                         </p>
                                         <div className="notification-message__i">

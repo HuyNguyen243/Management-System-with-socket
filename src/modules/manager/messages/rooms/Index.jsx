@@ -13,6 +13,8 @@ import { NAME_ROOM } from '../../../../constants';
 import Members from './Members';
 import Groups from './Groups';
 import { CharacterRoom } from '../../../../commons/message.common';
+import { roomStorage } from '../../../../commons/message.common';
+import { UserRules } from '../../../../constants';
 
 const Index = (
   {
@@ -28,17 +30,42 @@ const Index = (
       joinRoom,
       setGroups,
       groups,
+      membersInGroup,
       setMembersInGroup,
       setGroups_id,
       privateGroupMsg,
       setPrivateGroupMsg,
       setNamePrivateRoom,
+      setMessageOnRoom,
   }
   ) => {
     const [keyword,setKeyWord] = useState("")
     const user = useSelector(state=> state.auth.user)
     const currentRoomByNotifications = useSelector(state=>state.message.curentRoom)
     const dispatch = useDispatch()
+
+    const [originalMembers, setOriginalMembers] = useState([])
+    const [originalGroups, setOriginalGroups] = useState([])
+    
+    useEffect(() => {
+        // CHECK SESSIONSTORAGE AND SAVE
+        const roomBySsTorage = roomStorage.get()
+        if(roomBySsTorage){
+                setGroups_id(roomBySsTorage.groud_id)
+                setPrivateGroupMsg(roomBySsTorage?.privateGroupMsg)
+                setPrivateMemberMsg(roomBySsTorage?.received)
+                setRole(NAME_ROOM.GROUP)
+                setMembersInGroup(roomBySsTorage?.membersInGroup)
+                setNamePrivateRoom(roomBySsTorage?.namePrivateRoom)
+            if(roomBySsTorage?.privateGroupMsg !== ""){
+                setCurrentRoom(roomBySsTorage?.privateGroupMsg)
+                joinRoom(roomBySsTorage?.privateGroupMsg)
+            }else{
+                setCurrentRoom(roomBySsTorage?.privateMemberMsg)
+                joinRoom(roomBySsTorage?.privateMemberMsg)
+            }
+        }
+    },[setGroups_id, setMembersInGroup, setNamePrivateRoom, setPrivateGroupMsg, setPrivateMemberMsg, setRole, joinRoom, setCurrentRoom])
 
     useEffect(() => {
         if(currentRoomByNotifications){
@@ -58,13 +85,13 @@ const Index = (
   ///set first room 
     useEffect(() => {
         if(user?.data){
-        socket.emit('new-user')
+        socket.emit('get-members')
         socket.emit('groups',user?.data?.id_system)
         }
     },[user])
     //-----------------------------------//
   //GET ALL USER
-    socket.off('new-user').on('new-user', (payload)=>{
+    socket.off('get-members').on('get-members', (payload)=>{
         payload.forEach((member)=>{
             if(member?.id_system === user?.data?.id_system){
                 setCurrentUser(member)
@@ -73,11 +100,42 @@ const Index = (
         })
         dispatch(getAllMembers(payload))
         setMembers(payload)
+        setOriginalMembers(payload)
     })
+    //GET ALL GROUP
     socket.off('groups').on("groups", (payload)=>{
         setGroups(payload)
         dispatch(getAllgroups(payload))
+        setOriginalGroups(payload)
     })
+    //SEARCH ROOM
+    const handleSearchRoom = (e)=>{
+        const { value } = e.target
+        setKeyWord(value)
+        let newMembers;
+
+        newMembers = members.filter(member=>{
+            return member?.id_system.toLowerCase().includes(value.toLowerCase())
+        })
+
+        const newGroups = groups.filter(group=>{
+            return group?.name.toLowerCase().includes(value.toLowerCase())
+        })
+
+        if(currentUser.role === UserRules.ROLE.ADMIN){
+             newMembers = members.filter(member=>{
+                return member?.fullname.toLowerCase().includes(value.toLowerCase())
+            })
+        }
+
+        if(value === ""){
+            setMembers(originalMembers)
+            setGroups(originalGroups)
+        }else{
+            setMembers(newMembers)
+            setGroups(newGroups)
+        }
+    }
 
     return (
         <div className="people-list" id="people-list">
@@ -88,7 +146,7 @@ const Index = (
                     id="outlined-size-small"
                     value={keyword}
                     size="small"
-                    onChange={(e)=>setKeyWord(e.target.value)}
+                    onChange={handleSearchRoom}
                 />
                 <img src="../../images/search_blue.svg" alt="" className="filter__btn--search"/>
             </div>
@@ -101,6 +159,7 @@ const Index = (
                 groups={groups}
                 currentUser={currentUser}
                 currentRoom={currentRoom}
+                membersInGroup={membersInGroup}
                 setMembersInGroup={setMembersInGroup}
                 setGroups_id={setGroups_id}
                 setPrivateGroupMsg={setPrivateGroupMsg}
@@ -109,6 +168,8 @@ const Index = (
                 joinRoom={joinRoom}
                 privateGroupMsg={privateGroupMsg}
                 setNamePrivateRoom={setNamePrivateRoom}
+                setCurrentRoom={setCurrentRoom}
+                setMessageOnRoom={setMessageOnRoom}
             />
             <Members 
                 members={members} 

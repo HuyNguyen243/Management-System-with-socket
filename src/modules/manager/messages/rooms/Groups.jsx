@@ -3,12 +3,24 @@ import { NAME_ROOM } from '../../../../constants';
 import { socket } from "../../../../_services/socket";
 import { Toast } from 'primereact/toast';
 import { toastMsg } from '../../../../commons/toast';
+import { roomStorage } from '../../../../commons/message.common';
 
 const Groups = ({ 
-    groups, currentUser, currentRoom, 
-    setMembersInGroup , setGroups_id, 
-    setPrivateGroupMsg, setPrivateMemberMsg, setRole, 
-    joinRoom, privateGroupMsg, setNamePrivateRoom }) => {
+    groups,
+    currentUser,
+    currentRoom, 
+    membersInGroup, 
+    setMembersInGroup , 
+    setGroups_id, 
+    setPrivateGroupMsg, 
+    setPrivateMemberMsg, 
+    setRole, 
+    joinRoom, 
+    privateGroupMsg, 
+    setNamePrivateRoom, 
+    setCurrentRoom, 
+    setMessageOnRoom ,
+}) => {
     const toast = useRef(null);
 
     const handlePrivateGroup = (group)=>{
@@ -21,6 +33,9 @@ const Groups = ({
         setMembersInGroup(group?.members)
         setNamePrivateRoom(group.name)
         socket.emit("reset-notifications",id_Group, currentUser?.id_system)
+
+        //SAVESTORAGE
+        roomStorage.set(group._id, id_Group, "", NAME_ROOM.GROUP, group?.members, group.name, "")
     }
 
     socket.off("isCreated").on("isCreated", (payload)=>{
@@ -32,14 +47,39 @@ const Groups = ({
     socket.off("isEdit").on("isEdit", (payload)=>{
         if(payload?.isEdit){
             socket.emit('groups',currentUser?.id_system)
-            if(payload?.members.includes(currentUser?.id_system)){
-                toastMsg.warn(toast,`Bạn đã rời khỏi nhóm ${payload?.nameRoom}.`)
-            }
         }
         if(currentRoom === payload?.room){
             setNamePrivateRoom(payload?.nameRoom)
+            const room = roomStorage.get()
+            roomStorage.set(room.groud_id,room.privateGroupMsg, "", room.role,membersInGroup ,payload?.nameRoom,"" )
+        }
+        if(payload?.members.includes(currentUser?.id_system)){
+            toastMsg.warn(toast,`Bạn đã rời khỏi nhóm ${payload?.nameRoom}.`)
+            if(currentRoom === payload?.room){
+                resetRoomAfterDelete()
+            }
         }
     })
+
+    socket.off("isDelete").on("isDelete", (payload)=>{
+        if(payload?.isDelete){
+            socket.emit('groups',currentUser?.id_system)
+        }
+        if(currentRoom === payload?.room){
+            resetRoomAfterDelete()
+        }
+    })
+
+    const resetRoomAfterDelete = ()=>{
+        roomStorage.delete()
+        setNamePrivateRoom("")
+        setMembersInGroup([])
+        setPrivateGroupMsg("")
+        setGroups_id("")
+        setRole("")
+        setCurrentRoom("")
+        setMessageOnRoom([])
+    }
 
     const showGroups = ()=>{
         return groups?.map((group,index)=>(

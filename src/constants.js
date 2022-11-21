@@ -18,7 +18,7 @@ export const USER_IS_STOPPING = "Tạm ngưng hoạt động";
 export const USER_IS_OFFLINE = "Không hoạt động";
 
 export const NAME_SESSION_STORAGE_TOKEN = "1touch_access_token";
-export const ROOM_SESSION_MESSAGES = "room_message_1touch";
+export const ROOM_SESSION_MESSAGES = "room_1touch";
 export const ID_SESSION = "1touch_id";
 
 export const NOT_SET_ADMIN = "NOT_SET_BY_ADMIN";

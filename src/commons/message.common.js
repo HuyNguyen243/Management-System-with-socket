@@ -1,4 +1,6 @@
-import { UserRules } from "../constants"
+import { UserRules } from "../constants";
+import { storage } from "../_services/sesionStorage";
+import { ROOM_SESSION_MESSAGES } from "../constants";
 
 export const getFormattedDate = ()=>{
     const date = new Date()
@@ -92,4 +94,26 @@ export const timeAgo = (time)=>{
     }
 
     return time;
+}
+
+export const roomStorage = {
+    set: (groud_id, privateGroupMsg, privateMemberMsg, role, membersInGroup, namePrivateRoom, received)=>{
+        const dataSession = {
+            groud_id : groud_id,
+            privateGroupMsg : privateGroupMsg,
+            privateMemberMsg : privateMemberMsg,
+            role: role,
+            membersInGroup: membersInGroup,
+            namePrivateRoom: namePrivateRoom,
+            received : received
+        }
+        storage.save(ROOM_SESSION_MESSAGES,dataSession)
+    },
+    get: () => { 
+        return storage.get(ROOM_SESSION_MESSAGES)
+    },
+    delete: () =>{
+        storage.delete(ROOM_SESSION_MESSAGES)
+    }
+    
 }
