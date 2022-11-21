@@ -10,7 +10,7 @@ import { InputNumber } from 'primereact/inputnumber';
 import { useForm, Controller } from 'react-hook-form';
 import { classNames } from 'primereact/utils';
 import { saleCustomerRequest } from "../../redux/sale/action";
-import { type_files, type_jobs } from "./dropDown"
+import { type_files, work_types } from "./dropDown"
 import { useDispatch, useSelector } from 'react-redux';
 import { dataParseCustomer } from '../manager/jobs/dataParse';
 import { itemCustomerTemplate } from "../modal/TemplateDropDown";
@@ -25,22 +25,21 @@ const CreateJobs = () => {
 
     const toast = useRef(null);
     const defaultValues = {
-        type_job: null,
         end_day: null,
-        type_image: "",
-        quality: "",
+        work_types: "",
+        quality_img: "",
         org_link: '',
-        type_file: '',
+        photo_types: '',
         total_cost: '',
-        status: null,
-        content: '',
-        note: '',
+        request_content: '',
+        work_notes: '',
+        type_models: '',
     }
     const { control, formState: { errors }, handleSubmit, reset } = useForm({ defaultValues });
     const [filteredNameCustomers, setFilteredNameCustomers] = React.useState(null);
     const [customerSelect, setCustomerSelect] = React.useState(null);
     const customers = useSelector(state => state.sale.customers)
-    const jobs = useSelector(state => state.jobs.addjobs)
+    const addjobs = useSelector(state => state.jobs.addjobs)
     let minDate = new Date();
     const isOpenCreateJob = useSelector(state => state.modal.isOpenModalCreateJob)
 
@@ -48,17 +47,18 @@ const CreateJobs = () => {
     let customerName = dataParseCustomer(customers?.data)
 
     useEffect(() => {
-        if (jobs?.data) {
+        console.log(addjobs);
+        if (addjobs?.data) {
             reset();
             dispatch(setIsOpenModalCreateJob(false))
             toastMsg.success(toast, 'Tạo công việc mới thành công')
         }
-        if (jobs?.error) {
+        if (addjobs?.error) {
             dispatch(setIsOpenModalCreateJob(true))
-            toastMsg.error(toast, jobs?.data?.message)
+            toastMsg.error(toast, addjobs?.data?.message)
         }
     }, [
-        jobs, reset, dispatch
+        addjobs, reset, dispatch
     ])
 
     const searchName = (event) => {
@@ -88,13 +88,16 @@ const CreateJobs = () => {
     }, [dispatch, filteredNameCustomers, isOpenCreateJob])
 
     const onSubmit = (data) => {
+        delete data["nameCustomer"];
         if (Object.keys(errors).length === 0) {
             data.id_customer = customerSelect?.id_system;
+            data.work_types = data.work_types?.code;
+            data.photo_types = data.photo_types?.code;
             dispatch(addJobsRequest(data))
         }
     };
     const handleCloseModal = () => {
-        dispatch(customers(false));
+        dispatch(setIsOpenModalCreateJob(false));
         setCustomerSelect(null)
         reset();
     };
@@ -144,13 +147,13 @@ const CreateJobs = () => {
                                 <p onClick={handleCreateNewCustomer} style={{ width: "max-content" }}>Tạo khách hàng mới</p>
                             </div>
                             <div className="field col-12 md:col-6">
-                                <span htmlFor="type_job">Loại công việc: <span className="warning">*</span></span>
+                                <span htmlFor="work_types">Loại công việc: <span className="warning">*</span></span>
                                 <span className="">
-                                    <Controller name="type_job"
+                                    <Controller name="work_types"
                                         control={control}
                                         rules={{ required: true }} render={({ field, fieldState }) => (
                                             <Dropdown
-                                                options={type_jobs}
+                                                options={work_types}
                                                 optionLabel="name"
                                                 value={field.value} onChange={(e) => field.onChange(e.value)}
                                                 className={classNames({ 'p-invalid': fieldState.invalid }, "create__job_type")}
@@ -176,9 +179,9 @@ const CreateJobs = () => {
                                 <img src="/images/calendar.svg" alt="" className="calendar__image" />
                             </div>
                             <div className="field col-12 md:col-3">
-                                <span htmlFor="type_image">Loại ảnh: <span className="warning">*</span></span>
+                                <span htmlFor="type_models">Loại ảnh: <span className="warning">*</span></span>
                                 <span className="p-float-label">
-                                    <Controller name="type_image"
+                                    <Controller name="type_models"
                                         control={control}
                                         rules={{ required: true }} render={({ field, fieldState }) => (
                                             <InputText id={field.name}
@@ -191,20 +194,10 @@ const CreateJobs = () => {
                             <div className="field col-12 md:col-3 ">
                                 <span htmlFor="withoutgrouping">Số lượng: <span className="warning">*</span></span>
                                 <span className="p-float-label">
-                                    <Controller name="quality"
+                                    <Controller name="quality_img"
                                         control={control}
                                         rules={{ required: true }} render={({ field, fieldState }) => (
-                                            <InputText
-                                                onKeyPress={(event) => {
-                                                    if (!/[0-9]/.test(event.key)) {
-                                                        event.preventDefault();
-                                                    }
-                                                }}
-                                                autoComplete="disabled"
-                                                id={field.name}
-                                                {...field}
-                                                className={classNames({ 'p-invalid': fieldState.invalid })}
-                                            />
+                                            <InputNumber value={field.value} onValueChange={(e) => field.onChange(e.value)} mode="decimal" />
                                         )} />
                                 </span>
                             </div>
@@ -225,7 +218,7 @@ const CreateJobs = () => {
                             <div className="field col-12 md:col-6">
                                 <span htmlFor="original__link">Định dạng file: <span className="warning">*</span></span>
                                 <span className="p-float-label">
-                                    <Controller name="type_file"
+                                    <Controller name="photo_types"
                                         control={control}
                                         rules={{ required: true }} render={({ field, fieldState }) => (
                                             <Dropdown
@@ -259,7 +252,7 @@ const CreateJobs = () => {
                             <div className="field col-12 md:col-12">
                                 <span htmlFor="employees">Nội dung yêu cầu: <span className="warning">*</span></span>
                                 <span className="p-float-label">
-                                    <Controller name="content"
+                                    <Controller name="request_content"
                                         control={control}
                                         rules={{ required: true }} render={({ field, fieldState }) => (
                                             <InputTextarea
@@ -274,7 +267,7 @@ const CreateJobs = () => {
                             <div className="field col-12 md:col-12">
                                 <span className="p-float-label">
                                     <span >Lưu ý của khách hàng:<span className="warning">*</span></span>
-                                    <Controller name="note"
+                                    <Controller name="work_notes"
                                         control={control}
                                         rules={{ required: true }} render={({ field, fieldState }) => (
                                             <InputTextarea

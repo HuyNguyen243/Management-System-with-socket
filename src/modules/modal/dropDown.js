@@ -20,7 +20,7 @@ export const type_status_jobs= [
     { name: 'Chưa hoàn thành', code: 'INCOMPLETE' },
 ]
 
-export const type_jobs = [
+export const work_types = [
     { name: 'Tính phí', code: 'FEE' },
     { name: 'Không tính phí', code: 'FREE' },
     { name: 'Chỉnh sửa', code: 'EDIT' },

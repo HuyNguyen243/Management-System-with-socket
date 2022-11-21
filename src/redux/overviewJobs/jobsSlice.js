@@ -65,7 +65,7 @@ const jobsReducer = createSlice({
                 state,
                 {},
                 {
-                    user: {
+                    addjobs: {
                         loading: true,
                     },
                 }
@@ -76,21 +76,21 @@ const jobsReducer = createSlice({
                 state,
                 {},
                 {
-                    user: {
+                    addjobs: {
                         loading: false,
                         data: action?.payload,
                         error: false,
                     },
                 }
             );
-            state.dashboard.data.push(action?.payload);
+            state.dashboard.data.unshift(action?.payload);
         },
         [addJobsRequest.rejected]: (state, action) => {
             Object.assign(
                 state,
                 {},
                 {
-                    user: {
+                    addjobs: {
                         loading: false,
                         data: action?.payload,
                         error: true,
