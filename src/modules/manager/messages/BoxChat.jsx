@@ -12,18 +12,22 @@ import { UserRules } from '../../../constants';
 import Messages from './Messages';
 
 const BoxChat = () => {
+    //MEMBER
     const [members, setMembers] = useState([])
-    const [membersInGroup, setMembersInGroup] = useState([])
+    const [privateMemberMsg, setPrivateMemberMsg] = useState("")
+    //GENERAL
     const [currentUser, setCurrentUser] = useState({})
     const [messages, setMessages] = useState("")
-    const [groups,setGroups] = useState([])
-    const [groups_id,setGroups_id] = useState("")
     const [currentRoom, setCurrentRoom] = useState(undefined)
     const [namePrivateRoom, setNamePrivateRoom] = useState("")
     const [messagesOnRoom, setMessageOnRoom] = useState([])
-    const [privateMemberMsg, setPrivateMemberMsg] = useState("")
-    const [privateGroupMsg, setPrivateGroupMsg] = useState("")
     const [role, setRole] = useState("")
+    //GROUP
+    const [groups,setGroups] = useState([])
+    const [groups_id,setGroups_id] = useState("")
+    const [membersInGroup, setMembersInGroup] = useState([])
+    const [privateGroupMsg, setPrivateGroupMsg] = useState("")
+    
     const messageEndRef = useRef(null);
     const dispatch = useDispatch()
     const isOpenChat = useSelector(state=>state.message.isOpenChat)

@@ -10,6 +10,7 @@ const Groups = ({
     setPrivateGroupMsg, setPrivateMemberMsg, setRole, 
     joinRoom, privateGroupMsg, setNamePrivateRoom }) => {
     const toast = useRef(null);
+
     const handlePrivateGroup = (group)=>{
         const id_Group = NAME_ROOM.GROUP + "-" + group._id
         setGroups_id(group._id)
