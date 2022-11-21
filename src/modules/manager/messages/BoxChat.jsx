@@ -1,41 +1,41 @@
 import React,{ useState, useRef, useEffect } from 'react';
-import Members from './Members';
+import Index from './rooms/Index';
 import { socket } from "../../../_services/socket";
 import { getFormattedDate } from '../../../commons/message.common';
 import { NAME_ROOM } from '../../../constants';
-import { timeAgo } from '../../../commons/message.common';
 import { useDispatch, useSelector } from 'react-redux';
 import { setIsOpenChat } from '../../../redux/messages/messageSlice';
-import { storage } from '../../../_services/sesionStorage';
-import { ROOM_SESSION_MESSAGES } from '../../../constants';
-import CreateGroup from "./CreateGroup";
+// import { storage } from '../../../_services/sesionStorage';
+// import { ROOM_SESSION_MESSAGES } from '../../../constants';
+import Modal from "./Modal";
 import { UserRules } from '../../../constants';
+import Messages from './Messages';
 
 const BoxChat = () => {
     const [members, setMembers] = useState([])
     const [membersInGroup, setMembersInGroup] = useState([])
     const [currentUser, setCurrentUser] = useState({})
-    const [currentRoom, setCurrentRoom] = useState(undefined)
     const [messages, setMessages] = useState("")
     const [groups,setGroups] = useState([])
-    const [groups_id,setGroups_ids] = useState("")
+    const [groups_id,setGroups_id] = useState("")
+    const [currentRoom, setCurrentRoom] = useState(undefined)
+    const [namePrivateRoom, setNamePrivateRoom] = useState("")
     const [messagesOnRoom, setMessageOnRoom] = useState([])
     const [privateMemberMsg, setPrivateMemberMsg] = useState("")
+    const [privateGroupMsg, setPrivateGroupMsg] = useState("")
     const [role, setRole] = useState("")
     const messageEndRef = useRef(null);
-    const isOpenChat = useSelector(state=>state.message.isOpenChat)
     const dispatch = useDispatch()
+    const isOpenChat = useSelector(state=>state.message.isOpenChat)
     const [isOpenCreateGroup, setIsOpenCreateGroup] = useState(false);
-    const [nameGroup, setNameGroup] = useState("");
+    const [nameModal, setNameModal] = useState("");
     const [editDataGroup, setEditDataGroup] = useState({});
     const user = useSelector(state=> state.auth.user)
-
 
     //scroll bottom
     useEffect(() => {
         scrollToBottom();
     }, [messagesOnRoom]);
-
     const scrollToBottom = () => {
         messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
     }
@@ -48,16 +48,31 @@ const BoxChat = () => {
     },[ setCurrentRoom])
 
     // GET NOTIFICATION 
-    socket.off('notifications').on('notifications',(room, id, sender)=>{
+    socket.off('notifications').on('notifications',(room, receiver)=>{
         if(room !== currentRoom){
-            socket.emit("new-notifications",room, currentUser?.id_system, id, sender)
+            if(room.includes(NAME_ROOM.USER)){
+                socket.emit("new-notifications",room, receiver)
+            }else if(room.includes(NAME_ROOM.GROUP)){
+                for(const group of groups){
+                    if(room === group?.type + "-" + group?._id){
+                        socket.emit("new-notifications",room, currentUser?.id_system)
+                        break
+                    }
+                }
+            }
         }
     })
+
     //------------------------------
     //GET MSG
     socket.off('room-messages').on('room-messages', (payload)=>{
-        setMessageOnRoom(payload)
-        socket.emit('rooms-by-user',currentUser?.id_system)
+        if(payload.length === 0){
+            setMessageOnRoom([])
+        }else{
+            if(payload?.[0]?._id?.room === currentRoom){
+                setMessageOnRoom(payload)
+            }
+        }
     })
     //------------------------------
     //SUBMIT MESSAGE
@@ -65,19 +80,22 @@ const BoxChat = () => {
         e?.preventDefault()
         if(messages !== ""){
             const time = new Date().getTime()
-            const roomId = currentRoom
+            const nameRoom = currentRoom
             const toDayDate = getFormattedDate()
             let allmembers;
-            if(roomId.includes("-")){
+            let type ;
+            if(nameRoom?.includes(NAME_ROOM.USER)){
                 allmembers = [privateMemberMsg, currentUser?.id_system]
+                type = NAME_ROOM.USER;
             }else{
                 allmembers = membersInGroup
-
+                type = NAME_ROOM.GROUP;
             }
-            socket.emit('message-room', roomId, messages, currentUser?.id_system,time, toDayDate, allmembers, NAME_ROOM.USER, groups_id)
+            socket.emit('message-room', nameRoom, messages, currentUser?.id_system, time, toDayDate, allmembers, type, groups_id, privateMemberMsg)
             setMessages("")
         }
     }
+
     //PRESS ENTER TO SUBMIT
     useEffect(() => {
         const submitForm= (event)=>{
@@ -96,7 +114,6 @@ const BoxChat = () => {
 
     const handlecloseChat = ()=>{
         dispatch(setIsOpenChat(false))
-        storage.delete(ROOM_SESSION_MESSAGES)
         setCurrentRoom(undefined)
         setRole("")
         setPrivateMemberMsg("")
@@ -105,73 +122,13 @@ const BoxChat = () => {
 
     const handleEditGroup =()=>{
         setIsOpenCreateGroup(true)
-        setNameGroup(NAME_ROOM.EDIT)
+        setNameModal(NAME_ROOM.EDIT)
         const data = {
-            currentRoom : currentRoom,
-            membersInGroup: membersInGroup,
+            name : namePrivateRoom,
+            members: membersInGroup,
+            group_id: groups_id
         }
         setEditDataGroup(data)
-    }
-    
-
-    const showMessages = ()=>{
-        if(messagesOnRoom?.length > 0){
-        return messagesOnRoom.map((msg,index)=>{
-            return(
-            <div key={index}>
-                {
-                msg?._id?.room === currentRoom 
-                &&
-                <>
-                <div className="message-data align-right">
-                    <p className="message-data-time">{msg?._id?.date}</p>
-                </div>
-                {
-                    msg.messagesByDate.map((message,index2)=>{
-                    const checkUserSend = message?.from === currentUser?.id_system ? true : false
-                    return (
-                        <li className={`relative ${checkUserSend && "clearfix"}`} key={index2}>
-                        {/* <p className="message-data-alert">Editor đã hoàn thành job 23454.S34568</p> */}
-                        <div className={`msg__by--user flex ${checkUserSend ? "justify-content-end" : "justify-content-start"}`}>
-                            {
-                            checkUserSend 
-                            ?
-                            <>
-                                <div className="message my-message ">
-                                <p>{message?.content}</p>
-                                </div>
-                                <div className="chat_img my-mess" 
-                                role={message?.from?.split(".")[1]} 
-                                data-size="small"></div>
-                                <span className="message_time">
-                                {timeAgo(message?.time)}
-                                </span>
-                            </>
-                            :
-                            <>
-                                <div className="chat_img your-mess" role={message?.from?.split(".")[1]} data-size="small"></div>
-                                <div className="message other-message ">
-                                <p>{message?.content}</p>
-                                </div>
-                                <span className="message_time">
-                                {timeAgo(message?.time)}
-                                </span>
-                            </>
-                            }
-                        </div>
-                        </li>
-                    )
-                    })
-                }
-                </>
-                }
-                <div ref={messageEndRef} />
-            </div>
-            )
-        })
-        }else{
-            return <img src="images/chat_logo.png" alt="" className="logo_chat"></img>
-        }
     }
 
   return (
@@ -180,17 +137,19 @@ const BoxChat = () => {
             user?.data?.role === UserRules.ROLE.ADMIN &&
             <>
                 <div className="chat__createGroup" 
-                onClick={()=>{ setNameGroup(NAME_ROOM.CREATE);setIsOpenCreateGroup(!isOpenCreateGroup);setEditDataGroup({})} } 
+                onClick={()=>{ setNameModal(NAME_ROOM.CREATE);setIsOpenCreateGroup(!isOpenCreateGroup);setEditDataGroup({})} } 
                 ></div>
-                <CreateGroup 
+                <Modal 
                     isOpenCreateGroup={isOpenCreateGroup} 
                     setIsOpenCreateGroup={setIsOpenCreateGroup} 
-                    nameGroup={nameGroup}
+                    nameModal={nameModal}
                     editDataGroup={editDataGroup}
+                    setEditDataGroup={setEditDataGroup}
+                    setMembersInGroup={setMembersInGroup}
                 />
             </>
         }
-        <Members 
+        <Index 
             members={members} 
             setCurrentUser={setCurrentUser} 
             setMembers={setMembers} 
@@ -200,46 +159,51 @@ const BoxChat = () => {
             setMessageOnRoom={setMessageOnRoom}
             privateMemberMsg={privateMemberMsg}
             setPrivateMemberMsg={setPrivateMemberMsg}
+            privateGroupMsg={privateGroupMsg}
+            setPrivateGroupMsg={setPrivateGroupMsg}
             setRole={setRole}
             joinRoom={joinRoom}
             setGroups={setGroups}
             groups={groups}
             setMembersInGroup={setMembersInGroup}
-            setGroups_ids={setGroups_ids}
+            setGroups_id={setGroups_id}
+            setNamePrivateRoom={setNamePrivateRoom}
         />
-
     <div className="chat">
         <div className="chat-header ">
             <div className="chat__close" onClick={handlecloseChat}></div>
             {
-                privateMemberMsg !== "" && <div className="chat_img" role={privateMemberMsg?.split(".")[1] || privateMemberMsg.slice(0,2)} ></div>
+                namePrivateRoom &&  <div className="chat_img" role={namePrivateRoom.charAt(0) + namePrivateRoom.charAt(1)} ></div>
             }
-            {currentUser?.id_system && <span className="id__me">{currentUser?.id_system}</span>}
+            <span className="id__me">{currentUser?.id_system}</span>
             <div className="chat-about">
-            <div className="chat-with">{privateMemberMsg}</div>
+            <div className="chat-with">{privateMemberMsg || namePrivateRoom}</div>
             <div className="chat-num-messages">{role}</div>
             {
-                user?.data?.role === UserRules.ROLE.ADMIN && !currentRoom?.includes("-") &&
+                user?.data?.role === UserRules.ROLE.ADMIN && currentRoom && currentRoom?.includes(NAME_ROOM.GROUP) &&
                 <img src="images/edit_group.svg" alt="" className="edit__group" onClick={handleEditGroup}/>
             }
             </div>
-        </div> {/* end chat-header */}
-        <div className="chat-history relative">
+        </div> 
+        {/* end chat-header */}
+        <div className={`chat-history relative`}>
             <ul>
-            {showMessages()}
+                <Messages messagesOnRoom={messagesOnRoom}  currentUser={currentUser}/>
             </ul>
-        </div> {/* end chat-history */}
+            <div ref={messageEndRef} />
+        </div> 
+        {/* end chat-history */}
             <form className="chat-message clearfix" onSubmit={handleSubmit}>
-            <div className="chat__file">
-                <input type="file" className="hidden" id="file_chat"/>
-                <label htmlFor="file_chat"></label>
-            </div>
-            <textarea name="message-to-send" id="message-to-send" 
-            placeholder="Type your message" rows={1} value={messages} onChange={(e)=>setMessages(e.target.value)}
-            />
-            <button className={`${isOpenChat && "btn__sendChat"} ""`}>
-                <img src="images/send.svg" alt=""/>
-            </button>
+                <div className="chat__file">
+                    <input type="file" className="hidden" id="file_chat"/>
+                    <label htmlFor="file_chat"></label>
+                </div>
+                <textarea name="message-to-send" id="message-to-send" 
+                placeholder="Type your message" rows={1} value={messages} onChange={(e)=>setMessages(e.target.value)}
+                />
+                <button className={`${isOpenChat && "btn__sendChat"} ""`}>
+                    <img src="images/send.svg" alt=""/>
+                </button>
             </form>
         </div>
       </div>

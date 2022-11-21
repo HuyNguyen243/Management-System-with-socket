@@ -13,6 +13,9 @@
 .mess_notification{
     max-height: 300px;
     overflow-y: auto;
+    &::-webkit-scrollbar{
+        display: none;
+    }
 }
 }
 
@@ -143,9 +146,9 @@
 
 .edit__group{
     position: absolute;
-    top: 19px;
-    padding-left: 95px;
-    height: 13px;
+    top: 38px;
+    padding-left: 90px;
+    height: 12px;
     cursor: pointer;
-    opacity: .7;
+    opacity: 0.7;
 }

@@ -333,7 +333,7 @@
   height: 45px;
   border-radius: 50%;
   display: flex;
-  background-color: $color-border-input;
+  background: linear-gradient(to top left, #33ccff 0%, #ff99cc 100%);
   color: $color-white;
   justify-content: center;
   align-items: center;
@@ -561,4 +561,8 @@
 
 .p-chips .p-chips-multiple-container .p-chips-token{
   margin: 5px;
+}
+
+.full_chat{
+  height: 404px !important;
 }
