@@ -17,8 +17,9 @@ import { ConfirmPopup, confirmPopup } from 'primereact/confirmpopup';
 import { AutoComplete } from 'primereact/autocomplete';
 import { dataParseEditor } from '../manager/jobs/dataParse';
 import { dashboardEmployeeRequest } from "../../redux/overviewEmployee/actionEmployee";
-import { deleteJobsRequest } from "../../redux/overviewJobs/actionJobs";
+import { deleteJobsRequest, editJobsRequest } from "../../redux/overviewJobs/actionJobs";
 import { itemUserTemplate } from "../modal/TemplateDropDown";
+import { InputNumber } from 'primereact/inputnumber';
 
 const InformationJobs = () => {
     const toast = useRef(null);
@@ -39,12 +40,13 @@ const InformationJobs = () => {
     const [statusJobs, setStatusJobs] = useState(false);
     const [typeJobs, setTypeJobs] = useState(false);
     const [selectEditor, setSelectEditor] = useState(false);
-    const [filteredNameEditor, setFilteredNameEditor] = React.useState(null);
+    const [filteredNameEditor, setFilteredNameEditor] = useState(null);
 
     const user = useSelector(state => state.auth.user)
     const isOpenInformationJob = useSelector(state => state.modal.isOpenInformationJob)
     const rowdata = useSelector(state => state.modal?.dataModalInformationJob)
     const deletejobs = useSelector(state => state.jobs?.deletejobs)
+    const updatejobs = useSelector(state => state.jobs?.editjobs)
 
     const { register, setValue, handleSubmit, formState: { errors }, reset } = useForm();
     const employees = useSelector(state => state.employee?.dashboard)
@@ -79,6 +81,8 @@ const InformationJobs = () => {
         }
     }, [rowdata, setValue])
 
+
+
     useEffect(() => {
         if (deletejobs?.data) {
             dispatch(setIsOpenInformationJob(false))
@@ -108,32 +112,31 @@ const InformationJobs = () => {
         }, 50);
     }
     useEffect(() => {
-        let keyword = "?keyword=Editor";
-        dispatch(dashboardEmployeeRequest(keyword));
+        if (isOpenInformationJob) {
+            let keyword = "?keyword=Editor";
+            dispatch(dashboardEmployeeRequest(keyword));
+        }
     }, [dispatch, filteredNameEditor, isOpenInformationJob])
 
     const onSubmit = (data) => {
-
-        // delete data["births"];
-        // delete data["start_day"];
-        // const formDataPut = {}
-        // Object.keys(data).forEach(item => {
-        //     if (data[item] !== rowdata?.data[item]) {
-        //         Object.assign(formDataPut, { [item]: data[item] })
-        //     }
-        // });
-        // if (Object.keys(formDataPut).length > 0) {
-        //     Object.assign(formDataPut, { id_system: rowdata?.data?.id_system })
-        //     const formData = {
-        //         data: data,
-        //         result: formDataPut,
-        //         index: rowdata?.index
-        //     }
-        //     dispatch(editEmployeeRequest(formData))
-        // }
+        const formDataPut = {}
+        Object.keys(data).forEach(item => {
+            if (data[item] !== rowdata?.data[item]) {
+                Object.assign(formDataPut, { [item]: data[item] })
+            }
+        });
+        if (Object.keys(formDataPut).length > 0) {
+            Object.assign(formDataPut, { id_system: rowdata?.data?.id_system })
+            const formData = {
+                data: data,
+                result: formDataPut,
+                index: rowdata?.index
+            }
+            dispatch(editJobsRequest(formData))
+        }
     };
 
-    const handleCloseModal = () => {
+    const handleCloseModal = React.useCallback(() => {
         dispatch(setIsOpenInformationJob(false));
         setEditStatusJobs(false);
         setEditTypeJobs(false);
@@ -146,7 +149,31 @@ const InformationJobs = () => {
         setEditEditorCost(false);
         setEditEditor(false);
         reset()
-    }
+    }, [dispatch,
+        setEditStatusJobs,
+        setEditTypeJobs,
+        setEditModels,
+        setEditQuality,
+        setEditTypeFile,
+        setEditOrgLink,
+        setEditDoneLink,
+        setEditTotalCost,
+        setEditEditorCost,
+        setEditEditor,
+        reset
+    ])
+
+    useEffect(() => {
+        if (updatejobs?.data) {
+            handleCloseModal()
+            toastMsg.success(toast, 'Cập nhật thành công')
+        }
+
+        if (updatejobs?.error) {
+            toastMsg.error(toast, 'Cập nhật thất bại')
+        }
+    }, [updatejobs, dispatch, handleCloseModal])
+
     const handleDeleteJobs = () => {
         const formdata = {}
         formdata.id = rowdata?.data?.id_system
@@ -193,21 +220,20 @@ const InformationJobs = () => {
                             </div>
                             <div className="field col-12 md:col-6 ">
                                 <span htmlFor="typejobs">Loại ảnh :<span className="warning">*</span></span>
-                                <span className="p-float-label  flex justify-content-between align-items-center cursor__edit">
-                                    <span onClick={(e) => setEditQuality(true)} className="col-12 md:col-3">
+                                <span className="p-float-label mt-1  flex justify-content-between align-items-center cursor__edit">
+                                    <span onClick={(e) => setEditQuality(true)} className="col-12 md:col-5">
                                         {editQuality ?
                                             (
-                                                <InputText
-                                                    onKeyPress={(event) => {
-                                                        if (!/[0-9]/.test(event.key)) {
-                                                            event.preventDefault();
-                                                        }
-                                                    }}
-                                                    defaultValue={rowdata?.data?.quality}
-                                                    onChange={(e) => setValue("quality", e.target.value)}
-                                                    {...register("quality", { required: true })}
-                                                    className={errors?.quality && "p-invalid"}
-                                                />
+                                                // <InputNumber
+                                                //     name='quality_img'
+                                                //     value={rowdata?.data?.quality}
+                                                //     onValueChange={(e) => setValue("quality_img", e.target.value)}
+                                                //     {...register("quality_img", { required: true })}
+                                                //     mode="decimal" 
+                                                //     className={errors?.type_models && "p-invalid"}
+                                                //     max={10000}
+                                                //     />
+                                                <InputNumber value={rowdata?.data?.quality} onValueChange={(e) => setValue(e.value)}  mode="decimal" />
                                             ) : (
                                                 <span className='p-float-label mt-3'>
                                                     <span className='font-bold'>{rowdata?.data?.quality}</span>
@@ -216,7 +242,7 @@ const InformationJobs = () => {
                                         }
                                     </span>
                                     <span className='mt-3'> - </span>
-                                    <span onClick={(e) => setEditModels(true)} className="col-12 md:col-9">
+                                    <span onClick={(e) => setEditModels(true)} className="col-12 md:col-7">
                                         {editModels ?
                                             (
                                                 <InputText
@@ -427,7 +453,7 @@ const InformationJobs = () => {
                                 <span htmlFor="saler_cost">Lợi nhuận :</span>
                                 <span className="p-float-label mt-3 cursor__normal">
                                     <span className='font-bold'>
-                                        {rowdata?.data.admin_cost}
+                                        {rowdata?.data.admin_cost} $
                                     </span>
                                 </span>
                             </div>

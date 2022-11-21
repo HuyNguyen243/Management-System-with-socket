@@ -35,7 +35,6 @@ const JobsOverview = () => {
             const customer = document.querySelector(".id_customer").closest("td")
             const sale = document.querySelector(".id_saler").closest("td")
             const editor = document.querySelector(".id_editor").closest("td")
-            const table = document.querySelector(".p-datatable-tbody")
 
             if (customer?.contains(e.target)) {
                 dispatch(setIsOpenModalInformationCustomer(true))
