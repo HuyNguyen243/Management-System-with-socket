@@ -233,7 +233,39 @@
     color: $color-black;
     font-weight: bold;
 }
+#nameCustomer,#id_editor{
+    width: 100%;
+}
+#id_editor input,#nameCustomer input{
+    padding-right: 40px;
+    border-radius: 5px;
 
+}
+.icon__search{
+    position: relative;
+}
+
+.icon__search::before{
+    content: "";
+    background-image: url("../../../../public/images/search_user.svg");
+    width: 30px;
+    height: 30px;
+    display: block;
+    position: absolute;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 25px;
+    right: 5px;
+    top: 5px;
+}
+
+#id_editor button,#nameCustomer button{
+    background-color: unset !important;
+    position: absolute;
+    right: 0px;
+    border: white;
+    border-radius: 5px;
+}
 .modal__creat--job .field div span textarea,
 .modal__creat--job .field div span .p-dropdown,
 .modal__creat--job .field div span input{

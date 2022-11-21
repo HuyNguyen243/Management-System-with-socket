@@ -20,10 +20,41 @@ export const addJobsRequest = createAsyncThunk(
     'addJobs',
     async (data,{ rejectWithValue }) => {
         try {
-            const res = await post("jobs/create",data)
+            const res = await post("jobs/",data)
             return res.data;
         } catch (error) {
             return rejectWithValue(error?.response?.data);
+        }
+    }
+)
+
+export const editJobsRequest = createAsyncThunk(
+    'updateJobs',
+    async (data,{ rejectWithValue }) => {
+        try {
+            const res = await put(`jobs/${data?.result.id_system}`,data?.result)
+            if(res){
+                res.data_user = data?.result
+                res.index = data?.index
+            }
+            return res;
+        } catch (error) {
+            return rejectWithValue(error?.response?.result);
+        }
+    }
+)
+
+export const deleteJobsRequest = createAsyncThunk(
+    'deleteJobs',
+    async (data,{ rejectWithValue }) => {
+        try {
+            const res = await del(`jobs/${data.id}`)
+            if(res){
+                res.index = data?.index
+            }
+            return res;
+        } catch (error) {
+            return rejectWithValue(error?.response?.result);
         }
     }
 )

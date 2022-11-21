@@ -359,7 +359,7 @@
 }
 
 .creat__job--title > .p-button{
-    background: $color-white;
+    background: $color-white !important;
     border: none;
     width: 0;
 }
@@ -380,10 +380,10 @@
     border: none;
     // font-size: 0.9rem !important;
 }
-.p-button:enabled:hover{
-    // background: $color-white;
-    // border: none;
-}
+// .p-button:enabled:hover{
+//     // background: $color-white;
+//     // border: none;
+// }
 
 .p-button:focus {
     box-shadow: none;

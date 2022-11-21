@@ -15,6 +15,23 @@ export const dataParseCustomer = (data) => {
     }
 }
 
+export const dataParseEditor = (data) => {
+    if (Array.isArray(data)) {
+        const result = data.map((item) => {
+            const newobject = {
+                name: item?.fullname,
+                id_system: item?.id_system,
+                create_by: item?.create_by,
+                email: item?.email,
+                phone: item?.phone,
+                status: item?.status
+            }
+            return newobject
+        })
+        return result
+    }
+}
+
 export const dataParse = (data) => {
     if (Array.isArray(data)) {
         const result = data.map((item) => {
@@ -28,6 +45,9 @@ export const dataParse = (data) => {
                 end_day: item?.infor?.end_day,
                 quality: item?.infor?.quality,
                 status_jobs: item?.infor?.status_jobs,
+                saler_cost: item?.cost?.saler_cost,
+                editor_cost: item?.cost?.editor_cost,
+                admin_cost: item?.cost?.admin_cost,
                 work_types: item?.infor?.work_types,
                 work_notes: item?.infor?.work_notes,
                 request_content: item?.infor?.request_content,

@@ -116,7 +116,7 @@ const TableBody = ({ rowData, item }) => {
                 )
             case ("quality"):
                 return (
-                    <span className="table__body-name text-bold text-blue" >{rowData?.[item]}</span>
+                    <span className="table__body-name text-bold text-blue" >{rowData?.[item] + " - " +  rowData["type_models"]}</span>
                 )
             case ("fullname"):
                 return (
