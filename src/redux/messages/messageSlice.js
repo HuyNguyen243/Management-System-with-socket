@@ -1,5 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { createGroupMsgRequest } from './action';
+import { 
+    createGroupMsgRequest,
+    updateGroupMsgRequest,
+    deleteGroupMsgRequest,
+ } from './action';
 
 const initialState = {
     currentUser: null,
@@ -9,7 +13,19 @@ const initialState = {
         isLoading: false,
         data: null,
         error: false
-    }
+    },
+    updateGroupMsg: {
+        isLoading: false,
+        data: null,
+        error: false
+    },
+    deleteGroupMsg: {
+        isLoading: false,
+        data: null,
+        error: false
+    },
+    allGroups: null,
+    allMembers: null,
 }
 
 const messagesSlice = createSlice({
@@ -28,6 +44,12 @@ const messagesSlice = createSlice({
         },
         setIsOpenChat: (state, { payload })=>{
             state.isOpenChat = payload
+        },
+        getAllgroups: (state, { payload })=>{
+            state.allGroups = payload
+        },
+        getAllMembers: (state, { payload })=>{
+            state.allMembers = payload
         }
     },
     extraReducers:{
@@ -56,8 +78,60 @@ const messagesSlice = createSlice({
                 }
             })
         },
+
+        [updateGroupMsgRequest.pending]: (state) => {
+            Object.assign(state,{},{
+                updateGroupMsg:{
+                    loading: true
+                }
+            })
+        },
+        [updateGroupMsgRequest.fulfilled]: (state, action) => {
+            Object.assign(state,{},{
+                updateGroupMsg:{
+                    loading: false,
+                    data: action.payload,
+                    error: false
+                }
+            })
+        },
+        [updateGroupMsgRequest.rejected]: (state) => {
+            Object.assign(state,{},{
+                updateGroupMsg:{
+                    loading: false,
+                    data: null,
+                    error: true
+                }
+            })
+        },
+
+        [deleteGroupMsgRequest.pending]: (state) => {
+            Object.assign(state,{},{
+                deleteGroupMsg:{
+                    loading: true
+                }
+            })
+        },
+        [deleteGroupMsgRequest.fulfilled]: (state, action) => {
+            Object.assign(state,{},{
+                deleteGroupMsg:{
+                    loading: false,
+                    data: action.payload,
+                    error: false
+                }
+            })
+        },
+        [deleteGroupMsgRequest.rejected]: (state) => {
+            Object.assign(state,{},{
+                deleteGroupMsg:{
+                    loading: false,
+                    data: null,
+                    error: true
+                }
+            })
+        },
     }
 })
 
-export const { getCurrentUser, getCurrentRoom , setIsOpenChat } = messagesSlice.actions
+export const { getCurrentUser, getCurrentRoom , setIsOpenChat, getAllgroups, getAllMembers } = messagesSlice.actions
 export default messagesSlice.reducer

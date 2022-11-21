@@ -596,8 +596,33 @@
     box-shadow: none !important;
 }
 
+#pr_id_7,
+.p-dialog-header,
+#pr_id_7_header{
+    cursor: auto !important;
+}
+
 .p-dialog-header-icons:after{
     content:"x";
+    position: absolute;
+    right: 30px;
+    cursor: pointer;
+}
+
+.p-dialog .p-dialog-header .p-dialog-header-icon:last-child{
+    z-index: 99;
+}
+
+.p-dialog .p-dialog-header .p-dialog-header-icon:focus{
+    outline: none;
+    outline-offset: 0;
+    box-shadow: none;
+}
+
+.p-dialog .p-dialog-header .p-dialog-header-icon:enabled:hover {
+    color: transparent;
+    border-color: transparent;
+    background: transparent;
 }
 
 .p-listbox .p-listbox-list .p-listbox-item:focus {

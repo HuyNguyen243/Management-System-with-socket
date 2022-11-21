@@ -14,6 +14,7 @@ import { toastMsg } from '../../commons/toast';
 const Login = () => {
   const navigate = useNavigate()
   const { register, handleSubmit, formState: { errors } } = useForm({});
+  
   const [haveSeenPwd,setHaveSeenPwd] = useState(false)
   const [checked,setChecked] = useState(Cookie.getChecked() || false)
   const user = useSelector(state=> state.auth.token)

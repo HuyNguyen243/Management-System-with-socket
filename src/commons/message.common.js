@@ -1,3 +1,5 @@
+import { UserRules } from "../constants"
+
 export const getFormattedDate = ()=>{
     const date = new Date()
     const year = date.getFullYear()
@@ -9,15 +11,29 @@ export const getFormattedDate = ()=>{
     return `${day}/${month}/${year}`
 }
 
-export const orderIds = (id_from, id_to)=>{
+export const orderIds = (id_from, id_to, type)=>{
     if(id_from && id_to){
       if(id_from > id_to){
-        return id_from + '-' + id_to
+        return type + '-' + id_from + '-' + id_to
       }else{
-        return id_to + '-' + id_from
+        return type + '-' + id_to + '-' + id_from
       }
     }
 }
+
+export const CharacterRoom = (role)=>{
+    switch (role) {
+        case UserRules.ROLE.ADMIN:
+            return UserRules._ROLE.ADMIN
+        case UserRules.ROLE.SALER:
+            return UserRules._ROLE.SALER
+        case UserRules.ROLE.EDITOR:
+            return UserRules._ROLE.EDITOR
+        case UserRules.ROLE.LEADER_EDITOR:
+            return UserRules._ROLE.LEADER_EDITOR
+        default:
+    }
+} 
 
 export const timeAgo = (time)=>{
         time = Date.parse(time);
