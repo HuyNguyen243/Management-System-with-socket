@@ -9,7 +9,7 @@ import { setIsOpenInformationJob } from '../../redux/modal/modalSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from "react-hook-form";
 import { Dropdown } from 'primereact/dropdown';
-import { type_status_jobs, type_jobs, type_files } from "./dropDown";
+import { type_status_jobs, work_types, type_files } from "./dropDown";
 import { UserRules, JobRules, NOT_SET_ADMIN } from "../../constants";
 import { InputText } from 'primereact/inputtext';
 import { timezoneToDate } from '../../commons/dateTime';
@@ -62,7 +62,7 @@ const InformationJobs = () => {
             }
         }
         if (rowdata?.data?.work_types) {
-            for (let item of type_jobs) {
+            for (let item of work_types) {
                 if (item.code === rowdata?.data?.work_types) {
                     setTypeJobs(item)
                     break
@@ -110,7 +110,7 @@ const InformationJobs = () => {
     useEffect(() => {
         let keyword = "?keyword=Editor";
         dispatch(dashboardEmployeeRequest(keyword));
-    }, [dispatch, filteredNameEditor])
+    }, [dispatch, filteredNameEditor, isOpenInformationJob])
 
     const onSubmit = (data) => {
 
@@ -205,7 +205,7 @@ const InformationJobs = () => {
                                                     }}
                                                     defaultValue={rowdata?.data?.quality}
                                                     onChange={(e) => setValue("quality", e.target.value)}
-                                                    {...register("quality", { required: true, min: 1 })}
+                                                    {...register("quality", { required: true })}
                                                     className={errors?.quality && "p-invalid"}
                                                 />
                                             ) : (
@@ -261,7 +261,7 @@ const InformationJobs = () => {
                                     {editTypeJobs ?
                                         (
                                             <Dropdown
-                                                options={type_jobs}
+                                                options={work_types}
                                                 optionLabel="name"
                                                 defaultValue={typeJobs}
                                                 value={typeJobs}
