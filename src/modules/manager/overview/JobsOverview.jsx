@@ -33,39 +33,20 @@ const JobsOverview = () => {
     }
 
     const handleRowClick = (rowdata) => {
-        dispatch(setIsOpenInformationJob(true))
-        dispatch(setDataModalInformationJob(rowdata))
+        const el = rowdata.originalEvent.target.closest("td").childNodes[1]
+        if(el.className.includes("id_saler")){
+            // const data = {}
+            // data.id = e.target.innerHTML;
+            // dispatch(getEmployeeRequest(data));
+        }else if(el.className.includes("id_customer")){
+            dispatch(setIsOpenModalInformationCustomer(true))
+        }else if(el.className.includes("id_editor")){
+        }
+        else{
+            dispatch(setIsOpenInformationJob(true))
+            dispatch(setDataModalInformationJob(rowdata))
+        }
     }
-
-    useEffect(() => {
-        const handleClickOutSide = (e) => {
-            const customer = document.querySelector(".id_customer").closest("td")
-            const sale = document.querySelector(".id_saler").closest("td")
-            // const editor = document.querySelector(".id_editor").closest("td")
-            const classList= document.querySelectorAll(".table__body-name")
-            for(let childClass of classList) {
-                console.log(childClass.classList.contains(".id_saler"));
-            }
-            if (customer?.contains(e.target)) {
-                dispatch(setIsOpenModalInformationCustomer(true))
-            }
-            else if (sale?.contains(e.target)) {
-                const data = {}
-                data.id = e.target.innerHTML;
-                dispatch(getEmployeeRequest(data));
-            }
-            // if
-            //  else if (sale?.contains(e.target)) {
-
-            // } else if (editor?.contains(e.target)) {
-        }
-
-        window.addEventListener('mousedown', handleClickOutSide);
-        return () => {
-            window.removeEventListener('mousedown', handleClickOutSide)
-        }
-
-    })
 
     const handleCreate = () => {
         dispatch(setIsOpenModalCreateJob(true))
