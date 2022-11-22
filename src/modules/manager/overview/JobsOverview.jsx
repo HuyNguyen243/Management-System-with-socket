@@ -35,12 +35,17 @@ const JobsOverview = () => {
     const handleRowClick = (rowdata) => {
         const el = rowdata.originalEvent.target.closest("td").childNodes[1]
         if(el.className.includes("id_saler")){
+            //OPEN SALE
+
             // const data = {}
             // data.id = e.target.innerHTML;
             // dispatch(getEmployeeRequest(data));
         }else if(el.className.includes("id_customer")){
+            //OPEN CUSTOMER
+
             dispatch(setIsOpenModalInformationCustomer(true))
         }else if(el.className.includes("id_editor")){
+            //OPEN EDITOR
         }
         else{
             dispatch(setIsOpenInformationJob(true))
