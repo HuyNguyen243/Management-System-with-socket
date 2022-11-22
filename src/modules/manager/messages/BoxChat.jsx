@@ -42,6 +42,7 @@ const BoxChat = () => {
     const scrollToBottom = () => {
         messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
     }
+    
     //------------------------------
     //join room
     const joinRoom = React.useCallback((room) => {
@@ -51,7 +52,7 @@ const BoxChat = () => {
 
     // GET NOTIFICATION 
     socket.off('notifications').on('notifications',(room, receiver)=>{
-        if(room !== currentRoom){
+        if(room !== currentRoom || !isOpenChat){
             if(room.includes(NAME_ROOM.USER)){
                 socket.emit("new-notifications",room, receiver)
             }else if(room.includes(NAME_ROOM.GROUP)){
@@ -114,14 +115,6 @@ const BoxChat = () => {
     })
     //------------------------------
 
-    const handlecloseChat = ()=>{
-        dispatch(setIsOpenChat(false))
-        setCurrentRoom(undefined)
-        setRole("")
-        setPrivateMemberMsg("")
-        setMessageOnRoom([])
-    }
-
     const handleEditGroup =()=>{
         setIsOpenCreateGroup(true)
         setNameModal(NAME_ROOM.EDIT)
@@ -130,7 +123,6 @@ const BoxChat = () => {
             members: membersInGroup,
             group_id: groups_id
         }
-        console.log(data)
         setEditDataGroup(data)
     }
 
@@ -186,7 +178,7 @@ const BoxChat = () => {
  
     <div className="chat">
         <div className="chat-header ">
-            <div className="chat__close" onClick={handlecloseChat}></div>
+            <div className="chat__close" onClick={()=>dispatch(setIsOpenChat(false))}></div>
             {
                 namePrivateRoom &&  <div className="chat_img" role={namePrivateRoom.charAt(0) + namePrivateRoom.charAt(1)} ></div>
             }

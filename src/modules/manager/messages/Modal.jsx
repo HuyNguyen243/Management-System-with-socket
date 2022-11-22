@@ -128,6 +128,7 @@ const Modal = ({isOpenCreateGroup, setIsOpenCreateGroup, nameModal , editDataGro
             acceptClassName: 'p-button-danger',
             accept: ()=>{
                 dispatch(deleteGroupMsgRequest(editDataGroup?.group_id))
+                resetModal()
             },
             reject: ()=>{}
         });

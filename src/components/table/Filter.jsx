@@ -9,7 +9,7 @@ import DatePicker from "./DatePicker"
 import { useNavigate, useLocation } from 'react-router';
 import { dateString } from "../../commons/dateTime"
 
-const Filter = ({ DataFilter, sortBy, sortValue, setSortBy, setSortValue, search, setsearch, setDropDown }) => {
+const Filter = ({ DataFilter, sortBy, sortValue, setSortBy, setSortValue, search, setsearch, dropdown }) => {
     const queryParams = new URLSearchParams(window.location.search)
     const keywordURL = queryParams.get("keyword")
     const sort_byURL = queryParams.get("sort_by")
@@ -181,7 +181,7 @@ const Filter = ({ DataFilter, sortBy, sortValue, setSortBy, setSortValue, search
                         onChange={(e) => setStatus(e.target.value)}
                     >
                         {
-                            setDropDown.map((item, index) => (
+                            dropdown.map((item, index) => (
                                 <MenuItem value={item.id} key={index} className="status__option">
                                     <span className="status__content">{item.status}</span>
                                 </MenuItem>

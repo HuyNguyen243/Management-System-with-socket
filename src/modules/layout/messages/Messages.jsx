@@ -24,7 +24,32 @@ const Messages = ({isOpenMessages, setisOpenMessages}) => {
         }
     },[user])
 
+    const checkIdGroup = (id)=>{
+        if(groups?.length > 0){
+            for(const group of groups){
+                if(group?._id === id){
+                    return true;
+                }else{
+                    return false;
+                }
+            }
+        }else{
+            return false;
+        }
+    }
+
     socket.off("messages-by-id-system").on("messages-by-id-system", (payload)=>{
+        const rs = []
+        for(const room of payload){
+            if(room.type === NAME_ROOM.USER){
+                    rs.push(room)
+            }else if(room.type === NAME_ROOM.GROUP){
+                const id = room._id.replace(NAME_ROOM.GROUP + "-","")
+                if(checkIdGroup(id)){
+                    rs.push(room)
+                }
+            }
+        }
         setMessages(payload)
         setOriginalMessages(payload)
     })
@@ -33,12 +58,15 @@ const Messages = ({isOpenMessages, setisOpenMessages}) => {
         socket.emit('messages-by-id-system',user?.data?.id_system)
     })
 
-    const replaceName = (id)=>{
+    const replaceName = (id, only_id = false)=>{
         if(id.includes(NAME_ROOM.USER)){
             const newID = id.replace(user?.data?.id_system,"").replace(/-/g,"").replace(NAME_ROOM.USER,"")
             if(currentUser?.role === UserRules.ROLE.ADMIN){
                 for(const member of members){
                     if(member?.id_system === newID){
+                        if(only_id){
+                            return member?.id_system
+                        }
                         return member?.fullname
                     }
                 }
@@ -109,7 +137,7 @@ const Messages = ({isOpenMessages, setisOpenMessages}) => {
             setMessages(originalMessages)
         }
     }
-    
+
     return (
         <div className={`notification-message__container ${!isOpenMessages && "hidden"}`}>
             <div className="notification-message__title">
@@ -132,7 +160,7 @@ const Messages = ({isOpenMessages, setisOpenMessages}) => {
                         return(
                             <div className="notification-message__block " 
                                 key={index} 
-                                onClick={()=>handleOpenMessages(item._id,replaceName(item?._id))}
+                                onClick={()=>handleOpenMessages(item._id,replaceName(item?._id,true))}
                             >
                                 <div 
                                 className={`notification-message__it align-items-center 
@@ -141,7 +169,7 @@ const Messages = ({isOpenMessages, setisOpenMessages}) => {
                                     <div className="chat_img" data="ADMIN" role={setCharacterForImage(replaceName(item?._id),item.type)}></div>
                                     <div className="notification-message_item">
                                         <p className="notification-message__name flex justify-content-between">
-                                            {replaceName(item?._id) }
+                                            <span >{replaceName(item?._id) }</span>
                                             <span className="notification__time">{timeAgo(item?.time)}</span>
                                         </p>
                                         <div className="notification-message__i">

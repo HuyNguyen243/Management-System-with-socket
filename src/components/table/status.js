@@ -7,17 +7,17 @@ export const customer_status = [
         id: "",
     },
     {
-        status: "Đã hoàn thành",
+        status: "Đang yêu cầu",
         image: "icon_success",
         id: CustomerRules.STATUS.REQUEST,
     },
     {
-        status: "Tạm hoãn công việc",
+        status: "Tạm hoãn yêu cầu",
         image: "icon_pending",
         id: CustomerRules.STATUS.PENDING,
     },
     {
-        status: "Ngừng công việc",
+        status: "Ngừng yêu cầu",
         image: "icon_close",
         id: CustomerRules.STATUS.UNREQUEST,
     },

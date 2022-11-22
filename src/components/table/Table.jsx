@@ -1,6 +1,6 @@
 import React,{ useState, useEffect } from 'react';
 // import { useDispatch } from "react-redux"
-import { customer_status,user_status,jobs_status } from "./status"
+import { customer_status,user_status,jobs_status, } from "./status"
 import Filter from './Filter'
 import TotalTable from './TotalTable'
 import { DataTable } from 'primereact/datatable';
@@ -28,7 +28,7 @@ const Table = ({
     const [perpage, setPerpage] = React.useState(10);
     const [sortBy, setSortBy] = useState("");
     const [sortValue, setSortValue] = useState("");
-    const [ dropdown,setDropDown ] = useState(customer_status);
+    const [ dropdown,setDropDown ] = useState([]);
     // const dispatch = useDispatch()
     const old_Data = Array.isArray(dataTable) ? dataTable : []
     const [currentLocation, setCurrentLocation] = useState(0);
@@ -91,14 +91,19 @@ const Table = ({
         </div>
     )}
     useEffect(() => {
-        if(pathname === "/employee-overview")
-        {
-            setDropDown(user_status);
-        } 
-        if(pathname === "/jobs-overview")
-        {
-            setDropDown(jobs_status);
+        switch(pathname){
+            case "/employee-overview":
+                setDropDown(user_status)
+                break
+            case "/jobs-overview":
+                setDropDown(jobs_status)
+                break
+            case "/customer-management":
+                setDropDown(customer_status)
+                break
+            default:
         }
+
     },[pathname])
     const bodyTable = (rowData,item,table)=>{
         if(table)
@@ -122,7 +127,7 @@ const Table = ({
         sortValue={sortValue}
         setSortBy={setSortBy}
         setSortValue={setSortValue}
-        setDropDown={dropdown}
+        dropdown={dropdown}
         search={search}
         setsearch={setsearch}
         />

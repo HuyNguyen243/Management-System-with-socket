@@ -4,6 +4,7 @@ import {
     userLogoutRequest,
     userProfile,
     userEditProfile,
+    userChangeStatus,
 } from './action'
 import { NAME_SESSION_STORAGE_TOKEN } from '../../constants';
 
@@ -23,6 +24,11 @@ const initialState = {
         error: false,
     },
     editUser:{
+        loading: false,
+        data : null,
+        error: false,
+    },
+    userchangestatus:{
         loading: false,
         data : null,
         error: false,
@@ -142,11 +148,38 @@ const userReducer = createSlice({
                     data : action.payload?.data,
                 }
             })
-            state.user.data = action.payload?.data
+            state.user.data = action.payload
         },
         [userEditProfile.rejected]: (state) => {
             Object.assign(state,{},{
                 editUser: {
+                    loading : false,
+                    error : true,
+                    data : null,
+                }
+            })
+        },
+
+        [userChangeStatus.pending]: (state) => {
+            Object.assign(state,{},{
+                userchangestatus:{
+                    loading : true
+                }
+            })
+        },
+        [userChangeStatus.fulfilled]: (state,action) => {
+            Object.assign(state,{},{
+                userchangestatus: {
+                    loading : false,
+                    error : false,
+                    data : action.payload,
+                }
+            })
+            state.user.data = action.payload
+        },
+        [userChangeStatus.rejected]: (state) => {
+            Object.assign(state,{},{
+                userchangestatus: {
                     loading : false,
                     error : true,
                     data : null,

@@ -59,6 +59,7 @@ const Groups = ({
                 resetRoomAfterDelete()
             }
         }
+        socket.emit('messages-by-id-system',currentUser?.id_system)
     })
 
     socket.off("isDelete").on("isDelete", (payload)=>{
@@ -67,6 +68,8 @@ const Groups = ({
         }
         if(currentRoom === payload?.room){
             resetRoomAfterDelete()
+            toastMsg.warn(toast,`Bạn đã rời khỏi nhóm ${payload?.nameRoom}.`)
+            socket.emit('messages-by-id-system',currentUser?.id_system)
         }
     })
 

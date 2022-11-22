@@ -152,7 +152,7 @@ const Index = (
                 <img src="../../images/search_blue.svg" alt="" className="filter__btn--search"/>
             </div>
             <div className="flex flex-column justify-content-center">
-                <div className="chat_img avatar_me" data="ONLINE" role={CharacterRoom(currentUser?.role)}></div>
+                <div className="chat_img avatar_me" data={user?.data?.status} role={CharacterRoom(currentUser?.role)}></div>
             </div>
         </div>
         <ul className="list">

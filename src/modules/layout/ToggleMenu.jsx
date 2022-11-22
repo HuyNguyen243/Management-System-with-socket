@@ -1,12 +1,31 @@
 import React from 'react'
-import { useDispatch } from "react-redux"
-import {userLogoutRequest} from "../../redux/auth/action"
+import { useDispatch,useSelector } from "react-redux"
+import {
+  userLogoutRequest,
+  userChangeStatus,
+} from "../../redux/auth/action"
 import { SlideMenu } from 'primereact/slidemenu';
 import { useNavigate } from 'react-router';
+import { UserRules } from '../../constants';
 
 const ToggleMenu = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
+    const user = useSelector(state=> state.auth.user)
+
+    const changeStatus = (status) => {
+        let newUser = Object.assign({}, user?.data,{
+            status: status
+        })
+
+        const result = {
+            id : user?.data?.id_system,
+            status : status,
+            newUser: newUser
+        }
+        dispatch(userChangeStatus(result))
+    }
+
     const arrMenu = [
         {
             label:'Hoạt động',
@@ -15,15 +34,27 @@ const ToggleMenu = () => {
                 {
                     label:'Online',
                     icon:()=>iconMenu("online"),
+                    command: ()=>{
+                      const status = UserRules.STATUS.ONLINE
+                      changeStatus(status)
+                    }
                 },
                 {
                     label:'Busy',
                     icon:()=>iconMenu("busy"),
+                    command: ()=>{
+                      const status = UserRules.STATUS.LEAVE
+                      changeStatus(status)
+                    }
                 },
               
                 {
                     label:'Office',
                     icon:()=>iconMenu("offline"),
+                    command: ()=>{
+                      const status = UserRules.STATUS.OFFLINE
+                      changeStatus(status)
+                    }
                 },
             ]
         },

@@ -22,6 +22,7 @@ import { toastMsg } from '../../commons/toast';
 import { UserRules } from '../../constants';
 import copy from "copy-to-clipboard"; 
 import { setIsOpenModalInformationCustomer } from '../../redux/modal/modalSlice';
+import { timezoneToDate } from '../../commons/dateTime';
 
 const InformationCustomer = () => {
     const [customerStatus, setCustomerStatus] = useState(null);
@@ -36,13 +37,21 @@ const InformationCustomer = () => {
     const [countries,setCountries] =React.useState(null)
     const [filteredCountry, setFilteredCountry] = React.useState(null);
 
+    const [isOpenInput,setIsOpenInput] = useState({})
+
     const dispatch = useDispatch()
-    const {control, register,setValue, handleSubmit, formState: { errors }, reset, } = useForm();
+    const {control, register,setValue, handleSubmit, formState: { errors }, reset } = useForm();
     const toast = useRef(null);
+
+    const resetModal = React.useCallback(()=>{
+        dispatch(setIsOpenModalInformationCustomer(false))
+        reset({data: 'test'})
+        setIsOpenInput({})
+    },[dispatch, reset])
 
     useEffect(() => {
         if(putCustomer?.data){
-            dispatch(setIsOpenModalInformationCustomer(false))
+            resetModal()
             toastMsg.success(toast,'Cập nhật thành công')
         }
 
@@ -51,22 +60,35 @@ const InformationCustomer = () => {
         }
 
 
-    },[putCustomer, dispatch ])
+    },[putCustomer, dispatch, resetModal ])
 
     useEffect(() => {
         if(deleteCustomer?.data){
-            dispatch(setIsOpenModalInformationCustomer(false))
+            resetModal()
             toastMsg.success(toast,'Xóa khách hàng thành công')
         }
         
         if(deleteCustomer?.error){
             toastMsg.success(toast,'Xóa khách hàng thất bại')
         }
-    },[ deleteCustomer, dispatch ])
+    },[ deleteCustomer, dispatch, resetModal ])
+
     useEffect(() => {
         const getcountries = new getCountries()
         getcountries.get().then(data => setCountries(data));
     }, []);
+
+    const getStatus = (status, getName = false) => {
+        for(let item of customer_status){
+            if(item.code === status){
+                if(getName){
+                    return item.name
+                }else{
+                    return item
+                }
+            }
+        }
+    }
 
     useEffect(()=>{
         if(rowdata?.data){
@@ -77,13 +99,9 @@ const InformationCustomer = () => {
             setValue("address",rowdata?.data?.information?.address?.detail)
             setValue("country",rowdata?.data?.information?.address?.country)
             setValue("city",rowdata?.data?.information?.address?.city)
+            setValue("email",rowdata?.data?.information?.email)
             if(rowdata?.data?.status){
-                for(let item of customer_status){
-                    if(item.code === rowdata?.data?.status){
-                        setCustomerStatus(item)
-                        break
-                    }
-                }
+                setCustomerStatus(getStatus(rowdata?.data?.status))
             }
         }
     },[rowdata,setValue])
@@ -97,37 +115,63 @@ const InformationCustomer = () => {
     }
 
     const onSubmit = (data) => {
-        const result = {
-            fullname : data.fullname,
-            information: {
-                phone : data.phone,
-                birth : data.birth,
-                email : data.email,
-                address : {
-                    country: data.country,
-                    city: data.city,
-                    detail : data.address,
-                }
-            },
-            status: customerStatus?.code,
-            create_by: rowdata?.data?.create_by,
-            id_system: rowdata?.data?.id_system,
-            list_jobs: rowdata?.data?.list_jobs,
-            _create_at: rowdata?.data?._create_at,
-        }
-        data.status = customerStatus?.code
-        const formData = {
-            data: data,
-            result: result,
-            index: rowdata?.index
-        }
-        dispatch(editCustomerRequest(formData))
-    };
+        if(Object.keys(isOpenInput).length > 0){
+            const obj = {};
+            const result = {
+                fullname : data.fullname,
+                information: {
+                    phone : data.phone,
+                    birth : data.birth,
+                    email : data.email,
+                    address : {
+                        country: data.country,
+                        city: data.city,
+                        detail : data.address,
+                    }
+                },
+                status: customerStatus?.code,
+                create_by: rowdata?.data?.create_by,
+                id_system: rowdata?.data?.id_system,
+                list_jobs: rowdata?.data?.list_jobs,
+                _create_at: rowdata?.data?._create_at,
+            }
+            data.status = customerStatus?.code
 
-    const handleCloseModal = ()=>{
-        dispatch(setIsOpenModalInformationCustomer(false))
-        reset()
-    }
+            for(let item in result) {
+                if(item !== "information" && result[item] !== rowdata?.data[item]){
+                    obj[item] = result[item]
+                }
+                if(item === "information"){
+                    for( let item2 in result.information ){
+                        const child2 = result[item][item2]
+                        if(item2 !== "address" && item2 !== "birth" && child2 !== rowdata?.data[item][item2]){
+                            obj[item2] = child2
+                        }
+                        if(item2 === "birth"){
+                            if(timezoneToDate(child2) !== timezoneToDate(rowdata?.data[item][item2])){
+                                obj[item2] = child2
+                            }
+                        }
+                        if(item2 === "address"){
+                            for(let item3 in child2){
+                                if(child2[item3] !== rowdata?.data[item][item2][item3]){
+                                    obj[item3] = child2[item3]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            if(Object.keys(obj).length > 0){
+                const formData = {
+                    data: obj,
+                    result: result,
+                    index: rowdata?.index
+                }
+                dispatch(editCustomerRequest(formData))
+            }
+        }
+    };
 
     const handleDeleteCustomer = ()=>{
         const formdata = {}
@@ -143,7 +187,6 @@ const InformationCustomer = () => {
             icon: 'pi pi-exclamation-triangle',
             accept: handleDeleteCustomer,
         });
-
         myConfirm.show();
     }
 
@@ -152,11 +195,17 @@ const InformationCustomer = () => {
         copy(rowdata?.data?.id_system);
     }
 
+    const handleOpenInput = ( key )=>{
+        if(!Object.keys(isOpenInput).includes(key)){
+            setIsOpenInput({...isOpenInput,[key]: true})
+        }
+    }
+
   return (
     <>
         <ConfirmPopup />
         <Toast ref={toast} position="bottom-left"/>
-        <Sidebar visible={isOpenInformationCustome} position="right" onHide={handleCloseModal} className="create__job">
+        <Sidebar visible={isOpenInformationCustome} position="right" onHide={resetModal} className="create__job">
             <div className="creat__job">
                 <div className="creat__job--title flex justify-content-between" style={{marginRight: "10px"}}>
                     <h2>Thông tin khách hàng </h2>
@@ -165,14 +214,21 @@ const InformationCustomer = () => {
                 <form className=" grid modal__creat--job no_flex" onSubmit={handleSubmit(onSubmit)}>
                     <div className="field col-12 md:col-12 grid">
                         <div className="field col-12 md:col-6 ">
-                            <span htmlFor="autocomplete">Nhập tên khách hàng: <span className="warning">*</span></span>
+                            <span htmlFor="autocomplete">Tên khách hàng: <span className="warning">*</span></span>
                             <span className="p-float-label ">
-                                <InputText 
-                                defaultValue={rowdata?.data?.fullname} 
-                                onChange={(e)=>setValue("fullname",e.target.value)} 
-                                {...register("fullname", { required: true })}
-                                className={errors?.fullname && "p-invalid"}
-                                />
+                                {
+                                    isOpenInput?.fullname
+                                    ?
+                                    <InputText 
+                                    defaultValue={rowdata?.data?.fullname} 
+                                    onChange={(e)=>setValue("fullname",e.target.value)} 
+                                    {...register("fullname", { required: true })}
+                                    className={errors?.fullname && "p-invalid"}
+                                    />
+                                    :
+                                    <p onClick={()=>handleOpenInput("fullname")} className="text_seen">{rowdata?.data?.fullname}</p>
+                                }
+                               
                             </span>
                         </div>
                         <div className="field col-12 md:col-6">
@@ -184,97 +240,146 @@ const InformationCustomer = () => {
                         </div>
                         <div className="field col-12 md:col-6 create__job--calendar">
                             <span htmlFor="calendar">Ngày tháng năm sinh:<span className="warning">*</span></span>
-                            <span className="p-float-label ">
-                                <Calendar 
-                                value={new Date(rowdata?.data?.information?.birth)} 
-                                onChange={e=>setValue("birth",e.value)} 
-                                {...register("birth", { required: true })}
-                                className={errors?.birth && "p-invalid"}
-                                />
-                            </span>
-                            <img src="/images/calendar.svg" alt="" className="calendar__image"/>
+                                 {
+                                    isOpenInput?.birth
+                                    ?
+                                    <>
+                                        <span className="p-float-label ">
+                                            <Calendar 
+                                            value={new Date(rowdata?.data?.information?.birth)} 
+                                            onChange={e=>setValue("birth",e.value)} 
+                                            {...register("birth", { required: true })}
+                                            className={errors?.birth && "p-invalid"}
+                                            />
+                                        </span>
+                                        <img src="/images/calendar.svg" alt="" className="calendar__image"/>
+                                    </>
+                                    :
+                                    <p onClick={()=>handleOpenInput("birth")} className="text_seen">
+                                        {timezoneToDate(rowdata?.data?.information?.birth)}
+                                    </p>
+                                }
                         </div>
                         <div className="field col-12 md:col-6 ">
                             <span htmlFor="withoutgrouping">Số điện thoại: <span className="warning">*</span></span>
                             <span className="p-float-label">
-                                <InputText 
-                                    defaultValue={rowdata?.data?.information?.phone} 
-                                    onChange={(e)=>setValue("phone",e.target.value)}
-                                    {...register("phone", { required: true,pattern: PHONE_REGEX })}
-                                    className={errors?.phone && "p-invalid"}
-                                />
+                                {
+                                    isOpenInput?.number
+                                    ?
+                                    <InputText 
+                                        defaultValue={rowdata?.data?.information?.phone} 
+                                        onChange={(e)=>setValue("phone",e.target.value)}
+                                        {...register("phone", { required: true,pattern: PHONE_REGEX })}
+                                        className={errors?.phone && "p-invalid"}
+                                    />
+                                    :
+                                    <p onClick={()=>handleOpenInput("number")} className="text_seen">{rowdata?.data?.information?.phone}</p>
+                                }
                             </span>
                         </div> 
                         <div className="field col-12 md:col-6">
                             <span htmlFor="original__link">Email: <span className="warning">*</span></span>
                             <span className="p-float-label">
-                                <InputText 
-                                    defaultValue={rowdata?.data?.information?.email} 
-                                    onChange={(e)=>setValue("email",e.target.value)}
-                                    {...register("email", { required: true,pattern: EMAIL_REGEX  })}
-                                    className={errors?.email && "p-invalid"}
-                                />
+                                {
+                                    isOpenInput?.email
+                                    ?
+                                    <InputText 
+                                        defaultValue={rowdata?.data?.information?.email} 
+                                        onChange={(e)=>setValue("email",e.target.value)}
+                                        {...register("email", { required: true,pattern: EMAIL_REGEX  })}
+                                        className={errors?.email && "p-invalid"}
+                                    />
+                                    :
+                                    <p onClick={()=>handleOpenInput("email")} className="text_seen">{rowdata?.data?.information?.email}</p>
+                                }
                             </span>
                         </div>
                         <div className="field col-12 md:col-6">
                             <span htmlFor="original__link">Quốc gia: <span className="warning">*</span></span>
-                                <Controller name="country" 
-                                    control={control} 
-                                    rules={{ required: true }} render={({ field, fieldState }) => (
-                                    <AutoComplete 
-                                        suggestions={filteredCountry}
-                                        completeMethod={(e)=>searchDropdown(e,countries,setFilteredCountry)} field=""
-                                        aria-label="Countries"
-                                        id={field.name}
-                                        value={field.value} onChange={(e) =>handleChangeCountry(e,field)}
-                                        className={errors?.country && "p-invalid"}
-                                        dropdownAriaLabel="Select name" 
-                                        placeholder="Quốc gia"
+                                {
+                                    isOpenInput?.country
+                                    ?
+                                    <Controller name="country" 
+                                        control={control} 
+                                        rules={{ required: true }} render={({ field, fieldState }) => (
+                                        <AutoComplete 
+                                            suggestions={filteredCountry}
+                                            completeMethod={(e)=>searchDropdown(e,countries,setFilteredCountry)} field=""
+                                            aria-label="Countries"
+                                            id={field.name}
+                                            value={field.value} onChange={(e) =>handleChangeCountry(e,field)}
+                                            className={errors?.country && "p-invalid"}
+                                            dropdownAriaLabel="Select name" 
+                                            placeholder="Quốc gia"
+                                        />
+                                        )} 
                                     />
-                                    )} 
-                                />
+                                    :
+                                    <p onClick={()=>handleOpenInput("country")} className="text_seen">{rowdata?.data?.information?.address?.country}</p>
+                                }
+
                         </div>
                         <div className="field col-12 md:col-6">
                             <span htmlFor="cost">Thành phố: <span className="warning">*</span></span>
                             <span className="p-float-label">
-                                 <Controller name="city" 
-                                    control={control} 
-                                    rules={{ required: true }} render={({ field, fieldState }) => (
-                                    <AutoComplete 
-                                    suggestions={filteredCity}
-                                    completeMethod={(e)=>searchDropdown(e,cities,setFilteredCity)} field=""
-                                    aria-label="Cities" 
-                                    id={field.name}
-                                    value={field.value} onChange={(e) =>{field.onChange(e.value)}}
-                                    className={errors?.city && "p-invalid"}
-                                    dropdownAriaLabel="Select name"
-                                    placeholder="Thành phố"
+                                {
+                                    isOpenInput?.city
+                                    ?
+                                    <Controller name="city" 
+                                        control={control} 
+                                        rules={{ required: true }} render={({ field, fieldState }) => (
+                                        <AutoComplete 
+                                        suggestions={filteredCity}
+                                        completeMethod={(e)=>searchDropdown(e,cities,setFilteredCity)} field=""
+                                        aria-label="Cities" 
+                                        id={field.name}
+                                        value={field.value} onChange={(e) =>{field.onChange(e.value)}}
+                                        className={errors?.city && "p-invalid"}
+                                        dropdownAriaLabel="Select name"
+                                        placeholder="Thành phố"
+                                        />
+                                        )} 
                                     />
-                                )} />
+                                    :
+                                    <p onClick={()=>handleOpenInput("city")} className="text_seen">{rowdata?.data?.information?.address?.city}</p>
+                                }
+                              
                             </span>
                         </div>
                         <div className="field col-12 md:col-6">
                             <span htmlFor="employees">Địa chỉ: <span className="warning">*</span></span>
                             <span className="p-float-label">
-                                <InputText 
-                                    defaultValue={rowdata?.data?.information?.address?.detail} 
-                                    onChange={(e)=>setValue("address",e.target.value)}
-                                    {...register("address", { required: true })}
-                                    className={errors?.address && "p-invalid"}
-                                />
+                                {
+                                    isOpenInput?.address 
+                                    ?
+                                    <InputText 
+                                        defaultValue={rowdata?.data?.information?.address?.detail} 
+                                        onChange={(e)=>setValue("address",e.target.value)}
+                                        {...register("address", { required: true })}
+                                        className={errors?.address && "p-invalid"}
+                                    />
+                                    :
+                                    <p onClick={()=>handleOpenInput("address")} className="text_seen">{rowdata?.data?.information?.address?.detail}</p>
+                                }
                             </span>
                         </div>
                         <div className="field col-12 md:col-6">
                             <span htmlFor="employees">Trạng thái khách hàng: <span className="warning">*</span></span>
                             <span className="p-float-label">
-                                <Dropdown  
-                                    options={customer_status}
-                                    optionLabel="name" 
-                                    value={customerStatus}
-                                    onChange={e=>setCustomerStatus(e.value)}
-                                    placeholder="Trạng thái khách hàng"
-                                    disabled={user?.data?.role !== UserRules.ROLE.ADMIN ? true : false}
-                                />
+                                {
+                                    isOpenInput?.status 
+                                    ?
+                                    <Dropdown  
+                                        options={customer_status}
+                                        optionLabel="name" 
+                                        value={customerStatus}
+                                        onChange={e=>setCustomerStatus(e.value)}
+                                        placeholder="Trạng thái khách hàng"
+                                        disabled={user?.data?.role !== UserRules.ROLE.ADMIN ? true : false}
+                                    />
+                                    :
+                                    <p onClick={()=>handleOpenInput("status")} className="text_seen">{getStatus(rowdata?.data?.status, true)}</p>
+                                }
                             </span>
                         </div>
                         {
@@ -302,7 +407,7 @@ const InformationCustomer = () => {
                     <div className="btn_modal field col-12 md:col-12 grid position_bottom">
                         <div className="field col-12 md:col-6">
                             <span className="p-float-label">
-                                <Button label="Hủy bỏ" className="p-button-outlined cancel--btn" type="button" onClick={handleCloseModal}/>
+                                <Button label="Hủy bỏ" className="p-button-outlined cancel--btn" type="button" onClick={resetModal}/>
                             </span>
                         </div>
                         <div className="field col-12 md:col-6">
