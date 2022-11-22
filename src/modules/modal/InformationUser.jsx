@@ -171,13 +171,13 @@ const InformationUser = () => {
                             <div className="field col-12 md:col-6 create__job--calendar">
                                 <span htmlFor="calendar">Ngày bắt đầu làm:</span>
                                 <span className="p-float-label pt-3 cursor__normal font-bold">
-                                    {timezoneToDate(rowdata?.data.start_day)    }
+                                    {timezoneToDate(rowdata?.data?.start_day)    }
                                 </span>
                             </div>
                             <div className="field col-12 md:col-6">
                                 <span htmlFor="employees">Trạng thái nhân viên:</span>
-                                <span className={"p-float-label mt-3 m-0 flex justify-content-between align-items-center " + (rowdata?.data.status === UserRules.STATUS.OFFLINE ? 'btn_stop ' : (rowdata?.data.status === UserRules.STATUS.ONLINE ? 'btn_success' : 'btn_pending'))}>
-                                    <span className={rowdata?.data.status === UserRules.STATUS.OFFLINE ? 'dots_offline ' : (rowdata?.data.status === UserRules.STATUS.ONLINE ? 'dots_online' : 'dots_busy')} ></span>{UserRules._STATUS[rowdata?.data.status]}
+                                <span className={"p-float-label mt-3 m-0 flex justify-content-between align-items-center " + (rowdata?.data?.status === UserRules.STATUS.OFFLINE ? 'btn_stop ' : (rowdata?.data?.status === UserRules.STATUS.ONLINE ? 'btn_success' : 'btn_pending'))}>
+                                    <span className={rowdata?.data?.status === UserRules.STATUS.OFFLINE ? 'dots_offline ' : (rowdata?.data?.status === UserRules.STATUS.ONLINE ? 'dots_online' : 'dots_busy')} ></span>{UserRules._STATUS[rowdata?.data?.status]}
                                 </span>
                             </div>
                             <div className="field col-12 md:col-6">

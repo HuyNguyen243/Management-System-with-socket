@@ -62,7 +62,7 @@ export const getEmployeeRequest = createAsyncThunk(
     'getDataEmployee',
     async (data,{ rejectWithValue }) => {
         try {
-            const res = await get(`users/infor/${data.id}`)
+            const res = await get(`users/${data.id}`)
             return res;
         } catch (error) {
             return rejectWithValue(error?.response?.data);
