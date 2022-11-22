@@ -7,16 +7,17 @@ import {
     setIsOpenModalCreateJob,
     setIsOpenInformationJob,
     setIsOpenModalInformationCustomer,
-    setDataModalInformationJob
+    setDataModalInformationJob,
+    setIsOpenModalInformationUser,
+    setDataModalInformationUser
 } from '../../../redux/modal/modalSlice';
 import { dashboardJobsRequest } from "../../../redux/overviewJobs/actionJobs";
-
-
+import { getEmployeeRequest } from "../../../redux/overviewEmployee/actionEmployee";
 const JobsOverview = () => {
     const dispatch = useDispatch()
     const [filter, setFilter] = useState("")
-    const jobs = useSelector(state => state.jobs.dashboard)
-
+    const jobs = useSelector(state => state.jobs?.dashboard)
+    const employees = useSelector(state => state.employee?.inforuser)
     useEffect(() => {
         dispatch(dashboardJobsRequest(filter))
     }, [dispatch, filter])
@@ -34,10 +35,18 @@ const JobsOverview = () => {
         const handleClickOutSide = (e) => {
             const customer = document.querySelector(".id_customer").closest("td")
             const sale = document.querySelector(".id_saler").closest("td")
-            const editor = document.querySelector(".id_editor").closest("td")
+            // const editor = document.querySelector(".id_editor").closest("td")
 
             if (customer?.contains(e.target)) {
                 dispatch(setIsOpenModalInformationCustomer(true))
+            }
+            if (sale?.contains(e.target)) {
+                const data = {}
+                data.id = e.target.innerHTML;
+                dispatch(getEmployeeRequest(data));
+                dispatch(setIsOpenModalInformationUser(true))
+                console.log(employees);
+                // dispatch(setDataModalInformationUser(employees))
             }
             //  else if (sale?.contains(e.target)) {
 
