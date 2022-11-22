@@ -164,7 +164,7 @@
     position: relative;
 }
 
-.p-float-label.btn_success,.table__body-name.btn_success{
+.p-label.btn_success,.p-float-label.btn_success,.table__body-name.btn_success{
     color: $color-success;
     background-color: $color-success-bg;
     border-radius: 5px;
@@ -178,7 +178,7 @@
     }
 }
 
-.p-float-label.btn_pending,.table__body-name.btn_pending{
+.p-label.btn_pending,.p-float-label.btn_pending,.table__body-name.btn_pending{
     color: $color-warning;
     background-color: #ffc67080;
     border-radius: 5px;
@@ -192,7 +192,7 @@
     }
 }
 
-.p-float-label.btn_stop,.table__body-name.btn_stop{
+.p-label.btn_stop,.p-float-label.btn_stop,.table__body-name.btn_stop{
     color: $color-danger;
     background-color: #ffbdc9;
     border-radius: 5px;
