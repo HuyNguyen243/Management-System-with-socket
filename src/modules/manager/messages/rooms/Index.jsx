@@ -102,6 +102,7 @@ const Index = (
         setMembers(payload)
         setOriginalMembers(payload)
     })
+ 
     //GET ALL GROUP
     socket.off('groups').on("groups", (payload)=>{
         setGroups(payload)

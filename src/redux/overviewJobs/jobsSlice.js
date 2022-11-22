@@ -1,6 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-import { dashboardJobsRequest, addJobsRequest,deleteJobsRequest } from "./actionJobs";
+import {
+    dashboardJobsRequest,
+    addJobsRequest,
+    deleteJobsRequest,
+    editJobsRequest,
+} from "./actionJobs";
 
 const initialState = {
     dashboard: {
@@ -13,10 +18,15 @@ const initialState = {
         data: null,
         error: false,
     },
+    editjobs: {
+        loading: false,
+        data: null,
+        error: false,
+    },
     deletejobs: {
         loading: false,
         data: null,
-        error: false
+        error: false,
     },
 };
 const jobsReducer = createSlice({
@@ -98,31 +108,69 @@ const jobsReducer = createSlice({
                 }
             );
         },
-        [deleteJobsRequest.pending]: (state) => {
+        [editJobsRequest.pending]: (state) => {
             Object.assign(state,{},{
-                deletejobs:{
+                editjobs:{
                     loading: true
                 }
             })
         },
-        [deleteJobsRequest.fulfilled]: (state, action) => {
+        [editJobsRequest.fulfilled]: (state, action) => {
             Object.assign(state,{},{
-                deletejobs:{
+                editjobs:{
                     loading: false,
                     data: action?.payload?.data,
                     error: false
                 }
             })
-            state.dashboard.data.splice(action?.payload?.index, 1)
+            state.dashboard.data.splice(action?.payload?.index, 1, action?.payload?.data)
         },
-        [deleteJobsRequest.rejected]: (state, action) => {
+        [editJobsRequest.rejected]: (state, action) => {
             Object.assign(state,{},{
-                deletejobs:{
+                editjobs:{
                     loading: false,
                     data: null,
                     error: true
                 }
             })
+        },
+        [deleteJobsRequest.pending]: (state) => {
+            Object.assign(
+                state,
+                {},
+                {
+                    deletejobs: {
+                        loading: true,
+                    },
+                }
+            );
+        },
+        [deleteJobsRequest.fulfilled]: (state, action) => {
+            Object.assign(
+                state,
+                {},
+                {
+                    deletejobs: {
+                        loading: false,
+                        data: action?.payload?.data,
+                        error: false,
+                    },
+                }
+            );
+            state.dashboard.data.splice(action?.payload?.index, 1);
+        },
+        [deleteJobsRequest.rejected]: (state, action) => {
+            Object.assign(
+                state,
+                {},
+                {
+                    deletejobs: {
+                        loading: false,
+                        data: null,
+                        error: true,
+                    },
+                }
+            );
         },
     },
 });

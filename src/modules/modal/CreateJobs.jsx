@@ -47,7 +47,6 @@ const CreateJobs = () => {
     let customerName = dataParseCustomer(customers?.data)
 
     useEffect(() => {
-        console.log(addjobs);
         if (addjobs?.data) {
             reset();
             dispatch(setIsOpenModalCreateJob(false))
