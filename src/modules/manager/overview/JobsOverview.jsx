@@ -7,20 +7,27 @@ import {
     setIsOpenModalCreateJob,
     setIsOpenInformationJob,
     setIsOpenModalInformationCustomer,
-    setDataModalInformationJob
+    setDataModalInformationJob,
+    setIsOpenModalInformationUser,
+    setDataModalInformationUser
 } from '../../../redux/modal/modalSlice';
 import { dashboardJobsRequest } from "../../../redux/overviewJobs/actionJobs";
-
-
+import { getEmployeeRequest } from "../../../redux/overviewEmployee/actionEmployee";
 const JobsOverview = () => {
     const dispatch = useDispatch()
     const [filter, setFilter] = useState("")
-    const jobs = useSelector(state => state.jobs.dashboard)
-
+    const jobs = useSelector(state => state.jobs?.dashboard)
+    const employees = useSelector(state => state.employee?.inforuser)
     useEffect(() => {
         dispatch(dashboardJobsRequest(filter))
     }, [dispatch, filter])
 
+    useEffect(() => {
+        if (employees?.data) {
+            dispatch(setIsOpenModalInformationUser(true))
+            dispatch(setDataModalInformationUser(employees))
+        }
+    }, [employees, dispatch])
     const DataFilter = (data) => {
         setFilter(data)
     }
@@ -34,18 +41,23 @@ const JobsOverview = () => {
         const handleClickOutSide = (e) => {
             const customer = document.querySelector(".id_customer").closest("td")
             const sale = document.querySelector(".id_saler").closest("td")
-            const editor = document.querySelector(".id_editor").closest("td")
-
+            // const editor = document.querySelector(".id_editor").closest("td")
+            const classList= document.querySelectorAll(".table__body-name")
+            for(let childClass of classList) {
+                console.log(childClass.classList.contains(".id_saler"));
+            }
             if (customer?.contains(e.target)) {
                 dispatch(setIsOpenModalInformationCustomer(true))
             }
+            else if (sale?.contains(e.target)) {
+                const data = {}
+                data.id = e.target.innerHTML;
+                dispatch(getEmployeeRequest(data));
+            }
+            // if
             //  else if (sale?.contains(e.target)) {
 
             // } else if (editor?.contains(e.target)) {
-
-            // } else if (!editor?.contains(e.target) && !sale?.contains(e.target) && !customer?.contains(e.target) && table?.contains(e.target)) {
-            //     dispatch(setIsOpenInformationJob(true))
-            // }
         }
 
         window.addEventListener('mousedown', handleClickOutSide);
@@ -66,7 +78,7 @@ const JobsOverview = () => {
             DataFilter={DataFilter}
             haveTotalTable={false}
             header={table_jobs_overview}
-            handleRowClick={handleRowClick}
+            handleRowClick={(e)=>handleRowClick(e)}
             handleCreate={handleCreate}
             name_btn_add={"Tạo công việc"}
         />

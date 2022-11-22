@@ -20,15 +20,18 @@ import { dashboardEmployeeRequest } from "../../redux/overviewEmployee/actionEmp
 import { deleteJobsRequest, editJobsRequest } from "../../redux/overviewJobs/actionJobs";
 import { itemUserTemplate } from "../modal/TemplateDropDown";
 import { InputNumber } from 'primereact/inputnumber';
+import { Calendar } from 'primereact/calendar';
 
 const InformationJobs = () => {
     const toast = useRef(null);
     const dispatch = useDispatch()
+    let minDate = new Date();
 
     const [editStatusJobs, setEditStatusJobs] = useState(false);
     const [editTypeJobs, setEditTypeJobs] = useState(false);
     const [editQuality, setEditQuality] = useState(false);
     const [editModels, setEditModels] = useState(false);
+    const [editDeadline, setEditDeadline] = useState(false);
     const [editFile, setEditTypeFile] = useState(false);
     const [editOrgLink, setEditOrgLink] = useState(false);
     const [editDoneLink, setEditDoneLink] = useState(false);
@@ -112,11 +115,11 @@ const InformationJobs = () => {
         }, 50);
     }
     useEffect(() => {
-        if (isOpenInformationJob) {
+        if (editEditor && isOpenInformationJob) {
             let keyword = "?keyword=Editor";
             dispatch(dashboardEmployeeRequest(keyword));
         }
-    }, [dispatch, filteredNameEditor, isOpenInformationJob])
+    }, [dispatch, filteredNameEditor, editEditor,isOpenInformationJob])
 
     const onSubmit = (data) => {
         const formDataPut = {}
@@ -148,6 +151,7 @@ const InformationJobs = () => {
         setEditTotalCost(false);
         setEditEditorCost(false);
         setEditEditor(false);
+        setEditDeadline(false);
         reset()
     }, [dispatch,
         setEditStatusJobs,
@@ -160,6 +164,7 @@ const InformationJobs = () => {
         setEditTotalCost,
         setEditEditorCost,
         setEditEditor,
+        setEditDeadline,
         reset
     ])
 
@@ -224,16 +229,14 @@ const InformationJobs = () => {
                                     <span onClick={(e) => setEditQuality(true)} className="col-12 md:col-5">
                                         {editQuality ?
                                             (
-                                                // <InputNumber
-                                                //     name='quality_img'
-                                                //     value={rowdata?.data?.quality}
-                                                //     onValueChange={(e) => setValue("quality_img", e.target.value)}
-                                                //     {...register("quality_img", { required: true })}
-                                                //     mode="decimal" 
-                                                //     className={errors?.type_models && "p-invalid"}
-                                                //     max={10000}
-                                                //     />
-                                                <InputNumber value={rowdata?.data?.quality} onValueChange={(e) => setValue(e.value)}  mode="decimal" />
+                                                <InputNumber
+                                                    value={rowdata?.data?.quality}
+                                                    onValueChange={(e) => setValue("quality_img", e.value)}
+                                                    mode="decimal"
+                                                    className=''
+                                                    max={9999}
+                                                    min={1}
+                                                />
                                             ) : (
                                                 <span className='p-float-label mt-3'>
                                                     <span className='font-bold'>{rowdata?.data?.quality}</span>
@@ -310,8 +313,18 @@ const InformationJobs = () => {
                             </div>
                             <div className="field col-12 md:col-6 create__job--calendar">
                                 <span htmlFor="end_day">Ngày hạn chót công việc : <span className="warning">*</span></span>
-                                <span className="p-float-label pt-3 cursor__normal font-bold">
-                                    {timezoneToDate(rowdata?.data.end_day)}
+                                <span className="p-float-label pt-3 cursor__edit font-bold" onClick={(e) => setEditDeadline(true)}>
+                                    {editDeadline ?
+                                        (
+                                            <Calendar
+                                                readOnlyInput
+                                                minDate={minDate}
+                                                onChange={(e) => setValue("end_day", e.value)}
+                                            />
+                                        ) : (
+                                            timezoneToDate(rowdata?.data.end_day)
+                                        )
+                                    }
                                 </span>
                             </div>
                             <div className="field col-12 md:col-6">
