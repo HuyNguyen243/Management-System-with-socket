@@ -129,7 +129,7 @@ const jobsReducer = createSlice({
             Object.assign(state,{},{
                 editjobs:{
                     loading: false,
-                    data: null,
+                    data: action?.payload,
                     error: true
                 }
             })

@@ -45,7 +45,7 @@ const CreateCustomer = () => {
     }, []);
 
     useEffect(()=>{
-        if(customer?.data){
+        if(customer?.data && !customer?.error){
             reset();
             dispatch(setIsOpenModalCreateCustomer(false))
             toastMsg.success(toast,'Tạo khách hàng mới thành công')
