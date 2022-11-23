@@ -45,7 +45,6 @@ const JobsOverview = () => {
 
     const handleRowClick = (rowdata) => {
         const el = rowdata.originalEvent.target.closest("td").childNodes[1]
-        console.log(el.className.includes("id_saler"));
         
         if (el.className.includes("id_saler")) {
             //OPEN SALE

@@ -10,7 +10,7 @@ import { InputNumber } from 'primereact/inputnumber';
 import { useForm, Controller } from 'react-hook-form';
 import { classNames } from 'primereact/utils';
 import { saleCustomerRequest } from "../../redux/sale/action";
-import { type_files, work_types } from "./dropDown"
+import { type_files } from "./dropDown"
 import { useDispatch, useSelector } from 'react-redux';
 import { dataParseCustomer } from '../manager/jobs/dataParse';
 import { itemCustomerTemplate } from "../modal/TemplateDropDown";
@@ -26,11 +26,11 @@ const CreateJobs = () => {
     const toast = useRef(null);
     const defaultValues = {
         end_day: null,
-        work_types: "",
         quality_img: "",
         org_link: '',
         photo_types: '',
         total_cost: '',
+        editor_cost: '',
         request_content: '',
         work_notes: '',
         type_models: '',
@@ -81,7 +81,7 @@ const CreateJobs = () => {
         }, 50);
     }
     useEffect(() => {
-        if (isOpenCreateJob) {
+        if (isOpenCreateJob && !filteredNameCustomers) {
             dispatch(saleCustomerRequest(filteredNameCustomers));
         }
     }, [dispatch, filteredNameCustomers, isOpenCreateJob])
@@ -90,7 +90,6 @@ const CreateJobs = () => {
         delete data["nameCustomer"];
         if (Object.keys(errors).length === 0) {
             data.id_customer = customerSelect?.id_system;
-            data.work_types = data.work_types?.code;
             data.photo_types = data.photo_types?.code;
             dispatch(addJobsRequest(data))
         }
@@ -145,22 +144,6 @@ const CreateJobs = () => {
                             <div className="field col-12 md:col-12 create_new_customer">
                                 <p onClick={handleCreateNewCustomer} style={{ width: "max-content" }}>Tạo khách hàng mới</p>
                             </div>
-                            <div className="field col-12 md:col-6">
-                                <span htmlFor="work_types">Loại công việc: <span className="warning">*</span></span>
-                                <span className="">
-                                    <Controller name="work_types"
-                                        control={control}
-                                        rules={{ required: true }} render={({ field, fieldState }) => (
-                                            <Dropdown
-                                                options={work_types}
-                                                optionLabel="name"
-                                                value={field.value} onChange={(e) => field.onChange(e.value)}
-                                                className={classNames({ 'p-invalid': fieldState.invalid }, "create__job_type")}
-                                            />
-                                        )} />
-                                </span>
-                            </div>
-
                             <div className="field col-12 md:col-6 create__job--calendar">
                                 <span htmlFor="calendar">Chọn ngày hạn chót:<span className="warning">*</span></span>
                                 <span className="p-float-label ">
@@ -235,14 +218,32 @@ const CreateJobs = () => {
                                     <Controller name="total_cost"
                                         control={control}
                                         rules={{ required: true }} render={({ field, fieldState }) => (
-                                            <InputNumber id="count "
+                                            <InputNumber id="total_cost"
                                                 inputId="currency-us"
                                                 value={field.value} onChange={(e) => field.onChange(e.value)}
                                                 mode="currency"
                                                 currency="USD"
                                                 locale="en-US"
                                                 minFractionDigits={0}
-                                                useGrouping={false}
+                                                useGrouping={true}
+                                                className={classNames({ 'p-invalid': fieldState.invalid })}
+                                            />
+                                        )} />
+                                </span>
+                            </div>
+                            <div className="field col-12 md:col-6">
+                                <span htmlFor="cost">Chi phí Editor:</span>
+                                <span className="p-float-label">
+                                    <Controller name="editor_cost"
+                                        control={control}
+                                        rules={{ required: true }} render={({ field, fieldState }) => (
+                                            <InputNumber id="editor_cost"
+                                                inputId="currency-vn"
+                                                value={field.value} onChange={(e) => field.onChange(e.value)}
+                                                mode="currency"
+                                                currency="VND"
+                                                locale="vi-VN"
+                                                useGrouping={true}
                                                 className={classNames({ 'p-invalid': fieldState.invalid })}
                                             />
                                         )} />
