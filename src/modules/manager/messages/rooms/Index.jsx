@@ -46,6 +46,7 @@ const Index = (
 
     const [originalMembers, setOriginalMembers] = useState([])
     const [originalGroups, setOriginalGroups] = useState([])
+    const [isOpen, setIsOpen] = useState(false)
     
     useEffect(() => {
         // CHECK SESSIONSTORAGE AND SAVE
@@ -138,8 +139,12 @@ const Index = (
         }
     }
 
+    const handleOpenMembersBlock = ()=>{
+        setIsOpen(true)
+    }
+
     return (
-        <div className="people-list" id="people-list">
+        <div className={`people-list ${isOpen && "active"}`} id="people-list" onClick={handleOpenMembersBlock}>
         <div className="message__title">
             <div className="notification-message__search">
                 <TextField

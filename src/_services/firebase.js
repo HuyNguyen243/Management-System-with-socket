@@ -13,37 +13,22 @@ const firebaseConfig = {
 
 
 
-// export const onMessageListener = () =>
-//   new Promise((resolve) => {
-//     onMessage(messaging, (payload) => {
-//       console.log("payload", payload)
-//       resolve(payload);
-//     });
-//   });
+export const requestPermission = (setToken)=>{
+  Notification.requestPermission().then(permission =>{
+    if (permission === 'granted'){
+      const firebaseApp = initializeApp(firebaseConfig);
+      const messaging = getMessaging(firebaseApp);
 
-const requestPermission = () => {
-    Notification.requestPermission().then(permission => {
-        if(permission === "granted"){
-            const app = initializeApp(firebaseConfig);
-            const messaging = getMessaging(app);
-            
-            getToken(messaging, { vapidKey: "BGIf5jZg3fr2F_swwO56ae7k2SIedXU4w_wJZLVRzSc6T4V5uhbIRpkvI76_nPuB9qTX7_L75h-7O-pZ8u6pNxU" })
-                  .then((currentToken) => {
-                    if (currentToken) {
-                      console.log('current token for client: ', currentToken);
-                      // Perform any other neccessary action with the token
-                    } else {
-                      // Show permission request UI
-                      console.log('No registration token available. Request permission to generate one.');
-                    }
-                  })
-                  .catch((err) => {
-                    console.log('An error occurred while retrieving token. ', err);
-            });
-        }else{
-            console.log("Do not have permission")
+      return getToken(messaging, {vapidKey: process.env.REACT_APP_FIREBASE_VAPID_KEY}).then((currentToken) => {
+        if(currentToken){
+          setToken(currentToken)
         }
-    })
+      }).catch((err) => {
+        setToken(null)
+      });
+    }else{
+      // console.log(" You dont have permission ")
+    }
+  })
 }
 
-requestPermission()

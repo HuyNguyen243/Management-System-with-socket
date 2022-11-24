@@ -134,3 +134,8 @@ export const NAME_ROOM = {
     EDIT: "EDIT",
     CREATE: "CREATE",
 };
+
+export const NAME_NOTIFICATION = {
+    MESSAGE: "Tin nhắn",
+    NOTIFICATION: "Thông báo",
+}
