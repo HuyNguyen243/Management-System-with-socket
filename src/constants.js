@@ -4,10 +4,10 @@ export const IMAGE_EXTENSIONS = ["jpg", "jpeg", "png"];
 
 export const JOB_DONE = "Đã hoàn thành";
 export const JOB_INCOMPLETE = "Chưa hoàn thành";
-export const JOB_PENDING = "Tạm hoãn công việc";
+export const JOB_PENDING = "Đang xử lý";
 
 export const CUSTOMER_REQUEST_DONE = "Đang yêu cầu";
-export const CUSTOMER_REQUEST_PENDING = "Tạm hoãn yêu cầu";
+export const CUSTOMER_REQUEST_PENDING = "Đang xử lý yêu cầu";
 export const CUSTOMER_REQUEST_CANCEL = "Ngưng yêu cầu";
 
 export const PAY_DONE = "Đã thanh toán";
@@ -112,6 +112,11 @@ export const JobRules = {
         COMPLETE: "COMPLETE",
         INCOMPLETE: "INCOMPLETE",
         PENDING: "PENDING",
+    },
+    STATUS_CUSTOMER_NAME: {
+        COMPLETE: CUSTOMER_REQUEST_DONE,
+        INCOMPLETE: CUSTOMER_REQUEST_CANCEL,
+        PENDING: CUSTOMER_REQUEST_PENDING,
     },
 };
 

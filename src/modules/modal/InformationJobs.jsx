@@ -9,7 +9,7 @@ import { setIsOpenInformationJob } from '../../redux/modal/modalSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from "react-hook-form";
 import { Dropdown } from 'primereact/dropdown';
-import { type_status_jobs, type_files } from "./dropDown";
+import { customer_status, type_files } from "./dropDown";
 import { UserRules, JobRules, NOT_SET_ADMIN } from "../../constants";
 import { InputText } from 'primereact/inputtext';
 import { timezoneToDate } from '../../commons/dateTime';
@@ -21,13 +21,13 @@ import { deleteJobsRequest, editJobsRequest } from "../../redux/overviewJobs/act
 import { itemUserTemplate } from "../modal/TemplateDropDown";
 import { InputNumber } from 'primereact/inputnumber';
 import { Calendar } from 'primereact/calendar';
-
+import { formatUSD } from '../../commons/formatCost';
 const InformationJobs = () => {
     const toast = useRef(null);
     const dispatch = useDispatch()
     let minDate = new Date();
     const [typeFile, setTypeFile] = useState(false);
-    const [statusJobs, setStatusJobs] = useState(false);
+    const [statusCustomer, setStatusCustomer] = useState(false);
     const [selectEditor, setSelectEditor] = useState(false);
     const [filteredNameEditor, setFilteredNameEditor] = useState(null);
 
@@ -47,9 +47,9 @@ const InformationJobs = () => {
 
     useEffect(() => {
         if (rowdata?.data?.status_jobs) {
-            for (let item of type_status_jobs) {
-                if (item.code === rowdata?.data?.status_jobs) {
-                    setStatusJobs(item)
+            for (let item of customer_status) {
+                if (item.code === rowdata?.data?.status_customer) {
+                    setStatusCustomer(item)
                     break
                 }
             }
@@ -95,11 +95,11 @@ const InformationJobs = () => {
         }, 50);
     }
     useEffect(() => {
-        if (isOpenInformationJob && !filteredNameEditor) {
+        if (isOpenInformationJob && !filteredNameEditor && user?.data?.role === "ADMIN") {
             let keyword = "?keyword=Editor";
             dispatch(dashboardEmployeeRequest(keyword));
         }
-    }, [dispatch, filteredNameEditor, isOpenInformationJob])
+    }, [dispatch, filteredNameEditor, isOpenInformationJob, user?.data])
 
     const onSubmit = (data) => {
         const formDataPut = {}
@@ -186,21 +186,21 @@ const InformationJobs = () => {
                                 </span>
                             </div>
                             <div className="field col-12 md:col-6">
-                                <span htmlFor="status_jobs">Trạng thái công việc ( SALER ) :<span className="warning">*</span></span>
-                                <span onClick={(e) => handleOpenInput("status_jobs")} className={"p-float-label cursor__edit " + (isOpenInput?.status_jobs ? "" : " mt-3 ")}>
-                                    {isOpenInput?.status_jobs ?
+                                <span htmlFor="status_customer">Trạng thái khách hàng :<span className="warning">*</span></span>
+                                <span onClick={(e) => handleOpenInput("status_customer")} className={"p-float-label cursor__edit " + (isOpenInput?.status_customer ? "" : " mt-3 ")}>
+                                    {isOpenInput?.status_customer ?
                                         (
                                             <Dropdown
-                                                options={type_status_jobs}
+                                                options={customer_status}
                                                 optionLabel="name"
-                                                defaultValue={statusJobs}
-                                                value={statusJobs}
-                                                onChange={(e) => { setStatusJobs(e.value); setValue("status_jobs", e.value.code); }}
+                                                defaultValue={statusCustomer}
+                                                value={statusCustomer}
+                                                onChange={(e) => { setStatusCustomer(e.value); setValue("status_customer", e.value.code); }}
                                                 disabled={(user?.data?.role === UserRules.ROLE.EDITOR && user?.data?.role === UserRules.ROLE.LEADER_EDITOR) ? true : false}
                                             />
                                         ) : (
-                                            <span className={"p-float-label mt-3 m-0 flex justify-content-between align-items-center " + (rowdata?.data.status_jobs === JobRules.STATUS_JOBS.INCOMPLETE ? 'btn_stop ' : (rowdata?.data.status_jobs === JobRules.STATUS_JOBS.COMPLETE ? 'btn_success' : 'btn_pending'))}>
-                                                {JobRules.STATUS_JOBS_NAME[rowdata?.data?.status_jobs]}
+                                            <span className={"p-float-label mt-3 m-0 flex justify-content-between align-items-center " + (rowdata?.data.status_customer === JobRules.STATUS_CUSTOMER.INCOMPLETE ? 'btn_stop ' : (rowdata?.data.status_jobs === JobRules.STATUS_CUSTOMER.COMPLETE ? 'btn_success' : 'btn_pending'))}>
+                                                {JobRules.STATUS_CUSTOMER_NAME[rowdata?.data?.status_customer]}
                                             </span>
                                         )
                                     }
@@ -289,31 +289,34 @@ const InformationJobs = () => {
                                     }
                                 </span>
                             </div>
-                            <div className="field col-12 md:col-6">
-                                <span htmlFor="id_editor">Editor :<span className="warning">*</span></span>
-                                <span onClick={(e) => handleOpenInput("id_editor")} className={"p-float-label cursor__edit " + (isOpenInput?.id_editor ? "" : " mt-3 ")}>
-                                    {isOpenInput?.id_editor ?
-                                        (
-                                            <AutoComplete
-                                                suggestions={filteredNameEditor}
-                                                completeMethod={searchName} field="name"
-                                                dropdown
-                                                forceSelection
-                                                itemTemplate={itemUserTemplate}
-                                                {...register("id_editor", { required: true })}
-                                                id={"id_editor"}
-                                                value={selectEditor} onChange={(e) => { setSelectEditor(e.value); }}
-                                                className={"icon__search"}
-                                                dropdownAriaLabel="Select name"
-                                            />
-                                        ) : (
-                                            <span className="p-float-label mt-3" >
-                                                {rowdata?.data?.id_editor ? rowdata?.data?.id_editor : "Chưa giao việc"}
-                                            </span>
-                                        )
-                                    }
-                                </span>
-                            </div>
+                            {
+                                user?.data?.role === "ADMIN" &&
+                                <div className="field col-12 md:col-6">
+                                    <span htmlFor="id_editor">Editor :<span className="warning">*</span></span>
+                                    <span onClick={(e) => handleOpenInput("id_editor")} className={"p-float-label cursor__edit " + (isOpenInput?.id_editor ? "" : " mt-3 ")}>
+                                        {isOpenInput?.id_editor ?
+                                            (
+                                                <AutoComplete
+                                                    suggestions={filteredNameEditor}
+                                                    completeMethod={searchName} field="name"
+                                                    dropdown
+                                                    forceSelection
+                                                    itemTemplate={itemUserTemplate}
+                                                    {...register("id_editor", { required: true })}
+                                                    id={"id_editor"}
+                                                    value={selectEditor} onChange={(e) => { setSelectEditor(e.value); }}
+                                                    className={"icon__search"}
+                                                    dropdownAriaLabel="Select name"
+                                                />
+                                            ) : (
+                                                <span className="p-float-label mt-3" >
+                                                    {rowdata?.data?.id_editor ? rowdata?.data?.id_editor : "Chưa giao việc"}
+                                                </span>
+                                            )
+                                        }
+                                    </span>
+                                </div>
+                            }
                             <div className="field col-12 md:col-6 create__job--calendar">
                                 <span htmlFor="org_link">Link ảnh gốc :<span className="warning">*</span></span>
                                 <span onClick={(e) => handleOpenInput("org_link")} className={"p-float-label cursor__edit " + (isOpenInput?.org_link ? "" : " mt-3 ")}>
@@ -333,29 +336,31 @@ const InformationJobs = () => {
                                     }
                                 </span>
                             </div>
-                            <div className="field col-12 md:col-6 create__job--calendar">
-                                <span htmlFor="finished_link">Link ảnh hoàn thành :<span className="warning">*</span></span>
-                                <span onClick={(e) => handleOpenInput("finished_link")} className={"p-float-label cursor__edit " + (isOpenInput?.finished_link ? "" : " mt-3 ")}>
-                                    {isOpenInput?.finished_link ?
-                                        (
-                                            <InputText
-                                                defaultValue={rowdata?.data?.finished_link === NOT_SET_ADMIN ? "" : rowdata?.data?.finished_link}
-                                                onChange={(e) => setValue("finished_link", e.target.value)}
-                                                {...register("finished_link", { required: true })}
-                                                className={errors?.finished_link && "p-invalid"}
-                                            />
-                                        ) : (
-                                            <span className=''>
-                                                {rowdata?.data.finished_link === NOT_SET_ADMIN ?
-                                                    "Trống"
-                                                    :
-                                                    < a href={rowdata?.data.finished_link} target="_blank" rel="noreferrer">Link liên kết</a>
-                                                }
-                                            </span>
-                                        )
-                                    }
-                                </span>
-                            </div>
+                            {user?.data?.role !== "SALER" &&
+                                < div className="field col-12 md:col-6 create__job--calendar">
+                                    <span htmlFor="finished_link">Link ảnh hoàn thành :<span className="warning">*</span></span>
+                                    <span onClick={(e) => handleOpenInput("finished_link")} className={"p-float-label cursor__edit " + (isOpenInput?.finished_link ? "" : " mt-3 ")}>
+                                        {isOpenInput?.finished_link ?
+                                            (
+                                                <InputText
+                                                    defaultValue={rowdata?.data?.finished_link === NOT_SET_ADMIN ? "" : rowdata?.data?.finished_link}
+                                                    onChange={(e) => setValue("finished_link", e.target.value)}
+                                                    {...register("finished_link", { required: true })}
+                                                    className={errors?.finished_link && "p-invalid"}
+                                                />
+                                            ) : (
+                                                <span className=''>
+                                                    {rowdata?.data.finished_link === NOT_SET_ADMIN ?
+                                                        "Trống"
+                                                        :
+                                                        < a href={rowdata?.data.finished_link} target="_blank" rel="noreferrer">Link liên kết</a>
+                                                    }
+                                                </span>
+                                            )
+                                        }
+                                    </span>
+                                </div>
+                            }
                             <div className="field col-12 md:col-6">
                                 <span htmlFor="total_cost">Chi phí tổng :<span className="warning">*</span></span>
                                 <span onClick={(e) => handleOpenInput("total_cost")} className={"p-float-label cursor__edit " + (isOpenInput?.total_cost ? "" : " mt-3 ")}>
@@ -374,52 +379,56 @@ const InformationJobs = () => {
 
                                         ) : (
                                             <span className='font-bold'>
-                                                {rowdata?.data.total_cost} $
+                                                {formatUSD(rowdata?.data?.total_cost)}
                                             </span>
                                         )
                                     }
                                 </span>
                             </div>
-                            <div className="field col-12 md:col-6">
-                                <span htmlFor="editor_cost">Chi phí Editor :<span className="warning">*</span></span>
-                                <span onClick={(e) => handleOpenInput("editor_cost")} className={"p-float-label cursor__edit " + (isOpenInput?.editor_cost ? "" : " mt-3 ")}>
-                                    {isOpenInput?.editor_cost ?
-                                        (
-                                            <InputNumber id="editor_cost"
-                                                inputId="currency-vn"
-                                                // defaultValue={rowdata?.data?.editor_cost}
-                                                onValueChange={(e) => setValue("editor_cost", e.target.value)}
-                                                mode="currency"
-                                                currency="VND"
-                                                locale="vi-VN"
-                                                useGrouping={true}
-                                                className={"m-0"}
-                                            />
-                                        ) : (
-                                            <span className='font-bold'>
-                                                {rowdata?.data.editor_cost} $
-                                            </span>
-                                        )
-                                    }
-                                </span>
-                            </div>
+                            {user?.data?.role === "ADMIN" &&
+                                <div className="field col-12 md:col-6">
+                                    <span htmlFor="editor_cost">Chi phí Editor :<span className="warning">*</span></span>
+                                    <span onClick={(e) => handleOpenInput("editor_cost")} className={"p-float-label cursor__edit " + (isOpenInput?.editor_cost ? "" : " mt-3 ")}>
+                                        {isOpenInput?.editor_cost ?
+                                            (
+                                                <InputNumber id="editor_cost"
+                                                    inputId="currency-vn"
+                                                    // defaultValue={rowdata?.data?.editor_cost}
+                                                    onValueChange={(e) => setValue("editor_cost", e.target.value)}
+                                                    mode="currency"
+                                                    currency="VND"
+                                                    locale="vi-VN"
+                                                    useGrouping={true}
+                                                    className={"m-0"}
+                                                />
+                                            ) : (
+                                                <span className='font-bold'>
+                                                    {formatUSD(rowdata?.data?.editor_cost)}
+                                                </span>
+                                            )
+                                        }
+                                    </span>
+                                </div>
+                            }
                             <div className="field col-12 md:col-6">
                                 <span htmlFor="saler_cost">Chi phí Saler :</span>
                                 <span className="p-float-label mt-3 cursor__normal">
                                     <span className='font-bold'>
-                                        {rowdata?.data.saler_cost} $
+                                        {formatUSD(rowdata?.data?.saler_cost)}
                                     </span>
                                 </span>
 
                             </div>
-                            <div className="field col-12 md:col-6">
-                                <span htmlFor="saler_cost">Lợi nhuận :</span>
-                                <span className="p-float-label mt-3 cursor__normal">
-                                    <span className='font-bold'>
-                                        {rowdata?.data.admin_cost} $
+                            {user?.data?.role === "ADMIN" &&
+                                <div className="field col-12 md:col-6">
+                                    <span htmlFor="saler_cost">Lợi nhuận :</span>
+                                    <span className="p-float-label mt-3 cursor__normal">
+                                        <span className='font-bold'>
+                                            {formatUSD(rowdata?.data?.admin_cost)}
+                                        </span>
                                     </span>
-                                </span>
-                            </div>
+                                </div>
+                            }
                             <div className="field col-12 md:col-12">
                                 <span htmlFor="request_content">Nội dung yêu cầu :<span className="warning">*</span></span>
                                 <InputTextarea
