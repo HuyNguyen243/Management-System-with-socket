@@ -58,7 +58,7 @@ const CreateUser = () => {
         setValue("password", randomPass)
     })
     useEffect(() => {
-        if (employee?.data) {
+        if (employee?.data && !employee?.error) {
             reset();
             dispatch(setIsOpenModalCreateUser(false))
             toastMsg.success(toast, 'Tạo khách hàng mới thành công')

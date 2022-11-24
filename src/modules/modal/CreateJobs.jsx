@@ -47,7 +47,7 @@ const CreateJobs = () => {
     let customerName = dataParseCustomer(customers?.data)
 
     useEffect(() => {
-        if (addjobs?.data) {
+        if (addjobs?.data && !addjobs?.error) {
             reset();
             dispatch(setIsOpenModalCreateJob(false))
             toastMsg.success(toast, 'Tạo công việc mới thành công')

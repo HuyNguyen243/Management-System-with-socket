@@ -1,6 +1,7 @@
 export const navButtons = [
     {
         name_image : "pie",
+        role: ["ADMIN"],
         isRederect : false,
         route: "",
         name: "Tổng quan",
@@ -29,6 +30,7 @@ export const navButtons = [
     },
     {
         name_image : "work",
+        role: ["EDITOR"],
         isRederect : false,
         route: "",
         name: "Công việc",
@@ -42,6 +44,7 @@ export const navButtons = [
     },
     {
         name_image : "shopping-bag",
+        role: ["SALER","ADMIN"],
         isRederect : false,
         route: "",
         name: "Sales",
@@ -60,6 +63,7 @@ export const navButtons = [
     },
     {
         name_image : "money",
+        role: ["SALER","EDITOR"],
         isRederect : false,
         route: "",
         name: "Thanh toán",
@@ -73,6 +77,7 @@ export const navButtons = [
     },
     {
         name_image : "setting",
+        role: ["ADMIN"],
         isRederect : false,
         route: "",
         name: "Cài đặt",

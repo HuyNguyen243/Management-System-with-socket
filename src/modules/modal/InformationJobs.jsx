@@ -69,10 +69,10 @@ const InformationJobs = () => {
     useEffect(() => {
         if (deletejobs?.data) {
             dispatch(setIsOpenInformationJob(false))
-            toastMsg.success(toast, 'Xóa khách hàng thành công')
+            toastMsg.success(toast, 'Xóa công việc thành công')
         }
         if (deletejobs?.error) {
-            toastMsg.error(toast, 'Xóa khách hàng thất bại')
+            toastMsg.error(toast, 'Xóa công việc thất bại')
         }
     }, [deletejobs, dispatch])
 
@@ -132,13 +132,12 @@ const InformationJobs = () => {
     ])
 
     useEffect(() => {
-        if (updatejobs?.data) {
+        if (updatejobs?.data && !updatejobs?.error) {
             handleCloseModal()
             toastMsg.success(toast, 'Cập nhật thành công')
         }
-
         if (updatejobs?.error) {
-            toastMsg.error(toast, 'Cập nhật thất bại')
+            toastMsg.error(toast, updatejobs?.data?.message)
         }
     }, [updatejobs, dispatch, handleCloseModal])
 
@@ -438,7 +437,7 @@ const InformationJobs = () => {
                                     autoResize
                                     className="aria_note mt-3"
                                     defaultValue={rowdata?.data.request_content}
-                                    onChange={(e) => setValue("request_content", e.target.value)}
+                                    onChange={(e) => setValue("work_notes", e.target.value)}
                                     {...register("work_notes", { work_notes: true })}
                                     style={{ height: "150px" }}
                                 />

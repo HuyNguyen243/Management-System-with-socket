@@ -49,7 +49,7 @@ const InformationCustomer = () => {
     }, [dispatch, reset])
 
     useEffect(() => {
-        if (putCustomer?.data) {
+        if (putCustomer?.data && !putCustomer?.error) {
             resetModal()
             toastMsg.success(toast, 'Cập nhật thành công')
         }
@@ -62,7 +62,7 @@ const InformationCustomer = () => {
     }, [putCustomer, dispatch, resetModal])
 
     useEffect(() => {
-        if (deleteCustomer?.data) {
+        if (deleteCustomer?.data && !deleteCustomer?.error) {
             resetModal()
             toastMsg.success(toast, 'Xóa khách hàng thành công')
         }
