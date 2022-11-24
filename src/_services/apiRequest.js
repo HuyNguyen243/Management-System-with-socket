@@ -65,7 +65,6 @@ async function apiRequest(url, requestOptions) {
 }
 
 export const postFireBaseNotification = async (url, notification, token) => {
-    console.log(url)
     const headers = {
         'Content-Type': 'application/json',
         'Authorization': `key=${process.env.REACT_APP_FIRE_BASE_SERVER_KEY}`
