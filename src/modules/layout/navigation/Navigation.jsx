@@ -72,7 +72,7 @@ const Navigation = ({ open, getBtnNavIsOpen }) => {
                                 }}
                                 className={`nav__button 
                                     ${!item.haveModal && open && "nav__btn-active "} 
-                                    ${item.role.includes( user?.data?.role) ? "" : "hidden"}
+                                    ${!item.role.includes( user?.data?.role)  && "hidden"}
                                 `}
                                 onClick={() => handleRedirect(item.isRederect, "", index, item)}
                             >

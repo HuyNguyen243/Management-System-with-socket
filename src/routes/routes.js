@@ -10,48 +10,57 @@ import PersonalInfor from "../modules/manager/personal/PersonalInfor";
 
 export const routes = [
     {
-        path: '/',
+        path: "/",
         exact: true,
-        main: ()=> <Dashboard />
+        role: ["EDITOR"],
+        main: () => <Dashboard />,
     },
     {
-        path: '/workflow-management',
+        path: "/workflow-management",
         exact: true,
-        main: ()=> <WorkflowManagement />
+        role: ["SALER", "ADMIN"],
+        main: () => <WorkflowManagement />,
     },
     {
-        path: '/customer-management',
+        path: "/customer-management",
         exact: true,
-        main: ()=> <CustomerManager />
+        role: ["SALER", "ADMIN"],
+        main: () => <CustomerManager />,
     },
     {
-        path: '/payment',
+        path: "/payment",
         exact: true,
-        main: ()=> <Payment />
+        role: ["SALER", "EDITOR"],
+        main: () => <Payment />,
     },
     {
-        path: '/employee-overview',
+        path: "/employee-overview",
         exact: true,
-        main: ()=> <EmployeeOverview />
+        role: ["ADMIN"],
+        main: () => <EmployeeOverview />,
     },
     {
-        path: '/payment-management',
+        path: "/payment-management",
         exact: true,
-        main: ()=> <PaymentManagement />
+        role: ["ADMIN"],
+        main: () => <PaymentManagement />,
     },
     {
-        path: '/job-performance',
+        path: "/job-performance",
         exact: true,
-        main: ()=> <JobPerformance />
+        role: ["ADMIN"],
+        main: () => <JobPerformance />,
     },
     {
-        path: '/jobs-overview',
+        path: "/jobs-overview",
         exact: true,
-        main: ()=> <JobsOverview />
+        role: ["ADMIN"],
+        main: () => <JobsOverview />,
     },
     {
-        path: '/perosonal-information',
+        path: "/perosonal-information",
         exact: true,
-        main: ()=> <PersonalInfor />
+        role: ["SALER", "ADMIN", "LEADER_EDITOR", "EDITOR"],
+        main: () => <PersonalInfor />,
     },
 ];
