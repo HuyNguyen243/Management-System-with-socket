@@ -41,7 +41,7 @@ const InformationUser = () => {
     const user = useSelector(state => state.auth.user)
 
     useEffect(() => {
-        if (putUser?.data) {
+        if (putUser?.data && !putUser?.error) {
             dispatch(setIsOpenModalInformationUser(false))
             toastMsg.success(toast, 'Cập nhật thành công')
         }
@@ -52,7 +52,7 @@ const InformationUser = () => {
     }, [putUser, dispatch])
 
     useEffect(() => {
-        if (deleteUser?.data) {
+        if (deleteUser?.data && !deleteUser?.error) {
             dispatch(setIsOpenModalInformationUser(false))
             toastMsg.success(toast, 'Xóa khách hàng thành công')
         }

@@ -1,152 +1,241 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice } from "@reduxjs/toolkit";
 
-import { 
+import {
     saleCustomerRequest,
     addCustomerRequest,
     editCustomerRequest,
     deleteCustomerRequest,
- } from './action';
+    getCustomerRequest,
+} from "./action";
 
 const initialState = {
     customers: {
         loading: false,
-        data : null,
+        data: null,
         error: false,
     },
-    customer:{
+    customer: {
         loading: false,
-        data : null,
+        data: null,
         error: false,
     },
-    editcustomer:{
+    editcustomer: {
         loading: false,
-        data : null,
+        data: null,
         error: false,
     },
-    deletecustomer:{
+    deletecustomer: {
         loading: false,
-        data : null,
+        data: null,
         error: false,
     },
-}
+    getcustomer: {
+        loading: false,
+        data: null,
+        error: false,
+    },
+};
 const saleSlice = createSlice({
-    name: 'saleSlice',
+    name: "saleSlice",
     initialState,
-    extraReducers:{
-
+    extraReducers: {
         [saleCustomerRequest.pending]: (state) => {
-            Object.assign(state,{},{
-                customers:{
-                    loading: true
+            Object.assign(
+                state,
+                {},
+                {
+                    customers: {
+                        loading: true,
+                    },
                 }
-            })
+            );
         },
         [saleCustomerRequest.fulfilled]: (state, action) => {
-            Object.assign(state,{},{
-                customers:{
-                    error: false,
-                    data: action.payload.data,
-                    loading: false
+            Object.assign(
+                state,
+                {},
+                {
+                    customers: {
+                        error: false,
+                        data: action.payload.data,
+                        loading: false,
+                    },
                 }
-            })
+            );
         },
         [saleCustomerRequest.rejected]: (state, action) => {
-            Object.assign(state,{},{
-                customers:{
-                    error: true,
-                    data: null,
-                    loading: false
+            Object.assign(
+                state,
+                {},
+                {
+                    customers: {
+                        error: true,
+                        data: null,
+                        loading: false,
+                    },
                 }
-            })
+            );
         },
 
         [addCustomerRequest.pending]: (state) => {
-            Object.assign(state,{},{
-                customer:{
-                    loading: true
+            Object.assign(
+                state,
+                {},
+                {
+                    customer: {
+                        loading: true,
+                    },
                 }
-            })
+            );
         },
         [addCustomerRequest.fulfilled]: (state, action) => {
-            const result = action?.payload?.data
-            Object.assign(state,{},{
-                customer:{
-                    error: false,
-                    data: result,
-                    loading: false
-                },
-            })
-            state.customers.data.push(result)
+            const result = action?.payload?.data;
+            Object.assign(
+                state,
+                {},
+                {
+                    customer: {
+                        error: false,
+                        data: result,
+                        loading: false,
+                    },
+                }
+            );
+            state.customers.data.push(result);
         },
         [addCustomerRequest.rejected]: (state, action) => {
-            Object.assign(state,{},{
-                customer:{
-                    error: false,
-                    data: null,
-                    loading: false
-                },
-            })
+            Object.assign(
+                state,
+                {},
+                {
+                    customer: {
+                        error: false,
+                        data: null,
+                        loading: false,
+                    },
+                }
+            );
         },
 
         [editCustomerRequest.pending]: (state) => {
-            Object.assign(state,{},{
-                editcustomer:{
-                    loading: true
+            Object.assign(
+                state,
+                {},
+                {
+                    editcustomer: {
+                        loading: true,
+                    },
                 }
-            })
+            );
         },
         [editCustomerRequest.fulfilled]: (state, action) => {
-            const result = action?.payload
-            Object.assign(state,{},{
-                editcustomer:{
-                    error: false,
-                    data: result?.data,
-                    loading: false
-                },
-            })
+            const result = action?.payload;
+            Object.assign(
+                state,
+                {},
+                {
+                    editcustomer: {
+                        error: false,
+                        data: result?.data,
+                        loading: false,
+                    },
+                }
+            );
 
-            state.customers.data.splice(result?.index, 1, result?.data)
+            state.customers.data.splice(result?.index, 1, result?.data);
         },
         [editCustomerRequest.rejected]: (state) => {
-            Object.assign(state,{},{
-                editcustomer:{
-                    error: true,
-                    data: null,
-                    loading: false
-                },
-            })
+            Object.assign(
+                state,
+                {},
+                {
+                    editcustomer: {
+                        error: true,
+                        data: null,
+                        loading: false,
+                    },
+                }
+            );
         },
 
         [deleteCustomerRequest.pending]: (state) => {
-            Object.assign(state,{},{
-                deletecustomer:{
-                    loading: true
+            Object.assign(
+                state,
+                {},
+                {
+                    deletecustomer: {
+                        loading: true,
+                    },
                 }
-            })
+            );
         },
         [deleteCustomerRequest.fulfilled]: (state, action) => {
-            const result = action?.payload
-            Object.assign(state,{},{
-                deletecustomer:{
-                    error: false,
-                    data: result?.data,
-                    loading: false
-                },
-            })
+            const result = action?.payload;
+            Object.assign(
+                state,
+                {},
+                {
+                    deletecustomer: {
+                        error: false,
+                        data: result?.data,
+                        loading: false,
+                    },
+                }
+            );
 
-            state.customers.data.splice(result?.index, 1)
+            state.customers.data.splice(result?.index, 1);
         },
         [deleteCustomerRequest.rejected]: (state) => {
-            Object.assign(state,{},{
-                deletecustomer:{
-                    error: true,
-                    data: null,
-                    loading: false
-                },
-            })
+            Object.assign(
+                state,
+                {},
+                {
+                    deletecustomer: {
+                        error: true,
+                        data: null,
+                        loading: false,
+                    },
+                }
+            );
         },
-    }
+        [getCustomerRequest.pending]: (state) => {
+            Object.assign(
+                state,
+                {},
+                {
+                    getcustomer: {
+                        loading: true,
+                    },
+                }
+            );
+        },
+        [getCustomerRequest.fulfilled]: (state, action) => {
+            Object.assign(
+                state,
+                {},
+                {
+                    getcustomer: {
+                        loading: false,
+                        data: action?.payload?.data,
+                        error: false,
+                    },
+                }
+            );
+        },
+        [getCustomerRequest.rejected]: (state, action) => {
+            Object.assign(
+                state,
+                {},
+                {
+                    getcustomer: {
+                        loading: false,
+                        data: action?.payload,
+                        error: true,
+                    },
+                }
+            );
+        },
+    },
+});
 
-})
-
-export default saleSlice.reducer
+export default saleSlice.reducer;

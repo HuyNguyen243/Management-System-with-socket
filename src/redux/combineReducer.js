@@ -1,18 +1,20 @@
 import { combineReducers } from "redux";
 import userSlice from "./auth/authSlice";
-import dashBoardReducer from "./sale/saleSlice";
-import employeeReducer from "./overviewEmployee/employeeSlice";
-import jobsReducer from "./overviewJobs/jobsSlice";
-import messagesSlice from "./messages/messageSlice"
+import saleSlice from "./sale/saleSlice";
+import employeeSlice from "./overviewEmployee/employeeSlice";
+import jobsSlice from "./overviewJobs/jobsSlice";
+import messageSlice from "./messages/messageSlice"
 import modalSlice from "./modal/modalSlice";
+import settingSlice from "./admin/adminSlice";
 
 const combineReducer = combineReducers({
     auth: userSlice,
-    sale: dashBoardReducer,
-    employee: employeeReducer,
-    jobs: jobsReducer,
-    message: messagesSlice,
+    sale: saleSlice,
+    employee: employeeSlice,
+    jobs: jobsSlice,
+    message: messageSlice,
     modal: modalSlice,
+    setting: settingSlice,
 });
 
 export default combineReducer;

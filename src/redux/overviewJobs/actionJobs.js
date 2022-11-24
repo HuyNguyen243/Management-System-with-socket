@@ -35,7 +35,7 @@ export const editJobsRequest = createAsyncThunk(
             const res = await put(`jobs/${data?.result.id_system}`,data?.result)
             return res;
         } catch (error) {
-            return rejectWithValue(error?.response?.result);
+            return rejectWithValue(error?.response?.data);
         }
     }
 )
@@ -50,7 +50,7 @@ export const deleteJobsRequest = createAsyncThunk(
             }
             return res;
         } catch (error) {
-            return rejectWithValue(error?.response?.result);
+            return rejectWithValue(error?.response?.data);
         }
     }
 )

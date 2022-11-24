@@ -169,8 +169,14 @@ const PersonalInfor = () => {
 
     const handleChangeAvatar = (e)=>{
         const file = e.target.files[0];
-        setImagePreview(URL.createObjectURL(file))
-        setAvatar(file)
+        const reader = new FileReader()
+
+        reader.readAsDataURL(file)
+        reader.onload = () => {
+            console.log('called: ', reader)
+          }
+        // setImagePreview(URL.createObjectURL(file))
+        // setAvatar(file)
     }
 
   return (

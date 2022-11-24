@@ -9,7 +9,7 @@ import { setIsOpenInformationJob } from '../../redux/modal/modalSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from "react-hook-form";
 import { Dropdown } from 'primereact/dropdown';
-import { type_status_jobs, work_types, type_files } from "./dropDown";
+import { type_status_jobs, type_files } from "./dropDown";
 import { UserRules, JobRules, NOT_SET_ADMIN } from "../../constants";
 import { InputText } from 'primereact/inputtext';
 import { timezoneToDate } from '../../commons/dateTime';
@@ -26,24 +26,12 @@ const InformationJobs = () => {
     const toast = useRef(null);
     const dispatch = useDispatch()
     let minDate = new Date();
-
-    const [editStatusJobs, setEditStatusJobs] = useState(false);
-    const [editTypeJobs, setEditTypeJobs] = useState(false);
-    const [editQuality, setEditQuality] = useState(false);
-    const [editModels, setEditModels] = useState(false);
-    const [editDeadline, setEditDeadline] = useState(false);
-    const [editFile, setEditTypeFile] = useState(false);
-    const [editOrgLink, setEditOrgLink] = useState(false);
-    const [editDoneLink, setEditDoneLink] = useState(false);
-    const [editTotalCost, setEditTotalCost] = useState(false);
-    const [editEditorCost, setEditEditorCost] = useState(false);
-    const [editEditor, setEditEditor] = useState(false);
-
     const [typeFile, setTypeFile] = useState(false);
     const [statusJobs, setStatusJobs] = useState(false);
-    const [typeJobs, setTypeJobs] = useState(false);
     const [selectEditor, setSelectEditor] = useState(false);
     const [filteredNameEditor, setFilteredNameEditor] = useState(null);
+
+    const [isOpenInput, setIsOpenInput] = useState({})
 
     const user = useSelector(state => state.auth.user)
     const isOpenInformationJob = useSelector(state => state.modal.isOpenInformationJob)
@@ -66,14 +54,6 @@ const InformationJobs = () => {
                 }
             }
         }
-        if (rowdata?.data?.work_types) {
-            for (let item of work_types) {
-                if (item.code === rowdata?.data?.work_types) {
-                    setTypeJobs(item)
-                    break
-                }
-            }
-        }
         if (rowdata?.data?.photo_types) {
             for (let item of type_files) {
                 if (item.code === rowdata?.data?.photo_types) {
@@ -89,10 +69,10 @@ const InformationJobs = () => {
     useEffect(() => {
         if (deletejobs?.data) {
             dispatch(setIsOpenInformationJob(false))
-            toastMsg.success(toast, 'Xóa khách hàng thành công')
+            toastMsg.success(toast, 'Xóa công việc thành công')
         }
         if (deletejobs?.error) {
-            toastMsg.error(toast, 'Xóa khách hàng thất bại')
+            toastMsg.error(toast, 'Xóa công việc thất bại')
         }
     }, [deletejobs, dispatch])
 
@@ -115,11 +95,11 @@ const InformationJobs = () => {
         }, 50);
     }
     useEffect(() => {
-        if (editEditor && isOpenInformationJob) {
+        if (isOpenInformationJob && !filteredNameEditor) {
             let keyword = "?keyword=Editor";
             dispatch(dashboardEmployeeRequest(keyword));
         }
-    }, [dispatch, filteredNameEditor, editEditor,isOpenInformationJob])
+    }, [dispatch, filteredNameEditor, isOpenInformationJob])
 
     const onSubmit = (data) => {
         const formDataPut = {}
@@ -133,49 +113,31 @@ const InformationJobs = () => {
             const formData = {
                 data: data,
                 result: formDataPut,
-                index: rowdata?.index
+                index: rowdata
             }
             dispatch(editJobsRequest(formData))
         }
     };
-
+    const handleOpenInput = (key) => {
+        if (!Object.keys(isOpenInput).includes(key)) {
+            setIsOpenInput({ ...isOpenInput, [key]: true })
+        }
+    }
     const handleCloseModal = React.useCallback(() => {
         dispatch(setIsOpenInformationJob(false));
-        setEditStatusJobs(false);
-        setEditTypeJobs(false);
-        setEditModels(false);
-        setEditQuality(false);
-        setEditTypeFile(false);
-        setEditOrgLink(false);
-        setEditDoneLink(false);
-        setEditTotalCost(false);
-        setEditEditorCost(false);
-        setEditEditor(false);
-        setEditDeadline(false);
+        setIsOpenInput({});
         reset()
     }, [dispatch,
-        setEditStatusJobs,
-        setEditTypeJobs,
-        setEditModels,
-        setEditQuality,
-        setEditTypeFile,
-        setEditOrgLink,
-        setEditDoneLink,
-        setEditTotalCost,
-        setEditEditorCost,
-        setEditEditor,
-        setEditDeadline,
         reset
     ])
 
     useEffect(() => {
-        if (updatejobs?.data) {
+        if (updatejobs?.data && !updatejobs?.error) {
             handleCloseModal()
             toastMsg.success(toast, 'Cập nhật thành công')
         }
-
         if (updatejobs?.error) {
-            toastMsg.error(toast, 'Cập nhật thất bại')
+            toastMsg.error(toast, updatejobs?.data?.message)
         }
     }, [updatejobs, dispatch, handleCloseModal])
 
@@ -223,50 +185,10 @@ const InformationJobs = () => {
                                     <img src="images/copy.svg" alt="" label="Bottom Right" onClick={copyToClipboard} className="cursor-pointer" />
                                 </span>
                             </div>
-                            <div className="field col-12 md:col-6 ">
-                                <span htmlFor="typejobs">Loại ảnh :<span className="warning">*</span></span>
-                                <span className="p-float-label mt-1  flex justify-content-between align-items-center cursor__edit">
-                                    <span onClick={(e) => setEditQuality(true)} className="col-12 md:col-5">
-                                        {editQuality ?
-                                            (
-                                                <InputNumber
-                                                    value={rowdata?.data?.quality}
-                                                    onValueChange={(e) => setValue("quality_img", e.value)}
-                                                    mode="decimal"
-                                                    className=''
-                                                    max={9999}
-                                                    min={1}
-                                                />
-                                            ) : (
-                                                <span className='p-float-label mt-3'>
-                                                    <span className='font-bold'>{rowdata?.data?.quality}</span>
-                                                </span>
-                                            )
-                                        }
-                                    </span>
-                                    <span className='mt-3'> - </span>
-                                    <span onClick={(e) => setEditModels(true)} className="col-12 md:col-7">
-                                        {editModels ?
-                                            (
-                                                <InputText
-                                                    defaultValue={rowdata?.data?.type_models}
-                                                    onChange={(e) => setValue("type_models", e.target.value)}
-                                                    {...register("type_models", { required: true, })}
-                                                    className={errors?.type_models && "p-invalid"}
-                                                />
-                                            ) : (
-                                                <span className='p-float-label mt-3'>
-                                                    <span className='mt-3 font-bold'>{rowdata?.data?.type_models}</span>
-                                                </span>
-                                            )
-                                        }
-                                    </span>
-                                </span>
-                            </div>
                             <div className="field col-12 md:col-6">
                                 <span htmlFor="status_jobs">Trạng thái công việc ( SALER ) :<span className="warning">*</span></span>
-                                <span onClick={(e) => setEditStatusJobs(true)} className="p-float-label cursor__edit">
-                                    {editStatusJobs ?
+                                <span onClick={(e) => handleOpenInput("status_jobs")} className={"p-float-label cursor__edit " + (isOpenInput?.status_jobs ? "" : " mt-3 ")}>
+                                    {isOpenInput?.status_jobs ?
                                         (
                                             <Dropdown
                                                 options={type_status_jobs}
@@ -284,22 +206,41 @@ const InformationJobs = () => {
                                     }
                                 </span>
                             </div>
-                            <div className="field col-12 md:col-6">
-                                <span htmlFor="work_types">Loại công việc :<span className="warning">*</span></span>
-                                <span onClick={(e) => setEditTypeJobs(true)} className="p-float-label cursor__edit">
-                                    {editTypeJobs ?
+                            <div className="field col-12 md:col-6 ">
+                                <span htmlFor="quality">Số lượng :<span className="warning">*</span></span>
+                                <span onClick={(e) => handleOpenInput("quality")} className={"p-float-label cursor__edit " + (isOpenInput?.quality ? "" : " mt-3 ")}>
+                                    {isOpenInput?.quality ?
                                         (
-                                            <Dropdown
-                                                options={work_types}
-                                                optionLabel="name"
-                                                defaultValue={typeJobs}
-                                                value={typeJobs}
-                                                onChange={(e) => { setTypeJobs(e.value); setValue("work_types", e.value.code); }}
-                                                disabled={(user?.data?.role === UserRules.ROLE.EDITOR && user?.data?.role === UserRules.ROLE.LEADER_EDITOR) ? true : false}
+                                            <InputNumber
+                                                value={rowdata?.data?.quality}
+                                                onValueChange={(e) => setValue("quality_img", e.value)}
+                                                mode="decimal"
+                                                className=''
+                                                max={9999}
+                                                min={1}
                                             />
                                         ) : (
-                                            <span className="p-float-label mt-3 flex justify-content-between align-items-center font-bold" >
-                                                {JobRules.JOBS_TYPES_NAME[rowdata?.data?.work_types]}
+                                            <span className='p-float-label mt-3'>
+                                                <span className='font-bold'>{rowdata?.data?.quality}</span>
+                                            </span>
+                                        )
+                                    }
+                                </span>
+                            </div>
+                            <div className="field col-12 md:col-6 ">
+                                <span htmlFor="type_models">Loại ảnh :<span className="warning">*</span></span>
+                                <span onClick={(e) => handleOpenInput("type_models")} className={"p-float-label cursor__edit " + (isOpenInput?.type_models ? "" : " mt-3 ")}>
+                                    {isOpenInput?.type_models ?
+                                        (
+                                            <InputText
+                                                defaultValue={rowdata?.data?.type_models}
+                                                onChange={(e) => setValue("type_models", e.target.value)}
+                                                {...register("type_models", { required: true, })}
+                                                className={errors?.type_models && "p-invalid"}
+                                            />
+                                        ) : (
+                                            <span className='p-float-label mt-3'>
+                                                <span className='mt-3 font-bold'>{rowdata?.data?.type_models}</span>
                                             </span>
                                         )
                                     }
@@ -313,8 +254,8 @@ const InformationJobs = () => {
                             </div>
                             <div className="field col-12 md:col-6 create__job--calendar">
                                 <span htmlFor="end_day">Ngày hạn chót công việc : <span className="warning">*</span></span>
-                                <span className="p-float-label pt-3 cursor__edit font-bold" onClick={(e) => setEditDeadline(true)}>
-                                    {editDeadline ?
+                                <span className={"p-float-label cursor__edit font-bold" + (isOpenInput?.end_day ? "" : " mt-3 ")} onClick={(e) => handleOpenInput("end_day")}>
+                                    {isOpenInput?.end_day ?
                                         (
                                             <Calendar
                                                 readOnlyInput
@@ -329,8 +270,8 @@ const InformationJobs = () => {
                             </div>
                             <div className="field col-12 md:col-6">
                                 <span htmlFor="photo_types">Định dạng file :<span className="warning">*</span></span>
-                                <span onClick={(e) => setEditTypeFile(true)} className="p-float-label cursor__edit">
-                                    {editFile ?
+                                <span onClick={(e) => handleOpenInput("photo_types")} className={"p-float-label cursor__edit " + (isOpenInput?.photo_types ? "" : " mt-3 ")}>
+                                    {isOpenInput?.photo_types ?
                                         (
                                             <Dropdown
                                                 options={type_files}
@@ -350,8 +291,8 @@ const InformationJobs = () => {
                             </div>
                             <div className="field col-12 md:col-6">
                                 <span htmlFor="id_editor">Editor :<span className="warning">*</span></span>
-                                <span onClick={(e) => setEditEditor(true)} className="cursor__edit">
-                                    {editEditor ?
+                                <span onClick={(e) => handleOpenInput("id_editor")} className={"p-float-label cursor__edit " + (isOpenInput?.id_editor ? "" : " mt-3 ")}>
+                                    {isOpenInput?.id_editor ?
                                         (
                                             <AutoComplete
                                                 suggestions={filteredNameEditor}
@@ -375,8 +316,8 @@ const InformationJobs = () => {
                             </div>
                             <div className="field col-12 md:col-6 create__job--calendar">
                                 <span htmlFor="org_link">Link ảnh gốc :<span className="warning">*</span></span>
-                                <span onClick={(e) => setEditOrgLink(true)} className="p-float-label mt-3 cursor__edit">
-                                    {editOrgLink ?
+                                <span onClick={(e) => handleOpenInput("org_link")} className={"p-float-label cursor__edit " + (isOpenInput?.org_link ? "" : " mt-3 ")}>
+                                    {isOpenInput?.org_link ?
                                         (
                                             <InputText
                                                 defaultValue={rowdata?.data?.org_link}
@@ -394,8 +335,8 @@ const InformationJobs = () => {
                             </div>
                             <div className="field col-12 md:col-6 create__job--calendar">
                                 <span htmlFor="finished_link">Link ảnh hoàn thành :<span className="warning">*</span></span>
-                                <span onClick={(e) => setEditDoneLink(true)} className="p-float-label mt-3 cursor__edit">
-                                    {editDoneLink ?
+                                <span onClick={(e) => handleOpenInput("finished_link")} className={"p-float-label cursor__edit " + (isOpenInput?.finished_link ? "" : " mt-3 ")}>
+                                    {isOpenInput?.finished_link ?
                                         (
                                             <InputText
                                                 defaultValue={rowdata?.data?.finished_link === NOT_SET_ADMIN ? "" : rowdata?.data?.finished_link}
@@ -417,15 +358,20 @@ const InformationJobs = () => {
                             </div>
                             <div className="field col-12 md:col-6">
                                 <span htmlFor="total_cost">Chi phí tổng :<span className="warning">*</span></span>
-                                <span onClick={(e) => setEditTotalCost(true)} className="p-float-label mt-3 cursor__edit">
-                                    {editTotalCost ?
+                                <span onClick={(e) => handleOpenInput("total_cost")} className={"p-float-label cursor__edit " + (isOpenInput?.total_cost ? "" : " mt-3 ")}>
+                                    {isOpenInput?.total_cost ?
                                         (
-                                            <InputText
-                                                defaultValue={rowdata?.data?.total_cost}
-                                                onChange={(e) => setValue("total_cost", e.target.value)}
-                                                {...register("total_cost", { required: true })}
+                                            <InputNumber
+                                                inputId="currency-us"
+                                                value={rowdata?.data?.total_cost} onValueChange={(e) => setValue("total_cost", e.target.value)}
+                                                mode="currency"
+                                                currency="USD"
+                                                locale="en-US"
+                                                useGrouping={true}
+                                                minFractionDigits={0}
                                                 className={errors?.total_cost && "p-invalid"}
                                             />
+
                                         ) : (
                                             <span className='font-bold'>
                                                 {rowdata?.data.total_cost} $
@@ -436,18 +382,22 @@ const InformationJobs = () => {
                             </div>
                             <div className="field col-12 md:col-6">
                                 <span htmlFor="editor_cost">Chi phí Editor :<span className="warning">*</span></span>
-                                <span onClick={(e) => setEditEditorCost(true)} className="p-float-label mt-3 cursor__edit">
-                                    {editEditorCost ?
+                                <span onClick={(e) => handleOpenInput("editor_cost")} className={"p-float-label cursor__edit " + (isOpenInput?.editor_cost ? "" : " mt-3 ")}>
+                                    {isOpenInput?.editor_cost ?
                                         (
-                                            <InputText
-                                                defaultValue={rowdata?.data?.total_cost}
-                                                onChange={(e) => setValue("editor_cost", e.target.value)}
-                                                {...register("editor_cost", { required: true })}
-                                                className={errors?.editor_cost && "p-invalid"}
+                                            <InputNumber id="editor_cost"
+                                                inputId="currency-vn"
+                                                // defaultValue={rowdata?.data?.editor_cost}
+                                                onValueChange={(e) => setValue("editor_cost", e.target.value)}
+                                                mode="currency"
+                                                currency="VND"
+                                                locale="vi-VN"
+                                                useGrouping={true}
+                                                className={"m-0"}
                                             />
                                         ) : (
                                             <span className='font-bold'>
-                                                {rowdata?.data.editor_cost}
+                                                {rowdata?.data.editor_cost} $
                                             </span>
                                         )
                                     }
@@ -487,7 +437,7 @@ const InformationJobs = () => {
                                     autoResize
                                     className="aria_note mt-3"
                                     defaultValue={rowdata?.data.request_content}
-                                    onChange={(e) => setValue("request_content", e.target.value)}
+                                    onChange={(e) => setValue("work_notes", e.target.value)}
                                     {...register("work_notes", { work_notes: true })}
                                     style={{ height: "150px" }}
                                 />

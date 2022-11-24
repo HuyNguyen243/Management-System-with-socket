@@ -1,70 +1,76 @@
-.information__job span{
+.information__job span {
     font-size: 12px;
     color: $color-black;
 }
 
-.information_job_title{
+.information_job_title {
     font-weight: bold;
 }
 
-.flex-space-between{
+.flex-space-between {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    img{
+
+    img {
         width: 20px;
     }
 }
 
-.information__job .grid{
+.information__job .grid {
     margin-right: -20px;
 }
 
 .information__job .grid .field {
-    margin-bottom : 20px;
+    margin-bottom: 20px;
 }
 
-.link{
+.link {
     color: $color-primary !important;
 }
 
-.information_job_title .p-float-label{
-        padding-top: 10px;
+.information_job_title .p-float-label {
+    padding-top: 10px;
 }
 
 .aria_content,
-.aria_note{
+.aria_note {
     height: 150px;
 }
 
-.p-sidebar-content{
+.p-sidebar-content {
     padding: 10px 20px 0 20px !important;
 }
 
-.image_messager{
+.image_messager {
     width: 30px;
 }
 
-#editor{
+#editor {
     width: 100%;
 }
 
-.btn__close{
+.btn__close {
     position: absolute;
     right: 140px;
     bottom: 33px;
 }
 
-.p-button.p-button-text:enabled:hover, .p-button.p-button-text:not(button):not(a):not(.p-disabled):hover {
+.p-button.p-button-text:enabled:hover,
+.p-button.p-button-text:not(button):not(a):not(.p-disabled):hover {
     background: transparent;
     color: none;
     border-color: none;
 }
 
-.text_seen{
+.text_seen {
     cursor: url("../../images/edit.svg"), auto;
-    font-weight: 500;
-    padding-top: 16px;
-    font-size: 16px;
-    line-height: 20px;
+}
+
+#total_cost,
+#exchange_rate,
+#editor_cost,
+#rate_sale,
+#kpi_sale {
+    width: 100%;
 }
