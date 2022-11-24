@@ -294,8 +294,8 @@
       margin-bottom: 20px;
   }
 
-  #people-list:hover{
-      width: 200px;
+  #people-list.active{
+      width: 200px ;
       transition: 0.3s linear;
       .about{
         padding-left: 5px;

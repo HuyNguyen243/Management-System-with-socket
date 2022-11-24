@@ -7,16 +7,26 @@ import { getCurrentRoom, setIsOpenChat } from '../../../redux/messages/messageSl
 import { timeAgo } from '../../../commons/message.common';
 import { CharacterRoom } from '../../../commons/message.common';
 import { UserRules } from '../../../constants';
+import { requestPermission } from '../../../_services/firebase';
+import { useLocation } from 'react-router';
+import { NAME_NOTIFICATION } from '../../../constants';
+import { postFireBaseNotification } from '../../../_services/apiRequest';
 
 const Messages = ({isOpenMessages, setisOpenMessages}) => {
     const [keyword,setKeyWord] = useState("")
     const [messages,setMessages] = useState([])
+    const [token,setToken] = useState(null)
     const [originalMessages,setOriginalMessages] = useState([])
     const user = useSelector(state=> state.auth.user)
     const currentUser = useSelector(state=> state.message.currentUser)
     const dispatch = useDispatch()
     const groups = useSelector(state=> state.message.allGroups)
     const members = useSelector(state=> state.message.allMembers)
+    const location = useLocation()
+    const { search } = location
+    const pathNameURL = window.location.href.replace(search,"")
+
+    requestPermission(setToken)
 
     useEffect(() => {
         if(user?.data){
@@ -24,34 +34,22 @@ const Messages = ({isOpenMessages, setisOpenMessages}) => {
         }
     },[user])
 
-    const checkIdGroup = (id)=>{
-        if(groups?.length > 0){
-            for(const group of groups){
-                if(group?._id === id){
-                    return true;
-                }else{
-                    return false;
-                }
-            }
-        }else{
-            return false;
-        }
-    }
-
     socket.off("messages-by-id-system").on("messages-by-id-system", (payload)=>{
-        const rs = []
-        for(const room of payload){
-            if(room.type === NAME_ROOM.USER){
-                    rs.push(room)
-            }else if(room.type === NAME_ROOM.GROUP){
-                const id = room._id.replace(NAME_ROOM.GROUP + "-","")
-                if(checkIdGroup(id)){
-                    rs.push(room)
-                }
-            }
-        }
         setMessages(payload)
         setOriginalMessages(payload)
+        if(payload.length > 0){
+            if(token && currentUser && currentUser?.newMessages){
+                for(let room in currentUser?.newMessages){
+                    if(room && room === payload?.[0]?._id){
+                        const notification ={
+                            title: NAME_NOTIFICATION.MESSAGE,
+                            message: payload?.[0]?.content
+                        }
+                        postFireBaseNotification(pathNameURL, notification, token)
+                    }
+                }
+            }
+        }
     })
 
     socket.off("user-send-message").on("user-send-message", (payload)=>{

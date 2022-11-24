@@ -1,7 +1,6 @@
 import React from 'react'
 import Table from "../../../components/table/Table";
 import { table_dashboard } from '../../../components/table/header_table';
-import Notify from '../messages/Notify';
 
 const Dashboard = () => {
 
@@ -25,7 +24,6 @@ const Dashboard = () => {
           name_btn_add={false}
           handleCreate= {false}
         />
-		<Notify/>
     </>
   )
 }
