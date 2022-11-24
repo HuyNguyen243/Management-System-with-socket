@@ -40,7 +40,7 @@ const CustomerManager = () => {
       haveTotalTable={false}
       header={table_customer_management}
       handleRowClick={handleRowClick}
-      name_btn_add={"tạo khách hàng mới"}
+      name_btn_add={"Tạo khách hàng mới"}
       handleCreate={handleCreate}
       />
     </>

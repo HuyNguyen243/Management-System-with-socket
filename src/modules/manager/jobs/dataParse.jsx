@@ -48,7 +48,6 @@ export const dataParse = (data) => {
                 saler_cost: item?.cost?.saler_cost,
                 editor_cost: item?.cost?.editor_cost,
                 admin_cost: item?.cost?.admin_cost,
-                work_types: item?.infor?.work_types,
                 work_notes: item?.infor?.work_notes,
                 request_content: item?.infor?.request_content,
                 photo_types: item?.infor?.photo_types,

@@ -56,3 +56,15 @@ export const deleteCustomerRequest = createAsyncThunk(
         }
     }
 )
+
+export const getCustomerRequest = createAsyncThunk(
+    'getCustomer',
+    async (data,{ rejectWithValue }) => {
+        try {
+            let res = await get(`customers/${data?.id}`)
+            return res;
+        } catch (error) {
+            return rejectWithValue(error?.response)
+        }
+    }
+)
