@@ -26,11 +26,11 @@ const PersonalInfor = () => {
     const [address,setAddress] = useState("")
     const [password,setPassword] = useState("")
     const [confirmPassword,setConfirmPassword] = useState("")
-    const [avatar,setAvatar] = useState(null)
-    const [nameBank,setNameBank] = useState("")
-    const [numberAccountPayment,setNumberAccountPayment] = useState("")
+    const [avatar,setAvatar] = useState("images/default_avatar.jpeg")
+    const [nameBank,setNameBank] = useState(null)
+    const [numberAccountPayment,setNumberAccountPayment] = useState(null)
     const [paymentMethod,setPaymentMethod] = useState("")
-    const [branch,setBranch] = useState("")
+    const [branch,setBranch] = useState(null)
     const [error,setError] = useState("")
     const [birth,setBirth] = useState(null)
     const [imagePreview,setImagePreview] = useState(null)
@@ -48,49 +48,15 @@ const PersonalInfor = () => {
             toastMsg.error(toast,'Cập nhật thất bại')
         }
     },[setConfirmPassword, setPassword,editUser])
-
-    const checkProfileChange = ()=>{
-        let oldData = user?.data;
-
-        const result = {
-            address: address,
-            avatar: avatar,
-            births: birth,
-            branch: branch,
-            email: email,
-            fullname: fullname,
-            id_system: user?.data?.id_system,
-            nameBank: nameBank,
-            number_account_payment: numberAccountPayment,
-            payment_method: paymentMethod,
-            phone: phone,
-            role: role,
-            start_day: user?.data?.start_day,
-            status : user?.data?.status,
-            username: username
-        }
- 
-        for(let item in result){
-            if(result[item] !== oldData?.[item] && item !== "births"){
-                return false
-            }
-            if(item === "births"){
-                if(formatDate(new Date(oldData?.[item])) !== formatDate(birth)){
-                    return false
-                }
-            }
-        }
-        return true
-    }
-
+    
     useEffect(()=>{
         if(user?.data){
             const { data } = user
             if(data?.username){
-                setUserName(data?.fullname)
+                setUserName(data?.username)
             }
             if(data?.fullname){
-                setFullname(data?.username)
+                setFullname(data?.fullname)
             }
             if(data?.role){
                 setRole(data?.role)
@@ -125,6 +91,7 @@ const PersonalInfor = () => {
             }
         }
     },[user,birthStorage])
+
     const handleSubmit = (e)=>{
         e.preventDefault()
         let flag = true;
@@ -147,36 +114,63 @@ const PersonalInfor = () => {
             flag = false
         }
 
-        if(flag && !checkProfileChange()){
-            if(password !== ""){
-              console.log(password)
+        if(flag){
+            let oldData = user?.data;
+            const result = {}
+
+            const newData = {
+                address: address,
+                avatar: avatar,
+                births: birth,
+                branch: branch,
+                email: email,
+                fullname: fullname,
+                id_system: user?.data?.id_system,
+                nameBank: nameBank,
+                number_account_payment: numberAccountPayment,
+                payment_method: paymentMethod,
+                phone: phone,
+                role: role,
+                start_day: user?.data?.start_day,
+                status : user?.data?.status,
+                username: username
             }
 
-            const data ={};
-            data.phone = phone;
-            data.address = address;
-            data.nameBank = nameBank;
-            data.number_account_payment = numberAccountPayment;
-            data.branch = branch;
-            data.births = birth;
-            // data.avatar = avatar;
-            const result = {}
-            result.id = user?.data?.id_system
-            result.data = data
-            dispatch(userEditProfile(result))
+            if(password !== ""){
+                newData.password = password;
+            }
+    
+            for(let item in newData){
+                if(newData?.[item] !== oldData?.[item] && item !== "births"){
+                    result[item] = newData[item]
+                }
+                if(item === "births"){
+                    if(formatDate(new Date(oldData?.[item])) !== formatDate(birth)){
+                        return result["births"] = newData["births"]
+                    }
+                }
+            }
+            if(Object.keys(result).length > 0){
+                const formData = new FormData()
+                Object.keys(result).forEach(item=>{
+                    formData.append([item], result[item] )
+                })
+                const fn = {
+                    id: user?.data?.id_system,
+                    data:formData,
+                }
+                dispatch(userEditProfile(fn))
+            }
         }
     }
-
+    
     const handleChangeAvatar = (e)=>{
         const file = e.target.files[0];
         const reader = new FileReader()
-
         reader.readAsDataURL(file)
-        reader.onload = () => {
-            console.log('called: ', reader)
-          }
-        // setImagePreview(URL.createObjectURL(file))
-        // setAvatar(file)
+      
+        setImagePreview(URL.createObjectURL(file))
+        setAvatar(file)
     }
 
   return (
@@ -189,7 +183,7 @@ const PersonalInfor = () => {
                         <p className="infor__title">Thông tin cá nhân</p>
                     </div>
                     <div className="field avatar__block relative ava_res">
-                        <Avatar image={imagePreview || "images/default_avatar.jpeg"} className="mr-5 infor_avatar"  shape="circle" />
+                        <Avatar image={imagePreview || avatar} className="mr-5 infor_avatar"  shape="circle" />
                         <input type="file"  id="avatar" onChange={handleChangeAvatar}/>
                         <label htmlFor="avatar" className="label_avatar absolute"></label>
                     </div>
@@ -244,8 +238,8 @@ const PersonalInfor = () => {
                               />
                     </div>
                     {error.length > 0 && 
-                    <span className="warning" 
-                    style={{ fontSize:"13px",marginLeft:"10px",position: "absolute",bottom: "100px" }}>
+                    <span className="warning "
+                    style={{ fontSize:"13px",marginLeft:"10px",bottom: "100px" }}>
                         {error}
                     </span>}
                     <div className="field col-12 md:col-10 flex justify-content-end">
@@ -256,7 +250,7 @@ const PersonalInfor = () => {
             <div className="field col-12 md:col-6">
                 <div className="flex flex-column justify-content-between" style={{height:"100%"}}>
                     <div className="field avatar__block relative ava_right">
-                        <Avatar image={imagePreview || "images/default_avatar.jpeg"} className="mr-5 infor_avatar"  shape="circle" />
+                        <Avatar image={imagePreview || avatar} className="mr-5 infor_avatar"  shape="circle" />
                         <input type="file"  id="avatar" onChange={handleChangeAvatar}/>
                         <label htmlFor="avatar" className="label_avatar absolute"></label>
                     </div>

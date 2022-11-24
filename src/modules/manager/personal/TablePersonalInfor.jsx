@@ -34,21 +34,21 @@ const TablePersonalInfor = ({
   const cellEditor = ( item ) => {
     switch(item){
       case("nameBank"):
-        return <InputText type="text" value={nameBank} 
+        return <InputText type="text" value={nameBank || ""} 
         placeholder="Nhập tên ngân hàng" 
         className="edit_bank" 
         onChange={(e)=>{ setNameBank(e.target.value)} } 
         />;
       case("numberAccountPayment"):
         return <InputText type="text" 
-        value={numberAccountPayment} 
+        value={numberAccountPayment || ""} 
         placeholder="Nhập số tài khoản" 
         className="edit_bank" 
         onChange={(e)=>{ setNumberAccountPayment(e.target.value)} } />;
       case("branch"):
         return <InputText 
         type="text" 
-        value={branch} 
+        value={branch || ""} 
         placeholder="Nhập chi nhánh ngân hàng" 
         className="edit_bank" 
         onChange={(e)=>{ setBranch(e.target.value)} } />;

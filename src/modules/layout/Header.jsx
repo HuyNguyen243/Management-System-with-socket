@@ -22,12 +22,22 @@ export default function Header() {
   const dispatch = useDispatch()
   const [open, setOpen] = useState(false);
   const [openMenu, setOpenMenu] = useState(false);
+  const [avatar, setAvatar] = useState("/images/default_avatar.jpeg");
   const user = useSelector(state=> state.auth.user)
   const token =storage.get(NAME_SESSION_STORAGE_TOKEN)
   const userByToken = useSelector(state=> state.auth.userByToken)
   const [isOpenNotification, setisOpenNotification] = useState(false)
   const [isOpenMessages, setisOpenMessages] = useState(false)
   const currentUser = useSelector(state=> state.message.currentUser)
+
+  useEffect(() => {
+    if(user?.data){
+      if(user?.data?.avatar && user?.data?.avatar !== ""){
+        setAvatar(user?.data?.avatar)
+      }
+    }
+
+  },[user])
 
   useEffect(() => {
     if(token){
@@ -162,7 +172,7 @@ export default function Header() {
                   </div>
                   <div className="header__right--profile" onClick={()=>{ setOpen(false)}}>
                     <Stack direction="row" spacing={2}>
-                      <Avatar alt="" src="../../images/default_avatar.jpeg" />
+                      <Avatar alt="" src={avatar} />
                     </Stack>
                     <div className="header__right--information">
                         <div className="information__name">
