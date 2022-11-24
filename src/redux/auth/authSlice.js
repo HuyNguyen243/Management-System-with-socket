@@ -145,7 +145,7 @@ const userReducer = createSlice({
                 editUser: {
                     loading : false,
                     error : false,
-                    data : action.payload?.data,
+                    data : action.payload,
                 }
             })
             state.user.data = action.payload

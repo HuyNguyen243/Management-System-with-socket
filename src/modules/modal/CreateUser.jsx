@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import { Sidebar } from 'primereact/sidebar';
 import { InputText } from 'primereact/inputtext';
@@ -32,9 +32,12 @@ const CreateUser = () => {
         role: '',
         address: '',
     }
-    const { control, formState: { errors }, handleSubmit, reset, setValue } = useForm({ defaultValues });
+    const { control, formState: { errors }, handleSubmit, reset, setValue, watch } = useForm({ defaultValues });
     const user = useSelector(state => state.auth?.user)
     const employee = useSelector(state => state.employee?.user)
+    const randomPass = Math.random().toString(36).slice(-8);
+    const [password] = useState(randomPass || null)
+
     const onSubmit = (data) => {
         if (Object.keys(errors).length === 0) {
             data.create_by = user?.data.id_system;
@@ -42,38 +45,34 @@ const CreateUser = () => {
             dispatch(addEmployeeRequest(data))
         }
     };
-    const randomString = (length) => {
-        var result = '';
-        var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-        var charactersLength = characters.length;
-        for (var i = 0; i < length; i++) {
-            result += characters.charAt(Math.floor(Math.random() * charactersLength));
-        }
-        return result;
-    }
-
-    const randomPass = randomString(8)
 
     useEffect(() => {
-        setValue("password", randomPass)
-    })
+        if(password){
+            setValue("password",password)
+        }
+    },[password, setValue])
+
     useEffect(() => {
         if (employee?.data && !employee?.error) {
-            reset();
-            dispatch(setIsOpenModalCreateUser(false))
             toastMsg.success(toast, 'Tạo khách hàng mới thành công')
         }
         if (employee?.error) {
-            dispatch(setIsOpenModalCreateUser(true))
             toastMsg.error(toast, employee?.data?.message)
         }
     }, [
         employee, reset, dispatch
     ])
-    const copyToClipboard = () => {
-        toastMsg.success(toast, 'Sao chép mật khẩu thành công')
-        copy(randomPass);
+
+    const copyToClipboard = (type) => {
+        if(type === 'password') {
+            toastMsg.success(toast, 'Sao chép mật khẩu thành công')
+            copy(password);
+        }else{
+            toastMsg.success(toast, 'Sao chép tên đăng nhập thành công')
+            copy(watch().username);
+        }
     }
+
     return (
         <>
             <Toast ref={toast} position="bottom-left" />
@@ -82,7 +81,7 @@ const CreateUser = () => {
                     <div className="creat__job--title">
                         <h2>Tạo nhân viên mới</h2>
                     </div>
-                    <form className=" grid modal__creat--job no_flex" autoComplete="off" onSubmit={handleSubmit(onSubmit)}  onKeyDown="return event.key != 'Enter';">
+                    <form className=" grid modal__creat--job no_flex" autoComplete="off" onSubmit={handleSubmit(onSubmit)}  onKeyDown={(e)=>{return e.key !== 'Enter';}}>
                         <div className="field col-12 md:col-12 grid">
                             <div className="field col-12 md:col-12">
                                 <span >Nhập tên nhân viên: <span className="warning">*</span></span>
@@ -117,6 +116,7 @@ const CreateUser = () => {
                                                 className={classNames({ 'p-invalid': fieldState.invalid })}
                                             />
                                         )} />
+                                    <img src="images/copy.svg" alt="" label="Bottom Left" className='copy__icon absolute copy__name' onClick={()=>copyToClipboard("name")} />
                                 </span>
                             </div>
                             <div className="field col-12 md:col-12">
@@ -126,11 +126,10 @@ const CreateUser = () => {
                                         readOnly={true}
                                         id="password"
                                         name="password"
-                                        defaultValue={randomPass}
+                                        defaultValue={password}
                                         className={'readonly-class'}
                                     />
-
-                                    <img src="images/copy.svg" alt="" label="Bottom Left" className='copy__icon' onClick={copyToClipboard} />
+                                    <img src="images/copy.svg" alt="" label="Bottom Left" className='copy__icon absolute copy__pwd' onClick={()=>copyToClipboard("password")} />
                                 </span>
                             </div>
                             <div className="field col-12 md:col-6 create__user--calendar">

@@ -79,12 +79,11 @@ export const userEditProfile = createAsyncThunk(
     "userEditProfile",
     async (result, { rejectWithValue }) => {
         try {
-            const res = await put(
-                `users/infor/update/${result.id}`,
-                result.data
-            );
-            storage.save("birth", res?.data?.births);
-            return res;
+            const res = await put(`users/infor/update/${result.id}`,result?.data)
+            if(res){
+                storage.save("birth",res?.data?.births)
+            }
+            return res?.data;
         } catch (error) {
             return rejectWithValue(error?.response?.data);
         }
