@@ -3,8 +3,8 @@ import React from 'react';
 const Notfound = () => {
 
   return (
-    <div style={{ textAlign: "center" }}>
-      <h1>404 Page not found &#58;&#40;&#40; </h1>
+    <div style={{ textAlign: "center" }} className="page flex justify-content-center align-items-center flex-column p-8">
+      <img src="/images/notfound.png" alt="" />
     </div>
   );
 }

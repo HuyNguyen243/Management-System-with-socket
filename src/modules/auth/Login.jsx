@@ -1,8 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router';
 import { useForm } from "react-hook-form";
-import { storage } from '../../_services/sesionStorage';
-import { NAME_SESSION_STORAGE_TOKEN } from '../../constants';
 import { 
   userloginRequest 
 } from '../../redux/auth/action';
@@ -36,15 +34,6 @@ const Login = () => {
       toastMsg.error(toast,"tài khoản hoặc mật khẩu không chính xác")
     }
   },[user])
-
-  useEffect(()=>{
-    setTimeout(()=>{
-      if(Cookie.get()){
-          storage.save(NAME_SESSION_STORAGE_TOKEN,Cookie.get())
-          window.location.href = "/"
-      }
-    },1000)
-  },[])
 
   const handleChecked = ()=>{
     setChecked(!checked)
