@@ -20,7 +20,7 @@ const CreateUser = () => {
     const toast = useRef(null);
     let maxDate = new Date();
     const dispatch = useDispatch()
-    const [createSuccess, setCreateSuccess] = useState(false);
+    const [createSuccess, setCreateSuccess] = useState(true);
     const isOpenCreateUser = useSelector(state => state.modal.isOpenModalCreateUser)
     const defaultValues = {
         fullname: '',
@@ -59,6 +59,7 @@ const CreateUser = () => {
             toastMsg.success(toast, 'Tạo khách hàng mới thành công')
         }
         if (employee?.error) {
+            setCreateSuccess(true)
             toastMsg.error(toast, employee?.data?.message)
         }
     }, [

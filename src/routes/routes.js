@@ -1,4 +1,4 @@
-import Dashboard from "../modules/manager/dashboard/Dashboard";
+import Dashboard from "../modules/manager/editor/Dashboard";
 import WorkflowManagement from "../modules/manager/sale/workFlowManager/WorkflowManagement";
 import CustomerManager from "../modules/manager/sale/customerManager/CustomerManager";
 import Payment from "../modules/manager/payment/Payment";
