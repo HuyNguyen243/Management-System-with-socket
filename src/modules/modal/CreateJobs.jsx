@@ -40,6 +40,7 @@ const CreateJobs = () => {
     const [customerSelect, setCustomerSelect] = React.useState(null);
     const customers = useSelector(state => state.sale.customers)
     const addjobs = useSelector(state => state.jobs.addjobs)
+    const user = useSelector(state => state.auth?.user)
     let minDate = new Date();
     const isOpenCreateJob = useSelector(state => state.modal.isOpenModalCreateJob)
 
@@ -231,24 +232,27 @@ const CreateJobs = () => {
                                         )} />
                                 </span>
                             </div>
-                            <div className="field col-12 md:col-6">
-                                <span htmlFor="cost">Chi phí Editor:</span>
-                                <span className="p-float-label">
-                                    <Controller name="editor_cost"
-                                        control={control}
-                                        rules={{ required: true }} render={({ field, fieldState }) => (
-                                            <InputNumber id="editor_cost"
-                                                inputId="currency-vn"
-                                                value={field.value} onChange={(e) => field.onChange(e.value)}
-                                                mode="currency"
-                                                currency="VND"
-                                                locale="vi-VN"
-                                                useGrouping={true}
-                                                className={classNames({ 'p-invalid': fieldState.invalid })}
-                                            />
-                                        )} />
-                                </span>
-                            </div>
+                            {
+                                user?.data?.role === "ADMIN" &&
+                                <div className="field col-12 md:col-6">
+                                    <span htmlFor="cost">Chi phí Editor:</span>
+                                    <span className="p-float-label">
+                                        <Controller name="editor_cost"
+                                            control={control}
+                                            rules={{ required: true }} render={({ field, fieldState }) => (
+                                                <InputNumber id="editor_cost"
+                                                    inputId="currency-vn"
+                                                    value={field.value} onChange={(e) => field.onChange(e.value)}
+                                                    mode="currency"
+                                                    currency="VND"
+                                                    locale="vi-VN"
+                                                    useGrouping={true}
+                                                    className={classNames({ 'p-invalid': fieldState.invalid })}
+                                                />
+                                            )} />
+                                    </span>
+                                </div>
+                            }
                             <div className="field col-12 md:col-12">
                                 <span htmlFor="employees">Nội dung yêu cầu: <span className="warning">*</span></span>
                                 <span className="p-float-label">

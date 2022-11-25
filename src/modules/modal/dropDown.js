@@ -16,7 +16,7 @@ export const type_status= [
 
 export const type_status_jobs= [
     { name: 'Đã hoàn thành', code: 'COMPLETE' },
-    { name: 'Tạm hoãn công việc', code: 'PENDING' },
+    { name: 'Đang xử lý', code: 'PENDING' },
     { name: 'Chưa hoàn thành', code: 'INCOMPLETE' },
 ]
 
@@ -30,7 +30,7 @@ export const names =[
 
 export const customer_status= [
     { name: 'Đang yêu cầu', code: CustomerRules.STATUS.REQUEST },
-    { name: 'Tạm hoãn yêu cầu', code: CustomerRules.STATUS.PENDING },
+    { name: 'Đang xử lý yêu cầu', code: CustomerRules.STATUS.PENDING },
     { name: 'Ngưng yêu cầu', code: CustomerRules.STATUS.UNREQUEST },
 ]
 

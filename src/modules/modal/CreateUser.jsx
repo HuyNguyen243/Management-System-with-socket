@@ -20,6 +20,7 @@ const CreateUser = () => {
     const toast = useRef(null);
     let maxDate = new Date();
     const dispatch = useDispatch()
+    const [createSuccess, setCreateSuccess] = useState(false);
     const isOpenCreateUser = useSelector(state => state.modal.isOpenModalCreateUser)
     const defaultValues = {
         fullname: '',
@@ -47,13 +48,14 @@ const CreateUser = () => {
     };
 
     useEffect(() => {
-        if(password){
-            setValue("password",password)
+        if (password) {
+            setValue("password", password)
         }
-    },[password, setValue])
+    }, [password, setValue])
 
     useEffect(() => {
         if (employee?.data && !employee?.error) {
+            setCreateSuccess(false)
             toastMsg.success(toast, 'Tạo khách hàng mới thành công')
         }
         if (employee?.error) {
@@ -64,10 +66,10 @@ const CreateUser = () => {
     ])
 
     const copyToClipboard = (type) => {
-        if(type === 'password') {
+        if (type === 'password') {
             toastMsg.success(toast, 'Sao chép mật khẩu thành công')
             copy(password);
-        }else{
+        } else {
             toastMsg.success(toast, 'Sao chép tên đăng nhập thành công')
             copy(watch().username);
         }
@@ -76,12 +78,12 @@ const CreateUser = () => {
     return (
         <>
             <Toast ref={toast} position="bottom-left" />
-            <Sidebar visible={isOpenCreateUser} position="right" onHide={() => { dispatch(setIsOpenModalCreateUser(false)); reset() }}  className="create__job">
+            <Sidebar visible={isOpenCreateUser} position="right" onHide={() => { dispatch(setIsOpenModalCreateUser(false)); reset() }} className="create__job">
                 <div className="creat__job">
                     <div className="creat__job--title">
                         <h2>Tạo nhân viên mới</h2>
                     </div>
-                    <form className=" grid modal__creat--job no_flex" autoComplete="off" onSubmit={handleSubmit(onSubmit)}  onKeyDown={(e)=>{return e.key !== 'Enter';}}>
+                    <form className=" grid modal__creat--job no_flex" autoComplete="off" onSubmit={handleSubmit(onSubmit)} onKeyDown={(e) => { return e.key !== 'Enter'; }}>
                         <div className="field col-12 md:col-12 grid">
                             <div className="field col-12 md:col-12">
                                 <span >Nhập tên nhân viên: <span className="warning">*</span></span>
@@ -116,7 +118,7 @@ const CreateUser = () => {
                                                 className={classNames({ 'p-invalid': fieldState.invalid })}
                                             />
                                         )} />
-                                    <img src="images/copy.svg" alt="" label="Bottom Left" className='copy__icon absolute copy__name' onClick={()=>copyToClipboard("name")} />
+                                    <img src="images/copy.svg" alt="" label="Bottom Left" className='copy__icon absolute copy__name' onClick={() => copyToClipboard("name")} />
                                 </span>
                             </div>
                             <div className="field col-12 md:col-12">
@@ -129,7 +131,7 @@ const CreateUser = () => {
                                         defaultValue={password}
                                         className={'readonly-class'}
                                     />
-                                    <img src="images/copy.svg" alt="" label="Bottom Left" className='copy__icon absolute copy__pwd' onClick={()=>copyToClipboard("password")} />
+                                    <img src="images/copy.svg" alt="" label="Bottom Left" className='copy__icon absolute copy__pwd' onClick={() => copyToClipboard("password")} />
                                 </span>
                             </div>
                             <div className="field col-12 md:col-6 create__user--calendar">
@@ -231,19 +233,21 @@ const CreateUser = () => {
                                 </span>
                             </div>
                         </div>
-                        <div className="btn_modal field col-12 md:col-12 grid position_bottom">
-                            <div className="field col-12 md:col-6">
-                                <span className="p-float-label">
-                                    <Button label="Hủy bỏ" className="p-button-outlined cancel--btn" 
-                                    onClick={() => { reset(); dispatch(setIsOpenModalCreateUser(false)); }} />
-                                </span>
+                        {createSuccess &&
+                            <div className="btn_modal field col-12 md:col-12 grid position_bottom">
+                                <div className="field col-12 md:col-6">
+                                    <span className="p-float-label">
+                                        <Button label="Hủy bỏ" className="p-button-outlined cancel--btn"
+                                            onClick={() => { reset(); dispatch(setIsOpenModalCreateUser(false)); }} />
+                                    </span>
+                                </div>
+                                <div className="field col-12 md:col-6">
+                                    <span className="p-float-label">
+                                        <Button label="Tạo mới" className="p-button-outlined p-button-secondary confirm--btn" type="submit" />
+                                    </span>
+                                </div>
                             </div>
-                            <div className="field col-12 md:col-6">
-                                <span className="p-float-label">
-                                    <Button label="Tạo mới" className="p-button-outlined p-button-secondary confirm--btn" type="submit" />
-                                </span>
-                            </div>
-                        </div>
+                        }
                     </form>
                 </div>
             </Sidebar>

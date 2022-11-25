@@ -14,7 +14,7 @@ import {
     JOB_INCOMPLETE
 } from '../../constants'
 import { timezoneToDate } from '../../commons/dateTime'
-
+import { formatUSD } from '../../commons/formatCost'
 const TableBody = ({ rowData, item }) => {
     //btn_success , btn_pending, btn_stop , normal, text-bold ,text-blue
     const HTML = () => {
@@ -70,6 +70,42 @@ const TableBody = ({ rowData, item }) => {
                     )
                 }
                 break;
+            case ("status_editor"):
+                const status_editor = rowData?.[item]
+                if (status_editor === JobRules.STATUS_EDITOR.COMPLETE) {
+                    return (
+                        <span className="table__body-name btn_success flex justify-content-center" >{JOB_DONE}</span>
+                    )
+                }
+                if (status_editor === JobRules.STATUS_EDITOR.INCOMPLETE) {
+                    return (
+                        <span className="table__body-name btn_stop flex justify-content-center" >{JOB_INCOMPLETE}</span>
+                    )
+                }
+                if (status_editor === JobRules.STATUS_EDITOR.PENDING) {
+                    return (
+                        <span className="table__body-name btn_pending flex justify-content-center" >{JOB_PENDING}</span>
+                    )
+                }
+                break;
+            case ("status_customer"):
+                const status_customer = rowData?.[item]
+                if (status_customer === JobRules.STATUS_CUSTOMER.COMPLETE) {
+                    return (
+                        <span className="table__body-name btn_success flex justify-content-center" >{CUSTOMER_REQUEST_DONE}</span>
+                    )
+                }
+                if (status_customer === JobRules.STATUS_CUSTOMER.INCOMPLETE) {
+                    return (
+                        <span className="table__body-name btn_stop flex justify-content-center" >{CUSTOMER_REQUEST_CANCEL}</span>
+                    )
+                }
+                if (status_customer === JobRules.STATUS_CUSTOMER.PENDING) {
+                    return (
+                        <span className="table__body-name btn_pending flex justify-content-center" >{CUSTOMER_REQUEST_PENDING}</span>
+                    )
+                }
+                break;
             case ("_create_at"):
                 return (
                     <span className="table__body-name " >{timezoneToDate(rowData?._create_at)}</span>
@@ -111,12 +147,14 @@ const TableBody = ({ rowData, item }) => {
                     <span className={`table__body-name text-bold ${item}`} >{rowData?.[item]}</span>
                 )
             case ("total_cost"):
+            case ("editor_cost"):
+            case ("saler_cost"):
                 return (
-                    <span className="table__body-name text-bold btn_success" >{rowData?.[item]} $</span>
+                    <span className="table__body-name text-bold btn_success" >{formatUSD(rowData?.[item])}</span>
                 )
             case ("quality"):
                 return (
-                    <span className="table__body-name text-bold text-blue" >{rowData?.[item] + " - " +  rowData["type_models"]}</span>
+                    <span className="table__body-name text-bold text-blue" >{rowData?.[item] + " - " + rowData["type_models"]}</span>
                 )
             case ("fullname"):
                 return (

@@ -67,7 +67,7 @@ export const jobs_status = [
         id: JobRules.STATUS_JOBS.COMPLETE,
     },
     {
-        status: "Tạm hoãn công việc",
+        status: "Đang xử lý",
         image: "icon_pending",
         id: JobRules.STATUS_JOBS.PENDING,
     },
