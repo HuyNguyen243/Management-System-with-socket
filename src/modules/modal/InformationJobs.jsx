@@ -125,9 +125,11 @@ const InformationJobs = () => {
     }
     const handleCloseModal = React.useCallback(() => {
         dispatch(setIsOpenInformationJob(false));
+        setSelectEditor(false);
         setIsOpenInput({});
         reset()
     }, [dispatch,
+        setSelectEditor,
         reset
     ])
 
@@ -185,31 +187,33 @@ const InformationJobs = () => {
                                     <img src="images/copy.svg" alt="" label="Bottom Right" onClick={copyToClipboard} className="cursor-pointer" />
                                 </span>
                             </div>
-                            <div className="field col-12 md:col-6">
-                                <span htmlFor="status_customer">Trạng thái khách hàng :<span className="warning">*</span></span>
-                                <span onClick={(e) => handleOpenInput("status_customer")} className={"p-float-label cursor__edit " + (isOpenInput?.status_customer ? "" : " mt-3 ")}>
-                                    {isOpenInput?.status_customer ?
-                                        (
-                                            <Dropdown
-                                                options={customer_status}
-                                                optionLabel="name"
-                                                defaultValue={statusCustomer}
-                                                value={statusCustomer}
-                                                onChange={(e) => { setStatusCustomer(e.value); setValue("status_customer", e.value.code); }}
-                                                disabled={(user?.data?.role === UserRules.ROLE.EDITOR && user?.data?.role === UserRules.ROLE.LEADER_EDITOR) ? true : false}
-                                            />
-                                        ) : (
-                                            <span className={"p-float-label mt-3 m-0 flex justify-content-between align-items-center " + (rowdata?.data.status_customer === JobRules.STATUS_CUSTOMER.INCOMPLETE ? 'btn_stop ' : (rowdata?.data.status_jobs === JobRules.STATUS_CUSTOMER.COMPLETE ? 'btn_success' : 'btn_pending'))}>
-                                                {JobRules.STATUS_CUSTOMER_NAME[rowdata?.data?.status_customer]}
-                                            </span>
-                                        )
-                                    }
-                                </span>
-                            </div>
+                            {user?.data?.role !== "LEADER_EDITOR" && user?.data?.role !== "EDITOR" &&
+                                <div className="field col-12 md:col-6">
+                                    <span htmlFor="status_customer">Trạng thái khách hàng :<span className="warning">*</span></span>
+                                    <span onClick={(e) => handleOpenInput("status_customer")} className={"p-float-label cursor__edit " + (isOpenInput?.status_customer ? "" : " mt-3 ")}>
+                                        {isOpenInput?.status_customer ?
+                                            (
+                                                <Dropdown
+                                                    options={customer_status}
+                                                    optionLabel="name"
+                                                    defaultValue={statusCustomer}
+                                                    value={statusCustomer}
+                                                    onChange={(e) => { setStatusCustomer(e.value); setValue("status_customer", e.value.code); }}
+                                                    disabled={(user?.data?.role === UserRules.ROLE.EDITOR && user?.data?.role === UserRules.ROLE.LEADER_EDITOR) ? true : false}
+                                                />
+                                            ) : (
+                                                <span className={"p-float-label mt-3 m-0 flex justify-content-between align-items-center " + (rowdata?.data.status_customer === JobRules.STATUS_CUSTOMER.INCOMPLETE ? 'btn_stop ' : (rowdata?.data.status_jobs === JobRules.STATUS_CUSTOMER.COMPLETE ? 'btn_success' : 'btn_pending'))}>
+                                                    {JobRules.STATUS_CUSTOMER_NAME[rowdata?.data?.status_customer]}
+                                                </span>
+                                            )
+                                        }
+                                    </span>
+                                </div>
+                            }
                             <div className="field col-12 md:col-6 ">
                                 <span htmlFor="quality">Số lượng :<span className="warning">*</span></span>
-                                <span onClick={(e) => handleOpenInput("quality")} className={"p-float-label cursor__edit " + (isOpenInput?.quality ? "" : " mt-3 ")}>
-                                    {isOpenInput?.quality ?
+                                <span onClick={(e) => handleOpenInput("quality")} className={"p-float-label " + ((user?.data?.role !== "LEADER_EDITOR" && user?.data?.role !== "EDITOR") ? "cursor__edit" : isOpenInput?.quality ? "" : " mt-3 ")}>
+                                    {user?.data?.role !== "LEADER_EDITOR" && user?.data?.role !== "EDITOR" && isOpenInput?.quality ?
                                         (
                                             <InputNumber
                                                 value={rowdata?.data?.quality}
@@ -229,8 +233,8 @@ const InformationJobs = () => {
                             </div>
                             <div className="field col-12 md:col-6 ">
                                 <span htmlFor="type_models">Loại ảnh :<span className="warning">*</span></span>
-                                <span onClick={(e) => handleOpenInput("type_models")} className={"p-float-label cursor__edit " + (isOpenInput?.type_models ? "" : " mt-3 ")}>
-                                    {isOpenInput?.type_models ?
+                                <span onClick={(e) => handleOpenInput("type_models")} className={"p-float-label " + ((user?.data?.role !== "LEADER_EDITOR" && user?.data?.role !== "EDITOR") ? "cursor__edit" : isOpenInput?.type_models ? "" : " mt-3 ")}>
+                                    {user?.data?.role !== "LEADER_EDITOR" && user?.data?.role !== "EDITOR" && isOpenInput?.type_models ?
                                         (
                                             <InputText
                                                 defaultValue={rowdata?.data?.type_models}
@@ -254,8 +258,8 @@ const InformationJobs = () => {
                             </div>
                             <div className="field col-12 md:col-6 create__job--calendar">
                                 <span htmlFor="end_day">Ngày hạn chót công việc : <span className="warning">*</span></span>
-                                <span className={"p-float-label cursor__edit font-bold" + (isOpenInput?.end_day ? "" : " mt-3 ")} onClick={(e) => handleOpenInput("end_day")}>
-                                    {isOpenInput?.end_day ?
+                                <span onClick={(e) => handleOpenInput("end_day")} className={"p-float-label font-bold " + ((user?.data?.role !== "LEADER_EDITOR" && user?.data?.role !== "EDITOR") ? "cursor__edit" : isOpenInput?.end_day ? "" : " mt-3")} >
+                                    {user?.data?.role !== "LEADER_EDITOR" && user?.data?.role !== "EDITOR" && isOpenInput?.end_day ?
                                         (
                                             <Calendar
                                                 readOnlyInput
@@ -263,15 +267,17 @@ const InformationJobs = () => {
                                                 onChange={(e) => setValue("end_day", e.value)}
                                             />
                                         ) : (
-                                            timezoneToDate(rowdata?.data.end_day)
+                                            <span className='p-float-label mt-3'>
+                                               { timezoneToDate(rowdata?.data.end_day)}
+                                            </span>
                                         )
                                     }
                                 </span>
                             </div>
                             <div className="field col-12 md:col-6">
                                 <span htmlFor="photo_types">Định dạng file :<span className="warning">*</span></span>
-                                <span onClick={(e) => handleOpenInput("photo_types")} className={"p-float-label cursor__edit " + (isOpenInput?.photo_types ? "" : " mt-3 ")}>
-                                    {isOpenInput?.photo_types ?
+                                <span onClick={(e) => handleOpenInput("photo_types")} className={"p-float-label " + ((user?.data?.role !== "LEADER_EDITOR" && user?.data?.role !== "EDITOR") ? "cursor__edit" : isOpenInput?.photo_types ? "" : " mt-3 ")}>
+                                    {user?.data?.role !== "LEADER_EDITOR" && user?.data?.role !== "EDITOR" && isOpenInput?.photo_types ?
                                         (
                                             <Dropdown
                                                 options={type_files}
@@ -304,7 +310,7 @@ const InformationJobs = () => {
                                                     itemTemplate={itemUserTemplate}
                                                     {...register("id_editor", { required: true })}
                                                     id={"id_editor"}
-                                                    value={selectEditor} onChange={(e) => { setSelectEditor(e.value); }}
+                                                    value={selectEditor} onChange={(e) => { setValue("id_editor", e.value.id_system); setSelectEditor(e.value); }}
                                                     className={"icon__search"}
                                                     dropdownAriaLabel="Select name"
                                                 />
@@ -319,8 +325,8 @@ const InformationJobs = () => {
                             }
                             <div className="field col-12 md:col-6 create__job--calendar">
                                 <span htmlFor="org_link">Link ảnh gốc :<span className="warning">*</span></span>
-                                <span onClick={(e) => handleOpenInput("org_link")} className={"p-float-label cursor__edit " + (isOpenInput?.org_link ? "" : " mt-3 ")}>
-                                    {isOpenInput?.org_link ?
+                                <span onClick={(e) => handleOpenInput("org_link")} className={"p-float-label  " + ((user?.data?.role !== "LEADER_EDITOR" && user?.data?.role !== "EDITOR") ? "cursor__edit" : isOpenInput?.org_link ? "" : " mt-3 ")}>
+                                    {user?.data?.role !== "LEADER_EDITOR" && user?.data?.role !== "EDITOR" && isOpenInput?.org_link ?
                                         (
                                             <InputText
                                                 defaultValue={rowdata?.data?.org_link}
@@ -329,15 +335,15 @@ const InformationJobs = () => {
                                                 className={errors?.org_link && "p-invalid"}
                                             />
                                         ) : (
-                                            <span className=''>
+                                            <span className="p-float-label mt-3">
                                                 <a href={rowdata?.data.org_link} target="_blank" rel="noreferrer">Link liên kết</a>
                                             </span>
                                         )
                                     }
                                 </span>
                             </div>
-                            {user?.data?.role !== "SALER" &&
-                                < div className="field col-12 md:col-6 create__job--calendar">
+                            {(user?.data?.role === "EDITOR" || user?.data?.role === "LEADER_EDITOR") ?
+                                (< div className="field col-12 md:col-6 create__job--calendar">
                                     <span htmlFor="finished_link">Link ảnh hoàn thành :<span className="warning">*</span></span>
                                     <span onClick={(e) => handleOpenInput("finished_link")} className={"p-float-label cursor__edit " + (isOpenInput?.finished_link ? "" : " mt-3 ")}>
                                         {isOpenInput?.finished_link ?
@@ -359,37 +365,52 @@ const InformationJobs = () => {
                                             )
                                         }
                                     </span>
+                                </div>) : (
+                                    < div className="field col-12 md:col-6 create__job--calendar">
+                                        <span htmlFor="finished_link">Link ảnh hoàn thành :</span>
+                                        <span className={"p-float-label  mt-3"}>
+                                            <span className=''>
+                                                {rowdata?.data.finished_link === NOT_SET_ADMIN ?
+                                                    "Trống"
+                                                    :
+                                                    < a href={rowdata?.data.finished_link} target="_blank" rel="noreferrer">Link liên kết</a>
+                                                }
+                                            </span>
+                                        </span>
+                                    </div>
+                                )
+                            }
+                            {user?.data?.role !== "LEADER_EDITOR" && user?.data?.role !== "EDITOR" &&
+                                <div className="field col-12 md:col-6">
+                                    <span htmlFor="total_cost">Chi phí tổng :<span className="warning">*</span></span>
+                                    <span onClick={(e) => handleOpenInput("total_cost")} className={"p-float-label cursor__edit " + (isOpenInput?.total_cost ? "" : " mt-3 ")}>
+                                        {isOpenInput?.total_cost ?
+                                            (
+                                                <InputNumber
+                                                    inputId="currency-us"
+                                                    value={rowdata?.data?.total_cost} onValueChange={(e) => setValue("total_cost", e.target.value)}
+                                                    mode="currency"
+                                                    currency="USD"
+                                                    locale="en-US"
+                                                    useGrouping={true}
+                                                    minFractionDigits={0}
+                                                    className={errors?.total_cost && "p-invalid"}
+                                                />
+
+                                            ) : (
+                                                <span className='font-bold'>
+                                                    {formatUSD(rowdata?.data?.total_cost)}
+                                                </span>
+                                            )
+                                        }
+                                    </span>
                                 </div>
                             }
-                            <div className="field col-12 md:col-6">
-                                <span htmlFor="total_cost">Chi phí tổng :<span className="warning">*</span></span>
-                                <span onClick={(e) => handleOpenInput("total_cost")} className={"p-float-label cursor__edit " + (isOpenInput?.total_cost ? "" : " mt-3 ")}>
-                                    {isOpenInput?.total_cost ?
-                                        (
-                                            <InputNumber
-                                                inputId="currency-us"
-                                                value={rowdata?.data?.total_cost} onValueChange={(e) => setValue("total_cost", e.target.value)}
-                                                mode="currency"
-                                                currency="USD"
-                                                locale="en-US"
-                                                useGrouping={true}
-                                                minFractionDigits={0}
-                                                className={errors?.total_cost && "p-invalid"}
-                                            />
-
-                                        ) : (
-                                            <span className='font-bold'>
-                                                {formatUSD(rowdata?.data?.total_cost)}
-                                            </span>
-                                        )
-                                    }
-                                </span>
-                            </div>
-                            {user?.data?.role === "ADMIN" &&
+                            {user?.data?.role !== "SALER" &&
                                 <div className="field col-12 md:col-6">
                                     <span htmlFor="editor_cost">Chi phí Editor :<span className="warning">*</span></span>
-                                    <span onClick={(e) => handleOpenInput("editor_cost")} className={"p-float-label cursor__edit " + (isOpenInput?.editor_cost ? "" : " mt-3 ")}>
-                                        {isOpenInput?.editor_cost ?
+                                    <span onClick={(e) => handleOpenInput("editor_cost")} className={"p-float-label " + (user?.data?.role === "ADMIN" ? "cursor__edit" : "mt-3")}>
+                                        {user?.data?.role === "ADMIN" && isOpenInput?.editor_cost ?
                                             (
                                                 <InputNumber id="editor_cost"
                                                     inputId="currency-vn"
@@ -402,23 +423,25 @@ const InformationJobs = () => {
                                                     className={"m-0"}
                                                 />
                                             ) : (
-                                                <span className='font-bold'>
-                                                    {formatUSD(rowdata?.data?.editor_cost)}
+                                                <span className='font-bold mt-3'>
+                                                    {rowdata?.data?.editor_cost ? formatUSD(rowdata?.data?.editor_cost) : 0}
                                                 </span>
                                             )
                                         }
                                     </span>
                                 </div>
                             }
-                            <div className="field col-12 md:col-6">
-                                <span htmlFor="saler_cost">Chi phí Saler :</span>
-                                <span className="p-float-label mt-3 cursor__normal">
-                                    <span className='font-bold'>
-                                        {formatUSD(rowdata?.data?.saler_cost)}
+                            {user?.data?.role !== "LEADER_EDITOR" && user?.data?.role !== "EDITOR" &&
+                                <div className="field col-12 md:col-6">
+                                    <span htmlFor="saler_cost">Chi phí Saler :</span>
+                                    <span className="p-float-label mt-3 cursor__normal">
+                                        <span className='font-bold'>
+                                            {formatUSD(rowdata?.data?.saler_cost)}
+                                        </span>
                                     </span>
-                                </span>
 
-                            </div>
+                                </div>
+                            }
                             {user?.data?.role === "ADMIN" &&
                                 <div className="field col-12 md:col-6">
                                     <span htmlFor="saler_cost">Lợi nhuận :</span>
