@@ -45,8 +45,8 @@ export function convertDate(arr) {
 export function dayToTimeStamp(s) {
     //s = 24/11/2022
     const b = s.split(/\D/);
-    const d = new Date(b[2], --b[1], b[0]);
-    return d && d.getMonth() === b[1]? d : new Date(NaN);
+    const d = Date.now(b[2], --b[1], b[0]);
+    return d ? d : new Date(NaN);
     //return 29389283982832
 }
 

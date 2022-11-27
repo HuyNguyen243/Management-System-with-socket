@@ -34,6 +34,7 @@ export const CharacterRoom = (role)=>{
         case UserRules.ROLE.LEADER_EDITOR:
             return UserRules._ROLE.LEADER_EDITOR
         default:
+            return role
     }
 } 
 

@@ -48,7 +48,7 @@ const PersonalInfor = () => {
             toastMsg.error(toast,'Cập nhật thất bại')
         }
     },[setConfirmPassword, setPassword,editUser])
-    
+
     useEffect(()=>{
         if(user?.data){
             const { data } = user
@@ -139,7 +139,11 @@ const PersonalInfor = () => {
             if(password !== ""){
                 newData.password = password;
             }
-    
+
+            if( typeof avatar === "string" && avatar.includes("default_avatar")){
+                newData.avatar = null
+            }
+
             for(let item in newData){
                 if(newData?.[item] !== oldData?.[item] && item !== "births"){
                     result[item] = newData[item]
@@ -163,7 +167,7 @@ const PersonalInfor = () => {
             }
         }
     }
-    
+
     const handleChangeAvatar = (e)=>{
         const file = e.target.files[0];
         const reader = new FileReader()

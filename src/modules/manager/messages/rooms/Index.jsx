@@ -46,8 +46,11 @@ const Index = (
 
     const [originalMembers, setOriginalMembers] = useState([])
     const [originalGroups, setOriginalGroups] = useState([])
+    const [groupsAfterSort, setGroupsAfterSort] = useState([])
+    const [membersAfterSort, setMembersAfterSort] = useState([])
     const [isOpen, setIsOpen] = useState(false)
-    
+    const MsgsByIdSystem = useSelector(state=> state.message.messagesByIdSystem)
+
     useEffect(() => {
         // CHECK SESSIONSTORAGE AND SAVE
         const roomBySsTorage = roomStorage.get()
@@ -86,11 +89,12 @@ const Index = (
   ///set first room 
     useEffect(() => {
         if(user?.data){
-        socket.emit('get-members')
-        socket.emit('groups',user?.data?.id_system)
+            socket.emit('get-members')
+            socket.emit('groups',user?.data?.id_system)
         }
     },[user])
     //-----------------------------------//
+
   //GET ALL USER
     socket.off('get-members').on('get-members', (payload)=>{
         payload.forEach((member)=>{
@@ -99,17 +103,189 @@ const Index = (
                 dispatch(getCurrentUser(member))
             }
         })
-        dispatch(getAllMembers(payload))
-        setMembers(payload)
-        setOriginalMembers(payload)
-    })
- 
-    //GET ALL GROUP
+        let result = []
+        //SORT MEMBERS
+        if(MsgsByIdSystem && MsgsByIdSystem.length > 0){
+            let fn = []
+            const arrTime = []
+            const arrMembersByMsgs = []
+            MsgsByIdSystem?.forEach((msg)=>{
+               if(msg.type === NAME_ROOM.USER){
+                    const receiver = msg?.members.filter(member=> { return member !== currentUser?.id_system })
+                    let newDate = new Date(msg?.time);
+                    newDate = newDate?.setHours(newDate.getHours() - 7);
+                    arrTime.push({[receiver[0]]: newDate})
+                    arrMembersByMsgs.push(receiver[0])
+               }
+            })
+
+            const membersHaveMsg = []
+            payload?.forEach((member)=>{
+                if(member?.id_system !== currentUser?.id_system){
+                    if(arrMembersByMsgs?.includes(member?.id_system)){
+                        membersHaveMsg?.push(member)
+                    }else{
+                        fn.push(member)
+                    }
+                }
+            })
+
+            const membersHaveTime = []
+            for(let i = 0; i < membersHaveMsg.length; i++){
+                const { id_system } = membersHaveMsg[i]
+                const member = membersHaveMsg[i]
+                let a = {}
+                for(let j = 0; j < arrTime.length; j++){
+                    if(Object?.keys(arrTime[j])?.[0] === id_system){
+                        a = Object.assign({},member,{
+                            time : arrTime[j][id_system]
+                        })
+                    }
+                }
+                membersHaveTime.push(a)
+            }
+            const sort = membersHaveTime?.sort((a,b)=>{
+                return a?.time > b?.time ? -1 : 1
+            })
+
+            fn.unshift(...sort)
+
+            result = fn
+        }else{
+            result = payload
+        }
+
+        dispatch(getAllMembers(result))
+        setMembers(result)
+        setOriginalMembers(result)
+    })   
+
+    const SORTMEMBERS = React.useCallback(()=>{
+        let result = []
+        //SORT MEMBERS
+        if(MsgsByIdSystem && MsgsByIdSystem.length > 0){
+            let fn = []
+            const arrTime = []
+            const arrMembersByMsgs = []
+            MsgsByIdSystem?.forEach((msg)=>{
+               if(msg.type === NAME_ROOM.USER){
+                    const receiver = msg?.members.filter(member=> { return member !== currentUser?.id_system })
+                    let newDate = new Date(msg?.time);
+                    newDate = newDate?.setHours(newDate.getHours() - 7);
+                    arrTime.push({[receiver[0]]: newDate})
+                    arrMembersByMsgs.push(receiver[0])
+               }
+            })
+
+            const membersHaveMsg = []
+            members?.forEach((member)=>{
+                if(member?.id_system !== currentUser?.id_system){
+                    if(arrMembersByMsgs?.includes(member?.id_system)){
+                        membersHaveMsg?.push(member)
+                    }else{
+                        fn.push(member)
+                    }
+                }
+            })
+
+            const membersHaveTime = []
+            for(let i = 0; i < membersHaveMsg.length; i++){
+                const { id_system } = membersHaveMsg[i]
+                const member = membersHaveMsg[i]
+                let a = {}
+                for(let j = 0; j < arrTime.length; j++){
+                    if(Object?.keys(arrTime[j])?.[0] === id_system){
+                        a = Object.assign({},member,{
+                            time : arrTime[j][id_system]
+                        })
+                    }
+                }
+                membersHaveTime.push(a)
+            }
+            const sort = membersHaveTime?.sort((a,b)=>{
+                return a?.time > b?.time ? -1 : 1
+            })
+
+            fn.unshift(...sort)
+
+            result = fn
+        }else{
+            result = members
+        }
+        return result
+    },[MsgsByIdSystem,currentUser,members])
+
+    useEffect(() => {
+        if(MsgsByIdSystem && MsgsByIdSystem.length > 0){
+            const result = SORTMEMBERS()
+            setMembersAfterSort(result)
+        }
+    },[SORTMEMBERS, setMembersAfterSort, MsgsByIdSystem])
+    // GET ALL GROUP
     socket.off('groups').on("groups", (payload)=>{
         setGroups(payload)
         dispatch(getAllgroups(payload))
         setOriginalGroups(payload)
     })
+
+    const SORTGROUPS = React.useCallback(()=>{
+        let result = []
+        //SORT MEMBERS
+        if(MsgsByIdSystem && MsgsByIdSystem.length > 0){
+            const fn = []
+            const arrGroupsByMsgs = []
+            const arrTime = []
+
+            MsgsByIdSystem?.forEach((msg)=>{
+               if(msg.type === NAME_ROOM.GROUP){
+                    let newDate = new Date(msg?.time);
+                    newDate = newDate?.setHours(newDate.getHours() - 7);
+                    arrTime.push({[msg?._id]: newDate})
+                    arrGroupsByMsgs.push(msg?._id)
+               }
+            })
+
+            const groupsHaveMsg = []
+            groups?.forEach((group)=>{
+                if(arrGroupsByMsgs?.includes(NAME_ROOM.GROUP + '-' + group?._id)){
+                    groupsHaveMsg?.push(group)
+                }else{
+                    fn.push(group)
+                }
+            })
+
+            const groupsHaveTime = []
+            for(let i = 0; i < groupsHaveMsg.length; i++){
+                const group = groupsHaveMsg[i]
+                let a = {}
+                for(let j = 0; j < arrTime.length; j++){
+                    if(Object?.keys(arrTime[j])?.[0] === NAME_ROOM.GROUP + '-' + group?._id){
+                        a = Object.assign({},group,{
+                            time : arrTime[j][NAME_ROOM.GROUP + '-' + group?._id]
+                        })
+                    }
+                }
+                groupsHaveTime.push(a)
+            }
+
+            const sort = groupsHaveTime?.sort((a,b)=>{
+                return a?.time > b?.time ? -1 : 1
+            })
+            fn.unshift(...sort)
+            result = fn
+        }else{
+            result = groups
+        }
+        return result
+    },[MsgsByIdSystem,groups])
+
+    useEffect(() => {
+        if(MsgsByIdSystem && MsgsByIdSystem.length > 0){
+            const result = SORTGROUPS()
+            setGroupsAfterSort(result)
+        }
+    },[SORTGROUPS, setGroupsAfterSort, MsgsByIdSystem])
+
     //SEARCH ROOM
     const handleSearchRoom = (e)=>{
         const { value } = e.target
@@ -142,7 +318,6 @@ const Index = (
     const handleOpenMembersBlock = ()=>{
         setIsOpen(true)
     }
-
     return (
         <div className={`people-list ${isOpen && "active"}`} id="people-list" onClick={handleOpenMembersBlock}>
         <div className="message__title">
@@ -162,7 +337,7 @@ const Index = (
         </div>
         <ul className="list">
             <Groups 
-                groups={groups}
+                groups={groupsAfterSort}
                 currentUser={currentUser}
                 currentRoom={currentRoom}
                 membersInGroup={membersInGroup}
@@ -178,7 +353,7 @@ const Index = (
                 setMessageOnRoom={setMessageOnRoom}
             />
             <Members 
-                members={members} 
+                members={membersAfterSort} 
                 currentUser={currentUser} 
                 privateMemberMsg={privateMemberMsg} 
                 setPrivateMemberMsg={setPrivateMemberMsg} 

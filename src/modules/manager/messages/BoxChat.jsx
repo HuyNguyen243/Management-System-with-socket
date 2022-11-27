@@ -76,7 +76,14 @@ const BoxChat = () => {
                 setMessageOnRoom(payload)
             }
         }
+
+        if(payload.length > 0){
+            if(payload?.[0]?.messagesByDate?.[0]?.type === NAME_ROOM.GROUP){
+                socket.emit('groups',user?.data?.id_system)
+            }
+        }
     })
+
     //------------------------------
     //SUBMIT MESSAGE
     const handleSubmit = (e)=>{

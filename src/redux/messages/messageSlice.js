@@ -26,6 +26,7 @@ const initialState = {
     },
     allGroups: null,
     allMembers: null,
+    messagesByIdSystem: null,
 }
 
 const messagesSlice = createSlice({
@@ -50,7 +51,10 @@ const messagesSlice = createSlice({
         },
         getAllMembers: (state, { payload })=>{
             state.allMembers = payload
-        }
+        },
+        getMsgsByIdSystem: (state, { payload })=>{
+            state.messagesByIdSystem = payload
+        },
     },
     extraReducers:{
         [createGroupMsgRequest.pending]: (state) => {
@@ -133,5 +137,5 @@ const messagesSlice = createSlice({
     }
 })
 
-export const { getCurrentUser, getCurrentRoom , setIsOpenChat, getAllgroups, getAllMembers } = messagesSlice.actions
+export const { getCurrentUser, getCurrentRoom , setIsOpenChat, getAllgroups, getAllMembers, getMsgsByIdSystem } = messagesSlice.actions
 export default messagesSlice.reducer

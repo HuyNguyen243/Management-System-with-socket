@@ -3,7 +3,7 @@ import TextField from '@mui/material/TextField';
 import { useSelector, useDispatch } from "react-redux"
 import { socket } from "../../../_services/socket";
 import { NAME_ROOM } from '../../../constants';
-import { getCurrentRoom, setIsOpenChat } from '../../../redux/messages/messageSlice';
+import { getCurrentRoom, setIsOpenChat, getMsgsByIdSystem } from '../../../redux/messages/messageSlice';
 import { timeAgo } from '../../../commons/message.common';
 import { CharacterRoom } from '../../../commons/message.common';
 import { UserRules } from '../../../constants';
@@ -11,6 +11,7 @@ import { requestPermission } from '../../../_services/firebase';
 import { useLocation } from 'react-router';
 import { NAME_NOTIFICATION } from '../../../constants';
 import { postFireBaseNotification } from '../../../_services/apiRequest';
+
 
 const Messages = ({isOpenMessages, setisOpenMessages}) => {
     const [keyword,setKeyWord] = useState("")
@@ -37,6 +38,7 @@ const Messages = ({isOpenMessages, setisOpenMessages}) => {
     socket.off("messages-by-id-system").on("messages-by-id-system", (payload)=>{
         setMessages(payload)
         setOriginalMessages(payload)
+        dispatch(getMsgsByIdSystem(payload))
         if(payload.length > 0){
             if(token && currentUser && currentUser?.newMessages){
                 for(let room in currentUser?.newMessages){
@@ -51,7 +53,7 @@ const Messages = ({isOpenMessages, setisOpenMessages}) => {
             }
         }
     })
-
+    
     socket.off("user-send-message").on("user-send-message", (payload)=>{
         socket.emit('messages-by-id-system',user?.data?.id_system)
     })
@@ -105,14 +107,18 @@ const Messages = ({isOpenMessages, setisOpenMessages}) => {
         dispatch(setIsOpenChat(true))
         setisOpenMessages(false)
     }
-
+    console.log(currentUser)
     const setCharacterForImage = (name,type)=>{
+
         if(name && type){
             if(type === NAME_ROOM.USER){
                 if(members?.length > 0){
                     for( let member of members){
                         if(member.id_system === name){
                             return CharacterRoom(member.role)
+                        }
+                        if(member?.fullname === name && currentUser?.role === UserRules.ROLE.ADMIN){
+                            return CharacterRoom(member?.fullname.charAt(0).toUpperCase())
                         }
                     }
                 }
