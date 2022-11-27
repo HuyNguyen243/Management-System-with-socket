@@ -22,6 +22,12 @@ function App() {
         }, 300);
     }, [user?.isAuth]);
 
+    // React.useEffect(() => {
+    //     window.onunload = function (ev) {
+    //         ev.preventDefault();
+    //         return (ev.returnValue = "Are you sure you want to close?");
+    //     }
+    // });
     const notFound = () => {
         return <>{role?.data?.role && <Notfound />}</>;
     };

@@ -61,7 +61,7 @@ const JobsOverview = () => {
                 dispatch(getCustomerRequest(data))
             }
         } else if (el.className.includes("id_editor")) {
-            //OPEN EDITOR
+            //OPEN EDITOR 
             const data = {}
             if (el.innerHTML) {
                 data.id = el.innerHTML;
