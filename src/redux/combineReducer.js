@@ -6,6 +6,7 @@ import jobsSlice from "./overviewJobs/jobsSlice";
 import messageSlice from "./messages/messageSlice"
 import modalSlice from "./modal/modalSlice";
 import settingSlice from "./admin/adminSlice";
+import notificationSlice from "./notification/notificationSlice";
 
 const combineReducer = combineReducers({
     auth: userSlice,
@@ -15,6 +16,7 @@ const combineReducer = combineReducers({
     message: messageSlice,
     modal: modalSlice,
     setting: settingSlice,
+    notification: notificationSlice,
 });
 
 export default combineReducer;

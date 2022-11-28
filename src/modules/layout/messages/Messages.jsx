@@ -107,7 +107,7 @@ const Messages = ({isOpenMessages, setisOpenMessages}) => {
         dispatch(setIsOpenChat(true))
         setisOpenMessages(false)
     }
-    console.log(currentUser)
+
     const setCharacterForImage = (name,type)=>{
 
         if(name && type){

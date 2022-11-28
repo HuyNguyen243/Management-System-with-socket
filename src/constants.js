@@ -144,3 +144,23 @@ export const NAME_NOTIFICATION = {
     MESSAGE: "Tin nhắn",
     NOTIFICATION: "Thông báo",
 }
+
+export const NotificationRules = {
+    STATUS: {
+        CREATE_CUSTOMER: "CREATE_CUSTOMER",
+        CREATE_JOB: "CREATE_JOB",
+        COMPLETE_JOB: "COMPLETE_JOB",
+        DELETE_JOB: "DELETE_JOB",
+        EDIT_JOB: "EDIT_JOB",
+        FIXED: "FIXED",
+    },
+};
+
+export const NOTIFICATION_TITLE = {
+    CREATE_CUSTOMER: "Một khách hàng đã được tạo bởi",
+    CREATE_JOB: "Một công việc đã được tạo bởi",
+    COMPLETE_JOB: "Một công việc đã được đánh dấu hoàn thành bởi",
+    DELETE_JOB: "Một công việc đã được xóa bởi",
+    EDIT_JOB: "Một công việc đã được chỉnh sửa bởi",
+    FIXED: "Một công việc đã hoàn lại bởi ",
+}
