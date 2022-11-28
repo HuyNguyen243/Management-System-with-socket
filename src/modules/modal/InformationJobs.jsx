@@ -202,7 +202,7 @@ const InformationJobs = () => {
                                                     disabled={(user?.data?.role === UserRules.ROLE.EDITOR && user?.data?.role === UserRules.ROLE.LEADER_EDITOR) ? true : false}
                                                 />
                                             ) : (
-                                                <span className={"p-float-label mt-3 m-0 flex justify-content-between align-items-center " + (rowdata?.data.status_customer === JobRules.STATUS_CUSTOMER.INCOMPLETE ? 'btn_stop ' : (rowdata?.data.status_jobs === JobRules.STATUS_CUSTOMER.COMPLETE ? 'btn_success' : 'btn_pending'))}>
+                                                <span className={"p-float-label mt-3 m-0 flex justify-content-between align-items-center " + (rowdata?.data.status_customer === JobRules.STATUS_CUSTOMER.UNREQUEST ? ' btn_stop ' : (rowdata?.data.status_customer === JobRules.STATUS_CUSTOMER.REQUEST ? ' btn_success' : ' btn_pending '))}>
                                                     {JobRules.STATUS_CUSTOMER_NAME[rowdata?.data?.status_customer]}
                                                 </span>
                                             )
@@ -315,8 +315,8 @@ const InformationJobs = () => {
                                                     dropdownAriaLabel="Select name"
                                                 />
                                             ) : (
-                                                <span className="p-float-label mt-3" >
-                                                    {rowdata?.data?.id_editor ? rowdata?.data?.id_editor : "Chưa giao việc"}
+                                                <span className="p-float-label mt-3 font-bold" >
+                                                    {rowdata?.data?.id_editor !== "NOT_SET_BY_ADMIN" ? rowdata?.data?.id_editor : "Chưa giao việc"}
                                                 </span>
                                             )
                                         }
