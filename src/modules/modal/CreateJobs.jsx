@@ -265,7 +265,7 @@ const CreateJobs = () => {
                                                 {...field}
                                                 className={classNames({ 'p-invalid': fieldState.invalid }, "create__job_area")}
                                             />
-                                        )} />
+                                    )} />
                                 </span>
                             </div>
                             <div className="field col-12 md:col-12">

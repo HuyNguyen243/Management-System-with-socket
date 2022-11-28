@@ -7,7 +7,7 @@ import { toastMsg } from '../../commons/toast';
 import copy from "copy-to-clipboard";
 import { setIsOpenInformationJob } from '../../redux/modal/modalSlice';
 import { useDispatch, useSelector } from 'react-redux';
-import { useForm } from "react-hook-form";
+import { useForm,Controller } from "react-hook-form";
 import { Dropdown } from 'primereact/dropdown';
 import { customer_status, type_files } from "./dropDown";
 import { UserRules, JobRules, NOT_SET_ADMIN } from "../../constants";
@@ -39,7 +39,8 @@ const InformationJobs = () => {
     const deletejobs = useSelector(state => state.jobs?.deletejobs)
     const updatejobs = useSelector(state => state.jobs?.editjobs)
 
-    const { register, setValue, handleSubmit, formState: { errors }, reset } = useForm();
+    const {control, register, setValue, handleSubmit, formState: { errors }, reset } = useForm();
+
     const employees = useSelector(state => state.employee?.dashboard)
 
     let editorName = dataParseEditor(employees?.data)
@@ -63,8 +64,6 @@ const InformationJobs = () => {
             }
         }
     }, [rowdata, setValue])
-
-
 
     useEffect(() => {
         if (deletejobs?.data) {
@@ -455,25 +454,31 @@ const InformationJobs = () => {
                             }
                             <div className="field col-12 md:col-12">
                                 <span htmlFor="request_content">Nội dung yêu cầu :<span className="warning">*</span></span>
-                                <InputTextarea
-                                    autoResize
-                                    className="aria_content mt-3"
-                                    defaultValue={rowdata?.data.request_content}
-                                    onChange={(e) => setValue("request_content", e.target.value)}
-                                    {...register("request_content", { required: true })}
-                                    style={{ height: "150px" }}
-                                />
+                                <Controller name="request_content"
+                                     control={control}
+                                     rules={{ required: true }} render={({ field, fieldState }) => (
+                                         <InputTextarea
+                                             autoResize
+                                             id={field.name}
+                                             {...field}
+                                             className="create__job_area"
+                                             defaultValue={rowdata?.data?.request_content || null}
+                                         />
+                                 )} />
                             </div>
                             <div className="field col-12 md:col-12">
                                 <span htmlFor="work_notes">Yêu cầu của khách hàng :<span className="warning">*</span></span>
-                                <InputTextarea
-                                    autoResize
-                                    className="aria_note mt-3"
-                                    defaultValue={rowdata?.data.request_content}
-                                    onChange={(e) => setValue("work_notes", e.target.value)}
-                                    {...register("work_notes", { work_notes: true })}
-                                    style={{ height: "150px" }}
-                                />
+                                <Controller name="work_notes"
+                                     control={control}
+                                     rules={{ required: true }} render={({ field, fieldState }) => (
+                                         <InputTextarea
+                                             autoResize
+                                             id={field.name}
+                                             {...field}
+                                             className="create__job_area"
+                                             defaultValue={rowdata?.data?.work_notes || null}
+                                         />
+                                 )} />
                             </div>
                         </div>
                         <div className="btn_modal field col-12 md:col-12 grid position_bottom">
