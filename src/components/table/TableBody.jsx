@@ -14,7 +14,7 @@ import {
     JOB_INCOMPLETE
 } from '../../constants'
 import { timezoneToDate } from '../../commons/dateTime'
-import { formatUSD } from '../../commons/formatCost'
+import { formatUSD, formatVND } from '../../commons/formatCost'
 const TableBody = ({ rowData, item }) => {
     //btn_success , btn_pending, btn_stop , normal, text-bold ,text-blue
     const HTML = () => {
@@ -147,10 +147,13 @@ const TableBody = ({ rowData, item }) => {
                     <span className={`table__body-name text-bold ${item}`} >{rowData?.[item]}</span>
                 )
             case ("total_cost"):
-            case ("editor_cost"):
             case ("saler_cost"):
                 return (
                     <span className="table__body-name text-bold btn_success" >{formatUSD(rowData?.[item])}</span>
+                )
+            case ("editor_cost"):
+                return (
+                    <span className="table__body-name text-bold btn_success" >{formatVND(rowData?.[item])}</span>
                 )
             case ("quality"):
                 return (
