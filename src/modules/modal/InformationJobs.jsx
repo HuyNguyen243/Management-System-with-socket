@@ -115,6 +115,7 @@ const InformationJobs = () => {
                 result: formDataPut,
                 index: rowdata
             }
+            
             dispatch(editJobsRequest(formData))
         }
     };
@@ -310,7 +311,7 @@ const InformationJobs = () => {
                                                     itemTemplate={itemUserTemplate}
                                                     {...register("id_editor", { required: true })}
                                                     id={"id_editor"}
-                                                    value={selectEditor} onChange={(e) => { setValue("id_editor", e.value.id_system); setSelectEditor(e.value); }}
+                                                    value={selectEditor} onChange={(e) => { setValue("id_editor", e.value?.id_system); setSelectEditor(e.value); }}
                                                     className={"icon__search"}
                                                     dropdownAriaLabel="Select name"
                                                 />
