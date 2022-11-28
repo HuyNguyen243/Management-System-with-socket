@@ -144,7 +144,7 @@ const TableBody = ({ rowData, item }) => {
             case ("id_editor"):
             case ("id_saler"):
                 return (
-                    <span className={`table__body-name text-bold ${item}`} >{rowData?.[item]}</span>
+                    <span className={`table__body-name text-bold ${item}`} >{rowData?.[item] !== "NOT_SET_BY_ADMIN" && rowData?.[item] }</span>
                 )
             case ("total_cost"):
             case ("saler_cost"):
