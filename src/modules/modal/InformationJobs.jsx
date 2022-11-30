@@ -7,7 +7,7 @@ import { toastMsg } from '../../commons/toast';
 import copy from "copy-to-clipboard";
 import { setIsOpenInformationJob } from '../../redux/modal/modalSlice';
 import { useDispatch, useSelector } from 'react-redux';
-import { useForm,Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { Dropdown } from 'primereact/dropdown';
 import { customer_status, type_files } from "./dropDown";
 import { UserRules, JobRules, NOT_SET_ADMIN } from "../../constants";
@@ -28,9 +28,10 @@ const InformationJobs = () => {
     let minDate = new Date();
     const [typeFile, setTypeFile] = useState(false);
     const [statusCustomer, setStatusCustomer] = useState(false);
+    const [workNotes, setWorkNotes] = useState(false);
+    const [requestContent, setRequestContent] = useState(false);
     const [selectEditor, setSelectEditor] = useState(false);
     const [filteredNameEditor, setFilteredNameEditor] = useState(null);
-
     const [isOpenInput, setIsOpenInput] = useState({})
 
     const user = useSelector(state => state.auth.user)
@@ -39,7 +40,7 @@ const InformationJobs = () => {
     const deletejobs = useSelector(state => state.jobs?.deletejobs)
     const updatejobs = useSelector(state => state.jobs?.editjobs)
 
-    const {control, register, setValue, handleSubmit, formState: { errors }, reset } = useForm();
+    const { register, setValue, handleSubmit, formState: { errors }, reset } = useForm();
 
     const employees = useSelector(state => state.employee?.dashboard)
 
@@ -47,6 +48,7 @@ const InformationJobs = () => {
 
 
     useEffect(() => {
+        console.log(rowdata?.data?.work_notes);
         if (rowdata?.data?.status_jobs) {
             for (let item of customer_status) {
                 if (item.code === rowdata?.data?.status_customer) {
@@ -62,6 +64,12 @@ const InformationJobs = () => {
                     break
                 }
             }
+        }
+        if (rowdata?.data?.work_notes) {
+            setWorkNotes(rowdata?.data?.work_notes)
+        }
+        if (rowdata?.data?.request_content) {
+            setRequestContent(rowdata?.data?.request_content)
         }
     }, [rowdata, setValue])
 
@@ -100,24 +108,7 @@ const InformationJobs = () => {
         }
     }, [dispatch, filteredNameEditor, isOpenInformationJob, user?.data])
 
-    const onSubmit = (data) => {
-        const formDataPut = {}
-        Object.keys(data).forEach(item => {
-            if (data[item] !== rowdata?.data[item]) {
-                Object.assign(formDataPut, { [item]: data[item] })
-            }
-        });
-        if (Object.keys(formDataPut).length > 0) {
-            Object.assign(formDataPut, { id_system: rowdata?.data?.id_system })
-            const formData = {
-                data: data,
-                result: formDataPut,
-                index: rowdata?.index
-            }
-            
-            dispatch(editJobsRequest(formData))
-        }
-    };
+
     const handleOpenInput = (key) => {
         if (!Object.keys(isOpenInput).includes(key)) {
             setIsOpenInput({ ...isOpenInput, [key]: true })
@@ -142,6 +133,24 @@ const InformationJobs = () => {
             toastMsg.error(toast, updatejobs?.data?.message)
         }
     }, [updatejobs, dispatch, handleCloseModal])
+
+    const onSubmit = (data) => {
+        const formDataPut = {}
+        Object.keys(data).forEach(item => {
+            if (data[item] !== rowdata?.data[item]) {
+                Object.assign(formDataPut, { [item]: data[item] })
+            }
+        });
+        if (Object.keys(formDataPut).length > 0) {
+            Object.assign(formDataPut, { id_system: rowdata?.data?.id_system })
+            const formData = {
+                data: data,
+                result: formDataPut,
+                index: rowdata?.index
+            }
+            dispatch(editJobsRequest(formData))
+        }
+    };
 
     const handleDeleteJobs = () => {
         const formdata = {}
@@ -176,9 +185,11 @@ const InformationJobs = () => {
                 <div className="creat__job">
                     <div className="creat__job--title flex justify-content-between">
                         <h2>Thông tin công việc </h2>
-                        <Button onClick={handleRemoveRow}><img src="images/trash.svg" alt="" className="image__trash" /></Button>
+                        {user?.data?.role === 'ADMIN' &&
+                            <Button onClick={handleRemoveRow}><img src="images/trash.svg" alt="" className="image__trash" /></Button>
+                        }
                     </div>
-                    <form className=" grid modal__creat--job no_flex" autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
+                    <form className=" grid modal__creat--job no_flex" onSubmit={handleSubmit(onSubmit)}>
                         <div className="field col-12 md:col-12 grid">
                             <div className="field col-12 md:col-6">
                                 <span htmlFor="autocomplete">Mã công việc :</span>
@@ -268,7 +279,7 @@ const InformationJobs = () => {
                                             />
                                         ) : (
                                             <span className='p-float-label mt-3'>
-                                               { timezoneToDate(rowdata?.data.end_day)}
+                                                {timezoneToDate(rowdata?.data.end_day)}
                                             </span>
                                         )
                                     }
@@ -454,31 +465,25 @@ const InformationJobs = () => {
                             }
                             <div className="field col-12 md:col-12">
                                 <span htmlFor="request_content">Nội dung yêu cầu :<span className="warning">*</span></span>
-                                <Controller name="request_content"
-                                     control={control}
-                                     rules={{ required: true }} render={({ field, fieldState }) => (
-                                         <InputTextarea
-                                             autoResize
-                                             id={field.name}
-                                             {...field}
-                                             className="create__job_area"
-                                             defaultValue={rowdata?.data?.request_content || null}
-                                         />
-                                 )} />
+                                <InputTextarea
+                                    autoResize
+                                    className="aria_content mt-3"
+                                    value={requestContent}
+                                    onChange={(e) => { setRequestContent(e.target.value); setValue("request_content", e.target.value) }}
+                                    {...register("request_content", { required: true })}
+                                    style={{ height: "150px" }}
+                                />
+
                             </div>
                             <div className="field col-12 md:col-12">
                                 <span htmlFor="work_notes">Yêu cầu của khách hàng :<span className="warning">*</span></span>
-                                <Controller name="work_notes"
-                                     control={control}
-                                     rules={{ required: true }} render={({ field, fieldState }) => (
-                                         <InputTextarea
-                                             autoResize
-                                             id={field.name}
-                                             {...field}
-                                             className="create__job_area"
-                                             defaultValue={rowdata?.data?.work_notes || null}
-                                         />
-                                 )} />
+                                <InputTextarea
+                                    autoResize
+                                    className="aria_note mt-3"
+                                    value={workNotes}
+                                    onChange={(e) => { setWorkNotes(e.target.value); setValue("work_notes", e.target.value) }}
+                                    style={{ height: "150px" }}
+                                />
                             </div>
                         </div>
                         <div className="btn_modal field col-12 md:col-12 grid position_bottom">
