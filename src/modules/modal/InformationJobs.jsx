@@ -112,7 +112,7 @@ const InformationJobs = () => {
             const formData = {
                 data: data,
                 result: formDataPut,
-                index: rowdata
+                index: rowdata?.index
             }
             
             dispatch(editJobsRequest(formData))
