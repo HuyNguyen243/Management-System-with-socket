@@ -10,6 +10,7 @@
     box-shadow: 3px 4px 14px rgb(0 0 0 / 23%);
     border-radius: 0 0 10px 10px;
     max-height: 300px;
+    min-width: 295px;
 }
 
 .notification__block{
@@ -64,6 +65,10 @@
     border-bottom: 1px solid $color-border-input;
     padding: 5px 10px;
     cursor: pointer;
+}
+
+.notification_item.active{
+    background-color: $color-input;
 }
 
 .notification_item:hover{

@@ -22,6 +22,7 @@ import { itemUserTemplate } from "../modal/TemplateDropDown";
 import { InputNumber } from 'primereact/inputnumber';
 import { Calendar } from 'primereact/calendar';
 import { formatUSD } from '../../commons/formatCost';
+
 const InformationJobs = () => {
     const toast = useRef(null);
     const dispatch = useDispatch()
@@ -42,9 +43,7 @@ const InformationJobs = () => {
     const {control, register, setValue, handleSubmit, formState: { errors }, reset } = useForm();
 
     const employees = useSelector(state => state.employee?.dashboard)
-
     let editorName = dataParseEditor(employees?.data)
-
 
     useEffect(() => {
         if (rowdata?.data?.status_jobs) {
@@ -114,7 +113,7 @@ const InformationJobs = () => {
                 result: formDataPut,
                 index: rowdata
             }
-            
+
             dispatch(editJobsRequest(formData))
         }
     };

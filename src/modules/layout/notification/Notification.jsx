@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux"
 import { socket } from "../../../_services/socket";
 import { NOTIFICATION_TITLE, NotificationRules, UserRules } from '../../../constants';
 import { createNotification } from '../../../redux/notification/action';
+import { getNotifications } from '../../../redux/notification/notificationSlice';
 
 const Notification = ({isOpenNotification}) => {
     const user = useSelector(state=> state.auth.user)
@@ -11,7 +12,6 @@ const Notification = ({isOpenNotification}) => {
     // const updatejobs = useSelector(state => state.jobs?.editjobs)
     const [ notifications, setNotifications ] = useState([])
     const dispatch = useDispatch()
-
     useEffect(() => {
         if (addjobs?.data && !addjobs?.error) {
             let createNotify;
@@ -22,6 +22,8 @@ const Notification = ({isOpenNotification}) => {
                         created_by: user?.data?.id_system,
                         status: NotificationRules.STATUS.CREATE_JOB,
                         id_job: addjobs?.data?.infor_id?.id_system,
+                        id_saler: addjobs?.data?.infor_id?.id_saler,
+                        id_editor: addjobs?.data?.infor_id?.id_editor,
                     }
                     break;
                 default:
@@ -38,25 +40,24 @@ const Notification = ({isOpenNotification}) => {
 
     useEffect(() => {
         if(user?.data){
-            const { id_system, role } = user?.data
-            socket.emit("notifications-of-id-system",id_system,role)
+            const { id_system } = user?.data
+            socket.emit("notifications-of-id-system",id_system)
         }
     },[user])
 
     socket.off("notifications-of-id-system").on("notifications-of-id-system", (payload)=>{
         setNotifications(payload)
+        dispatch(getNotifications(payload))
     })
-
     socket.off('is_created_notify').on('is_created_notify', (payload)=>{
         if(payload){
             const { id_system, role } = user?.data
             socket.emit("notifications-of-id-system",id_system, role)
         }
     } )
-    console.log(notifications)
 
     const showNotifications = ()=>{
-        // if(notifications && notifications?.length > 0 ){
+        if(notifications && notifications?.length > 0 ){
             return notifications?.map((notify,index)=>{
                 return (
                     <div className="notification__block" key={index}>
@@ -65,7 +66,7 @@ const Notification = ({isOpenNotification}) => {
                             <div className="notification__i">
                                 <p className="notification__note">{notify?.title}</p>
                                 {
-                                    Object.keys(notify?.active).includes(user?.data?.id_system) &&
+                                    Object.keys(notify?.member_check_notify).includes(user?.data?.id_system) &&
                                     <label className="notification__alert"></label>
                                 }
                             </div>
@@ -73,9 +74,9 @@ const Notification = ({isOpenNotification}) => {
                     </div>
                 )
             })
-        // }else{
-        //     return <p className="empty_data">Trống</p>
-        // }
+        }else{
+            return <p className="empty_data">Trống</p>
+        }
     }
 
     return (
@@ -86,15 +87,6 @@ const Notification = ({isOpenNotification}) => {
             {
               showNotifications()
             }
-            <div className="notification__block" >
-                        <div className="notification_item">
-                            <p className="notification__name">1</p>
-                            <div className="notification__i">
-                                <p className="notification__note">2</p>
-                                    <label className="notification__alert"></label>
-                            </div>
-                        </div>
-                    </div>
         </div>
     )
 }
