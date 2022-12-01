@@ -53,7 +53,6 @@ const Notification = ({isOpenNotification}) => {
             socket.emit("notifications-of-id-system",id_system, role)
         }
     } )
-    console.log(notifications)
 
     const showNotifications = ()=>{
         // if(notifications && notifications?.length > 0 ){
