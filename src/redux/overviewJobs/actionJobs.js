@@ -33,6 +33,10 @@ export const editJobsRequest = createAsyncThunk(
     async (data,{ rejectWithValue }) => {
         try {
             const res = await put(`jobs/${data?.result.id_system}`,data?.result)
+            if(res){
+                res.data_user = data?.result
+                res.index = data?.index
+            }
             return res;
         } catch (error) {
             return rejectWithValue(error?.response?.data);

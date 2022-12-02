@@ -240,7 +240,7 @@ const CreateJobs = () => {
                                     <span className="p-float-label">
                                         <Controller name="editor_cost"
                                             control={control}
-                                            rules={{ required: true }} render={({ field, fieldState }) => (
+                                            render={({ field, fieldState }) => (
                                                 <InputNumber id="editor_cost"
                                                     inputId="currency-vn"
                                                     value={field.value} onChange={(e) => field.onChange(e.value)}
