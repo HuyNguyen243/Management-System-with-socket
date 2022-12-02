@@ -1,7 +1,5 @@
 export const formatVND = (str) => {
-    if (str) {
-        return str.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + "đ";
-    }
+    return str ? str?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + "đ" : 0 + "đ";
 };
 export const formatUSD = (num) => {
     if (num) {

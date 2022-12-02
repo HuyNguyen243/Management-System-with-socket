@@ -10,11 +10,16 @@
     box-shadow: 3px 4px 14px rgb(0 0 0 / 23%);
     border-radius: 0 0 10px 10px;
     max-height: 300px;
+    min-width: 295px;
 }
 
 .notification__block{
     height: 100%;
     overflow: auto;
+}
+
+.notification__block::-webkit-scrollbar{
+    display: none;
 }
 
 .notification__title{
@@ -66,16 +71,20 @@
     cursor: pointer;
 }
 
+.notification_item.active{
+    background-color: $color-input;
+}
+
 .notification_item:hover{
     background-color: $color-input;
     transition: 0.3s linear;
 }
 
 .notification__alert::before{
-    content: "!";
+    content: "";
     width: 15px;
     height: 15px;
-    background-color: #ff0d39;
+    background-color: $color-primary;
     border-radius: 50%;
     display: flex;
     justify-content: center;

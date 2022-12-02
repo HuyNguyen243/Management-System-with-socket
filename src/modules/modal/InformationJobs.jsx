@@ -22,6 +22,7 @@ import { itemUserTemplate } from "../modal/TemplateDropDown";
 import { InputNumber } from 'primereact/inputnumber';
 import { Calendar } from 'primereact/calendar';
 import { formatUSD } from '../../commons/formatCost';
+
 const InformationJobs = () => {
     const toast = useRef(null);
     const dispatch = useDispatch()
@@ -43,9 +44,7 @@ const InformationJobs = () => {
     const { register, setValue, handleSubmit, formState: { errors }, reset } = useForm();
 
     const employees = useSelector(state => state.employee?.dashboard)
-
     let editorName = dataParseEditor(employees?.data)
-
 
     useEffect(() => {
         console.log(rowdata?.data?.work_notes);
@@ -108,7 +107,24 @@ const InformationJobs = () => {
         }
     }, [dispatch, filteredNameEditor, isOpenInformationJob, user?.data])
 
+    const onSubmit = (data) => {
+        const formDataPut = {}
+        Object.keys(data).forEach(item => {
+            if (data[item] !== rowdata?.data[item]) {
+                Object.assign(formDataPut, { [item]: data[item] })
+            }
+        });
+        if (Object.keys(formDataPut).length > 0) {
+            Object.assign(formDataPut, { id_system: rowdata?.data?.id_system })
+            const formData = {
+                data: data,
+                result: formDataPut,
+                index: rowdata
+            }
 
+            dispatch(editJobsRequest(formData))
+        }
+    };
     const handleOpenInput = (key) => {
         if (!Object.keys(isOpenInput).includes(key)) {
             setIsOpenInput({ ...isOpenInput, [key]: true })
@@ -176,7 +192,6 @@ const InformationJobs = () => {
         toastMsg.success(toast, 'Sao chép mã thành công')
         copy(rowdata?.data?.id_system);
     }
-
     return (
         <>
             <ConfirmPopup />
@@ -185,7 +200,8 @@ const InformationJobs = () => {
                 <div className="creat__job">
                     <div className="creat__job--title flex justify-content-between">
                         <h2>Thông tin công việc </h2>
-                        {user?.data?.role === 'ADMIN' &&
+                        {
+                            user?.data?.role === "ADMIN" &&
                             <Button onClick={handleRemoveRow}><img src="images/trash.svg" alt="" className="image__trash" /></Button>
                         }
                     </div>

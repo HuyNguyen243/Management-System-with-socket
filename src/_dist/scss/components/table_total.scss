@@ -106,21 +106,23 @@
 
 .table__sort{
     position: absolute;
-    right: 0px;
+    right: -7px;
     top: 7px;
     cursor: pointer;
 }
 
 .sort__up {
     position: absolute;
-    top: -8px;
+    top: -7px;
+    left: 8px;
     width: 12px;
     margin-left: 4px;
 }
 
 .sort__down {
     position: absolute;
-    bottom: -8px;
+    bottom: -9px;
+    right: -10px;
     width: 12px;
     margin-left: 4px;
 }
@@ -232,27 +234,37 @@
     }
 }
 
+.p-datatable .p-datatable-tbody > tr{
+    height: 65px;
+}
+
 .p-datatable-thead tr th{
-    background-color: $color-table-header !important;
+    background-color: $color-secondary !important;
     color: $color-white !important;
     font-weight: 400 !important;
     align-items: center;
     text-transform: uppercase;
     height: 45px;
+    border-top: 1px solid gray;
 }
 
 .p-datatable .p-datatable-tbody > tr > td{
-    background-color: $color-bgTable !important;
     text-align: center!important;
     cursor: pointer;
 }
 
+.p-datatable .p-datatable-tbody > tr:nth-child(odd){
+    background-color: $color-bgTable;
+    
+}
+
 .p-datatable .p-column-header-content{
     justify-content: center !important;
+    margin-top: 20px;
 }
 
 .p-datatable-thead{
-    height: 45px;
+    height: 90px;
 }
 
 .columnheader{
@@ -499,7 +511,7 @@
     border: none;
     border-radius: 0px;
     .p-inputtext{
-        color: $color-border-input;
+        color: $color-black;
     }
 }
 
@@ -691,4 +703,12 @@
     background-color: $color-primary;
     display: block;
     position: absolute;
+}
+
+.p-paginator-next:not(.p-disabled):not(.p-highlight):hover,
+.p-paginator-prev:not(.p-disabled):not(.p-highlight):hover,
+.p-paginator .p-paginator-pages .p-paginator-page:not(.p-highlight):hover {
+    background: inherit !important;
+    border-color: inherit !important;
+    color: inherit !important;
 }

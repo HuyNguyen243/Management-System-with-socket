@@ -78,10 +78,10 @@ const Table = ({
             {
                 header?.haveSort &&
                 <div className="table__sort">
-                    <img src={`../../images/${sortBy === value && sortValue === "ASC" && value !== "" ? "sort_up_disable":"sort_up"}.svg`} 
+                    <img src={`../../images/${sortBy === value && sortValue === "ASC" && value !== "" ? "sort_up_disable":"sort_up"}.png`} 
                     alt="" className="sort__up" data-by={value} data-value="ASC" onClick={handleSort}
                     />
-                    <img src={`../../images/${sortBy === value && sortValue === "DESC" && value !== "" ? "sort_down_disable":"sort_down"}.svg`} 
+                    <img src={`../../images/${sortBy === value && sortValue === "DESC" && value !== "" ? "sort_down_disable":"sort_down"}.png`} 
                     alt="" className="sort__down" 
                     data-by={value} data-value="DESC" onClick={handleSort}
                     />

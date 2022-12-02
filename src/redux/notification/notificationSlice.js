@@ -6,12 +6,20 @@ const initialState = {
         isLoading: false,
         data: null,
         error: false
-    }
+    },
+    notifications: [],
 }
 
 const notificationSlice = createSlice({
     name: 'notification',
     initialState,
+    reducers : {
+        getNotifications: (state, { payload })=>{
+            Object.assign(state,{},{
+                notifications : payload
+            })
+        },
+    },
     extraReducers:{
         [createNotification.pending]: (state) => {
             Object.assign(state,{},{
@@ -41,5 +49,6 @@ const notificationSlice = createSlice({
 
     }
 })
+export const { getNotifications } = notificationSlice.actions
 
 export default notificationSlice.reducer

@@ -12,6 +12,17 @@
     position: relative;
 }
 
+.nav__name.disabled{
+    opacity: 0;
+    width: 0px;
+}
+
+.nav__name.enabled{
+    opacity: 1;
+    transition: 0.7s linear;
+    width: 100%;
+}
+
 .nav__name.icon_arrow-up::after{
     content:"";
     background-image: url("../../../../public/images/arrow_up.svg");
@@ -205,6 +216,10 @@
     overflow-y: auto;
     height: 100%;
     flex-wrap: nowrap;
+}
+
+.modal__creat--job::-webkit-scrollbar{
+    display: none;
 }
 
 .btn_modal{
