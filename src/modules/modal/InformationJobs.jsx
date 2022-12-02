@@ -166,7 +166,6 @@ const InformationJobs = () => {
         toastMsg.success(toast, 'Sao chép mã thành công')
         copy(rowdata?.data?.id_system);
     }
-
     return (
         <>
             <ConfirmPopup />
@@ -175,7 +174,10 @@ const InformationJobs = () => {
                 <div className="creat__job">
                     <div className="creat__job--title flex justify-content-between">
                         <h2>Thông tin công việc </h2>
-                        <Button onClick={handleRemoveRow}><img src="images/trash.svg" alt="" className="image__trash" /></Button>
+                        {
+                            user?.data?.role === "ADMIN" &&
+                            <Button onClick={handleRemoveRow}><img src="images/trash.svg" alt="" className="image__trash" /></Button>
+                        }
                     </div>
                     <form className=" grid modal__creat--job no_flex" autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
                         <div className="field col-12 md:col-12 grid">

@@ -11,7 +11,7 @@ const Dashboard = () => {
     const dispatch = useDispatch()
     const [filter, setFilter] = useState("")
     const jobs = useSelector(state => state.jobs?.dashboard)
-
+    
     useEffect(() => {
         dispatch(dashboardJobsRequest(filter))
     }, [dispatch, filter])

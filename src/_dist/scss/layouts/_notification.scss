@@ -18,6 +18,10 @@
     overflow: auto;
 }
 
+.notification__block::-webkit-scrollbar{
+    display: none;
+}
+
 .notification__title{
     padding: 10px;
     border-bottom: 1px solid $color-border-input;
@@ -77,10 +81,10 @@
 }
 
 .notification__alert::before{
-    content: "!";
+    content: "";
     width: 15px;
     height: 15px;
-    background-color: #ff0d39;
+    background-color: $color-primary;
     border-radius: 50%;
     display: flex;
     justify-content: center;

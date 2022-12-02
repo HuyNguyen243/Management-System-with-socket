@@ -82,6 +82,7 @@ const Navigation = ({ open, getBtnNavIsOpen }) => {
                                     sx={{ opacity: open ? 1 : 0 }}
                                     className={
                                         `nav__name 
+                                            ${open ? "enable" : "disabled"}
                                             ${!item.isRederect && !item.haveModal && !activeRoute.includes(index) && "icon_arrow-up"}
                                             ${activeRoute.includes(index) && item.name !== "Cài đặt" && "icon_arrow-down"}
                                         `

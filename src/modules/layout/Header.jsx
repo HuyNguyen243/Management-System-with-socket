@@ -37,7 +37,7 @@ export default function Header() {
 			let count = 0;
 			notifications?.forEach(notify=>{
 				if(notify?.member_check_notify){
-					if(Object?.keys(notify?.member_check_notify).includes(currentUser?.id_system)){
+					if(notify?.member_check_notify?.[currentUser?.id_system]){
 						count += 1
 					}
 				}
@@ -213,7 +213,7 @@ export default function Header() {
 					<ToggleMenu/>
 					}
 				</div>
-				<Notification isOpenNotification={isOpenNotification}/>
+				<Notification isOpenNotification={isOpenNotification} setisOpenNotification={setisOpenNotification}/>
 				<Messages isOpenMessages={isOpenMessages} setisOpenMessages={setisOpenMessages}/>
 				</Toolbar>
 			</AppBar>
