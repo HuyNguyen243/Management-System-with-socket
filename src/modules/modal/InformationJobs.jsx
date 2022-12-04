@@ -132,6 +132,27 @@ const InformationJobs = () => {
         toastMsg.success(toast, 'Sao chép mã thành công')
         copy(rowdata?.data?.id_system);
     }
+
+    const onSubmit = (data) => {
+        const formDataPut = {}
+        Object.keys(data).forEach(item => {
+            if (data[item] !== rowdata?.data[item]) {
+                Object.assign(formDataPut, { [item]: data[item] })
+            }
+        });
+        if (Object.keys(formDataPut).length > 0) {
+            Object.assign(formDataPut, { id_system: rowdata?.data?.id_system })
+            const formData = {
+                data: data,
+                result: formDataPut,
+                index: rowdata?.index
+            }
+            dispatch(editJobsRequest(formData))
+        }
+    };
+
+
+
     return (
         <>
             <ConfirmPopup />
