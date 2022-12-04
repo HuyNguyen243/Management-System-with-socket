@@ -5,6 +5,8 @@ import {
     addJobsRequest,
     deleteJobsRequest,
     editJobsRequest,
+    getJobsRequest,
+    getJobsAdminRequest,
 } from "./actionJobs";
 
 const initialState = {
@@ -28,6 +30,11 @@ const initialState = {
         data: null,
         error: false,
     },
+    getjobs: {
+        loading: false,
+        data: null,
+        error: false,
+    }
 };
 const jobsReducer = createSlice({
     name: "dashboard",
@@ -167,6 +174,80 @@ const jobsReducer = createSlice({
                     deletejobs: {
                         loading: false,
                         data: null,
+                        error: true,
+                    },
+                }
+            );
+        },
+        [getJobsRequest.pending]: (state) => {
+            Object.assign(
+                state,
+                {},
+                {
+                    getjobs: {
+                        loading: true,
+                    },
+                }
+            );
+        },
+        [getJobsRequest.fulfilled]: (state, action) => {
+            Object.assign(
+                state,
+                {},
+                {
+                    getjobs: {
+                        loading: false,
+                        data: action?.payload?.data,
+                        error: false,
+                    },
+                }
+            );
+        },
+        [getJobsRequest.rejected]: (state, action) => {
+            Object.assign(
+                state,
+                {},
+                {
+                    getjobs: {
+                        loading: false,
+                        data: action?.payload,
+                        error: true,
+                    },
+                }
+            );
+        },
+        [getJobsAdminRequest.pending]: (state) => {
+            Object.assign(
+                state,
+                {},
+                {
+                    getjobs: {
+                        loading: true,
+                    },
+                }
+            );
+        },
+        [getJobsAdminRequest.fulfilled]: (state, action) => {
+            Object.assign(
+                state,
+                {},
+                {
+                    getjobs: {
+                        loading: false,
+                        data: action?.payload?.data,
+                        error: false,
+                    },
+                }
+            );
+        },
+        [getJobsAdminRequest.rejected]: (state, action) => {
+            Object.assign(
+                state,
+                {},
+                {
+                    getjobs: {
+                        loading: false,
+                        data: action?.payload,
                         error: true,
                     },
                 }

@@ -52,6 +52,24 @@ const TableBody = ({ rowData, item }) => {
                     )
                 }
                 break;
+            case ("status_pay"):
+                const status_pay = rowData?.[item]
+                if (status_pay === CustomerRules.STATUS_PAY.PAID) {
+                    return (
+                        <span className="table__body-name btn_success flex justify-content-center" >{JOB_DONE}</span>
+                    )
+                }
+                if (status_pay === CustomerRules.STATUS_PAY.CANCEL) {
+                    return (
+                        <span className="table__body-name btn_stop flex justify-content-center" >{JOB_INCOMPLETE}</span>
+                    )
+                }
+                if (status_pay === CustomerRules.STATUS_PAY.UNPAID) {
+                    return (
+                        <span className="table__body-name btn_pending flex justify-content-center" >{JOB_PENDING}</span>
+                    )
+                }
+                break;
             case ("status_jobs"):
                 const status_jobs = rowData?.[item]
                 if (status_jobs === JobRules.STATUS_JOBS.COMPLETE) {
@@ -140,6 +158,8 @@ const TableBody = ({ rowData, item }) => {
                 return (
                     <span className="table__body-name" >{rowData?.[item]}</span>
                 )
+            case ("staff_is_pay"):
+            case ("id_job"):
             case ("id_customer"):
             case ("id_editor"):
             case ("id_saler"):
@@ -151,6 +171,7 @@ const TableBody = ({ rowData, item }) => {
                 return (
                     <span className="table__body-name text-bold btn_success" >{formatUSD(rowData?.[item])}</span>
                 )
+            case ("pay_employees"):
             case ("editor_cost"):
                 return (
                     <span className="table__body-name text-bold btn_success" >{formatVND(rowData?.[item])}</span>

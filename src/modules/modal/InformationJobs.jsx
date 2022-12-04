@@ -47,7 +47,6 @@ const InformationJobs = () => {
     let editorName = dataParseEditor(employees?.data)
 
     useEffect(() => {
-        console.log(rowdata?.data?.work_notes);
         if (rowdata?.data?.status_jobs) {
             for (let item of customer_status) {
                 if (item.code === rowdata?.data?.status_customer) {
@@ -107,24 +106,6 @@ const InformationJobs = () => {
         }
     }, [dispatch, filteredNameEditor, isOpenInformationJob, user?.data])
 
-    const onSubmit = (data) => {
-        const formDataPut = {}
-        Object.keys(data).forEach(item => {
-            if (data[item] !== rowdata?.data[item]) {
-                Object.assign(formDataPut, { [item]: data[item] })
-            }
-        });
-        if (Object.keys(formDataPut).length > 0) {
-            Object.assign(formDataPut, { id_system: rowdata?.data?.id_system })
-            const formData = {
-                data: data,
-                result: formDataPut,
-                index: rowdata
-            }
-
-            dispatch(editJobsRequest(formData))
-        }
-    };
     const handleOpenInput = (key) => {
         if (!Object.keys(isOpenInput).includes(key)) {
             setIsOpenInput({ ...isOpenInput, [key]: true })
@@ -229,7 +210,7 @@ const InformationJobs = () => {
                                                     disabled={(user?.data?.role === UserRules.ROLE.EDITOR && user?.data?.role === UserRules.ROLE.LEADER_EDITOR) ? true : false}
                                                 />
                                             ) : (
-                                                <span className={"p-float-label mt-3 m-0 flex justify-content-between align-items-center " + (rowdata?.data.status_customer === JobRules.STATUS_CUSTOMER.UNREQUEST ? ' btn_stop ' : (rowdata?.data.status_customer === JobRules.STATUS_CUSTOMER.REQUEST ? ' btn_success' : ' btn_pending '))}>
+                                                <span className={"p-float-label mt-3 m-0 flex justify-content-between align-items-center " + (rowdata?.data?.status_customer === JobRules.STATUS_CUSTOMER.UNREQUEST ? ' btn_stop ' : (rowdata?.data?.status_customer === JobRules.STATUS_CUSTOMER.REQUEST ? ' btn_success' : ' btn_pending '))}>
                                                     {JobRules.STATUS_CUSTOMER_NAME[rowdata?.data?.status_customer]}
                                                 </span>
                                             )
@@ -280,7 +261,7 @@ const InformationJobs = () => {
                             <div className="field col-12 md:col-6 create__job--calendar">
                                 <span htmlFor="start_day">Ngày tạo công việc :</span>
                                 <span className="p-float-label pt-3 cursor__normal font-bold">
-                                    {timezoneToDate(rowdata?.data.start_day)}
+                                    {timezoneToDate(rowdata?.data?.start_day)}
                                 </span>
                             </div>
                             <div className="field col-12 md:col-6 create__job--calendar">
@@ -295,7 +276,7 @@ const InformationJobs = () => {
                                             />
                                         ) : (
                                             <span className='p-float-label mt-3'>
-                                                {timezoneToDate(rowdata?.data.end_day)}
+                                                {timezoneToDate(rowdata?.data?.end_day)}
                                             </span>
                                         )
                                     }
@@ -363,7 +344,7 @@ const InformationJobs = () => {
                                             />
                                         ) : (
                                             <span className="p-float-label mt-3">
-                                                <a href={rowdata?.data.org_link} target="_blank" rel="noreferrer">Link liên kết</a>
+                                                <a href={rowdata?.data?.org_link} target="_blank" rel="noreferrer">Link liên kết</a>
                                             </span>
                                         )
                                     }
@@ -383,10 +364,10 @@ const InformationJobs = () => {
                                                 />
                                             ) : (
                                                 <span className=''>
-                                                    {rowdata?.data.finished_link === NOT_SET_ADMIN ?
+                                                    {rowdata?.data?.finished_link === NOT_SET_ADMIN ?
                                                         "Trống"
                                                         :
-                                                        < a href={rowdata?.data.finished_link} target="_blank" rel="noreferrer">Link liên kết</a>
+                                                        < a href={rowdata?.data?.finished_link} target="_blank" rel="noreferrer">Link liên kết</a>
                                                     }
                                                 </span>
                                             )
@@ -397,10 +378,10 @@ const InformationJobs = () => {
                                         <span htmlFor="finished_link">Link ảnh hoàn thành :</span>
                                         <span className={"p-float-label  mt-3"}>
                                             <span className=''>
-                                                {rowdata?.data.finished_link === NOT_SET_ADMIN ?
+                                                {rowdata?.data?.finished_link === NOT_SET_ADMIN ?
                                                     "Trống"
                                                     :
-                                                    < a href={rowdata?.data.finished_link} target="_blank" rel="noreferrer">Link liên kết</a>
+                                                    < a href={rowdata?.data?.finished_link} target="_blank" rel="noreferrer">Link liên kết</a>
                                                 }
                                             </span>
                                         </span>
