@@ -58,3 +58,27 @@ export const deleteJobsRequest = createAsyncThunk(
         }
     }
 )
+
+export const getJobsRequest = createAsyncThunk(
+    'getDataJobs',
+    async (data,{ rejectWithValue }) => {
+        try {
+            const res = await get(`jobs/${data.id}`)
+            return res;
+        } catch (error) {
+            return rejectWithValue(error?.response?.data);
+        }
+    }
+)
+
+export const getJobsAdminRequest = createAsyncThunk(
+    'getDataJobs',
+    async (data,{ rejectWithValue }) => {
+        try {
+            const res = await get(`jobs/admin/${data.id}`)
+            return res;
+        } catch (error) {
+            return rejectWithValue(error?.response?.data);
+        }
+    }
+)

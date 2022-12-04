@@ -27,14 +27,12 @@ const JobsOverview = () => {
 
     useEffect(() => {
         if (employees?.data) {
-            dispatch(setIsOpenModalInformationUser(true))
             dispatch(setDataModalInformationUser(employees))
         }
     }, [employees, dispatch])
 
     useEffect(() => {
         if (customer?.data) {
-            dispatch(setIsOpenModalInformationCustomer(true))
             dispatch(setDataModalInformationCustomer(customer))
         }
     }, [customer, dispatch])
@@ -59,6 +57,7 @@ const JobsOverview = () => {
             if (el.innerHTML) {
                 data.id = el.innerHTML;
                 dispatch(getCustomerRequest(data))
+            dispatch(setIsOpenModalInformationCustomer(true))
             }
         } else if (el.className.includes("id_editor")) {
             //OPEN EDITOR 
@@ -66,6 +65,7 @@ const JobsOverview = () => {
             if (el.innerHTML) {
                 data.id = el.innerHTML;
                 dispatch(getEmployeeRequest(data));
+                dispatch(setIsOpenModalInformationUser(true))
             }
         }
         else {

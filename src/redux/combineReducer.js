@@ -7,7 +7,7 @@ import messageSlice from "./messages/messageSlice"
 import modalSlice from "./modal/modalSlice";
 import settingSlice from "./admin/adminSlice";
 import notificationSlice from "./notification/notificationSlice";
-
+import paymentSlice from "./payment/paySlice";
 const combineReducer = combineReducers({
     auth: userSlice,
     sale: saleSlice,
@@ -17,6 +17,7 @@ const combineReducer = combineReducers({
     modal: modalSlice,
     setting: settingSlice,
     notification: notificationSlice,
+    payment: paymentSlice
 });
 
 export default combineReducer;

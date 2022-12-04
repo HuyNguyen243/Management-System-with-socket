@@ -95,6 +95,8 @@ const Table = ({
             case "/employee-overview":
                 setDropDown(user_status)
                 break
+            case "/payment-management":
+            case "/payment":
             case "/workflow-management":
             case "/jobs-overview":
                 setDropDown(jobs_status)
