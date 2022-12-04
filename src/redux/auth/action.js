@@ -94,7 +94,7 @@ export const userChangeStatus = createAsyncThunk(
     "changeStatus",
     async (result, { rejectWithValue }) => {
         try {
-            await put(`infor/status/${result.id}?status=${result.status}`);
+            await put(`users/infor/status/${result.id}?status=${result.status}`);
             return result.newUser;
         } catch (error) {
             return rejectWithValue(error?.response?.data);

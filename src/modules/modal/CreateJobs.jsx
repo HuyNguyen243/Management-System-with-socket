@@ -5,15 +5,12 @@ import { Dropdown } from 'primereact/dropdown';
 import { Calendar } from 'primereact/calendar';
 import { InputTextarea } from 'primereact/inputtextarea';
 import { Button } from 'primereact/button';
-import { AutoComplete } from 'primereact/autocomplete';
 import { InputNumber } from 'primereact/inputnumber';
 import { useForm, Controller } from 'react-hook-form';
 import { classNames } from 'primereact/utils';
 import { saleCustomerRequest } from "../../redux/sale/action";
 import { type_files } from "./dropDown"
 import { useDispatch, useSelector } from 'react-redux';
-import { dataParseCustomer } from '../manager/jobs/dataParse';
-import { itemCustomerTemplate } from "../modal/TemplateDropDown";
 import {
     setIsOpenModalCreateJob,
     setIsOpenModalCreateCustomer,
@@ -37,7 +34,6 @@ const CreateJobs = () => {
         type_models: '',
     }
     const { control, formState: { errors }, handleSubmit, reset } = useForm({ defaultValues });
-    const [filteredNameCustomers, setFilteredNameCustomers] = React.useState(null);
     const [customerSelect, setCustomerSelect] = React.useState(null);
     const customers = useSelector(state => state.sale.customers)
     const addjobs = useSelector(state => state.jobs.addjobs)
@@ -46,7 +42,6 @@ const CreateJobs = () => {
     const isOpenCreateJob = useSelector(state => state.modal.isOpenModalCreateJob)
 
     const dispatch = useDispatch()
-    let customerName = dataParseCustomer(customers?.data)
 
     useEffect(() => {
         if (addjobs?.data && !addjobs?.error) {
@@ -62,40 +57,20 @@ const CreateJobs = () => {
         addjobs, reset, dispatch
     ])
 
-    const searchName = (event) => {
-        setFilteredNameCustomers(customerName)
-        setTimeout(() => {
-            let suggestionsList;
-            if (!event.query.trim().length) {
-                suggestionsList = [...customerName];
-            } else {
-                suggestionsList = [...customerName].filter((list) => {
-                    return (
-                        list.name.toLowerCase().startsWith(event.query.toLowerCase())
-                        || list.email.toLowerCase().startsWith(event.query.toLowerCase())
-                        || list.phone.toLowerCase().startsWith(event.query.toLowerCase())
-                        || list.create_by.toLowerCase().startsWith(event.query.toLowerCase())
-                        || list.id_system.toLowerCase().startsWith(event.query.toLowerCase())
-                    );
-                });
-            }
-            setFilteredNameCustomers(suggestionsList)
-        }, 50);
-    }
     useEffect(() => {
-        if (isOpenCreateJob && !filteredNameCustomers) {
-            dispatch(saleCustomerRequest(filteredNameCustomers));
+        if (isOpenCreateJob) {
+            dispatch(saleCustomerRequest());
         }
-    }, [dispatch, filteredNameCustomers, isOpenCreateJob])
+    }, [dispatch, isOpenCreateJob])
 
     const onSubmit = (data) => {
-        delete data["nameCustomer"];
         if (Object.keys(errors).length === 0) {
-            data.id_customer = customerSelect?.id_system;
+            data.id_customer = data.nameCustomer.id_system;
             data.photo_types = data.photo_types?.code;
             dispatch(addJobsRequest(data))
         }
     };
+
     const handleCloseModal = () => {
         dispatch(setIsOpenModalCreateJob(false));
         setCustomerSelect(null)
@@ -124,15 +99,11 @@ const CreateJobs = () => {
                                     <Controller name="nameCustomer"
                                         control={control}
                                         rules={{ required: true }} render={({ field, fieldState }) => (
-                                            <AutoComplete
-                                                suggestions={filteredNameCustomers}
-                                                completeMethod={searchName} field="name"
-                                                dropdown
-                                                itemTemplate={itemCustomerTemplate}
-                                                id={field.name}
-                                                value={customerSelect} onChange={(e) => { field.onChange(e.value); setCustomerSelect(e.value); }}
-                                                className={classNames({ 'p-invalid': fieldState.invalid }, "icon__search")}
-                                                dropdownAriaLabel="Select name"
+                                            <Dropdown
+                                            options={customers.data}
+                                            optionLabel="fullname"
+                                            value={field.value} onChange={(e) => field.onChange(e.value)}
+                                            className={classNames({ 'p-invalid': fieldState.invalid }, "create__job_type")}
                                             />
                                         )} />
                                 </span>

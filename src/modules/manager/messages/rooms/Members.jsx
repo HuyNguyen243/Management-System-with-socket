@@ -30,7 +30,6 @@ const Members = ({
         //SAVESTORAGE
         roomStorage.set("", "", roomId, member?.role, [], CharacterRoom(member?.role), member?.id_system)
     }
-
   return (
     <>
         <li>
@@ -40,7 +39,7 @@ const Members = ({
             members?.map((member,index)=>(
                 <div key={index}>
                 {
-                    members?.id_system !== currentUser?.id_system &&
+                    member?.id_system !== currentUser?.id_system &&
                     <li className={privateMemberMsg === member.id_system ? "active" : ""} onClick={()=>handlePrivateRoom(member)}>
                     <div className="chat_img" data={member?.status} role={CharacterRoom(member.role)} ></div>
                     <div className="about">
