@@ -62,6 +62,7 @@ const Messages = ({isOpenMessages, setisOpenMessages}) => {
         if(id.includes(NAME_ROOM.USER)){
             const newID = id.replace(user?.data?.id_system,"").replace(/-/g,"").replace(NAME_ROOM.USER,"")
             if(currentUser?.role === UserRules.ROLE.ADMIN){
+                if(Array.isArray(members))
                 for(const member of members){
                     if(member?.id_system === newID){
                         if(only_id){
@@ -181,7 +182,7 @@ const Messages = ({isOpenMessages, setisOpenMessages}) => {
                                             notification-message__note
                                             ${currentUser?.newMessages && Object.keys(currentUser?.newMessages)?.includes(item?._id) && "active"}
                                             `}>
-                                                {item?.from === user?.data?.id_system ? "Bạn: " : ""}{item?.content}
+                                                {item?.from === user?.data?.id_system ? "Bạn: " : ""}{item?.content !== "" ? item.content : "Đã gửi một hình ảnh"}
                                             </p>
                                             {
                                                 currentUser?.newMessages && Object.keys(currentUser?.newMessages)?.includes(item?._id) 

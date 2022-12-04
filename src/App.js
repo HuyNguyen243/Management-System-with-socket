@@ -10,6 +10,7 @@ import { Navigate } from "react-router";
 import BtnMess from "./modules/layout/messages/BtnMess";
 import Modal from "./modules/modal/Modal";
 import Notfound from "./404";
+import 'primeicons/primeicons.css';
 
 function App() {
     const user = useSelector((state) => state.auth.token);

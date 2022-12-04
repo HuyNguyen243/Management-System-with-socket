@@ -14,11 +14,8 @@ import { UserRules, JobRules, NOT_SET_ADMIN } from "../../constants";
 import { InputText } from 'primereact/inputtext';
 import { timezoneToDate } from '../../commons/dateTime';
 import { ConfirmPopup, confirmPopup } from 'primereact/confirmpopup';
-import { AutoComplete } from 'primereact/autocomplete';
-import { dataParseEditor } from '../manager/jobs/dataParse';
 import { dashboardEmployeeRequest } from "../../redux/overviewEmployee/actionEmployee";
 import { deleteJobsRequest, editJobsRequest } from "../../redux/overviewJobs/actionJobs";
-import { itemUserTemplate } from "../modal/TemplateDropDown";
 import { InputNumber } from 'primereact/inputnumber';
 import { Calendar } from 'primereact/calendar';
 import { formatUSD } from '../../commons/formatCost';
@@ -32,7 +29,6 @@ const InformationJobs = () => {
     const [workNotes, setWorkNotes] = useState(false);
     const [requestContent, setRequestContent] = useState(false);
     const [selectEditor, setSelectEditor] = useState(false);
-    const [filteredNameEditor, setFilteredNameEditor] = useState(null);
     const [isOpenInput, setIsOpenInput] = useState({})
 
     const user = useSelector(state => state.auth.user)
@@ -44,10 +40,8 @@ const InformationJobs = () => {
     const { register, setValue, handleSubmit, formState: { errors }, reset } = useForm();
 
     const employees = useSelector(state => state.employee?.dashboard)
-    let editorName = dataParseEditor(employees?.data)
 
     useEffect(() => {
-        console.log(rowdata?.data?.work_notes);
         if (rowdata?.data?.status_jobs) {
             for (let item of customer_status) {
                 if (item.code === rowdata?.data?.status_customer) {
@@ -82,30 +76,12 @@ const InformationJobs = () => {
         }
     }, [deletejobs, dispatch])
 
-    const searchName = (event) => {
-        setFilteredNameEditor(editorName);
-        setTimeout(() => {
-            let suggestionsList;
-            if (!event.query.trim().length) {
-                suggestionsList = [...editorName];
-            } else {
-                suggestionsList = [...editorName].filter((list) => {
-                    return (
-                        list.name.toLowerCase().startsWith(event.query.toLowerCase())
-                        || list.id_system.toLowerCase().startsWith(event.query.toLowerCase())
-                        || list.email.toLowerCase().startsWith(event.query.toLowerCase())
-                    );
-                });
-            }
-            setFilteredNameEditor(suggestionsList)
-        }, 50);
-    }
     useEffect(() => {
-        if (isOpenInformationJob && !filteredNameEditor && user?.data?.role === "ADMIN") {
+        if (isOpenInformationJob) {
             let keyword = "?keyword=Editor";
             dispatch(dashboardEmployeeRequest(keyword));
         }
-    }, [dispatch, filteredNameEditor, isOpenInformationJob, user?.data])
+    }, [dispatch, isOpenInformationJob, user?.data])
 
     const onSubmit = (data) => {
         const formDataPut = {}
@@ -149,24 +125,6 @@ const InformationJobs = () => {
             toastMsg.error(toast, updatejobs?.data?.message)
         }
     }, [updatejobs, dispatch, handleCloseModal])
-
-    const onSubmit = (data) => {
-        const formDataPut = {}
-        Object.keys(data).forEach(item => {
-            if (data[item] !== rowdata?.data[item]) {
-                Object.assign(formDataPut, { [item]: data[item] })
-            }
-        });
-        if (Object.keys(formDataPut).length > 0) {
-            Object.assign(formDataPut, { id_system: rowdata?.data?.id_system })
-            const formData = {
-                data: data,
-                result: formDataPut,
-                index: rowdata?.index
-            }
-            dispatch(editJobsRequest(formData))
-        }
-    };
 
     const handleDeleteJobs = () => {
         const formdata = {}
@@ -329,17 +287,12 @@ const InformationJobs = () => {
                                     <span onClick={(e) => handleOpenInput("id_editor")} className={"p-float-label cursor__edit " + (isOpenInput?.id_editor ? "" : " mt-3 ")}>
                                         {isOpenInput?.id_editor ?
                                             (
-                                                <AutoComplete
-                                                    suggestions={filteredNameEditor}
-                                                    completeMethod={searchName} field="name"
-                                                    dropdown
-                                                    forceSelection
-                                                    itemTemplate={itemUserTemplate}
-                                                    {...register("id_editor", { required: true })}
-                                                    id={"id_editor"}
-                                                    value={selectEditor} onChange={(e) => { setValue("id_editor", e.value?.id_system); setSelectEditor(e.value); }}
-                                                    className={"icon__search"}
-                                                    dropdownAriaLabel="Select name"
+                                                <Dropdown
+                                                    options={employees.data}
+                                                    optionLabel="fullname"
+                                                    value={selectEditor}
+                                                    onChange={(e) => { setValue("id_editor", e.value?.id_system); setSelectEditor(e.value); }}
+                                                    disabled={(user?.data?.role === UserRules.ROLE.EDITOR && user?.data?.role === UserRules.ROLE.LEADER_EDITOR) ? true : false}
                                                 />
                                             ) : (
                                                 <span className="p-float-label mt-3 font-bold" >

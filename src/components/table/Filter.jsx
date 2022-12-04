@@ -8,6 +8,7 @@ import Select from '@mui/material/Select';
 import DatePicker from "./DatePicker"
 import { useNavigate, useLocation } from 'react-router';
 import { dateString } from "../../commons/dateTime"
+import { debounce } from 'lodash'
 
 const Filter = ({ DataFilter, sortBy, sortValue, setSortBy, setSortValue, search, setsearch, dropdown }) => {
     const queryParams = new URLSearchParams(window.location.search)
@@ -24,6 +25,7 @@ const Filter = ({ DataFilter, sortBy, sortValue, setSortBy, setSortValue, search
     const [dates, setDates] = useState(start_dateURL && end_dateURL ? [new Date(dateString(start_dateURL)), new Date(dateString(end_dateURL))] : undefined)
     const [status, setStatus] = useState('');
     const [keyword, setKeyWord] = useState('');
+    const [valueKeyword, setValueKeyWord] = useState('');
     const location = useLocation()
     const navigate = useNavigate()
     const { pathname } = location
@@ -31,6 +33,7 @@ const Filter = ({ DataFilter, sortBy, sortValue, setSortBy, setSortValue, search
     useEffect(() => {
         if (keywordURL) {
             setKeyWord(keywordURL)
+            setValueKeyWord(keywordURL)
         }
 
         if (sort_byURL) {
@@ -59,6 +62,7 @@ const Filter = ({ DataFilter, sortBy, sortValue, setSortBy, setSortValue, search
         setStatus("")
         setKeyWord("")
         DataFilter({})
+        setValueKeyWord("")
         navigate({
             pathname: pathname,
             search: "",
@@ -77,7 +81,7 @@ const Filter = ({ DataFilter, sortBy, sortValue, setSortBy, setSortValue, search
             data.status = status.trim()
         }
 
-        data.keyword = keyword
+        data.keyword = valueKeyword
 
         if (sortBy !== "" && sortValue !== "" && sortBy) {
             data.sort_by = sortBy
@@ -90,7 +94,7 @@ const Filter = ({ DataFilter, sortBy, sortValue, setSortBy, setSortValue, search
                 result += `&${item}=${data[item]}`
             })
             if (result !== "") {
-                if (keyword === "") {
+                if (valueKeyword === "") {
                     let removeKey = result.replace("keyword=", "")
                     removeKey = result.replace("&keyword=", "")
                     result = removeKey
@@ -100,7 +104,7 @@ const Filter = ({ DataFilter, sortBy, sortValue, setSortBy, setSortValue, search
                 setsearch(newResult)
             }
         }
-    }, [dates, keyword, sortBy, sortValue, status, setsearch])
+    }, [dates, valueKeyword, sortBy, sortValue, status, setsearch])
 
     const sendFilter = React.useCallback(() => {
         let result = search
@@ -124,10 +128,20 @@ const Filter = ({ DataFilter, sortBy, sortValue, setSortBy, setSortValue, search
         const timeout = setTimeout(() => {
             sendFilter()
         }, 700);
-
         return () => clearTimeout(timeout);
-
     }, [sendFilter])
+
+    const debouncedSearch = React.useMemo(
+        () =>
+          debounce(value => {
+            setValueKeyWord(value)
+          }, 750),
+        []
+    )
+    const handleSearchKeyWord =(e)=>{
+        setKeyWord(e)
+        debouncedSearch(e)
+    }
 
     useEffect(() => {
         const handleClickOutSide = (e) => {
@@ -164,7 +178,7 @@ const Filter = ({ DataFilter, sortBy, sortValue, setSortBy, setSortValue, search
                         value={keyword}
                         size="small"
                         className="filter__input--search"
-                        onChange={(e) => setKeyWord(e.target.value)}
+                        onChange={(e)=>handleSearchKeyWord(e.target.value)}
                     />
                     <img src="../../images/search_blue.svg" alt="" className="filter__btn--search" />
                 </Box>

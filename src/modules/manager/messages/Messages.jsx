@@ -1,7 +1,9 @@
 import React from 'react'
 import { timeAgo } from '../../../commons/message.common';
+import { Image } from 'primereact/image';
 
 const Messages = ({ messagesOnRoom, currentUser }) => {
+    const URL = process.env.REACT_APP_API || process.env.REACT_APP_DEV_API
 
     const showMessages = ()=>{
         if(messagesOnRoom?.length > 0){
@@ -23,6 +25,16 @@ const Messages = ({ messagesOnRoom, currentUser }) => {
                                 ?
                                 <>
                                     <div className="message my-message ">
+                                    <div className="grid  justify-content-end">
+                                        {
+                                            message?.images?.length > 0 &&
+                                            message?.images.map((image,index3)=>{
+                                                return (
+                                                    <Image src={`${URL}${image}`} preview alt="Image" className="chat__image col-4 md:col-4 p-1 mb-1" key={index3} />
+                                                )
+                                            })
+                                        }
+                                    </div>
                                     <p>{message?.content}</p>
                                     </div>
                                     <div className="chat_img my-mess" 
@@ -36,6 +48,16 @@ const Messages = ({ messagesOnRoom, currentUser }) => {
                                 <>
                                     <div className="chat_img your-mess" role={message?.from?.split(".")[1]} data-size="small"></div>
                                     <div className="message other-message ">
+                                    <div className="grid  justify-content-start">
+                                        {
+                                            message?.images?.length > 0 &&
+                                            message?.images.map((image,index3)=>{
+                                                return (
+                                                    <Image src={`${URL}${image}`} preview alt="Image" className="chat__image col-4 md:col-4 p-1 mb-1" key={index3} />
+                                                )
+                                            })
+                                        }
+                                    </div>
                                     <p>{message?.content}</p>
                                     </div>
                                     <span className="message_time">
