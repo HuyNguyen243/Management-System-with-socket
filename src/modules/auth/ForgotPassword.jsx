@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router';
 import { useForm } from "react-hook-form";
 import { EMAIL_REGEX } from "../../constants";
@@ -7,19 +7,29 @@ import { useDispatch, useSelector } from "react-redux"
 
 const ForgotPassword = () => {
     const dispatch = useDispatch()
-    const resetpass = useSelector(state=> state.auth?.resetpassword)
-
-    const navigate = useNavigate()
+    const navigate = useNavigate();
+    const resetpass = useSelector(state => state.auth?.resetpassword)
+    const [errorMessage, setErrorMessage] = useState(["",""]);
     const { register, handleSubmit, formState: { errors } } = useForm({});
 
+    useEffect(() => {
+        if (resetpass?.error) {
+            console.log(resetpass?.data);
+            setErrorMessage([false,resetpass?.data])
+        }
+        if (resetpass?.data?.status) {
+            setErrorMessage([true,resetpass?.data?.data?.messager])
+        }
+    }, [resetpass])
     const onSubmit = (data) => {
         if (data) {
             const dataPost = {
                 email: data?.email,
             }
             dispatch(forgotPassword(dataPost))
-
         }
+        console.log(errorMessage);
+
     };
 
     return (
@@ -60,7 +70,12 @@ const ForgotPassword = () => {
                         <button type="submit" >Khôi phục mật khẩu</button>
                     </div>
                 </form>
-                {/* <p className="form__message">Have send email already !</p> */}
+                {errorMessage[0] &&
+                    <p className="form__message">{errorMessage[1]}</p>
+                }
+                { errorMessage[0] === false &&
+                    <p className="form__message form__message_error">{errorMessage[1]}</p>
+                }
             </div>
             <div className="forgotpassword__bg"></div>
         </div>

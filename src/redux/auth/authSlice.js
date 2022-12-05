@@ -208,12 +208,12 @@ const userReducer = createSlice({
             })
             state.user.data = action.payload
         },
-        [forgotPassword.rejected]: (state) => {
+        [forgotPassword.rejected]: (state,action) => {
             Object.assign(state,{},{
                 resetpassword: {
                     loading : false,
                     error : true,
-                    data : null,
+                    data : action.payload,
                 }
             })
         },

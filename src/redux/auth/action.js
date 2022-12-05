@@ -109,7 +109,7 @@ export const forgotPassword = createAsyncThunk(
             const res= await post(`auth/password-reset`,data);
             return res;
         } catch (error) {
-            return rejectWithValue(error?.response?.data);
+            return rejectWithValue(error?.response?.data?.message);
         }
     }
 );
