@@ -101,3 +101,16 @@ export const userChangeStatus = createAsyncThunk(
         }
     }
 );
+
+export const forgotPassword = createAsyncThunk(
+    "forgotPassword",
+    async (data, { rejectWithValue }) => {
+        try {
+            const res= await post(`auth/password-reset`,data);
+            return res;
+        } catch (error) {
+            return rejectWithValue(error?.response?.data);
+        }
+    }
+);
+

@@ -35,14 +35,12 @@ const PaymentManagement = () => {
         if (jobs?.data) {
             data_push.data = {};
             Object.assign(data_push.data, jobs?.data?.infor, jobs?.data?.infor_id, jobs?.data?.cost)
-            dispatch(setIsOpenInformationJob(true))
             dispatch(setDataModalInformationJob(data_push))
         }
     }, [dispatch, jobs]);
 
     useEffect(() => {
         if (employees?.data) {
-            dispatch(setIsOpenModalInformationUser(true))
             dispatch(setDataModalInformationUser(employees))
         }
     }, [employees, dispatch])
@@ -52,12 +50,14 @@ const PaymentManagement = () => {
         if (el.className.includes("id_job")) {
             data.id = el.innerHTML;
             dispatch(getJobsAdminRequest(data));
+            dispatch(setIsOpenInformationJob(true))
         } else if (el.className.includes("staff_is_pay")) {
             //OPEN EDITOR 
             const data = {}
             if (el.innerHTML) {
                 data.id = el.innerHTML;
                 dispatch(getEmployeeRequest(data));
+                dispatch(setIsOpenModalInformationUser(true))
             }
         }
     }

@@ -5,6 +5,7 @@ import {
     userProfile,
     userEditProfile,
     userChangeStatus,
+    forgotPassword,
 } from './action'
 import { NAME_SESSION_STORAGE_TOKEN } from '../../constants';
 
@@ -34,6 +35,11 @@ const initialState = {
         error: false,
     },
     userByToken: null,
+    resetpassword:{
+        loading: false,
+        data : null,
+        error: false,
+    },
 }
 const userReducer = createSlice({
     name: 'user',
@@ -159,7 +165,6 @@ const userReducer = createSlice({
                 }
             })
         },
-
         [userChangeStatus.pending]: (state) => {
             Object.assign(state,{},{
                 userchangestatus:{
@@ -180,6 +185,32 @@ const userReducer = createSlice({
         [userChangeStatus.rejected]: (state) => {
             Object.assign(state,{},{
                 userchangestatus: {
+                    loading : false,
+                    error : true,
+                    data : null,
+                }
+            })
+        },
+        [forgotPassword.pending]: (state) => {
+            Object.assign(state,{},{
+                resetpassword:{
+                    loading : true
+                }
+            })
+        },
+        [forgotPassword.fulfilled]: (state,action) => {
+            Object.assign(state,{},{
+                resetpassword: {
+                    loading : false,
+                    error : false,
+                    data : action.payload,
+                }
+            })
+            state.user.data = action.payload
+        },
+        [forgotPassword.rejected]: (state) => {
+            Object.assign(state,{},{
+                resetpassword: {
                     loading : false,
                     error : true,
                     data : null,
