@@ -6,6 +6,7 @@ import Header from "./modules/layout/Header";
 import { useSelector } from "react-redux";
 import Login from "./modules/auth/Login";
 import ForgotPassword from "./modules/auth/ForgotPassword";
+import ResetPassword from "./modules/auth/ResetPassword";
 import { Navigate } from "react-router";
 import BtnMess from "./modules/layout/messages/BtnMess";
 import Modal from "./modules/modal/Modal";
@@ -61,6 +62,7 @@ function App() {
                 )}
                 <Route path="/login" element={<Login />} />
                 <Route path="/forgot-password" element={<ForgotPassword />} />
+                <Route path="/reset-password" element={<ResetPassword />} />
             </Routes>
             {userIsAuth && (
                 <>

@@ -14,7 +14,6 @@ const ForgotPassword = () => {
 
     useEffect(() => {
         if (resetpass?.error) {
-            console.log(resetpass?.data);
             setErrorMessage([false,resetpass?.data])
         }
         if (resetpass?.data?.status) {
@@ -22,14 +21,12 @@ const ForgotPassword = () => {
         }
     }, [resetpass])
     const onSubmit = (data) => {
-        if (data) {
+        if (data && !resetpass?.data) {
             const dataPost = {
                 email: data?.email,
             }
             dispatch(forgotPassword(dataPost))
         }
-        console.log(errorMessage);
-
     };
 
     return (

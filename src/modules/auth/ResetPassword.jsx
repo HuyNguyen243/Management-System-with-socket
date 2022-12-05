@@ -1,13 +1,29 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router';
 import { useForm } from "react-hook-form";
-import { EMAIL_REGEX } from "../../constants"
+
+import { useDispatch, useSelector } from "react-redux"
 
 const ForgotPassword = () => {
-    const navigate = useNavigate()
+    const dispatch = useDispatch()
+    const navigate = useNavigate();
+    const [errorMessage, setErrorMessage] = useState(["", ""]);
     const { register, handleSubmit, formState: { errors } } = useForm({});
+    const queryParams = new URLSearchParams(window.location.search)
 
-    const onSubmit = (data) => { console.log(data) };
+    const onSubmit = (data) => {
+        let id = queryParams.get("id");
+        let token = queryParams.get("token");
+        if (data && id && token) {
+            const dataPost = {
+                password: data?.password,
+                repassword: data?.repassword,
+                id: id,
+                token: token,
+            }
+        }
+        
+    };
 
     return (
         <div className="login__container">
@@ -21,23 +37,41 @@ const ForgotPassword = () => {
                 </div>
                 <form onSubmit={handleSubmit(onSubmit)} className="forgot__form">
                     <div className="form__email">
-                        <p>Email:</p>
+                        <p>Nhập mật khẩu mới:</p>
                         <div className="form__input">
-                            <input type="text" placeholder="Nhập mail của bạn" name="email"
-                                {...register("email",
+                            <input type="password" placeholder="Nhập mật khẩu mới của bạn" name="password"
+                                {...register("password",
                                     {
-                                        required: { value: true, message: "Email không được để trống" },
-                                        maxLength: 55,
-                                        pattern: {
-                                            value: EMAIL_REGEX,
-                                            message: "Email không hợp lệ"
+                                        required: { value: true, message: "Mật khẩu không được để trống" },
+                                        minLength: {
+                                            value: 8,
+                                            message: 'Mật khẩu dài hơn 8 kí tự'
                                         }
                                     })}
                             />
                         </div>
                         {
-                            errors?.email?.message &&
-                            <span className="form__error">{errors?.email?.message}</span>
+                            errors?.password?.message &&
+                            <span className="form__error">{errors?.password?.message}</span>
+                        }
+                    </div>
+                    <div className="form__email">
+                        <p>Nhập lại mật khẩu:</p>
+                        <div className="form__input">
+                            <input type="password" placeholder="Nhập mật khẩu mới của bạn" name="repassword"
+                                {...register("repassword",
+                                    {
+                                        required: { value: true, message: "Mật khẩu không được để trống" },
+                                        minLength: {
+                                            value: 8,
+                                            message: 'Mật khẩu dài hơn 8 kí tự'
+                                        }
+                                    })}
+                            />
+                        </div>
+                        {
+                            errors?.repassword?.message &&
+                            <span className="form__error">{errors?.repassword?.message}</span>
                         }
                     </div>
                     <div className="form__forgotpwd">
@@ -47,7 +81,12 @@ const ForgotPassword = () => {
                         <button type="submit" >Khôi phục mật khẩu</button>
                     </div>
                 </form>
-                {/* <p className="form__message">Have send email already !</p> */}
+                {errorMessage[0] &&
+                    <p className="form__message">{errorMessage[1]}</p>
+                }
+                {errorMessage[0] === false &&
+                    <p className="form__message form__message_error">{errorMessage[1]}</p>
+                }
             </div>
             <div className="forgotpassword__bg"></div>
         </div>
