@@ -1,10 +1,12 @@
-import React from 'react'
+import React,{ useRef } from 'react'
 import { orderIds } from '../../../../commons/message.common';
 import { NAME_ROOM } from '../../../../constants';
 import { socket } from "../../../../_services/socket";
 import { CharacterRoom } from '../../../../commons/message.common';
 import { roomStorage } from '../../../../commons/message.common';
 import { UserRules } from '../../../../constants';
+import {useSelector ,useDispatch} from "react-redux"
+import {  userScrollTop } from '../../../../redux/messages/messageSlice';
 
 const Members = ({ 
     members, 
@@ -17,8 +19,12 @@ const Members = ({
     setPrivateGroupMsg, 
     setNamePrivateRoom,
 }) => {
+    const userTopRef = useRef(null);
+    const isScrollTop = useSelector(state=>state.message.usersScrollTop)
+    const dispatch = useDispatch()
 
     const handlePrivateRoom = (member)=>{
+
         setPrivateMemberMsg(member?.id_system)
         setRole(member?.role)
         const roomId = orderIds(currentUser?.id_system, member?.id_system, NAME_ROOM.USER)
@@ -30,11 +36,26 @@ const Members = ({
         //SAVESTORAGE
         roomStorage.set("", "", roomId, member?.role, [], CharacterRoom(member?.role), member?.id_system)
     }
+
+    React.useEffect(()=>{
+        if(isScrollTop){
+            scrollToTop()
+            setTimeout(() => {
+                dispatch(userScrollTop(false))
+            },[700])
+        }
+    })
+
+    const scrollToTop = () => {
+        userTopRef.current?.scrollIntoView({ behavior: "smooth" });
+    }
+
   return (
     <>
         <li>
             <span className="title_members">Thành viên</span>
         </li>
+        <div ref={userTopRef}></div>
         { 
             members?.map((member,index)=>(
                 <div key={index}>

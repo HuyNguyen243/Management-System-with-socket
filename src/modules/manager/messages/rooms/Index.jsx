@@ -305,6 +305,7 @@ const Index = (
                 setCurrentRoom={setCurrentRoom}
                 setMessageOnRoom={setMessageOnRoom}
             />
+
             <Members 
                 members={membersAfterSort} 
                 currentUser={currentUser} 

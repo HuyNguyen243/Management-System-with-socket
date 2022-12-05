@@ -91,7 +91,7 @@ const CreateUser = () => {
                                 <span className="p-float-label">
                                     <Controller name="fullname"
                                         control={control}
-                                        rules={{ required: true }} render={({ field, fieldState }) => (
+                                        rules={{ required: "Chưa điền tên nhân viên" }} render={({ field, fieldState }) => (
                                             <InputText
                                                 autoComplete="off"
                                                 id={field.name}
@@ -100,13 +100,16 @@ const CreateUser = () => {
                                             />
                                         )} />
                                 </span>
+                            {
+                                errors?.fullname &&  <span className="warning" style={{fontSize:"12px"}}>{errors?.fullname.message}</span>
+                            }
                             </div>
                             <div className="field col-12 md:col-12">
                                 <span >Nhập tên đăng nhập: <span className="warning">*</span></span>
                                 <span className="p-float-label">
                                     <Controller name="username"
                                         control={control}
-                                        rules={{ required: true }} render={({ field, fieldState }) => (
+                                        rules={{ required: "Chưa điền tên đăng nhập" }} render={({ field, fieldState }) => (
                                             <InputText
                                                 onKeyPress={(event) => {
                                                     if (event.key === " ") {
@@ -121,6 +124,9 @@ const CreateUser = () => {
                                         )} />
                                     <img src="images/copy.svg" alt="" label="Bottom Left" className='copy__icon absolute copy__name' onClick={() => copyToClipboard("name")} />
                                 </span>
+                                {
+                                    errors?.username &&  <span className="warning" style={{fontSize:"12px"}}>{errors?.username.message}</span>
+                                }
                             </div>
                             <div className="field col-12 md:col-12">
                                 <span htmlFor="autocomplete">Mật khẩu mặc định:</span>
@@ -172,7 +178,7 @@ const CreateUser = () => {
                                 <span className="p-float-label">
                                     <Controller name="phone"
                                         control={control}
-                                        rules={{ required: true, pattern: { value: PHONE_REGEX } }} render={({ field, fieldState }) => (
+                                        rules={{ required: "chưa điền số điện thoại", pattern: { value: PHONE_REGEX } }} render={({ field, fieldState }) => (
                                             <InputText
                                                 onKeyPress={(event) => {
                                                     if (!/[0-9]/.test(event.key)) {
@@ -186,13 +192,19 @@ const CreateUser = () => {
                                             />
                                         )} />
                                 </span>
+                                {
+                                    errors?.phone &&  <span className="warning" style={{fontSize:"12px"}}>{errors?.phone.message}</span>
+                                }
+                                {
+                                    errors?.phone?.type === "pattern" &&  <span className="warning" style={{fontSize:"12px"}}>Số điện thoại không hợp lệ</span>
+                                }
                             </div>
                             <div className="field col-12 md:col-6">
                                 <span htmlFor="employees">Chức vụ: <span className="warning">*</span></span>
                                 <span className="p-float-label">
                                     <Controller name="role"
                                         control={control}
-                                        rules={{ required: true }} render={({ field, fieldState }) => (
+                                        rules={{ required: "Chọn chức vụ" }} render={({ field, fieldState }) => (
                                             <Dropdown
                                                 options={role}
                                                 optionLabel="name"
@@ -201,13 +213,16 @@ const CreateUser = () => {
                                             />
                                         )} />
                                 </span>
+                                {
+                                    errors?.role &&  <span className="warning" style={{fontSize:"12px"}}>{errors?.role.message}</span>
+                                }
                             </div>
                             <div className="field col-12 md:col-6">
                                 <span htmlFor="original__link">Email: <span className="warning">*</span></span>
                                 <span className="p-float-label">
                                     <Controller name="email"
                                         control={control}
-                                        rules={{ required: true, pattern: { value: EMAIL_REGEX } }} render={({ field, fieldState }) => (
+                                        rules={{ required: "Chưa điền email", pattern: { value: EMAIL_REGEX } }} render={({ field, fieldState }) => (
                                             <InputText
                                                 autoComplete="disabled"
                                                 id={field.name}
@@ -216,6 +231,12 @@ const CreateUser = () => {
                                             />
                                         )} />
                                 </span>
+                                {
+                                    errors?.email &&  <span className="warning" style={{fontSize:"12px"}}>{errors?.email.message}</span>
+                                }
+                                {
+                                    errors?.email?.type === "pattern" &&  <span className="warning" style={{fontSize:"12px"}}>Email không hợp lệ</span>
+                                }
                             </div>
 
                             <div className="field col-12 md:col-6">

@@ -149,3 +149,7 @@
     position: absolute;
     right: 0px;
 }
+
+.p-inputtext:enabled:focus {
+    border-color: inherit;
+}

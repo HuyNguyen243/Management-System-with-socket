@@ -4,7 +4,6 @@ import { Sidebar } from 'primereact/sidebar';
 import { InputText } from 'primereact/inputtext';
 import { Calendar } from 'primereact/calendar';
 import { Button } from 'primereact/button';
-import { AutoComplete } from 'primereact/autocomplete';
 import { useForm, Controller } from 'react-hook-form';
 import { classNames } from 'primereact/utils';
 import { addCustomerRequest } from '../../redux/sale/action';
@@ -12,9 +11,9 @@ import { useDispatch,useSelector } from 'react-redux';
 import { CustomerRules } from '../../constants';
 import { Toast } from 'primereact/toast';
 import { getCountries } from '../../commons/getCountry';
+import { Dropdown } from 'primereact/dropdown';
 
 import { EMAIL_REGEX, PHONE_REGEX } from '../../constants';
-import { searchDropdown } from '../../commons/searchDropDown';
 import { toastMsg } from '../../commons/toast';
 import { setIsOpenModalCreateCustomer } from '../../redux/modal/modalSlice';
 
@@ -34,10 +33,8 @@ const CreateCustomer = () => {
     const { control, formState: { errors }, handleSubmit, reset, setValue } = useForm({ defaultValues });
     const user = useSelector(state=>state.auth?.user)
     const customer = useSelector(state=>state.sale.customer)
-    const [countries,setCountries] =React.useState(null)
-    const [filteredCountry, setFilteredCountry] = React.useState(null); 
-    const [cities,setCities] = React.useState(null);
-    const [filteredCity, setFilteredCity] = React.useState(null); 
+    const [countries,setCountries] =React.useState([])
+    const [cities,setCities] = React.useState([]);
 
     useEffect(() => {
         const getcountries = new getCountries()
@@ -70,7 +67,7 @@ const CreateCustomer = () => {
             setCities(countries[e.value])
         }
     }
-
+    console.log(errors)
   return (
     <>
         <Toast ref={toast} position="bottom-left"/>
@@ -85,7 +82,7 @@ const CreateCustomer = () => {
                             <span htmlFor="autocomplete">Nhập tên khách hàng: <span className="warning">*</span></span>
                                 <Controller name="fullname" 
                                     control={control} 
-                                    rules={{ required: true }} render={({ field, fieldState }) => (
+                                    rules={{ required: "Chưa điền tên khách hàng" }} render={({ field, fieldState }) => (
                                     <InputText 
                                     id={field.name} 
                                     {...field}
@@ -93,6 +90,9 @@ const CreateCustomer = () => {
                                     placeholder="Tên khách hàng"
                                     />
                                 )} />
+                                {
+                                errors?.fullname &&  <span className="warning" style={{fontSize:"12px"}}>{errors?.fullname.message}</span>
+                                }
                         </div>
                         <div className="field col-12 md:col-6 create__job--calendar">
                             <span htmlFor="calendar">Ngày tháng năm sinh:<span className="warning">*</span></span>
@@ -111,7 +111,7 @@ const CreateCustomer = () => {
                             <span htmlFor="withoutgrouping">Số điện thoại: <span className="warning">*</span></span>
                                 <Controller name="phone" 
                                     control={control} 
-                                    rules={{ required: true,pattern:{value: PHONE_REGEX} }} render={({ field, fieldState }) => (
+                                    rules={{ required: "Chưa điền số điện thoại" ,pattern:{value: PHONE_REGEX} }} render={({ field, fieldState }) => (
                                     <InputText  
                                     id={field.name} 
                                     {...field}
@@ -119,12 +119,18 @@ const CreateCustomer = () => {
                                     placeholder="Số điện thoại"
                                     />
                                 )} />
+                            {
+                                errors?.phone &&  <span className="warning" style={{fontSize:"12px"}}>{errors?.phone.message}</span>
+                            }
+                            {
+                                errors?.phone?.type === "pattern" &&  <span className="warning" style={{fontSize:"12px"}}>Số điện thoại không hợp lệ</span>
+                            }
                         </div> 
                         <div className="field col-12 md:col-6">
                             <span htmlFor="original__link">Email: <span className="warning">*</span></span>
                                 <Controller name="email" 
                                     control={control} 
-                                    rules={{ required: true,pattern:{value:EMAIL_REGEX} }} render={({ field, fieldState }) => (
+                                    rules={{ required: "Chưa điền địa chỉ email",pattern:{value:EMAIL_REGEX} }} render={({ field, fieldState }) => (
                                     <InputText 
                                     id={field.name} 
                                     {...field}
@@ -132,46 +138,55 @@ const CreateCustomer = () => {
                                     placeholder="Nhập email"
                                     />
                                 )} />
+                            {
+                                errors?.email &&  <span className="warning" style={{fontSize:"12px"}}>{errors?.email.message}</span>
+                            }
+                            {
+                                errors?.email?.type === "pattern" &&  <span className="warning" style={{fontSize:"12px"}}>Email không hợp lệ</span>
+                            }
                         </div>
                         <div className="field col-12 md:col-6">
                             <span htmlFor="original__link">Quốc gia: <span className="warning">*</span></span>
                                 <Controller name="country" 
                                     control={control} 
-                                    rules={{ required: true }} render={({ field, fieldState }) => (
-                                    <AutoComplete 
-                                    suggestions={filteredCountry}
-                                    completeMethod={(e)=>searchDropdown(e,countries,setFilteredCountry)} field=""
-                                    aria-label="Countries"
-                                    id={field.name}
-                                    value={field.value} onChange={(e) =>handleChangeCountry(e,field)}
-                                    className={classNames({ 'p-invalid': fieldState.invalid })}
-                                    dropdownAriaLabel="Select name" 
-                                    placeholder="Quốc gia"
+                                    rules={{ required: "Chọn quốc gia" }} render={({ field, fieldState }) => (
+                                    <Dropdown
+                                        options={Object?.keys(countries) || []}
+                                        optionLabel=""
+                                        value={field.value}
+                                        onChange={(e) =>{handleChangeCountry(e,field) }}
+                                        placeholder="Quốc gia"
+                                        className={classNames({ 'p-invalid': fieldState.invalid })}
                                     />
                                 )} />
+                            {
+                                errors?.country &&  <span className="warning" style={{fontSize:"12px"}}>{errors?.country.message}</span>
+                            }
                         </div>
                         <div className="field col-12 md:col-6">
                             <span htmlFor="cost">Thành phố: <span className="warning">*</span></span>
                                 <Controller name="city" 
                                     control={control} 
-                                    rules={{ required: true }} render={({ field, fieldState }) => (
-                                    <AutoComplete 
-                                    suggestions={filteredCity}
-                                    completeMethod={(e)=>searchDropdown(e,cities,setFilteredCity)} field=""
-                                    aria-label="Cities" 
-                                    id={field.name}
-                                    value={field.value} onChange={(e) =>{field.onChange(e.value)}}
-                                    className={classNames({ 'p-invalid': fieldState.invalid })}
-                                    dropdownAriaLabel="Select name"
-                                    placeholder="Thành phố"
+                                    rules={{ required: "Chọn thành phố" }} render={({ field, fieldState }) => (
+                                    <Dropdown
+                                        options={cities}
+                                        optionLabel=""
+                                        value={field.value}
+                                        onChange={(e) =>{field.onChange(e.value)}}
+                                        disabled={!cities ? true : false}
+                                        placeholder="Thành phố"
+                                        className={classNames({ 'p-invalid': fieldState.invalid })}
                                     />
                                 )} />
+                            {
+                                errors?.city &&  <span className="warning" style={{fontSize:"12px"}}>{errors?.city.message}</span>
+                            }
                         </div>
                         <div className="field col-12 md:col-6">
                             <span htmlFor="employees">Địa chỉ: <span className="warning">*</span></span>
                                 <Controller name="address" 
                                     control={control} 
-                                    rules={{ required: true }} render={({ field, fieldState }) => (
+                                    rules={{ required: "Chưa điền địa chỉ" }} render={({ field, fieldState }) => (
                                     <InputText 
                                     id={field.name} 
                                     {...field}
@@ -179,6 +194,9 @@ const CreateCustomer = () => {
                                     placeholder="Địa chỉ"
                                     />
                                 )} />
+                            {
+                                errors?.address &&  <span className="warning" style={{fontSize:"12px"}}>{errors?.address.message}</span>
+                            }
                         </div>
                     </div>
                     <div className="btn_modal field col-12 md:col-12 grid position_bottom">

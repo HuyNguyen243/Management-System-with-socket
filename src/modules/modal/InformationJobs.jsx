@@ -442,7 +442,6 @@ const InformationJobs = () => {
                                     className="aria_content mt-3"
                                     value={requestContent}
                                     onChange={(e) => { setRequestContent(e.target.value); setValue("request_content", e.target.value) }}
-                                    {...register("request_content", { required: true })}
                                     style={{ height: "150px" }}
                                 />
 

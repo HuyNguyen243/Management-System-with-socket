@@ -151,7 +151,7 @@ const Table = ({
             breakpoint="1113px"
             onRowClick={handleRowClick}
             paginator 
-            paginatorTemplate={Object.keys(old_Data).length > 0 ? paginate : false} 
+            paginatorTemplate={Object.keys(old_Data).length > perpage ? paginate : false} 
             first={currentLocation}
             rows={perpage} 
             onPage={handleSetPage}

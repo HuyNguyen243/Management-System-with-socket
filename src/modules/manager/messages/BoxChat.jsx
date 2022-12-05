@@ -4,7 +4,7 @@ import { socket } from "../../../_services/socket";
 import { getFormattedDate } from '../../../commons/message.common';
 import { NAME_ROOM } from '../../../constants';
 import { useDispatch, useSelector } from 'react-redux';
-import { setIsOpenChat } from '../../../redux/messages/messageSlice';
+import { setIsOpenChat, userScrollTop } from '../../../redux/messages/messageSlice';
 
 import Modal from "./Modal";
 import { UserRules } from '../../../constants';
@@ -31,6 +31,7 @@ const BoxChat = () => {
     const [multiImages, setMultiImages] = useState([])
     
     const messageEndRef = useRef(null);
+
     const dispatch = useDispatch()
     const isOpenChat = useSelector(state=>state.message.isOpenChat)
     const [isOpenCreateGroup, setIsOpenCreateGroup] = useState(false);
@@ -45,7 +46,7 @@ const BoxChat = () => {
     const scrollToBottom = () => {
         messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
     }
-    
+
     //------------------------------
     //join room
     const joinRoom = React.useCallback((room) => {
@@ -107,9 +108,9 @@ const BoxChat = () => {
             let images = "";
             if(multiImages.length > 0){
                 images = multiImages
-                socket.emit('message-room', nameRoom, "", currentUser?.id_system, time, toDayDate, allmembers, type, groups_id, privateMemberMsg, images)
             }
-            socket.emit('message-room', nameRoom, messages, currentUser?.id_system, time, toDayDate, allmembers, type, groups_id, privateMemberMsg)
+            socket.emit('message-room', nameRoom, messages, currentUser?.id_system, time, toDayDate, allmembers, type, groups_id, privateMemberMsg,images)
+            dispatch(userScrollTop(true))
             setMessages("")
             setMultiPreviewImages([])
             setMultiImages([])
@@ -248,7 +249,7 @@ const BoxChat = () => {
         {/* end chat-header */}
         <div className={`chat-history relative ${multiPreviewImages.length > 0 && "have__img"} ${ !currentRoom ? "full_chat" : ""}`} >
             <ul>
-                <Messages messagesOnRoom={messagesOnRoom}  currentUser={currentUser}/>
+                <Messages messagesOnRoom={messagesOnRoom}  currentUser={currentUser} />
             </ul>
             <div ref={messageEndRef} />
         </div> 

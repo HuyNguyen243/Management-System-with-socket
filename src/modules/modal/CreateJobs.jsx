@@ -70,7 +70,7 @@ const CreateJobs = () => {
             dispatch(addJobsRequest(data))
         }
     };
-
+    console.log(errors)
     const handleCloseModal = () => {
         dispatch(setIsOpenModalCreateJob(false));
         setCustomerSelect(null)
@@ -98,7 +98,7 @@ const CreateJobs = () => {
                                 <span className="">
                                     <Controller name="nameCustomer"
                                         control={control}
-                                        rules={{ required: true }} render={({ field, fieldState }) => (
+                                        rules={{ required: "Chưa chọn khách hàng" }} render={({ field, fieldState }) => (
                                             <Dropdown
                                             options={customers.data}
                                             optionLabel="fullname"
@@ -107,6 +107,9 @@ const CreateJobs = () => {
                                             />
                                         )} />
                                 </span>
+                                {
+                                    errors?.nameCustomer &&  <span className="warning" style={{fontSize:"12px"}}>{errors?.nameCustomer.message}</span>
+                                }
                             </div>
                             <div className="field col-12 md:col-6">
                                 <span>Mã khách hàng: </span>
@@ -122,7 +125,7 @@ const CreateJobs = () => {
                                 <span className="p-float-label ">
                                     <Controller name="end_day"
                                         control={control}
-                                        rules={{ required: true }} render={({ field, fieldState }) => (
+                                        rules={{ required: "Chọn ngày hết hạn" }} render={({ field, fieldState }) => (
                                             <Calendar
                                                 readOnlyInput
                                                 minDate={minDate}
@@ -132,36 +135,45 @@ const CreateJobs = () => {
                                         )} />
                                 </span>
                                 <img src="/images/calendar.svg" alt="" className="calendar__image" />
+                                {
+                                errors?.end_day &&  <span className="warning" style={{fontSize:"12px"}}>{errors?.end_day.message}</span>
+                                }
                             </div>
                             <div className="field col-12 md:col-3">
                                 <span htmlFor="type_models">Loại ảnh: <span className="warning">*</span></span>
                                 <span className="p-float-label">
                                     <Controller name="type_models"
                                         control={control}
-                                        rules={{ required: true }} render={({ field, fieldState }) => (
+                                        rules={{ required: "Chưa điền loại ảnh" }} render={({ field, fieldState }) => (
                                             <InputText id={field.name}
                                                 {...field}
                                                 className={classNames({ 'p-invalid': fieldState.invalid })}
                                             />
                                         )} />
                                 </span>
+                                {
+                                errors?.type_models &&  <span className="warning" style={{fontSize:"12px"}}>{errors?.type_models.message}</span>
+                                }
                             </div>
                             <div className="field col-12 md:col-3 ">
                                 <span htmlFor="withoutgrouping">Số lượng: <span className="warning">*</span></span>
                                 <span className="p-float-label">
                                     <Controller name="quality_img"
                                         control={control}
-                                        rules={{ required: true }} render={({ field, fieldState }) => (
-                                            <InputNumber value={field.value} onValueChange={(e) => field.onChange(e.value)} mode="decimal" />
+                                        rules={{ required: "Chưa điền số lượng" }} render={({ field, fieldState }) => (
+                                            <InputNumber value={field.value} onValueChange={(e) => field.onChange(e.value)} mode="decimal"  className={classNames({ 'p-invalid': fieldState.invalid })}/>
                                         )} />
                                 </span>
+                                {
+                                errors?.quality_img &&  <span className="warning" style={{fontSize:"12px"}}>{errors?.quality_img.message}</span>
+                                }
                             </div>
                             <div className="field col-12 md:col-6">
                                 <span htmlFor="original__link">Link ảnh gốc: <span className="warning">*</span></span>
                                 <span className="p-float-label">
                                     <Controller name="org_link"
                                         control={control}
-                                        rules={{ required: true }} render={({ field, fieldState }) => (
+                                        rules={{ required: "Chưa điền link ảnh gốc" }} render={({ field, fieldState }) => (
                                             <InputText
                                                 id={field.name}
                                                 {...field}
@@ -169,13 +181,16 @@ const CreateJobs = () => {
                                             />
                                         )} />
                                 </span>
+                                {
+                                errors?.org_link &&  <span className="warning" style={{fontSize:"12px"}}>{errors?.org_link.message}</span>
+                                }
                             </div>
                             <div className="field col-12 md:col-6">
                                 <span htmlFor="original__link">Định dạng file: <span className="warning">*</span></span>
                                 <span className="p-float-label">
                                     <Controller name="photo_types"
                                         control={control}
-                                        rules={{ required: true }} render={({ field, fieldState }) => (
+                                        rules={{ required: "Chọn định dạng file ảnh" }} render={({ field, fieldState }) => (
                                             <Dropdown
                                                 options={type_files}
                                                 optionLabel="name"
@@ -184,13 +199,16 @@ const CreateJobs = () => {
                                             />
                                         )} />
                                 </span>
+                                {
+                                errors?.photo_types &&  <span className="warning" style={{fontSize:"12px"}}>{errors?.photo_types.message}</span>
+                                }
                             </div>
                             <div className="field col-12 md:col-6">
                                 <span htmlFor="cost">Chi phí: <span className="warning">*</span></span>
                                 <span className="p-float-label">
                                     <Controller name="total_cost"
                                         control={control}
-                                        rules={{ required: true }} render={({ field, fieldState }) => (
+                                        rules={{ required: "Chưa điền Chi phí" }} render={({ field, fieldState }) => (
                                             <InputNumber id="total_cost"
                                                 inputId="currency-us"
                                                 value={field.value} onChange={(e) => field.onChange(e.value)}
@@ -203,6 +221,9 @@ const CreateJobs = () => {
                                             />
                                         )} />
                                 </span>
+                                {
+                                errors?.total_cost &&  <span className="warning" style={{fontSize:"12px"}}>{errors?.total_cost.message}</span>
+                                }
                             </div>
                             {
                                 user?.data?.role === "ADMIN" &&
@@ -230,7 +251,7 @@ const CreateJobs = () => {
                                 <span className="p-float-label">
                                     <Controller name="request_content"
                                         control={control}
-                                        rules={{ required: true }} render={({ field, fieldState }) => (
+                                        rules={{ required: "Chưa điền nội dung yêu cầu" }} render={({ field, fieldState }) => (
                                             <InputTextarea
                                                 autoResize
                                                 id={field.name}
@@ -239,13 +260,16 @@ const CreateJobs = () => {
                                             />
                                     )} />
                                 </span>
+                                {
+                                errors?.request_content &&  <span className="warning" style={{fontSize:"12px"}}>{errors?.request_content.message}</span>
+                                }
                             </div>
                             <div className="field col-12 md:col-12">
                                 <span className="p-float-label">
                                     <span >Lưu ý của khách hàng:<span className="warning">*</span></span>
                                     <Controller name="work_notes"
                                         control={control}
-                                        rules={{ required: true }} render={({ field, fieldState }) => (
+                                        rules={{ required: "Chưa điền lưu ý của khách hàng" }} render={({ field, fieldState }) => (
                                             <InputTextarea
                                                 autoResize
                                                 id={field.name}
@@ -254,6 +278,9 @@ const CreateJobs = () => {
                                             />
                                         )} />
                                 </span>
+                                {
+                                errors?.work_notes &&  <span className="warning" style={{fontSize:"12px"}}>{errors?.work_notes.message}</span>
+                                }
                             </div>
                             <div className="field col-12 md:col-12 ">
 

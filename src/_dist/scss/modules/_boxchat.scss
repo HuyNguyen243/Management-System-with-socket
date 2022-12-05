@@ -185,7 +185,7 @@
       
       .message {      
         color: $color-black;
-        padding: 5px 10px;
+        padding: 5px 0px;
         line-height: 26px;
         font-size: 13px;
         border-radius: 7px;
@@ -195,7 +195,7 @@
         overflow-wrap: break-word;
         display: flex;
         justify-content: center;
-        align-items: center;
+        flex-direction: column;
         &:after {
           bottom: 100%;
           left: 7%;
@@ -207,6 +207,9 @@
           pointer-events: none;
           border-width: 10px;
           margin-left: -10px;
+        }
+        p{
+          margin-bottom: 8px;
         }
       }
       

@@ -1,5 +1,4 @@
 import React,{ useState, useEffect } from 'react'
-import TextField from '@mui/material/TextField';
 import { useSelector, useDispatch } from "react-redux"
 import { socket } from "../../../_services/socket";
 import { NAME_ROOM } from '../../../constants';
@@ -14,10 +13,8 @@ import { postFireBaseNotification } from '../../../_services/apiRequest';
 
 
 const Messages = ({isOpenMessages, setisOpenMessages}) => {
-    const [keyword,setKeyWord] = useState("")
     const [messages,setMessages] = useState([])
     const [token,setToken] = useState(null)
-    const [originalMessages,setOriginalMessages] = useState([])
     const user = useSelector(state=> state.auth.user)
     const currentUser = useSelector(state=> state.message.currentUser)
     const dispatch = useDispatch()
@@ -37,7 +34,6 @@ const Messages = ({isOpenMessages, setisOpenMessages}) => {
 
     socket.off("messages-by-id-system").on("messages-by-id-system", (payload)=>{
         setMessages(payload)
-        setOriginalMessages(payload)
         dispatch(getMsgsByIdSystem(payload))
         if(payload.length > 0){
             if(token && currentUser && currentUser?.newMessages){
@@ -129,34 +125,12 @@ const Messages = ({isOpenMessages, setisOpenMessages}) => {
         }
     }
 
-    const searchMessages = (e)=>{
-        const { value } = e.target
-        setKeyWord(value)
-        const newMessages = messages.filter(message=>{
-            return replaceName(message?._id).toLowerCase().includes(value.toLowerCase())
-        })
-        
-        if(value !== ""){
-            setMessages(newMessages)
-        }else{
-            setMessages(originalMessages)
-        }
-    }
+
 
     return (
         <div className={`notification-message__container ${!isOpenMessages && "hidden"}`}>
             <div className="notification-message__title">
                 <h5>Tin nhắn</h5>
-                <div className="notification-message__search">
-                <TextField
-                    label="Tìm kiếm"
-                    id="outlined-size-small"
-                    value={keyword}
-                    size="small"
-                    onChange={searchMessages}
-                />
-                    <img src="../../images/search_blue.svg" alt="" className="filter__btn--search"/>
-                </div>
             </div>
             <div className="mess_notification">
                 {

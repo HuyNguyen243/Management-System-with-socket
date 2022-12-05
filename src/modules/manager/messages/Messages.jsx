@@ -1,9 +1,10 @@
-import React from 'react'
+import React,{useState} from 'react'
 import { timeAgo } from '../../../commons/message.common';
 import { Image } from 'primereact/image';
 
 const Messages = ({ messagesOnRoom, currentUser }) => {
     const URL = process.env.REACT_APP_API || process.env.REACT_APP_DEV_API
+    const [currentTime,setCurrentTime] = useState(null)
 
     const showMessages = ()=>{
         if(messagesOnRoom?.length > 0){
@@ -19,12 +20,13 @@ const Messages = ({ messagesOnRoom, currentUser }) => {
                     return (
                             <li className={`relative ${checkUserSend && "clearfix"}`} key={index2}>
                             {/* <p className="message-data-alert">Editor đã hoàn thành job 23454.S34568</p> */}
-                            <div className={`msg__by--user flex ${checkUserSend ? "justify-content-end" : "justify-content-start"}`}>
+                            <div className={`msg__by--user flex ${checkUserSend ? "justify-content-end" : "justify-content-start"}`} onClick={()=>setCurrentTime(message?._id)}>
                                 {
                                 checkUserSend 
                                 ?
                                 <>
-                                    <div className="message my-message ">
+                                    <div className="message my-message align-items-end ">
+                                    <p>{message?.content}</p>
                                     <div className="grid  justify-content-end">
                                         {
                                             message?.images?.length > 0 &&
@@ -35,19 +37,19 @@ const Messages = ({ messagesOnRoom, currentUser }) => {
                                             })
                                         }
                                     </div>
-                                    <p>{message?.content}</p>
                                     </div>
                                     <div className="chat_img my-mess" 
                                     role={message?.from?.split(".")[1]} 
                                     data-size="small"></div>
-                                    <span className="message_time">
+                                    <span className={`message_time ${currentTime === message?._id && "opacity-100 transition-ease-in transition-duration-300"}`}>
                                     {timeAgo(message?.time)}
                                     </span>
                                 </>
                                 :
                                 <>
                                     <div className="chat_img your-mess" role={message?.from?.split(".")[1]} data-size="small"></div>
-                                    <div className="message other-message ">
+                                    <div className="message other-message align-items-start">
+                                    <p>{message?.content}</p>
                                     <div className="grid  justify-content-start">
                                         {
                                             message?.images?.length > 0 &&
@@ -58,9 +60,8 @@ const Messages = ({ messagesOnRoom, currentUser }) => {
                                             })
                                         }
                                     </div>
-                                    <p>{message?.content}</p>
                                     </div>
-                                    <span className="message_time">
+                                    <span className={`message_time ${currentTime === message?._id && "opacity-100 transition-ease-in transition-duration-300"}`}>
                                     {timeAgo(message?.time)}
                                     </span>
                                 </>
