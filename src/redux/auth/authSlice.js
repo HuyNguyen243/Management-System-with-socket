@@ -6,6 +6,7 @@ import {
     userEditProfile,
     userChangeStatus,
     forgotPassword,
+    resetPassword
 } from './action'
 import { NAME_SESSION_STORAGE_TOKEN } from '../../constants';
 
@@ -35,6 +36,11 @@ const initialState = {
         error: false,
     },
     userByToken: null,
+    forgotpassword:{
+        loading: false,
+        data : null,
+        error: false,
+    },
     resetpassword:{
         loading: false,
         data : null,
@@ -193,12 +199,37 @@ const userReducer = createSlice({
         },
         [forgotPassword.pending]: (state) => {
             Object.assign(state,{},{
-                resetpassword:{
+                forgotpassword:{
                     loading : true
                 }
             })
         },
         [forgotPassword.fulfilled]: (state,action) => {
+            Object.assign(state,{},{
+                forgotpassword: {
+                    loading : false,
+                    error : false,
+                    data : action.payload,
+                }
+            })
+        },
+        [forgotPassword.rejected]: (state,action) => {
+            Object.assign(state,{},{
+                forgotpassword: {
+                    loading : false,
+                    error : true,
+                    data : action.payload,
+                }
+            })
+        },
+        [resetPassword.pending]: (state) => {
+            Object.assign(state,{},{
+                resetpassword:{
+                    loading : true
+                }
+            })
+        },
+        [resetPassword.fulfilled]: (state,action) => {
             Object.assign(state,{},{
                 resetpassword: {
                     loading : false,
@@ -206,9 +237,8 @@ const userReducer = createSlice({
                     data : action.payload,
                 }
             })
-            state.user.data = action.payload
         },
-        [forgotPassword.rejected]: (state,action) => {
+        [resetPassword.rejected]: (state,action) => {
             Object.assign(state,{},{
                 resetpassword: {
                     loading : false,

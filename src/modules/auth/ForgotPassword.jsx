@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux"
 const ForgotPassword = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate();
-    const resetpass = useSelector(state => state.auth?.resetpassword)
+    const resetpass = useSelector(state => state.auth?.forgotpassword)
     const [errorMessage, setErrorMessage] = useState(["",""]);
     const { register, handleSubmit, formState: { errors } } = useForm({});
 

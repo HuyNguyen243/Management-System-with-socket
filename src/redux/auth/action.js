@@ -114,3 +114,19 @@ export const forgotPassword = createAsyncThunk(
     }
 );
 
+export const resetPassword = createAsyncThunk(
+    "resetPassword",
+    async (data, { rejectWithValue }) => {
+        try {
+            if(!data?.token)
+            {
+                return false;
+            }
+            const res= await put(`auth/password-reset/${data?.id}`,data);
+            return res;
+        } catch (error) {
+            return rejectWithValue(error?.response?.data?.message);
+        }
+    }
+);
+

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router';
 import { useForm } from "react-hook-form";
-
+import { resetPassword } from '../../redux/auth/action';
 import { useDispatch, useSelector } from "react-redux"
 
 const ForgotPassword = () => {
@@ -10,19 +10,38 @@ const ForgotPassword = () => {
     const [errorMessage, setErrorMessage] = useState(["", ""]);
     const { register, handleSubmit, formState: { errors } } = useForm({});
     const queryParams = new URLSearchParams(window.location.search)
+    const resetpass = useSelector(state => state.auth?.resetpassword)
+    const [haveSeenPwd, setHaveSeenPwd] = useState(false)
+    const [haveSeenRePwd, setHaveSeenRePwd] = useState(false)
+
+    useEffect(() => {
+        if (resetpass?.error) {
+            setErrorMessage([false,resetpass?.data])
+        }
+        if (resetpass?.data?.status) {
+            setErrorMessage([true,resetpass?.data?.data?.messager])
+            setTimeout(() => {
+                navigate("/login")
+            }, 2000);
+        }
+    }, [resetpass,navigate])
 
     const onSubmit = (data) => {
         let id = queryParams.get("id");
         let token = queryParams.get("token");
-        if (data && id && token) {
-            const dataPost = {
-                password: data?.password,
-                repassword: data?.repassword,
-                id: id,
-                token: token,
+        if (data?.password !== data?.repassword) {
+            setErrorMessage([false, "Hai mật khẩu phải trùng nhau"])
+        } else {
+            if (data && id && token) {
+                const dataPost = {
+                    password: data?.password,
+                    id: id,
+                    token: token,
+                }
+                dispatch(resetPassword(dataPost))
             }
         }
-        
+
     };
 
     return (
@@ -36,10 +55,10 @@ const ForgotPassword = () => {
                     Khôi phục mật khẩu
                 </div>
                 <form onSubmit={handleSubmit(onSubmit)} className="forgot__form">
-                    <div className="form__email">
+                    <div className="form__password">
                         <p>Nhập mật khẩu mới:</p>
                         <div className="form__input">
-                            <input type="password" placeholder="Nhập mật khẩu mới của bạn" name="password"
+                            <input type={haveSeenPwd ? "text" : "password"} placeholder="Nhập mật khẩu mới của bạn" name="password"
                                 {...register("password",
                                     {
                                         required: { value: true, message: "Mật khẩu không được để trống" },
@@ -49,16 +68,18 @@ const ForgotPassword = () => {
                                         }
                                     })}
                             />
+                            <img className="show__password" src={haveSeenPwd ? "../../images/closed_eye.svg" : "../../images/eye.svg"}
+                                alt="" onClick={() => setHaveSeenPwd(!haveSeenPwd)} />
                         </div>
                         {
                             errors?.password?.message &&
                             <span className="form__error">{errors?.password?.message}</span>
                         }
                     </div>
-                    <div className="form__email">
+                    <div className="form__password">
                         <p>Nhập lại mật khẩu:</p>
                         <div className="form__input">
-                            <input type="password" placeholder="Nhập mật khẩu mới của bạn" name="repassword"
+                            <input type={haveSeenRePwd ? "text" : "password"} placeholder="Nhập mật khẩu mới của bạn" name="repassword"
                                 {...register("repassword",
                                     {
                                         required: { value: true, message: "Mật khẩu không được để trống" },
@@ -68,6 +89,8 @@ const ForgotPassword = () => {
                                         }
                                     })}
                             />
+                            <img className="show__password" src={haveSeenRePwd ? "../../images/closed_eye.svg" : "../../images/eye.svg"}
+                                alt="" onClick={() => setHaveSeenRePwd(!haveSeenRePwd)} />
                         </div>
                         {
                             errors?.repassword?.message &&
