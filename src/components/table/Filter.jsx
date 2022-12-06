@@ -9,6 +9,8 @@ import DatePicker from "./DatePicker"
 import { useNavigate, useLocation } from 'react-router';
 import { dateString } from "../../commons/dateTime"
 import { debounce } from 'lodash'
+import { useSelector } from "react-redux";
+import { Dropdown } from 'primereact/dropdown';
 
 const Filter = ({ DataFilter, sortBy, sortValue, setSortBy, setSortValue, search, setsearch, dropdown }) => {
     const queryParams = new URLSearchParams(window.location.search)
@@ -26,9 +28,11 @@ const Filter = ({ DataFilter, sortBy, sortValue, setSortBy, setSortValue, search
     const [status, setStatus] = useState('');
     const [keyword, setKeyWord] = useState('');
     const [valueKeyword, setValueKeyWord] = useState('');
+    const [user, setUser] = useState(null);
     const location = useLocation()
     const navigate = useNavigate()
     const { pathname } = location
+    const employees = useSelector(state => state.employee.dashboard)
 
     useEffect(() => {
         if (keywordURL) {
@@ -63,6 +67,7 @@ const Filter = ({ DataFilter, sortBy, sortValue, setSortBy, setSortValue, search
         setKeyWord("")
         DataFilter({})
         setValueKeyWord("")
+        setUser(null)
         navigate({
             pathname: pathname,
             search: "",
@@ -79,6 +84,10 @@ const Filter = ({ DataFilter, sortBy, sortValue, setSortBy, setSortValue, search
 
         if (status !== "") {
             data.status = status.trim()
+        }
+
+        if(user){
+            data.id = user?.id_system
         }
 
         data.keyword = valueKeyword
@@ -104,7 +113,7 @@ const Filter = ({ DataFilter, sortBy, sortValue, setSortBy, setSortValue, search
                 setsearch(newResult)
             }
         }
-    }, [dates, valueKeyword, sortBy, sortValue, status, setsearch])
+    }, [dates, valueKeyword, sortBy, sortValue, status, setsearch, user])
 
     const sendFilter = React.useCallback(() => {
         let result = search
@@ -172,20 +181,36 @@ const Filter = ({ DataFilter, sortBy, sortValue, setSortBy, setSortValue, search
                     autoComplete="off"
                     className="filter__search field col-6 md:col-3"
                 >
+                {
+                    pathname !== "/job-performance" ?
+                    <>
                     <TextField
-                        label="Tìm kiếm"
-                        id="outlined-size-small"
-                        value={keyword}
-                        size="small"
-                        className="filter__input--search"
-                        onChange={(e)=>handleSearchKeyWord(e.target.value)}
+                    label="Tìm kiếm"
+                    id="outlined-size-small"
+                    value={keyword}
+                    size="small"
+                    className="filter__input--search"
+                    onChange={(e)=>handleSearchKeyWord(e.target.value)}
                     />
                     <img src="../../images/search_blue.svg" alt="" className="filter__btn--search" />
+                    </>
+                    :
+                    <Dropdown
+                        options={employees?.data}
+                        optionLabel="fullname"
+                        value={user}
+                        onChange={(e)=>setUser(e.value)}
+                        placeholder="Nhân viên"
+                        className="filter__user"
+                    />
+                }
+         
                 </Box>
 
                 <DatePicker dates={dates} setDates={setDates} />
-
-                <FormControl sx={{ m: 1, minWidth: 270 }} size="small" className="fiter__status">
+                {
+                    pathname !== "/job-performance" &&
+                    <FormControl sx={{ m: 1, minWidth: 270 }} size="small" className="fiter__status">
                     <InputLabel id="filter__label">Trạng thái</InputLabel>
                     <Select
                         labelId="demo-controlled-open-select-label"
@@ -202,7 +227,8 @@ const Filter = ({ DataFilter, sortBy, sortValue, setSortBy, setSortValue, search
                             ))
                         }
                     </Select>
-                </FormControl>
+                    </FormControl>
+                }
             </div>
         </>
     )

@@ -4,7 +4,7 @@ import CustomerManager from "../modules/manager/sale/customerManager/CustomerMan
 import Payment from "../modules/manager/payment/Payment";
 import EmployeeOverview from "../modules/manager/overview/EmployeeOverview";
 import PaymentManagement from "../modules/manager/overview/PaymentManagement";
-import JobPerformance from "../modules/manager/overview/JobPerformance";
+import JobPerformance from "../modules/manager/overview/employeePerformance/JobPerformance";
 import JobsOverview from "../modules/manager/overview/JobsOverview";
 import PersonalInfor from "../modules/manager/personal/PersonalInfor";
 
