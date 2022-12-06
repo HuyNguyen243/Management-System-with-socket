@@ -70,7 +70,7 @@ const CreateJobs = () => {
             dispatch(addJobsRequest(data))
         }
     };
-    console.log(errors)
+    
     const handleCloseModal = () => {
         dispatch(setIsOpenModalCreateJob(false));
         setCustomerSelect(null)

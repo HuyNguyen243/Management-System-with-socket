@@ -67,7 +67,7 @@ const CreateCustomer = () => {
             setCities(countries[e.value])
         }
     }
-    console.log(errors)
+    
   return (
     <>
         <Toast ref={toast} position="bottom-left"/>
