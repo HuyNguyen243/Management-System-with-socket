@@ -166,12 +166,15 @@ const Filter = ({ DataFilter, sortBy, sortValue, setSortBy, setSortValue, search
         }
 
     }, [isOpenFilter])
-
+    console.log(new Date().toISOString())
     return (
         <>
             <img src="images/filter_btn.svg" alt="" className="btn_filter" onClick={() => setIsOpenFilter(!isOpenFilter)} />
             <div className={`page__filter align-items-center flex grid ${!isOpenFilter && "hide_filter"} `}>
-                <img src="images/reset.svg" alt="" onClick={handleReset} />
+                {
+                    pathname !== "/job-performance" &&
+                    <img src="images/reset.svg" alt="" onClick={handleReset} />
+                }
                 <Box
                     component="form"
                     sx={{
