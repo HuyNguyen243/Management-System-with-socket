@@ -712,3 +712,44 @@
     border-color: inherit !important;
     color: inherit !important;
 }
+
+.table__unit{
+    font-size: 9px;
+    display: block !important;
+    text-align: center;
+}
+
+.chart__color{
+    position: relative;
+}
+
+.chart__color.red:after{
+    content: " ";
+    background-color: #FF6384;
+    position: absolute;
+    bottom: 35px;
+    display: block;
+    width: 100px;
+    height: 20px;
+}
+
+.chart__color.blue:after{
+    content: " ";
+    background-color: #0061F4;
+    position: absolute;
+    bottom: 35px;
+    display: block;
+    width: 100px;
+    height: 20px;
+}
+
+.chart__color.yellow:after{
+    content: " ";
+    background-color: #FFCE56;
+    position: absolute;
+    bottom: 35px;
+    display: block;
+    width: 100px;
+    height: 20px;
+}
+

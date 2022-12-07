@@ -13,3 +13,15 @@ export const getEmployeePerformance = createAsyncThunk(
         }
     }
 )
+
+export const kpiYearOfMonth = createAsyncThunk(
+    'getKpiYearOfMonth',
+    async (data, { rejectWithValue }) => {
+        try {
+            const res = await get(`performance/kpi${data}`)
+            return res.data
+        } catch (error) {
+            return rejectWithValue(error?.response?.data);
+        }
+    }
+)

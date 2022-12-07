@@ -242,3 +242,33 @@ export const table_personal_information = [
         haveSort: false,
     },
 ];
+
+export const table_performance = [
+    {
+        name: "Tạm hoãn",
+        haveSort: false,
+    },
+    {
+        name: "Đang xử lý",
+        haveSort: false,
+    },
+    {
+        name: "Đã hoàn thành",
+        haveSort: false,
+    },
+    {
+        name: "Doanh thu",
+        unit:"(Vnd)",
+        haveSort: false,
+    },
+    {
+        name: "Bonus",
+        unit:"(Vnd)",
+        haveSort: false,
+    },
+    {
+        name: "KPI",
+        unit:"(%)",
+        haveSort: false,
+    },
+]

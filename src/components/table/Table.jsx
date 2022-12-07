@@ -73,7 +73,7 @@ const Table = ({
         const value = typeof sort_by === "string" ? sort_by : ""
         if(header)
         return(
-        <div className="table__header-col" >
+        <div className="table__header-col flex flex-column" >
         <span className="table__header-name">{header?.name}
             {
                 header?.haveSort &&
@@ -88,6 +88,7 @@ const Table = ({
                 </div>
             }
         </span>
+        <span className="table__unit w-full">{header?.unit}</span>
         </div>
     )}
     useEffect(() => {
