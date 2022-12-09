@@ -211,15 +211,15 @@ export const table_total_work_flowManager = [
         haveSort: false,
     },
     {
-        name: "Doanh thu",
+        name: "Hoàn thành",
         haveSort: false,
     },
     {
-        name: "Tỉ lệ chuyển đổi",
+        name: "Bonus",
         haveSort: false,
     },
     {
-        name: "Tỉ lệ chuyển đổi",
+        name: "Kpi",
         haveSort: false,
     },
 ];

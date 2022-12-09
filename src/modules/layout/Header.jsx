@@ -12,11 +12,12 @@ import {useDispatch, useSelector} from "react-redux"
 import {userProfile} from "../../redux/auth/action"
 import { storage } from '../../_services/sesionStorage';
 import { NAME_SESSION_STORAGE_TOKEN, UserRules } from '../../constants';
-import ToggleMenu from "./ToggleMenu"
+import ToggleMenu from "./ToggleMenu";
 import jwt_decode from "jwt-decode";
-import { profileUserByToken } from "../../redux/auth/authSlice"
-import Notification from "./notification/Notification"
-import Messages from "./messages/Messages"
+import { profileUserByToken } from "../../redux/auth/authSlice";
+import Notification from "./notification/Notification";
+import Messages from "./messages/Messages";
+import { socket } from "../../_services/socket";
 
 export default function Header() {
   const dispatch = useDispatch()
@@ -29,22 +30,6 @@ export default function Header() {
   const [isOpenNotification, setisOpenNotification] = useState(false)
   const [isOpenMessages, setisOpenMessages] = useState(false)
   const currentUser = useSelector(state=> state.message.currentUser)
-  const notifications = useSelector(state=> state.notification.notifications)
-  const [countNotifications, setCountNotifications] = useState(0)
-
-	useEffect(() => {
-		if(notifications){
-			let count = 0;
-			notifications?.forEach(notify=>{
-				if(notify?.member_check_notify){
-					if(notify?.member_check_notify?.[currentUser?.id_system]){
-						count += 1
-					}
-				}
-			})
-			setCountNotifications(count)
-		}
-	},[setCountNotifications,notifications, currentUser])
 
 	useEffect(() => {
 		if(user?.data){
@@ -122,6 +107,7 @@ export default function Header() {
 		if(isOpenMessages && !el.contains(e.target)){
 			setisOpenMessages(false)
 		}else if (!isOpenMessages && btn?.contains(e.target)){
+			//OPEN MODAL
 			setisOpenMessages(!isOpenMessages)
 			setisOpenNotification(false)
 		}
@@ -132,7 +118,7 @@ export default function Header() {
 		window.removeEventListener('mousedown',handleClickOutSideNotificationMsg)
 		}
 
-	},[isOpenMessages])
+	},[isOpenMessages, user])
 
 	useEffect(()=>{
 		if(userByToken && token){
@@ -147,6 +133,12 @@ export default function Header() {
 	const getBtnNavIsOpen = (isOpen)=>{
 		setOpen(isOpen)
 	}
+
+	socket.off("is_reset_count_notify").on("is_reset_count_notify", (payload)=>{
+        if(payload){
+            socket.emit('get-members')
+        }
+    })
 
 	return (
 		<Box sx={{ display: 'flex' }} className="header__container">
@@ -173,14 +165,14 @@ export default function Header() {
 					</div>
 					<div className="header__right">
 					<div className="header__right--notification" >
-						<img src="../../images/notifications.svg" alt="" />
+						<img src="../../images/notifications.svg" alt="" onClick={()=>socket.emit("reset-count-notify",user?.data?.id_system)}/>
 						{
-							countNotifications > 0 &&
-							<span className="count_notification">{countNotifications}</span>
+							currentUser?.notification_count && currentUser?.notification_count > 0 &&
+							<span className="count_notification">{currentUser?.notification_count }</span>
 						}
 					</div>
 					<div className="header__right--notification-msg">
-						<img src="../../images/chat.svg" alt=""/>
+						<img src="../../images/chat.svg" alt="" />
 						{
 						currentUser?.newMessages && Object.keys(currentUser?.newMessages).length > 0
 						&& 

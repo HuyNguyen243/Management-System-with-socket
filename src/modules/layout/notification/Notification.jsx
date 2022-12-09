@@ -53,7 +53,7 @@ const Notification = ({isOpenNotification, setisOpenNotification}) => {
             socket.emit("notifications-of-id-system",id_system)
         }
     } )
-
+   
     socket.off("notifications-of-id-system").on("notifications-of-id-system", (payload)=>{
         setNotifications(payload)
         dispatch(getNotifications(payload))
@@ -123,9 +123,7 @@ const Notification = ({isOpenNotification, setisOpenNotification}) => {
                 <h5>Thông báo</h5>
             </div>
             <div className="notification__block" >
-            {
-              showNotifications()
-            }
+            {showNotifications()}
             </div>
         </div>
     )

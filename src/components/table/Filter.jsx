@@ -166,7 +166,6 @@ const Filter = ({ DataFilter, sortBy, sortValue, setSortBy, setSortValue, search
         }
 
     }, [isOpenFilter])
-    console.log(new Date().toISOString())
     return (
         <>
             <img src="images/filter_btn.svg" alt="" className="btn_filter" onClick={() => setIsOpenFilter(!isOpenFilter)} />

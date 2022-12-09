@@ -1,86 +1,59 @@
-import React,{useState} from 'react'
+import React,{ useState,useEffect } from 'react'
 import { Chart } from 'primereact/chart';
+import { initialDataChart } from '../../overview/employeePerformance/dataparse';
+import {  useSelector } from "react-redux"
 
 const Analysis = () => {
-
-    const [chartData] = useState({
-        labels: ['A', 'B', 'C'],
-        datasets: [
-            {
-                data: [300, 50, 100],
-                backgroundColor: [
-                    "#FF6384",
-                    "#36A2EB",
-                    "#FFCE56"
+    const [chartData,setChartData] = useState(initialDataChart);
+    const performance = useSelector(state => state.performanceReducer.employeePerformance)
+    
+    useEffect(() => {
+        if(performance?.data) {
+            const _data = {
+                datasets: [
+                    {
+                        data: [
+                            performance?.data ? performance?.data?.job_pending : 100,
+                            performance?.data ? performance?.data?.job_incomplete : 100,
+                            performance?.data ? performance?.data?.job_complete : 100
+                        ],
+                        backgroundColor: [
+                            "#FF6384",
+                            "#FFCE56",
+                            "#0061F4",
+                        ],
+                        hoverBackgroundColor: [
+                            "#FF6384",
+                            "#FFCE56",
+                            "#0061F4",
+                        ]
+                    }
                 ],
-                hoverBackgroundColor: [
-                    "#FF6384",
-                    "#36A2EB",
-                    "#FFCE56"
-                ]
-            }]
-    });
+            }
+            setChartData(_data)
+        }
+    },[setChartData,performance])
 
-    const [lineStylesData] = useState({
-        labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-        datasets: [{
-            type: 'line',
-            label: 'Dataset 1',
-            borderColor: '#42A5F5',
-            borderWidth: 2,
-            fill: false,
-            tension: .4,
-            data: [
-                50,
-                25,
-                12,
-                48,
-                56,
-                76,
-                42
-            ]
-        }, {
-            type: 'bar',
-            label: 'Dataset 2',
-            backgroundColor: '#66BB6A',
-            data: [
-                21,
-                84,
-                24,
-                75,
-                37,
-                65,
-                34
-            ],
-            borderColor: 'white',
-            borderWidth: 2
-        }, {
-            type: 'bar',
-            label: 'Dataset 3',
-            backgroundColor: '#FFA726',
-            data: [
-                41,
-                52,
-                24,
-                74,
-                23,
-                21,
-                32
-            ]
-        }]
-    });
+    const checkData = ()=>{
+        if(performance?.data){
+            if(performance?.data?.job_pending > 0 || performance?.data?.job_incomplete > 0 ||  performance?.data?.job_complete > 0){
+                return true
+            }else{
+                return false
+            }
+        }else{
+            return false
+        }
+    }
 
   return (
-    <div className="grid" style={{height: "400px"}}>
-        <div className="field col-12 md:col-4 flex align-items-center" >
-            <Chart type="bar" data={lineStylesData}  className="chart_bar"/>
-        </div>
-        <div className="field col-12 md:col-4 ">
-            <p className="chart__title">KPI</p>
-            <Chart type="doughnut" data={chartData} className="chart_donut"/>
-        </div>
-        <div className="field col-12 md:col-4 ">
-            <p className="chart__title">Jobs</p>
+    <div className="grid" style={{height: "350px"}}>
+     
+        <div className="field col-12 md:col-12 ">
+            {
+                checkData() &&
+                <p className="chart__title">Jobs</p>
+            }
             <Chart type="doughnut" data={chartData} className="chart_donut"/>
         </div>
     </div>

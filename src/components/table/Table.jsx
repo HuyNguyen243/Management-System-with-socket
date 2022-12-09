@@ -135,11 +135,6 @@ const Table = ({
         search={search}
         setsearch={setsearch}
         />
-        
-        {
-            pathname === "/workflow-management" &&
-            <TableTotal data={old_Data}/>
-        }
         {haveTotalTable && <TotalTable />}
         <div className="table__container">
             <div className="table__perpage" >
@@ -185,6 +180,11 @@ const Table = ({
             }
             </DataTable>
         </div>
+         
+        {
+            pathname === "/workflow-management" &&
+            <TableTotal data={old_Data}/>
+        }
     </div>
   )
 }

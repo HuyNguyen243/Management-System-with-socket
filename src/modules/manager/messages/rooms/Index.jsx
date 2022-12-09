@@ -89,7 +89,7 @@ const Index = (
   ///set first room 
     useEffect(() => {
         if(user?.data){
-            socket.emit('get-members',user?.data?.role)
+            socket.emit('get-members')
             socket.emit('groups',user?.data?.id_system)
         }
     },[user])
