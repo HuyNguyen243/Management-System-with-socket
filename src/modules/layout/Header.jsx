@@ -80,7 +80,6 @@ export default function Header() {
 
 	},[openMenu,open])
 
-
 	useEffect(() => {
 		const handleClickOutSideNotification = (e)=>{
 		const el = document.querySelector(".notification__container")

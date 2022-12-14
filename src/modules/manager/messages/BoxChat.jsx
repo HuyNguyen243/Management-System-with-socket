@@ -1,10 +1,11 @@
-import React,{ useState, useRef, useEffect } from 'react';
+import React,{ useState, useEffect, useRef } from 'react';
 import Index from './rooms/Index';
 import { socket } from "../../../_services/socket";
 import { getFormattedDate } from '../../../commons/message.common';
 import { NAME_ROOM } from '../../../constants';
 import { useDispatch, useSelector } from 'react-redux';
 import { setIsOpenChat, userScrollTop } from '../../../redux/messages/messageSlice';
+import { postImagesMessage } from '../../../redux/messages/action';
 
 import Modal from "./Modal";
 import { UserRules } from '../../../constants';
@@ -29,9 +30,8 @@ const BoxChat = () => {
 
     const [multiPreviewImages, setMultiPreviewImages] = useState([])
     const [multiImages, setMultiImages] = useState([])
+    const [images, setImages] = useState([])
     
-    const messageEndRef = useRef(null);
-
     const dispatch = useDispatch()
     const isOpenChat = useSelector(state=>state.message.isOpenChat)
     const [isOpenCreateGroup, setIsOpenCreateGroup] = useState(false);
@@ -39,11 +39,15 @@ const BoxChat = () => {
     const [editDataGroup, setEditDataGroup] = useState({});
     const user = useSelector(state=> state.auth.user)
 
-    //scroll bottom
+    const messageEndRef = useRef(null);
+    // scroll bottom
     useEffect(() => {
         scrollToBottom();
-    }, [messagesOnRoom]);
+    }, [messagesOnRoom, currentRoom]);
+
     const scrollToBottom = () => {
+        const elem = document.querySelector('.chat-history');
+        elem.scrollTop = elem.scrollHeight;
         messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
     }
 
@@ -105,15 +109,21 @@ const BoxChat = () => {
                 allmembers = membersInGroup
                 type = NAME_ROOM.GROUP;
             }
-            let images = "";
-            if(multiImages.length > 0){
-                images = multiImages
+          
+            const fileData = new FormData();
+            for(let i=0; i < images.length; i++){
+                fileData.append('images', images[i])
             }
-            socket.emit('message-room', nameRoom, messages, currentUser?.id_system, time, toDayDate, allmembers, type, groups_id, privateMemberMsg,images)
-            dispatch(userScrollTop(true))
-            setMessages("")
-            setMultiPreviewImages([])
-            setMultiImages([])
+            dispatch(postImagesMessage(fileData));
+            messageEndRef.current?.scrollIntoView({behavior: 'smooth'});
+            setTimeout(() => {
+                socket.emit('message-room', nameRoom, messages, currentUser?.id_system, time, toDayDate, allmembers, type, groups_id, privateMemberMsg,multiImages)
+                dispatch(userScrollTop(true))
+                setMessages("")
+                setMultiPreviewImages([])
+                setMultiImages([])
+                setImages([])
+            },500)
         }
     }
 
@@ -154,31 +164,34 @@ const BoxChat = () => {
         }
     }
 
-    const fileBase64  = (img) => {
-        return new Promise((resolve, reject) => {
-          let fileReader = new FileReader();
-          fileReader.onerror = reject
-          fileReader.onload = function () {
-            resolve(fileReader.result)
-          }
-          fileReader.readAsDataURL(img)
-        })
-      }
-
     const handleFiles = async(e)=>{
         const files = e.target.files
         const result = []
-        const imagesBase64 = []
+        const fs = []
+        const multiname =[]
         for (const file of files){
-            result.push(URL.createObjectURL(file))
-            const fn  = await fileBase64(file)
-            const obj = {
-                image : fn,
-                type: file.type.split("/")[1]
+            const name =  Math.random().toString(36).slice(-10) + Date.now() +  "." + file.name.split(".")[1]
+            const newFile = new File([file],name, {type: `image/${file.name.split(".")[1]}`, lastModified: new Date()});
+            if(newFile?.size <= 1024 * 1024){
+                fs.push(newFile)
+                multiname.push(name)
+                result.push(URL.createObjectURL(file))
             }
-            imagesBase64.push(obj)
         }
-        setMultiImages(imagesBase64)
+        if(multiname.length > 5){
+            multiname.length = 5
+        }
+
+        if(fs.length > 5){
+            fs.length = 5
+        }
+
+        if(result.length > 5){
+            result.length = 5
+        }
+
+        setMultiImages(multiname)
+        setImages(fs)
         setMultiPreviewImages(result)
     }
 
@@ -187,6 +200,12 @@ const BoxChat = () => {
         multiImages.splice(index, 1)
         setMultiPreviewImages(images)
     }
+
+    useEffect(() => {
+        if(multiPreviewImages.length === 0){
+            document.getElementById('file_chat').value= null;
+        }
+    },[multiPreviewImages])
 
   return (
     <div className={`chat-container page ${!isOpenChat && "hidden"}`}>
@@ -247,13 +266,18 @@ const BoxChat = () => {
             </div>
         </div> 
         {/* end chat-header */}
-        <div className={`chat-history relative ${multiPreviewImages.length > 0 && "have__img"} ${ !currentRoom ? "full_chat" : ""}`} >
-            <ul>
+        <div className={`chat-history relative ${multiPreviewImages.length > 0 && "have__img"} ${ !currentRoom || groups_id.includes("USER") ? "full_chat" : ""}`} >
+            <ul className="group__message">
                 <Messages messagesOnRoom={messagesOnRoom}  currentUser={currentUser} />
             </ul>
-            <div ref={messageEndRef} />
+            <div ref={messageEndRef} className="footer__msg"/>
         </div> 
+
         {/* end chat-history */}
+        {
+            groups_id.includes("USER") ?
+            ""
+            :
             <form onSubmit={handleSubmit} className={`chat-message align-items-end clearfix ${!currentRoom ? "hidden" : ""}`}>
                     <div className="chat__file">
                         <input type="file" className="hidden" 
@@ -281,8 +305,8 @@ const BoxChat = () => {
                     <button className={`${isOpenChat && "btn__sendChat"} ""`}>
                         <img src="images/send.svg" alt=""/>
                     </button>
-            
             </form>
+        }
         </div>
       </div>
   )

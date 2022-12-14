@@ -37,3 +37,16 @@ export const deleteGroupMsgRequest = createAsyncThunk(
         }
     }
 )
+
+
+export const postImagesMessage = createAsyncThunk(
+    'postImageMessage',
+    async (data,{ rejectWithValue }) => {
+        try {
+            const res = await post(`group/images`,data)
+            return res?.data;
+        } catch (error) {
+            return rejectWithValue(error?.response?.data);
+        }
+    }
+)

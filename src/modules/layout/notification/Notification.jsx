@@ -3,17 +3,65 @@ import React,{ useEffect, useState } from 'react'
 import { useSelector, useDispatch } from "react-redux"
 import { socket } from "../../../_services/socket";
 import { NOTIFICATION_TITLE, NotificationRules, UserRules } from '../../../constants';
-import { createNotification } from '../../../redux/notification/action';
-import { getNotifications } from '../../../redux/notification/notificationSlice';
+import { createNotification, getNotification } from '../../../redux/notification/action';
+import { getNotify } from '../../../redux/notification/notificationSlice';
 import { useNavigate } from 'react-router';
+import { get } from "../../../_services/apiRequest"
 
 const Notification = ({isOpenNotification, setisOpenNotification}) => {
     const user = useSelector(state=> state.auth.user)
     const addjobs = useSelector(state => state.jobs.addjobs)
+    const notifys = useSelector(state => state.notification.fetchAllNotification)
+    const notifyupdate= useSelector(state => state.notification.updatenotification)
+
     const [ notifications, setNotifications ] = useState([])
+
+    const [page, setpage] = useState(10);
+
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
+    const handleInfiniteScroll = async() => {
+          const element = document.querySelector('.notification__block');
+          if (element.scrollHeight - element.scrollTop === element.clientHeight)
+              {
+                    const res = await get(`notification?page=${page}`,)
+                    const allnotify = notifications.concat(res?.data)
+                    setNotifications(allnotify)
+                    if (res.data.length > 0){
+                        setpage(page + 10)
+                    }else{
+                        return false
+                    }
+
+              }
+    };
+
+    useEffect(()=>{
+        const el = document.querySelector(".notification__block")
+        el.addEventListener("scroll", handleInfiniteScroll);
+        return ()=>{
+			el.removeEventListener('scroll',handleInfiniteScroll)
+		}
+    })
+
+    useEffect(() => {
+        dispatch(getNotification())
+        
+    },[dispatch])
+
+    useEffect(() =>{
+        if(notifys?.data){
+            setNotifications(notifys?.data)
+        }
+    },[notifys])
+
+    useEffect(() =>{
+        if(notifyupdate?.data){
+         
+        }
+    },[notifyupdate])
+    
     useEffect(() => {
         if (addjobs?.data && !addjobs?.error) {
             let createNotify;
@@ -50,13 +98,19 @@ const Notification = ({isOpenNotification, setisOpenNotification}) => {
     socket.off('is_created_notify').on('is_created_notify', (payload)=>{
         if(payload){
             const { id_system } = user?.data
+            socket.emit('get-members')
             socket.emit("notifications-of-id-system",id_system)
         }
     } )
    
     socket.off("notifications-of-id-system").on("notifications-of-id-system", (payload)=>{
-        setNotifications(payload)
-        dispatch(getNotifications(payload))
+        let allnotification = notifications
+        if(notifications[0]?._id !== payload[0]?._id){
+            allnotification = [payload[0],...notifications]
+        }
+
+        dispatch(getNotify(allnotification))
+        setNotifications(allnotification)
     })
 
     socket.off("is_reset_notify").on("is_reset_notify", (payload)=>{
@@ -124,6 +178,10 @@ const Notification = ({isOpenNotification, setisOpenNotification}) => {
             </div>
             <div className="notification__block" >
             {showNotifications()}
+            {
+                notifyupdate?.loading &&
+                <span className="loadmore">loading...</span>
+            }
             </div>
         </div>
     )

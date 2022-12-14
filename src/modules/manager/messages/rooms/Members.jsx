@@ -32,7 +32,6 @@ const Members = ({
         setPrivateGroupMsg("")
         setNamePrivateRoom(CharacterRoom(member?.role))
         socket.emit("reset-notifications",roomId, currentUser?.id_system)
-
         //SAVESTORAGE
         roomStorage.set("", "", roomId, member?.role, [], CharacterRoom(member?.role), member?.id_system)
     }

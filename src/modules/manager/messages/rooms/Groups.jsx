@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useRef,useState } from 'react'
 import { NAME_ROOM } from '../../../../constants';
 import { socket } from "../../../../_services/socket";
 import { Toast } from 'primereact/toast';
@@ -22,6 +22,7 @@ const Groups = ({
     setMessageOnRoom ,
 }) => {
     const toast = useRef(null);
+    const [roomview,setRoomView] = useState(null)
 
     const handlePrivateGroup = (group)=>{
         const id_Group = NAME_ROOM.GROUP + "-" + group._id
@@ -33,7 +34,6 @@ const Groups = ({
         setMembersInGroup(group?.members)
         setNamePrivateRoom(group.name)
         socket.emit("reset-notifications",id_Group, currentUser?.id_system)
-
         //SAVESTORAGE
         roomStorage.set(group._id, id_Group, "", NAME_ROOM.GROUP, group?.members, group.name, "")
     }
@@ -73,6 +73,24 @@ const Groups = ({
         }
     })
 
+    socket.off('groups-preview').on('groups-preview', (payload)=>{
+       setRoomView(payload)
+    })
+
+    const handleGroupView = (room)=>{
+        joinRoom(room?._id?.name)
+
+        setGroups_id(room?._id?.name)
+        setPrivateGroupMsg(room?._id?.name)
+        setPrivateMemberMsg("")
+        setRole("GROUP TO VIEW")
+        setMembersInGroup(room?._id?.members)
+        setNamePrivateRoom(room?._id?.name)
+
+        //SAVESTORAGE
+        roomStorage.set(room?._id?.name, room?._id?.name, "", room?._id?.name, room?._id?.members, room?._id?.name, "")
+    }
+
     const resetRoomAfterDelete = ()=>{
         roomStorage.delete()
         setNamePrivateRoom("")
@@ -108,10 +126,30 @@ const Groups = ({
         </div>
     ))
     }
-
     return (
         <>
         <Toast ref={toast} position="bottom-left"/>
+        {
+            roomview && roomview?.length > 0 &&
+            <li>
+                <span className="title_members">Room thành viên</span>
+            </li>
+        }
+        {
+            roomview && roomview?.length > 0 &&
+            roomview.map((room,index)=>{
+                return(
+                    <div key={index} onClick={()=>handleGroupView(room)} >
+                        <li className={privateGroupMsg === room?._id?._id ? "active" : ""}>
+                        <div className="chat_img" ></div>
+                            <div className="about">
+                            <div className="name">{room?._id?.name}</div>
+                        </div>
+                        </li>
+                    </div>
+                )
+            })
+        }
         {
             groups?.length > 0 &&
             <li>

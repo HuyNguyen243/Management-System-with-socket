@@ -3,6 +3,7 @@ import {
     createGroupMsgRequest,
     updateGroupMsgRequest,
     deleteGroupMsgRequest,
+    postImagesMessage,
  } from './action';
 
 const initialState = {
@@ -27,7 +28,13 @@ const initialState = {
     allGroups: null,
     allMembers: null,
     messagesByIdSystem: null,
-    usersScrollTop: false
+    usersScrollTop: false,
+
+    uploadImage:{
+        isLoading: false,
+        data: null,
+        error: false
+    }
 }
 
 const messagesSlice = createSlice({
@@ -138,6 +145,33 @@ const messagesSlice = createSlice({
                 }
             })
         },
+
+        [postImagesMessage.pending]: (state) => {
+            Object.assign(state,{},{
+                uploadImage:{
+                    loading: true
+                }
+            })
+        },
+        [postImagesMessage.fulfilled]: (state, action) => {
+            Object.assign(state,{},{
+                uploadImage:{
+                    loading: false,
+                    data: action.payload,
+                    error: false
+                }
+            })
+        },
+        [postImagesMessage.rejected]: (state) => {
+            Object.assign(state,{},{
+                uploadImage:{
+                    loading: false,
+                    data: null,
+                    error: true
+                }
+            })
+        },
+
     }
 })
 

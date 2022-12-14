@@ -91,6 +91,7 @@ const Index = (
         if(user?.data){
             socket.emit('get-members')
             socket.emit('groups',user?.data?.id_system)
+            socket.emit('groups-preview',user?.data?.id_system)
         }
     },[user])
     //-----------------------------------//

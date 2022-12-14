@@ -10,6 +10,7 @@ export const post = async (url, body) => {
     };
     requestOptions.headers = new Headers()
     requestOptions.headers.append('Accept', 'application/json')
+    requestOptions.headers.append('Content-Type', 'multipart/form-data')
 
     return apiRequest(url, requestOptions);
 }
@@ -67,7 +68,7 @@ async function apiRequest(url, requestOptions) {
 export const postFireBaseNotification = async (url, notification, token) => {
     const headers = {
         'Content-Type': 'application/json',
-        'Authorization': `key=${process.env.REACT_APP_FIRE_BASE_SERVER_KEY}`
+        'Authorization': `key=${process.env.REACT_APP_FIRE_BASE_SERVER_KEY}`,
       }
     const URL = "https://fcm.googleapis.com/fcm/send"
     const data = {
