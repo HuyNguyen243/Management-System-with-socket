@@ -121,7 +121,7 @@ const Table = ({
         {
             name_btn_add &&
             <Stack spacing={2} direction="row">
-                <Button variant="contained" onClick={handleCreate}>&#43; {name_btn_add}</Button>
+                <Button variant="contained" className="table__add" onClick={handleCreate}>&#43; {name_btn_add}</Button>
             </Stack>
         }
         <br />

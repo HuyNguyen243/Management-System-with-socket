@@ -190,7 +190,7 @@ const InformationCustomer = () => {
     }
 
     const copyToClipboard = () => {
-        toastMsg.info(toast, 'Copy success')
+        toastMsg.info(toast, 'Đã lưu')
         copy(rowdata?.data?.id_system);
     }
 

@@ -181,7 +181,7 @@ const PersonalInfor = () => {
     <div className="page">
         <Toast ref={toast} position="bottom-left"/>
         <div className="grid" >
-            <div className="field col-12 md:col-6">
+            <div className="field col-12 md:col-5">
                 <form className="infor__block grid" onSubmit={handleSubmit}>
                     <div className="field col-12 md:col-10 ">
                         <p className="infor__title">Thông tin cá nhân</p>
@@ -251,7 +251,7 @@ const PersonalInfor = () => {
                     </div>
                 </form>
             </div>
-            <div className="field col-12 md:col-6">
+            <div className="field col-12 md:col-7">
                 <div className="flex flex-column justify-content-between" style={{height:"100%"}}>
                     <div className="field avatar__block relative ava_right">
                         <Avatar image={imagePreview || avatar} className="mr-5 infor_avatar"  shape="circle" />

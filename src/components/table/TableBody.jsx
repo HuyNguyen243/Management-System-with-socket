@@ -38,17 +38,17 @@ const TableBody = ({ rowData, item }) => {
                 }
                 if (status === UserRules.STATUS.ONLINE) {
                     return (
-                        <span className="table__body-name btn_success flex justify-content-between align-items-center " ><span className="dots_online"></span>{USER_IS_ONLINE}</span>
+                        <span className="table__body-name btn_success flex align-items-center " >{USER_IS_ONLINE}</span>
                     )
                 }
                 if (status === UserRules.STATUS.OFFLINE) {
                     return (
-                        <span className="table__body-name btn_stop flex justify-content-between align-items-center" ><span className="dots_offline"></span>{USER_IS_OFFLINE}</span>
+                        <span className="table__body-name btn_stop flex align-items-center" >{USER_IS_OFFLINE}</span>
                     )
                 }
                 if (status === UserRules.STATUS.LEAVE) {
                     return (
-                        <span className="table__body-name btn_pending flex justify-content-between align-items-center" ><span className="dots_busy"></span> {USER_IS_STOPPING}</span>
+                        <span className="table__body-name btn_pending flex align-items-center" >{USER_IS_STOPPING}</span>
                     )
                 }
                 break;
@@ -140,23 +140,23 @@ const TableBody = ({ rowData, item }) => {
                 const role = rowData?.[item]
                 if (role === UserRules.ROLE.SALER) {
                     return (
-                        <span className="table__body-name text-bold" >{UserRules.ROLE_NAME.SALER}</span>
+                        <span className="table__body-name text-bold color__green" >{UserRules.ROLE_NAME.SALER}</span>
                     )
                 }
                 if (role === UserRules.ROLE.EDITOR) {
                     return (
-                        <span className="table__body-name text-bold" >{UserRules.ROLE_NAME.EDITOR}</span>
+                        <span className="table__body-name text-bold color__price" >{UserRules.ROLE_NAME.EDITOR}</span>
                     )
                 }
                 if (role === UserRules.ROLE.LEADER_EDITOR) {
                     return (
-                        <span className="table__body-name text-bold"> {UserRules.ROLE_NAME.LEADER_EDITOR}</span>
+                        <span className="table__body-name text-bold color__warning"> {UserRules.ROLE_NAME.LEADER_EDITOR}</span>
                     )
                 }
                 break;
             case ("id_system"):
                 return (
-                    <span className="table__body-name" >{rowData?.[item]}</span>
+                    <span className="table__body-name " >{rowData?.[item]}</span>
                 )
             case ("staff_is_pay"):
             case ("id_job"):
@@ -164,7 +164,7 @@ const TableBody = ({ rowData, item }) => {
             case ("id_editor"):
             case ("id_saler"):
                 return (
-                    <span className={`table__body-name text-bold ${item}`} >{rowData?.[item] !== "NOT_SET_BY_ADMIN" && rowData?.[item] }</span>
+                    <span className={` table__body-name text-bold ${item}`} >{rowData?.[item] !== "NOT_SET_BY_ADMIN" && rowData?.[item] }</span>
                 )
             case ("total_cost"):
             case ("saler_cost"):
@@ -174,7 +174,7 @@ const TableBody = ({ rowData, item }) => {
             case ("pay_employees"):
             case ("editor_cost"):
                 return (
-                    <span className="table__body-name text-bold btn_success" >{formatVND(rowData?.[item])}</span>
+                    <span className="table__body-name text-bold btn_success color__price" >{formatVND(rowData?.[item])}</span>
                 )
             case ("quality"):
                 return (
@@ -182,7 +182,7 @@ const TableBody = ({ rowData, item }) => {
                 )
             case ("fullname"):
                 return (
-                    <span className="table__body-name text-bold" >{rowData?.[item]}</span>
+                    <span className="table__body-name text-bold color__name" >{rowData?.[item]}</span>
                 )
             default:
                 return (

@@ -63,8 +63,18 @@
     border-radius: 12px !important;
 }
 
+.show__password{
+    width: 20px;
+}
+
+.css-12i7wg6-MuiPaper-root-MuiDrawer-paper,
+.css-juqc2r-MuiPaper-root-MuiAppBar-root{
+    box-shadow: none !important;
+    border-bottom: 1px solid $color-border-input;
+}
+
 .nav_btnChild.active{
-    background-color: $color-primary !important;
+    background-color: $color-border-input !important;
 }
 
 .nav__container--nav-child{

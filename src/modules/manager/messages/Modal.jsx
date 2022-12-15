@@ -133,7 +133,7 @@ const Modal = ({isOpenCreateGroup, setIsOpenCreateGroup, nameModal , editDataGro
             reject: ()=>{}
         });
     }
-
+    console.log(errors)
     return (
         <>
             <Toast ref={toast} position="bottom-left"/>
@@ -156,11 +156,15 @@ const Modal = ({isOpenCreateGroup, setIsOpenCreateGroup, nameModal , editDataGro
                             placeholder="Nhập tên group"
                             {...register( "name", 
                             {   required: {value:true,message: "Tên không được để trống"}, 
-                                maxLength: 55, 
+                                maxLength: 55,
+                                minLength: 6, 
                             })}
                             />
-                            {
+                        {
                         errors?.name &&  <span className="warning" style={{fontSize:"12px"}}>{errors?.name.message}</span>
+                        }
+                        {
+                        errors?.name?.type === "minLength"  &&  <span className="warning" style={{fontSize:"12px"}}>"Tên nhóm tối thiểu 6 ký tự"</span>
                         }
                     </div>
                     {

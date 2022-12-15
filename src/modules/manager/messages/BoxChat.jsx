@@ -31,6 +31,7 @@ const BoxChat = () => {
     const [multiPreviewImages, setMultiPreviewImages] = useState([])
     const [multiImages, setMultiImages] = useState([])
     const [images, setImages] = useState([])
+    const [scrollBottom, setScrollBottom] = useState(false)
     
     const dispatch = useDispatch()
     const isOpenChat = useSelector(state=>state.message.isOpenChat)
@@ -45,6 +46,15 @@ const BoxChat = () => {
         scrollToBottom();
     }, [messagesOnRoom, currentRoom]);
 
+    useEffect(() => {
+        if(scrollBottom){
+            scrollToBottom();
+            setTimeout(() => {
+                setScrollBottom(false)
+            },500)
+        }
+    }, [scrollBottom]);
+
     const scrollToBottom = () => {
         const elem = document.querySelector('.chat-history');
         elem.scrollTop = elem.scrollHeight;
@@ -56,6 +66,7 @@ const BoxChat = () => {
     const joinRoom = React.useCallback((room) => {
         socket.emit("join-room", room)
         setCurrentRoom(room)
+        setScrollBottom(true)
     },[ setCurrentRoom])
 
     // GET NOTIFICATION 
@@ -115,7 +126,7 @@ const BoxChat = () => {
                 fileData.append('images', images[i])
             }
             dispatch(postImagesMessage(fileData));
-            messageEndRef.current?.scrollIntoView({behavior: 'smooth'});
+            setScrollBottom(true)
             setTimeout(() => {
                 socket.emit('message-room', nameRoom, messages, currentUser?.id_system, time, toDayDate, allmembers, type, groups_id, privateMemberMsg,multiImages)
                 dispatch(userScrollTop(true))

@@ -23,12 +23,13 @@
 }
 
 .notification__title{
-    padding: 10px;
+    padding: 5px 10px;
     border-bottom: 1px solid $color-border-input;
     h5{
         font-weight: 400;
-        font-size: 20px;
+        font-size: 15px;
         line-height: 29px;
+        color: $color-primary;
     }
 }
 

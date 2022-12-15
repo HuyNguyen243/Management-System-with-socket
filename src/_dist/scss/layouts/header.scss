@@ -11,6 +11,8 @@
     .css-1191obr-MuiPaper-root-MuiAppBar-root,
     .css-19z1ozs-MuiPaper-root-MuiAppBar-root{
         background-color: $color-white !important;
+        box-shadow: none !important;
+        border: 1px solid $color-border-input !important;
     }
 }
 

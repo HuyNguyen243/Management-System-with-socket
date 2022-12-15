@@ -81,7 +81,7 @@ const Login = () => {
                                     { required: { value: true, message: "Password không được để trống" },
                                  })}
                             />
-                            <img className="show__password" src={haveSeenPwd ? "../../images/closed_eye.svg" : "../../images/eye.svg"}
+                            <img className="show__password" src={haveSeenPwd ? "../../images/closed_eye.png" : "../../images/eye.png"}
                                 alt="" onClick={() => setHaveSeenPwd(!haveSeenPwd)} />
                         </div>
                         {

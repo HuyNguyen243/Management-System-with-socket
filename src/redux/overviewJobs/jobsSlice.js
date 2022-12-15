@@ -103,6 +103,7 @@ const jobsReducer = createSlice({
             state.dashboard.data.unshift(action?.payload);
         },
         [addJobsRequest.rejected]: (state, action) => {
+            console.log(action)
             Object.assign(
                 state,
                 {},
