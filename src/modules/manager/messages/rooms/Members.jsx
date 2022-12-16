@@ -51,7 +51,7 @@ const Members = ({
 
   return (
     <>
-        <li>
+        <li className="msg__title">
             <span className="title_members">Thành viên</span>
         </li>
         <div ref={userTopRef}></div>
