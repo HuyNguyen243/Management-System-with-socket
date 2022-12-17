@@ -31,7 +31,7 @@ const Login = () => {
 
     useEffect(() => {
         if (user?.error) {
-            toastMsg.error(toast, "tài khoản hoặc mật khẩu không chính xác")
+            toastMsg.error(toast, "Tài khoản hoặc mật khẩu không chính xác")
         }
     }, [user])
 
