@@ -4,6 +4,8 @@ import { socket } from "../../../../_services/socket";
 import { Toast } from 'primereact/toast';
 import { toastMsg } from '../../../../commons/toast';
 import { roomStorage } from '../../../../commons/message.common';
+import {useSelector ,useDispatch} from "react-redux"
+import { groupScrollTop } from '../../../../redux/messages/messageSlice';
 
 const Groups = ({ 
     groups,
@@ -23,6 +25,18 @@ const Groups = ({
 }) => {
     const toast = useRef(null);
     const [roomview,setRoomView] = useState(null)
+    const groupTopRef = useRef(null);
+    const isScrollTop = useSelector(state=>state.message.groupsScrollTop)
+    const dispatch = useDispatch()
+
+    React.useEffect(()=>{
+        if(isScrollTop){
+            scrollToTop()
+            setTimeout(() => {
+                dispatch(groupScrollTop(false))
+            },[700])
+        }
+    })
 
     const handlePrivateGroup = (group)=>{
         const id_Group = NAME_ROOM.GROUP + "-" + group._id
@@ -76,6 +90,10 @@ const Groups = ({
     socket.off('groups-preview').on('groups-preview', (payload)=>{
        setRoomView(payload)
     })
+
+    const scrollToTop = () => {
+        groupTopRef.current?.scrollIntoView({ behavior: "smooth" });
+    }
 
     const handleGroupView = (room)=>{
         joinRoom(room?._id?.name)
@@ -131,10 +149,11 @@ const Groups = ({
         <Toast ref={toast} position="bottom-left"/>
         {
             roomview && roomview?.length > 0 &&
-            <li>
+            <li className="msg__title">
                 <span className="title_members">Room thành viên</span>
             </li>
         }
+        <div ref={groupTopRef}></div>
         {
             roomview && roomview?.length > 0 &&
             roomview.map((room,index)=>{
@@ -152,7 +171,7 @@ const Groups = ({
         }
         {
             groups?.length > 0 &&
-            <li>
+            <li className="msg__title">
                 <span className="title_members">Nhóm</span>
             </li>
         }

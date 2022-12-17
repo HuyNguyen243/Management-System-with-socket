@@ -4,7 +4,7 @@ import { socket } from "../../../_services/socket";
 import { getFormattedDate } from '../../../commons/message.common';
 import { NAME_ROOM } from '../../../constants';
 import { useDispatch, useSelector } from 'react-redux';
-import { setIsOpenChat, userScrollTop } from '../../../redux/messages/messageSlice';
+import { setIsOpenChat, userScrollTop, groupScrollTop } from '../../../redux/messages/messageSlice';
 import { postImagesMessage } from '../../../redux/messages/action';
 
 import Modal from "./Modal";
@@ -31,6 +31,7 @@ const BoxChat = () => {
     const [multiPreviewImages, setMultiPreviewImages] = useState([])
     const [multiImages, setMultiImages] = useState([])
     const [images, setImages] = useState([])
+    const [scrollBottom, setScrollBottom] = useState(false)
     
     const dispatch = useDispatch()
     const isOpenChat = useSelector(state=>state.message.isOpenChat)
@@ -45,6 +46,15 @@ const BoxChat = () => {
         scrollToBottom();
     }, [messagesOnRoom, currentRoom]);
 
+    useEffect(() => {
+        if(scrollBottom){
+            scrollToBottom();
+            setTimeout(() => {
+                setScrollBottom(false)
+            },500)
+        }
+    }, [scrollBottom]);
+
     const scrollToBottom = () => {
         const elem = document.querySelector('.chat-history');
         elem.scrollTop = elem.scrollHeight;
@@ -56,6 +66,7 @@ const BoxChat = () => {
     const joinRoom = React.useCallback((room) => {
         socket.emit("join-room", room)
         setCurrentRoom(room)
+        setScrollBottom(true)
     },[ setCurrentRoom])
 
     // GET NOTIFICATION 
@@ -105,20 +116,22 @@ const BoxChat = () => {
             if(nameRoom?.includes(NAME_ROOM.USER)){
                 allmembers = [privateMemberMsg, currentUser?.id_system]
                 type = NAME_ROOM.USER;
+                dispatch(userScrollTop(true))
             }else{
                 allmembers = membersInGroup
                 type = NAME_ROOM.GROUP;
+                dispatch(groupScrollTop(true))
             }
           
             const fileData = new FormData();
             for(let i=0; i < images.length; i++){
                 fileData.append('images', images[i])
             }
+
             dispatch(postImagesMessage(fileData));
-            messageEndRef.current?.scrollIntoView({behavior: 'smooth'});
+            setScrollBottom(true)
             setTimeout(() => {
                 socket.emit('message-room', nameRoom, messages, currentUser?.id_system, time, toDayDate, allmembers, type, groups_id, privateMemberMsg,multiImages)
-                dispatch(userScrollTop(true))
                 setMessages("")
                 setMultiPreviewImages([])
                 setMultiImages([])
@@ -299,11 +312,11 @@ const BoxChat = () => {
                             }
                         </div>
                         <textarea name="message-to-send m-0" id="message-to-send" 
-                            placeholder="Type your message" rows={1} value={messages} onChange={(e)=>setMessages(e.target.value)}
+                             rows={1} value={messages} onChange={(e)=>setMessages(e.target.value)}
                         />
                     </div>
                     <button className={`${isOpenChat && "btn__sendChat"} ""`}>
-                        <img src="images/send.svg" alt=""/>
+                        <img src="images/send.svg" alt="" className="mb-1"/>
                     </button>
             </form>
         }

@@ -1,4 +1,9 @@
-
+.css-1dxveab-MuiDrawer-docked .MuiDrawer-paper{
+    z-index: 999999 !important;
+}
+.MuiButtonBase-root{
+    padding-left: 0 !important;
+}
 @media (max-width: 1200px) {
     .table__total--workflow--management{
         .table__header-col span{
@@ -10,7 +15,7 @@
     }
 }
 
-@media (max-width: 1113px) {
+@media (max-width: 1400px) {
     .table__limit{
         > span{
             padding-bottom: 0px;
@@ -29,17 +34,14 @@
     .total__block:last-child{
         width: 100%;
     }
+    .calendar{
+        width: 100%;
+    }
+    .fiter__status{
+        width: 100%;
+        margin: 0 !important;
+    }
     .page__filter{
-        flex-direction: column;
-        position: absolute;
-        background-color: $color-white;
-        border: 1px solid $color-border-input;
-        height: 500px;
-        z-index: 10;
-        box-shadow: 3px 4px 4px rgb(0 0 0 / 17%);
-        margin-top: 30px;
-        padding-top: 20px;
-        
         >img{
             position: absolute;
             bottom: 17px;
@@ -49,6 +51,7 @@
     .filter__search{
         width: 100%;
         margin-bottom: 10px;
+        padding: 0px !important;
     }
     .calendar{
         margin-bottom: 20px;
@@ -73,7 +76,12 @@
     .table__body-name.btn_stop,
     .table__body-name.btn_pending{
         margin: 0px;
+
     }
+    .p-datatable .p-datatable-tbody > tr {
+        background-color: $color-border-input;
+    }
+
     .p-datatable-tbody tr td{
         padding: 10px !important;
     }
@@ -93,10 +101,6 @@
     .paginate{
         padding: 15px 0;
     }
-    .p-datatable .p-datatable-tbody > tr > td {
-        background-color: #c7e4f43b !important;
-    }
-
     .btn_filter{
         display: block;
         margin-left: 5px;
@@ -167,6 +171,14 @@
 }
 
 @media (max-width: 767px) {
+    .header__block{
+        position: absolute;
+        right: 10px;
+        width: max-content;
+    }
+    .header__left{
+        display: none;
+    }
     .ava_right{
         margin-top: 255px !important;
         display:none;
@@ -199,10 +211,133 @@
     .form__forgot-pwd{
         min-height: 475px;
     }
+    .table__header-col span{
+        font-size: 13px;
+    }
+    #people-list.active {
+        width: 60px;
+    }
+    #people-list {
+        width: 60px;
+    }
+    .notification-message__search{
+        display: none;
+    }
+    .message__title{
+        height: 71px;
+    }
+    .chat__createGroup:after {
+        content: "+";
+        position: absolute;
+        left: 10px;
+        width: 40px;
+        height: 40px;
+        background: #0061F4;
+        font-size: 25px;
+        border-radius: 5px;
+        color: #FFFFFF;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        box-shadow: -3px 4px 4px rgb(0 0 0 / 17%);
+        cursor: pointer;
+        top: 12px;
+    }
+    .chat .chat-history .message-data-time::after,
+    .chat .chat-history .message-data-time::before{
+        width: 30%;
+    }
+    
+}
+
+@media (max-width: 900px) {
+    .chat {
+        width: 350px;
+    }
+    .msg__title{
+        display: none !important;
+    }
+}
+
+@media (max-width: 739px) {
+    .chart__color{
+        height: 100px;
+    }
+
+    .table__header-col span{
+        font-size: 12px;
+    }
+    .table__body-name.btn_pending ,
+    .table__body-name.btn_stop,
+    .table__body-name.btn_success{
+        height: 30px;
+        width: 135px;
+    }
+    .table__perpage > span{
+        font-size: 14px;
+    }
+
+    .edit__group {
+        padding-left: 69px;
+    }
+}
+@media (max-width: 600px) {
+   
+    .header__right{
+        justify-content: flex-end;
+    }
+    .header__block{
+        display: block !important;
+    }
+    .header__menu {
+        top: 59px !important;
+    }
+    .header__right--notification-msg {
+        img{
+            width: 35px;
+            margin: 0;
+            margin-top: 10px;
+        }
+    }
+    .header__right--notification{
+        img{
+            width: 35px;
+            margin: 0;
+            margin-top: 9px;
+        }
+    }
+
+    .chat-container {
+        display: flex;
+        position: absolute;
+        bottom: 60px;
+        right: -12px;
+        z-index: 9999;
+        box-shadow: -2px 8px 8px rgb(0 0 0 / 30%);
+        border-radius: 10px;
+        height: 475px;
+    }
 }
 
 @media (max-width: 520px) {
     .login__form{
         margin: auto 20px !important;
+    }
+    .notification-message__container,
+    .notification__container{
+        left: 40px;
+        top: 60px;
+    }
+    .id__me{
+        display: none;
+    }
+    .chat {
+        width: 270px;
+    }
+}
+
+@media (max-width: 420px) {
+    .chat {
+        width: 240px;
     }
 }

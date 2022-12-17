@@ -13,7 +13,7 @@ const ModalJobEditor = () => {
     const toast = useRef(null);
     const dispatch = useDispatch();
     const copyToClipboard = () => {
-        toastMsg.info(toast,'Copy success')
+        toastMsg.info(toast,'Đã lưu')
         copy("any text");
     }
     const isOpenJobEditor = useSelector(state => state.modal.isOpenModalJobEditor)

@@ -68,7 +68,7 @@ const ForgotPassword = () => {
                                         }
                                     })}
                             />
-                            <img className="show__password" src={haveSeenPwd ? "../../images/closed_eye.svg" : "../../images/eye.svg"}
+                            <img className="show__password" src={haveSeenPwd ? "../../images/closed_eye.png" : "../../images/eye.png"}
                                 alt="" onClick={() => setHaveSeenPwd(!haveSeenPwd)} />
                         </div>
                         {
@@ -89,7 +89,7 @@ const ForgotPassword = () => {
                                         }
                                     })}
                             />
-                            <img className="show__password" src={haveSeenRePwd ? "../../images/closed_eye.svg" : "../../images/eye.svg"}
+                            <img className="show__password" src={haveSeenRePwd ? "../../images/closed_eye.png" : "../../images/eye.png"}
                                 alt="" onClick={() => setHaveSeenRePwd(!haveSeenRePwd)} />
                         </div>
                         {

@@ -105,7 +105,7 @@ const TableTotal = () => {
               <Column body={()=>bodyTable(dataTable?.kpi)} header={()=>headerTable("KPI")} />
         </DataTable>
       <div className="field col-12 md:col-7 " >
-	  		<Calendar id="yearpicker " className="w-3 calendar__year" value={year} onChange={handleChangeYear} view="year" dateFormat="yy" />
+	  		<Calendar id="yearpicker " className="w-3 calendar__year" value={year} onChange={handleChangeYear} view="year" dateFormat="yy" placeholder="Chọn ngày"/>
           	<Chart type="bar"  className="chart_bar"  data={dataKPis} options={horizontalOptions}/>
       </div>
 	  <div className="table__analysis field col-12 md:col-5">
@@ -113,10 +113,10 @@ const TableTotal = () => {
 		{
             (performance?.data?.job_pending || performance?.data?.job_incomplete || performance?.data?.job_complete) && checkData 
             ?
-            <div className="flex pt-4">
-                <div className="field col-4 md:col-4 chart__color red">Tạm hoãn</div>
-                <div className="field col-4 md:col-4 chart__color yellow">Đang xử lý</div>
-                <div className="field col-4 md:col-4 chart__color blue">Hoàn thành</div>
+            <div className="grid  pt-4">
+                <div className="field col-4 md:col-4 chart__color red flex justify-content-center">Tạm hoãn</div>
+                <div className="field col-4 md:col-4 chart__color yellow flex justify-content-center">Đang xử lý</div>
+                <div className="field col-4 md:col-4 chart__color blue flex justify-content-center">Hoàn thành</div>
             </div>
             :
             ""
