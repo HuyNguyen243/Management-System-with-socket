@@ -21,6 +21,9 @@ const Notification = ({isOpenNotification, setisOpenNotification}) => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
+    const soundUrl = './sound/notify.mp3';
+    const audio = new Audio(soundUrl);
+
     const handleInfiniteScroll = async() => {
           const element = document.querySelector('.notification__block');
           if (element.scrollHeight - element.scrollTop === element.clientHeight)
@@ -97,6 +100,7 @@ const Notification = ({isOpenNotification, setisOpenNotification}) => {
 
     socket.off('is_created_notify').on('is_created_notify', (payload)=>{
         if(payload){
+            audio.play()
             const { id_system } = user?.data
             socket.emit('get-members')
             socket.emit("notifications-of-id-system",id_system)

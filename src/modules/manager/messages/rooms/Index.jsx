@@ -13,7 +13,6 @@ import { NAME_ROOM } from '../../../../constants';
 import Members from './Members';
 import Groups from './Groups';
 import { CharacterRoom } from '../../../../commons/message.common';
-import { roomStorage } from '../../../../commons/message.common';
 import { UserRules } from '../../../../constants';
 
 const Index = (
@@ -50,26 +49,6 @@ const Index = (
     const [membersAfterSort, setMembersAfterSort] = useState([])
     const [isOpen, setIsOpen] = useState(false)
     const MsgsByIdSystem = useSelector(state=> state.message.messagesByIdSystem)
-
-    useEffect(() => {
-        // CHECK SESSIONSTORAGE AND SAVE
-        const roomBySsTorage = roomStorage.get()
-        if(roomBySsTorage){
-                setGroups_id(roomBySsTorage.groud_id)
-                setPrivateGroupMsg(roomBySsTorage?.privateGroupMsg)
-                setPrivateMemberMsg(roomBySsTorage?.received)
-                setRole(NAME_ROOM.GROUP)
-                setMembersInGroup(roomBySsTorage?.membersInGroup)
-                setNamePrivateRoom(roomBySsTorage?.namePrivateRoom)
-            if(roomBySsTorage?.privateGroupMsg !== ""){
-                setCurrentRoom(roomBySsTorage?.privateGroupMsg)
-                joinRoom(roomBySsTorage?.privateGroupMsg)
-            }else{
-                setCurrentRoom(roomBySsTorage?.privateMemberMsg)
-                joinRoom(roomBySsTorage?.privateMemberMsg)
-            }
-        }
-    },[setGroups_id, setMembersInGroup, setNamePrivateRoom, setPrivateGroupMsg, setPrivateMemberMsg, setRole, joinRoom, setCurrentRoom])
 
     useEffect(() => {
         if(currentRoomByNotifications){

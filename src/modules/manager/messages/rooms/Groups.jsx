@@ -3,7 +3,6 @@ import { NAME_ROOM } from '../../../../constants';
 import { socket } from "../../../../_services/socket";
 import { Toast } from 'primereact/toast';
 import { toastMsg } from '../../../../commons/toast';
-import { roomStorage } from '../../../../commons/message.common';
 import {useSelector ,useDispatch} from "react-redux"
 import { groupScrollTop } from '../../../../redux/messages/messageSlice';
 
@@ -49,7 +48,6 @@ const Groups = ({
         setNamePrivateRoom(group.name)
         socket.emit("reset-notifications",id_Group, currentUser?.id_system)
         //SAVESTORAGE
-        roomStorage.set(group._id, id_Group, "", NAME_ROOM.GROUP, group?.members, group.name, "")
     }
 
     socket.off("isCreated").on("isCreated", (payload)=>{
@@ -64,8 +62,6 @@ const Groups = ({
         }
         if(currentRoom === payload?.room){
             setNamePrivateRoom(payload?.nameRoom)
-            const room = roomStorage.get()
-            roomStorage.set(room.groud_id,room.privateGroupMsg, "", room.role,membersInGroup ,payload?.nameRoom,"" )
         }
         if(payload?.members.includes(currentUser?.id_system)){
             toastMsg.warn(toast,`Bạn đã rời khỏi nhóm ${payload?.nameRoom}.`)
@@ -105,12 +101,9 @@ const Groups = ({
         setMembersInGroup(room?._id?.members)
         setNamePrivateRoom(room?._id?.name)
 
-        //SAVESTORAGE
-        roomStorage.set(room?._id?.name, room?._id?.name, "", room?._id?.name, room?._id?.members, room?._id?.name, "")
     }
 
     const resetRoomAfterDelete = ()=>{
-        roomStorage.delete()
         setNamePrivateRoom("")
         setMembersInGroup([])
         setPrivateGroupMsg("")

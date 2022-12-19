@@ -28,7 +28,7 @@ const Login = () => {
             dispatch(userloginRequest(result))
         }
     };
-
+    console.log(errors)
     useEffect(() => {
         if (user?.error) {
             toastMsg.error(toast, "tài khoản hoặc mật khẩu không chính xác")
@@ -68,8 +68,8 @@ const Login = () => {
                             />
                         </div>
                         {
-                            errors?.email?.message &&
-                            <span className="form__error">{errors?.email?.message}</span>
+                            errors?.username?.message &&
+                            <span className="form__error">{errors?.username?.message}</span>
                         }
                     </div>
                     <div className="form__password">

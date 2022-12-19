@@ -3,7 +3,6 @@ import { orderIds } from '../../../../commons/message.common';
 import { NAME_ROOM } from '../../../../constants';
 import { socket } from "../../../../_services/socket";
 import { CharacterRoom } from '../../../../commons/message.common';
-import { roomStorage } from '../../../../commons/message.common';
 import { UserRules } from '../../../../constants';
 import {useSelector ,useDispatch} from "react-redux"
 import {  userScrollTop } from '../../../../redux/messages/messageSlice';
@@ -33,7 +32,6 @@ const Members = ({
         setNamePrivateRoom(CharacterRoom(member?.role))
         socket.emit("reset-notifications",roomId, currentUser?.id_system)
         //SAVESTORAGE
-        roomStorage.set("", "", roomId, member?.role, [], CharacterRoom(member?.role), member?.id_system)
     }
 
     React.useEffect(()=>{

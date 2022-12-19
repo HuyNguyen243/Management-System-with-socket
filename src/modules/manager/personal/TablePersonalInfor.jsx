@@ -60,7 +60,7 @@ const TablePersonalInfor = ({
     <DataTable 
     value={dataTable} 
     responsiveLayout="stack" 
-    breakpoint="1200px" 
+    breakpoint="1400px" 
     className="table__total--workflow--management"
     editMode="cell"
     >
