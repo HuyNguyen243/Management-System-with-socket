@@ -75,14 +75,12 @@ const Setting = () => {
                                     <InputNumber
                                         id="exchange_rate"
                                         value={setting?.data?.exchange_rate}
-                                        onValueChange={(e) => setValue("exchange_rate",e.value)}
                                         inputId="currency-vn"
                                         mode="currency"
                                         currency="VND"
                                         locale="vi-VN"
                                         useGrouping={true}
-                                        minFractionDigits={0}
-                                        className={errors?.exchange_rate && "p-invalid"}
+                                        disabled={true}
 
                                     />
                                 </span>
