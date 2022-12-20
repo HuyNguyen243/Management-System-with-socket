@@ -133,7 +133,7 @@ const Modal = ({isOpenCreateGroup, setIsOpenCreateGroup, nameModal , editDataGro
             reject: ()=>{}
         });
     }
-    console.log(errors)
+
     return (
         <>
             <Toast ref={toast} position="bottom-left"/>
@@ -221,11 +221,11 @@ const Modal = ({isOpenCreateGroup, setIsOpenCreateGroup, nameModal , editDataGro
                     }
                     <div className="w-full">                      
                         <div className="flex justify-content-end align-items-center w-full">
-                            <Button label={nameModal === NAME_ROOM.CREATE ? "Đồng ý" : "Cập nhật"}   />
+                            <Button label={nameModal === NAME_ROOM.CREATE ? "Đồng ý" : "Cập nhật"}   className="w-full"/>
                         </div>
                     </div>
                 </form>
-                <Button label="Hủy bỏ" icon="pi pi-times" onClick={()=>resetModal()} className="p-button-text btn__close" />
+                <Button label="Hủy bỏ" icon="pi pi-times" onClick={()=>resetModal()} className="p-button-text btn__close w-full" />
             </Dialog>
         </>
     )

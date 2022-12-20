@@ -51,9 +51,8 @@
 }
 
 .btn__close {
-    position: absolute;
-    right: 140px;
-    bottom: 33px;
+    border: 1px solid #ccc;
+    margin-top: 10px;
 }
 
 .p-button.p-button-text:enabled:hover,
@@ -73,4 +72,14 @@
 #rate_sale,
 #kpi_sale {
     width: 100%;
+}
+
+.MuiMenu-list li{
+    padding-left: 10px !important;
+}
+
+.p-datatable-emptymessage td {
+    background-color: $color-bg-table !important;
+    border: none !important;
+    padding-bottom: 20px !important;
 }

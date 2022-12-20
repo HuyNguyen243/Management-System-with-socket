@@ -344,8 +344,8 @@
     color: $color-border-input;
     font-size: 25px;
     background-color: $color-white;
-    width: 40px;
-    height: 40px;
+    width: 26px;
+    height: 26px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -810,4 +810,10 @@
     background: $color-primary;
     color: #ffffff;
     border-color: $color-primary;
+}
+
+.p-datatable-emptymessage td{
+    display: flex !important;
+    justify-content: center !important;
+    border-bottom : none !important;
 }

@@ -3,7 +3,8 @@ import { NAME_ROOM } from '../../../../constants';
 import { socket } from "../../../../_services/socket";
 import { Toast } from 'primereact/toast';
 import { toastMsg } from '../../../../commons/toast';
-import { roomStorage } from '../../../../commons/message.common';
+import {useSelector ,useDispatch} from "react-redux"
+import { groupScrollTop } from '../../../../redux/messages/messageSlice';
 
 const Groups = ({ 
     groups,
@@ -23,6 +24,18 @@ const Groups = ({
 }) => {
     const toast = useRef(null);
     const [roomview,setRoomView] = useState(null)
+    const groupTopRef = useRef(null);
+    const isScrollTop = useSelector(state=>state.message.groupsScrollTop)
+    const dispatch = useDispatch()
+
+    React.useEffect(()=>{
+        if(isScrollTop){
+            scrollToTop()
+            setTimeout(() => {
+                dispatch(groupScrollTop(false))
+            },[700])
+        }
+    })
 
     const handlePrivateGroup = (group)=>{
         const id_Group = NAME_ROOM.GROUP + "-" + group._id
@@ -35,7 +48,6 @@ const Groups = ({
         setNamePrivateRoom(group.name)
         socket.emit("reset-notifications",id_Group, currentUser?.id_system)
         //SAVESTORAGE
-        roomStorage.set(group._id, id_Group, "", NAME_ROOM.GROUP, group?.members, group.name, "")
     }
 
     socket.off("isCreated").on("isCreated", (payload)=>{
@@ -50,8 +62,6 @@ const Groups = ({
         }
         if(currentRoom === payload?.room){
             setNamePrivateRoom(payload?.nameRoom)
-            const room = roomStorage.get()
-            roomStorage.set(room.groud_id,room.privateGroupMsg, "", room.role,membersInGroup ,payload?.nameRoom,"" )
         }
         if(payload?.members.includes(currentUser?.id_system)){
             toastMsg.warn(toast,`Bạn đã rời khỏi nhóm ${payload?.nameRoom}.`)
@@ -77,6 +87,10 @@ const Groups = ({
        setRoomView(payload)
     })
 
+    const scrollToTop = () => {
+        groupTopRef.current?.scrollIntoView({ behavior: "smooth" });
+    }
+
     const handleGroupView = (room)=>{
         joinRoom(room?._id?.name)
 
@@ -87,12 +101,9 @@ const Groups = ({
         setMembersInGroup(room?._id?.members)
         setNamePrivateRoom(room?._id?.name)
 
-        //SAVESTORAGE
-        roomStorage.set(room?._id?.name, room?._id?.name, "", room?._id?.name, room?._id?.members, room?._id?.name, "")
     }
 
     const resetRoomAfterDelete = ()=>{
-        roomStorage.delete()
         setNamePrivateRoom("")
         setMembersInGroup([])
         setPrivateGroupMsg("")
@@ -131,10 +142,11 @@ const Groups = ({
         <Toast ref={toast} position="bottom-left"/>
         {
             roomview && roomview?.length > 0 &&
-            <li>
+            <li className="msg__title">
                 <span className="title_members">Room thành viên</span>
             </li>
         }
+        <div ref={groupTopRef}></div>
         {
             roomview && roomview?.length > 0 &&
             roomview.map((room,index)=>{
@@ -152,7 +164,7 @@ const Groups = ({
         }
         {
             groups?.length > 0 &&
-            <li>
+            <li className="msg__title">
                 <span className="title_members">Nhóm</span>
             </li>
         }

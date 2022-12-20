@@ -29,6 +29,7 @@ const initialState = {
     allMembers: null,
     messagesByIdSystem: null,
     usersScrollTop: false,
+    groupsScrollTop: false,
 
     uploadImage:{
         isLoading: false,
@@ -65,6 +66,9 @@ const messagesSlice = createSlice({
         },
         userScrollTop: (state, { payload })=>{
             state.usersScrollTop = payload
+        },
+        groupScrollTop: (state, { payload })=>{
+            state.groupsScrollTop = payload
         },
     },
     extraReducers:{
@@ -175,5 +179,5 @@ const messagesSlice = createSlice({
     }
 })
 
-export const { getCurrentUser, getCurrentRoom , setIsOpenChat, getAllgroups, getAllMembers, getMsgsByIdSystem, userScrollTop } = messagesSlice.actions
+export const { getCurrentUser, getCurrentRoom , setIsOpenChat, getAllgroups, getAllMembers, getMsgsByIdSystem, userScrollTop, groupScrollTop } = messagesSlice.actions
 export default messagesSlice.reducer

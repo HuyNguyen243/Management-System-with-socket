@@ -144,7 +144,7 @@ const Table = ({
             loading={loading}
             value={ old_Data } 
             responsiveLayout="stack"
-            breakpoint="1113px"
+            breakpoint="1400px"
             onRowClick={handleRowClick}
             paginator 
             paginatorTemplate={Object.keys(old_Data).length > perpage ? paginate : false} 
