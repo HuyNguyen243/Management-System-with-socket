@@ -75,13 +75,12 @@ const Setting = () => {
                                     <InputNumber
                                         id="exchange_rate"
                                         value={setting?.data?.exchange_rate}
+                                        disabled={true}
                                         inputId="currency-vn"
                                         mode="currency"
                                         currency="VND"
                                         locale="vi-VN"
                                         useGrouping={true}
-                                        disabled={true}
-
                                     />
                                 </span>
                             </div>
