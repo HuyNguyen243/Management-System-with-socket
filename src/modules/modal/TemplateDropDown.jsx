@@ -3,7 +3,7 @@ import { UserRules,CustomerRules } from "../../constants";
 export const itemUserTemplate = (item) => {
     return (
         <div className="dropdown-item flex justify-content-between align-items-center">
-            <div>{item.name}</div>
+            <div>{item.fullname}</div>
             <div>{item.status === UserRules.STATUS.OFFLINE ?
                 <span className="dots_offline"></span> :
                 (item.status === UserRules.STATUS.ONLINE ?
@@ -16,7 +16,7 @@ export const itemUserTemplate = (item) => {
 export const itemCustomerTemplate = (item) => {
     return (
         <div className="dropdown-item flex justify-content-between align-items-center">
-            <div>{item.name}</div>
+            <div>{item.fullname}</div>
             <div>{item.status === CustomerRules.STATUS.UNREQUEST ?
                 <span className="dots_offline"></span> :
                 (item.status === CustomerRules.STATUS.REQUEST ?

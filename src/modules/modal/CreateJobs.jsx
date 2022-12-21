@@ -18,6 +18,7 @@ import {
 import { toastMsg } from '../../commons/toast';
 import { Toast } from 'primereact/toast';
 import { addJobsRequest } from "../../redux/overviewJobs/actionJobs";
+import { itemCustomerTemplate } from '../modal/TemplateDropDown';
 
 const CreateJobs = () => {
 
@@ -102,6 +103,7 @@ const CreateJobs = () => {
                                             <Dropdown
                                             options={customers.data}
                                             optionLabel="fullname"
+                                            itemTemplate={itemCustomerTemplate}
                                             value={field.value} onChange={(e) => field.onChange(e.value)}
                                             className={classNames({ 'p-invalid': fieldState.invalid }, "create__job_type")}
                                             />
