@@ -16,6 +16,7 @@ const EmployeeOverview = () => {
     const employees = useSelector(state => state.employee.dashboard)
     const [filter, setFilter] = useState("")
 
+
     useEffect(() => {
         dispatch(dashboardEmployeeRequest(filter))
     }, [dispatch,filter])
@@ -38,7 +39,7 @@ const EmployeeOverview = () => {
         <>
             <Table
                 dataTable={dataParse(employees?.data)}
-                loading={false}
+                loading={employees?.loading}
                 DataFilter={DataFilter}
                 haveTotalTable={false}
                 header={table_employee_overview}

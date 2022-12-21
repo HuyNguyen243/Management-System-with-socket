@@ -6,6 +6,7 @@ import { table_work_flowManager } from '../../../../components/table/header_tabl
 import { dashboardJobsRequest } from '../../../../redux/overviewJobs/actionJobs';
 import { setIsOpenModalCreateJob, setIsOpenInformationJob, setDataModalInformationJob } from '../../../../redux/modal/modalSlice';
 import { getEmployeePerformance, kpiYearOfMonth } from "../../../../redux/employeePerformance/action";
+import { RESET_REQUEST } from '../../../../commons/support';
 
 const WorkflowManagement = () => {
     const dispatch = useDispatch()
@@ -21,7 +22,7 @@ const WorkflowManagement = () => {
         dispatch(dashboardJobsRequest(filter))
         if(filter && filter.length > 0 && filter?.includes("start_date") && filter?.includes("end_date")){
             const newSearch = filter + "&id=" + user?.data?.id_system
-            dispatch(getEmployeePerformance(newSearch))
+            RESET_REQUEST(dispatch, newSearch, getEmployeePerformance)
         }else{
             const now = new Date();
             const firstDay = new Date(now.getFullYear(), now.getMonth(), 1);
@@ -36,7 +37,7 @@ const WorkflowManagement = () => {
             }
 
             const newSearch = `?start_date=${format(firstDay)}&end_date=${format(lastDay)}&id=${user?.data?.id_system}`
-            dispatch(getEmployeePerformance(newSearch))
+            RESET_REQUEST(dispatch, newSearch, getEmployeePerformance)
         }
     }, [dispatch, filter, user])
 
@@ -56,7 +57,7 @@ const WorkflowManagement = () => {
     return (
         <Table
             dataTable={dataParse(jobs?.data)}
-            loading={false}
+            loading={jobs?.loading}
             DataFilter={DataFilter}
             haveTotalTable={false}
             header={table_work_flowManager}

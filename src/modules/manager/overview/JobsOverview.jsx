@@ -15,14 +15,17 @@ import {
 import { dashboardJobsRequest } from "../../../redux/overviewJobs/actionJobs";
 import { getEmployeeRequest } from "../../../redux/overviewEmployee/actionEmployee";
 import { getCustomerRequest } from "../../../redux/sale/action";
+import { RESET_REQUEST } from '../../../commons/support';
+
 const JobsOverview = () => {
     const dispatch = useDispatch()
     const [filter, setFilter] = useState("")
     const jobs = useSelector(state => state.jobs?.dashboard)
     const employees = useSelector(state => state.employee?.inforuser)
     const customer = useSelector(state => state.sale?.getcustomer)
+    
     useEffect(() => {
-        dispatch(dashboardJobsRequest(filter))
+        RESET_REQUEST(dispatch,filter,dashboardJobsRequest)
     }, [dispatch, filter])
 
     useEffect(() => {
@@ -81,7 +84,7 @@ const JobsOverview = () => {
     return (
         <Table
             dataTable={dataParse(jobs?.data)}
-            loading={false}
+            loading={jobs?.loading}
             DataFilter={DataFilter}
             haveTotalTable={false}
             header={table_jobs_overview}

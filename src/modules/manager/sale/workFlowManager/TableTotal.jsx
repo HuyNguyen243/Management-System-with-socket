@@ -96,7 +96,7 @@ const TableTotal = () => {
 
   return (
     <div className="grid">
-        <DataTable value={[dataTable]} responsiveLayout="stack" breakpoint="1113px" className="table__total--workflow--management field col-12 md:col-12 m-0">
+        <DataTable value={[dataTable]} responsiveLayout="stack" breakpoint="1400px" className="table__total--workflow--management field col-12 md:col-12 m-0">
               <Column body={()=>bodyTable(dataTable?.job_pending)} header={()=>headerTable("Tạm hoãn")} className="p-0"/>
               <Column body={()=>bodyTable(dataTable?.job_incomplete)} header={()=>headerTable("Đang xử lý")} />
               <Column body={()=>bodyTable(dataTable?.job_complete)} header={()=>headerTable("Đã hoàn thành")} />
