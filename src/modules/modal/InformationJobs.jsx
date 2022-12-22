@@ -151,8 +151,7 @@ const InformationJobs = () => {
         }
     };
 
-
-
+    console.log(user?.data)
     return (
         <>
             <ConfirmPopup />

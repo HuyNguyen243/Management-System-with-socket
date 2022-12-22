@@ -7,6 +7,7 @@ import {
     editJobsRequest,
     getJobsRequest,
     getJobsAdminRequest,
+    updateJobByEditor,
 } from "./actionJobs";
 
 const initialState = {
@@ -253,6 +254,32 @@ const jobsReducer = createSlice({
                     },
                 }
             );
+        },
+        [updateJobByEditor.pending]: (state) => {
+            Object.assign(state,{},{
+                editjobs:{
+                    loading: true
+                }
+            })
+        },
+        [updateJobByEditor.fulfilled]: (state, action) => {
+            Object.assign(state,{},{
+                editjobs:{
+                    loading: false,
+                    data: action?.payload?.data,
+                    error: false
+                }
+            })
+            state.dashboard.data.splice(action?.payload?.index, 1, action?.payload?.data)
+        },
+        [updateJobByEditor.rejected]: (state, action) => {
+            Object.assign(state,{},{
+                editjobs:{
+                    loading: false,
+                    data: action?.payload,
+                    error: true
+                }
+            })
         },
     },
 });
