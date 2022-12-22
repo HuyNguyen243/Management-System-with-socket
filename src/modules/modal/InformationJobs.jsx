@@ -15,7 +15,7 @@ import { InputText } from 'primereact/inputtext';
 import { timezoneToDate } from '../../commons/dateTime';
 import { ConfirmPopup, confirmPopup } from 'primereact/confirmpopup';
 import { dashboardEmployeeRequest } from "../../redux/overviewEmployee/actionEmployee";
-import { deleteJobsRequest, editJobsRequest } from "../../redux/overviewJobs/actionJobs";
+import { deleteJobsRequest, editJobsRequest, updateJobByEditor } from "../../redux/overviewJobs/actionJobs";
 import { InputNumber } from 'primereact/inputnumber';
 import { Calendar } from 'primereact/calendar';
 import { formatUSD, formatVND, convertUSD } from '../../commons/formatCost';
@@ -147,11 +147,14 @@ const InformationJobs = () => {
                 result: formDataPut,
                 index: rowdata?.index
             }
-            dispatch(editJobsRequest(formData))
+            if(user?.data?.id_system.includes("E")){
+                dispatch(updateJobByEditor(formData))
+            }else{
+                dispatch(editJobsRequest(formData))
+            }
         }
     };
 
-    console.log(user?.data)
     return (
         <>
             <ConfirmPopup />
