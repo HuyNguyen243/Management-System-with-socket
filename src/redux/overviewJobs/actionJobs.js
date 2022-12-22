@@ -44,6 +44,22 @@ export const editJobsRequest = createAsyncThunk(
     }
 )
 
+export const doneJobsRequest = createAsyncThunk(
+    'updateJobs',
+    async (data,{ rejectWithValue }) => {
+        try {
+            const res = await put(`jobs/done/${data?.result.id_system}`,data?.result)
+            if(res){
+                res.data_user = data?.result
+                res.index = data?.index
+            }
+            return res;
+        } catch (error) {
+            return rejectWithValue(error?.response?.data);
+        }
+    }
+)
+
 export const deleteJobsRequest = createAsyncThunk(
     'deleteJobs',
     async (data,{ rejectWithValue }) => {

@@ -7,6 +7,7 @@ import {
     editJobsRequest,
     getJobsRequest,
     getJobsAdminRequest,
+    doneJobsRequest
 } from "./actionJobs";
 
 const initialState = {
@@ -31,6 +32,11 @@ const initialState = {
         error: false,
     },
     getjobs: {
+        loading: false,
+        data: null,
+        error: false,
+    },
+    donejobs: {
         loading: false,
         data: null,
         error: false,
@@ -253,6 +259,32 @@ const jobsReducer = createSlice({
                     },
                 }
             );
+        },
+        [doneJobsRequest.pending]: (state) => {
+            Object.assign(state,{},{
+                donejobs:{
+                    loading: true
+                }
+            })
+        },
+        [doneJobsRequest.fulfilled]: (state, action) => {
+            Object.assign(state,{},{
+                donejobs:{
+                    loading: false,
+                    data: action?.payload?.data,
+                    error: false
+                }
+            })
+            state.dashboard.data.splice(action?.payload?.index, 1, action?.payload?.data)
+        },
+        [doneJobsRequest.rejected]: (state, action) => {
+            Object.assign(state,{},{
+                donejobs:{
+                    loading: false,
+                    data: action?.payload,
+                    error: true
+                }
+            })
         },
     },
 });
