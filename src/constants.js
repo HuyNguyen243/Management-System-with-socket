@@ -164,3 +164,7 @@ export const NOTIFICATION_TITLE = {
     EDIT_JOB: "Một công việc đã được chỉnh sửa bởi",
     FIXED: "Một công việc đã hoàn lại bởi ",
 }
+
+export const CONFIG_COST = {
+    EXCHANGE_RATE: 22000,
+};
