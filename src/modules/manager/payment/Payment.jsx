@@ -48,7 +48,7 @@ const Payment = () => {
     return (
         <Table
             dataTable={dataParse(payment?.data)}
-            loading={false}
+            loading={payment?.loading}
             DataFilter={DataFilter}
             haveTotalTable={true}
             header={table_payment}

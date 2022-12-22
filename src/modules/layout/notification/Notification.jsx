@@ -7,6 +7,7 @@ import { createNotification, getNotification } from '../../../redux/notification
 import { getNotify } from '../../../redux/notification/notificationSlice';
 import { useNavigate } from 'react-router';
 import { get } from "../../../_services/apiRequest"
+import { timeAgo } from '../../../commons/message.common';
 
 const Notification = ({isOpenNotification, setisOpenNotification}) => {
     const user = useSelector(state=> state.auth.user)
@@ -99,8 +100,10 @@ const Notification = ({isOpenNotification, setisOpenNotification}) => {
     },[user])
 
     socket.off('is_created_notify').on('is_created_notify', (payload)=>{
-        if(payload){
+        if(payload?.members.includes(user?.data?.id_system)){
             audio.play()
+        }
+        if(payload){
             const { id_system } = user?.data
             socket.emit('get-members')
             socket.emit("notifications-of-id-system",id_system)
@@ -152,6 +155,7 @@ const Notification = ({isOpenNotification, setisOpenNotification}) => {
     const showNotifications = ()=>{
         if(notifications && notifications?.length > 0 ){
             return notifications?.map((notify,index)=>{
+                console.log(timeAgo(notify?._create_at))
                 return (
                     <div 
                     className={`notification_item ${notify?.member_check_notify?.[user?.data?.id_system] && "active"}`} 
@@ -167,6 +171,7 @@ const Notification = ({isOpenNotification, setisOpenNotification}) => {
                                 <label className="notification__alert"></label>
                             }
                         </div>
+                        <span className="notify__time">{timeAgo(notify?._create_at)}</span>
                     </div>
                 )
             })

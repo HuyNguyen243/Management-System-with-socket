@@ -65,7 +65,7 @@ const PaymentManagement = () => {
     return (
         <Table
             dataTable={dataParseManagement(payment?.data)}
-            loading={false}
+            loading={payment?.loading}
             DataFilter={DataFilter}
             haveTotalTable={false}
             header={table_payment_managerment}

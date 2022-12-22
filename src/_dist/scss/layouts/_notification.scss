@@ -104,3 +104,11 @@
 .calendar__year input{
     background-color : $color-white;
 }
+
+.notify__time{
+    font-size: 10px;
+    width: 100%;
+    display: block;
+    text-align: right;
+    color: $color-name-notification;
+}

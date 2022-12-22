@@ -18,8 +18,8 @@ import { dashboardEmployeeRequest } from "../../redux/overviewEmployee/actionEmp
 import { deleteJobsRequest, editJobsRequest } from "../../redux/overviewJobs/actionJobs";
 import { InputNumber } from 'primereact/inputnumber';
 import { Calendar } from 'primereact/calendar';
-import { formatUSD } from '../../commons/formatCost';
-
+import { formatUSD, formatVND, convertUSD } from '../../commons/formatCost';
+import { itemUserTemplate } from '../modal/TemplateDropDown';
 const InformationJobs = () => {
     const toast = useRef(null);
     const dispatch = useDispatch()
@@ -294,6 +294,7 @@ const InformationJobs = () => {
                                                     options={employees.data}
                                                     optionLabel="fullname"
                                                     value={selectEditor}
+                                                    itemTemplate={itemUserTemplate}
                                                     onChange={(e) => { setValue("id_editor", e.value?.id_system); setSelectEditor(e.value); }}
                                                     disabled={(user?.data?.role === UserRules.ROLE.EDITOR && user?.data?.role === UserRules.ROLE.LEADER_EDITOR) ? true : false}
                                                 />
@@ -371,7 +372,7 @@ const InformationJobs = () => {
                                             (
                                                 <InputNumber
                                                     inputId="currency-us"
-                                                    value={rowdata?.data?.total_cost} onValueChange={(e) => setValue("total_cost", e.target.value)}
+                                                    value={convertUSD(rowdata?.data?.total_cost)} onValueChange={(e) => setValue("total_cost", e.target.value)}
                                                     mode="currency"
                                                     currency="USD"
                                                     locale="en-US"
@@ -407,7 +408,7 @@ const InformationJobs = () => {
                                                 />
                                             ) : (
                                                 <span className='font-bold mt-3'>
-                                                    {rowdata?.data?.editor_cost ? formatUSD(rowdata?.data?.editor_cost) : 0}
+                                                    {rowdata?.data?.editor_cost ? formatVND(rowdata?.data?.editor_cost) : 0}
                                                 </span>
                                             )
                                         }
