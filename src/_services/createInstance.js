@@ -26,12 +26,14 @@ export const createAxios = (token) =>{
             const decodedToken = jwt_decode(token.trim())
             let date = new Date()
             let default_token = token;
-            if(decodedToken.exp < date.getTime()/1000){
+            
+            if(decodedToken.exp < date.getTime()/1000 - 5*60000){
               const formData = {
                 _id_activity : decodedToken._id
               }
               const refreshtoken = await refreshToken(formData)
-              if(refreshtoken?.data?.access_token){
+
+              if(refreshtoken?.data?.access_token && refreshtoken?.status){
                 default_token = refreshtoken?.data?.access_token
                 storage.save(NAME_SESSION_STORAGE_TOKEN,default_token)
                 Cookie.set(default_token)

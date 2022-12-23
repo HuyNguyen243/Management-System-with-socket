@@ -15,7 +15,7 @@ import { InputText } from 'primereact/inputtext';
 import { timezoneToDate } from '../../commons/dateTime';
 import { ConfirmPopup, confirmPopup } from 'primereact/confirmpopup';
 import { dashboardEmployeeRequest } from "../../redux/overviewEmployee/actionEmployee";
-import { deleteJobsRequest, editJobsRequest } from "../../redux/overviewJobs/actionJobs";
+import { deleteJobsRequest, editJobsRequest, doneJobsRequest } from "../../redux/overviewJobs/actionJobs";
 import { InputNumber } from 'primereact/inputnumber';
 import { Calendar } from 'primereact/calendar';
 import { formatUSD, formatVND, convertUSD } from '../../commons/formatCost';
@@ -36,7 +36,7 @@ const InformationJobs = () => {
     const rowdata = useSelector(state => state.modal?.dataModalInformationJob)
     const deletejobs = useSelector(state => state.jobs?.deletejobs)
     const updatejobs = useSelector(state => state.jobs?.editjobs)
-
+    const donejobs = useSelector(state => state.jobs?.donejobs)
     const { register, setValue, handleSubmit, formState: { errors }, reset } = useForm();
 
     const employees = useSelector(state => state.employee?.dashboard)
@@ -77,7 +77,7 @@ const InformationJobs = () => {
     }, [deletejobs, dispatch])
 
     useEffect(() => {
-        if (isOpenInformationJob) {
+        if (isOpenInformationJob && user?.data?.role !== "LEADER_EDITOR" && user?.data?.role !== "EDITOR") {
             let keyword = "?keyword=Editor";
             dispatch(dashboardEmployeeRequest(keyword));
         }
@@ -107,6 +107,16 @@ const InformationJobs = () => {
             toastMsg.error(toast, updatejobs?.data?.message)
         }
     }, [updatejobs, dispatch, handleCloseModal])
+
+    useEffect(() => {
+        if (donejobs?.data && !donejobs?.error) {
+            handleCloseModal()
+            toastMsg.success(toast, 'Cập nhật thành công')
+        }
+        if (donejobs?.error) {
+            toastMsg.error(toast, donejobs?.data?.message)
+        }
+    }, [donejobs, dispatch, handleCloseModal])
 
     const handleDeleteJobs = () => {
         const formdata = {}
@@ -140,18 +150,21 @@ const InformationJobs = () => {
                 Object.assign(formDataPut, { [item]: data[item] })
             }
         });
-        if (Object.keys(formDataPut).length > 0) {
+        if (Object.keys(formDataPut).length > 0 ) {
             Object.assign(formDataPut, { id_system: rowdata?.data?.id_system })
             const formData = {
                 data: data,
                 result: formDataPut,
                 index: rowdata?.index
             }
-            dispatch(editJobsRequest(formData))
+            if( user?.data?.role !== "LEADER_EDITOR" && user?.data?.role !== "EDITOR"){
+                dispatch(editJobsRequest(formData))
+            }else{
+                dispatch(doneJobsRequest(formData))
+        
+            }
         }
     };
-
-
 
     return (
         <>
@@ -392,13 +405,13 @@ const InformationJobs = () => {
                             }
                             {user?.data?.role !== "SALER" &&
                                 <div className="field col-12 md:col-6">
-                                    <span htmlFor="editor_cost">Chi phí Editor :<span className="warning">*</span></span>
+                                    <span htmlFor="editor_cost"  >Chi phí Editor :<span className="warning">*</span></span>
                                     <span onClick={(e) => handleOpenInput("editor_cost")} className={"p-float-label " + (user?.data?.role === "ADMIN" ? "cursor__edit" : "mt-3")}>
                                         {user?.data?.role === "ADMIN" && isOpenInput?.editor_cost ?
                                             (
                                                 <InputNumber id="editor_cost"
                                                     inputId="currency-vn"
-                                                    // defaultValue={rowdata?.data?.editor_cost}
+                                                    value={rowdata?.data?.editor_cost}
                                                     onValueChange={(e) => setValue("editor_cost", e.target.value)}
                                                     mode="currency"
                                                     currency="VND"
@@ -407,7 +420,7 @@ const InformationJobs = () => {
                                                     className={"m-0"}
                                                 />
                                             ) : (
-                                                <span className='font-bold mt-3'>
+                                                <span className='font-bold mt-3 block'>
                                                     {rowdata?.data?.editor_cost ? formatVND(rowdata?.data?.editor_cost) : 0}
                                                 </span>
                                             )

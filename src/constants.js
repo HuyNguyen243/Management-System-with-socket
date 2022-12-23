@@ -6,9 +6,10 @@ export const JOB_DONE = "Đã hoàn thành";
 export const JOB_INCOMPLETE = "Chưa hoàn thành";
 export const JOB_PENDING = "Đang xử lý";
 
-export const CUSTOMER_REQUEST_DONE = "Đang yêu cầu";
+export const CUSTOMER_REQUEST_REQUEST = "Đang yêu cầu";
 export const CUSTOMER_REQUEST_PENDING = "Đang xử lý yêu cầu";
 export const CUSTOMER_REQUEST_CANCEL = "Ngưng yêu cầu";
+export const CUSTOMER_REQUEST_DONE = "Đã hoàn thành"
 
 export const PAY_DONE = "Đã thanh toán";
 export const PAY_PENDING = "Chưa thanh toán";
@@ -110,13 +111,14 @@ export const JobRules = {
     },
     STATUS_CUSTOMER: {
         REQUEST: "REQUEST",
-        UNREQUEST: "UNREQUEST",
+        DONE: "DONE",
         PENDING: "PENDING",
     },
     STATUS_CUSTOMER_NAME: {
-        REQUEST: CUSTOMER_REQUEST_DONE,
+        REQUEST: CUSTOMER_REQUEST_REQUEST,
         UNREQUEST: CUSTOMER_REQUEST_CANCEL,
         PENDING: CUSTOMER_REQUEST_PENDING,
+        DONE: CUSTOMER_REQUEST_DONE
     },
 };
 
@@ -125,6 +127,7 @@ export const CustomerRules = {
         REQUEST: "REQUEST",
         PENDING: "PENDING",
         UNREQUEST: "UNREQUEST",
+        DONE: "DONE",
     },
     STATUS_PAY: {
         PAID: "PAID",
