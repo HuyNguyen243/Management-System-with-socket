@@ -1,7 +1,7 @@
 import React from 'react'
 import {
     CustomerRules,
-    CUSTOMER_REQUEST_DONE,
+    CUSTOMER_REQUEST_REQUEST,
     CUSTOMER_REQUEST_PENDING,
     CUSTOMER_REQUEST_CANCEL,
     UserRules,
@@ -11,7 +11,8 @@ import {
     JobRules,
     JOB_DONE,
     JOB_PENDING,
-    JOB_INCOMPLETE
+    JOB_INCOMPLETE,
+    CUSTOMER_REQUEST_DONE
 } from '../../constants'
 import { timezoneToDate } from '../../commons/dateTime'
 import { formatUSD, formatVND } from '../../commons/formatCost'
@@ -28,7 +29,7 @@ const TableBody = ({ rowData, item }) => {
                 }
                 if (status === CustomerRules.STATUS.REQUEST) {
                     return (
-                        <span className="table__body-name btn_success" >{CUSTOMER_REQUEST_DONE}</span>
+                        <span className="table__body-name btn_success" >{CUSTOMER_REQUEST_REQUEST}</span>
                     )
                 }
                 if (status === CustomerRules.STATUS.UNREQUEST) {

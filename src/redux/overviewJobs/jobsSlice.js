@@ -7,7 +7,11 @@ import {
     editJobsRequest,
     getJobsRequest,
     getJobsAdminRequest,
+<<<<<<< src/redux/overviewJobs/jobsSlice.js
+    doneJobsRequest
+=======
     updateJobByEditor,
+>>>>>>> src/redux/overviewJobs/jobsSlice.js
 } from "./actionJobs";
 
 const initialState = {
@@ -32,6 +36,11 @@ const initialState = {
         error: false,
     },
     getjobs: {
+        loading: false,
+        data: null,
+        error: false,
+    },
+    donejobs: {
         loading: false,
         data: null,
         error: false,
@@ -255,16 +264,28 @@ const jobsReducer = createSlice({
                 }
             );
         },
+<<<<<<< src/redux/overviewJobs/jobsSlice.js
+        [doneJobsRequest.pending]: (state) => {
+            Object.assign(state,{},{
+                donejobs:{
+=======
         [updateJobByEditor.pending]: (state) => {
             Object.assign(state,{},{
                 editjobs:{
+>>>>>>> src/redux/overviewJobs/jobsSlice.js
                     loading: true
                 }
             })
         },
+<<<<<<< src/redux/overviewJobs/jobsSlice.js
+        [doneJobsRequest.fulfilled]: (state, action) => {
+            Object.assign(state,{},{
+                donejobs:{
+=======
         [updateJobByEditor.fulfilled]: (state, action) => {
             Object.assign(state,{},{
                 editjobs:{
+>>>>>>> src/redux/overviewJobs/jobsSlice.js
                     loading: false,
                     data: action?.payload?.data,
                     error: false
@@ -272,9 +293,15 @@ const jobsReducer = createSlice({
             })
             state.dashboard.data.splice(action?.payload?.index, 1, action?.payload?.data)
         },
+<<<<<<< src/redux/overviewJobs/jobsSlice.js
+        [doneJobsRequest.rejected]: (state, action) => {
+            Object.assign(state,{},{
+                donejobs:{
+=======
         [updateJobByEditor.rejected]: (state, action) => {
             Object.assign(state,{},{
                 editjobs:{
+>>>>>>> src/redux/overviewJobs/jobsSlice.js
                     loading: false,
                     data: action?.payload,
                     error: true
