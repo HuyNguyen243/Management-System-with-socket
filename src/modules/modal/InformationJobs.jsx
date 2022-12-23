@@ -161,7 +161,6 @@ const InformationJobs = () => {
                 dispatch(editJobsRequest(formData))
             }else{
                 dispatch(doneJobsRequest(formData))
-        
             }
         }
     };
