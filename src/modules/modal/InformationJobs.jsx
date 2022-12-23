@@ -166,8 +166,6 @@ const InformationJobs = () => {
         }
     };
 
-
-
     return (
         <>
             <ConfirmPopup />
@@ -407,7 +405,7 @@ const InformationJobs = () => {
                             }
                             {user?.data?.role !== "SALER" &&
                                 <div className="field col-12 md:col-6">
-                                    <span htmlFor="editor_cost">Chi phí Editor :<span className="warning">*</span></span>
+                                    <span htmlFor="editor_cost"  >Chi phí Editor :<span className="warning">*</span></span>
                                     <span onClick={(e) => handleOpenInput("editor_cost")} className={"p-float-label " + (user?.data?.role === "ADMIN" ? "cursor__edit" : "mt-3")}>
                                         {user?.data?.role === "ADMIN" && isOpenInput?.editor_cost ?
                                             (
@@ -422,7 +420,7 @@ const InformationJobs = () => {
                                                     className={"m-0"}
                                                 />
                                             ) : (
-                                                <span className='font-bold mt-3'>
+                                                <span className='font-bold mt-3 block'>
                                                     {rowdata?.data?.editor_cost ? formatVND(rowdata?.data?.editor_cost) : 0}
                                                 </span>
                                             )

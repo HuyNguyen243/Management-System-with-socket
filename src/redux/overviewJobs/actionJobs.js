@@ -44,8 +44,13 @@ export const editJobsRequest = createAsyncThunk(
     }
 )
 
+<<<<<<< src/redux/overviewJobs/actionJobs.js
 export const doneJobsRequest = createAsyncThunk(
     'updateJobs',
+=======
+export const updateJobByEditor = createAsyncThunk(
+    'updateJobsByEditor',
+>>>>>>> src/redux/overviewJobs/actionJobs.js
     async (data,{ rejectWithValue }) => {
         try {
             const res = await put(`jobs/done/${data?.result.id_system}`,data?.result)

@@ -155,7 +155,6 @@ const Notification = ({isOpenNotification, setisOpenNotification}) => {
     const showNotifications = ()=>{
         if(notifications && notifications?.length > 0 ){
             return notifications?.map((notify,index)=>{
-                console.log(timeAgo(notify?._create_at))
                 return (
                     <div 
                     className={`notification_item ${notify?.member_check_notify?.[user?.data?.id_system] && "active"}`} 

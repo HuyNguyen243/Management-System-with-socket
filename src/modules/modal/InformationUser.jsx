@@ -23,7 +23,6 @@ import {
     setIsOpenModalInformationUser,
 } from '../../redux/modal/modalSlice';
 
-
 const InformationUser = () => {
     const [userRole, setUserRole] = useState(null);
     const [isEditUsername, setEditUsername] = useState(false);
@@ -60,15 +59,8 @@ const InformationUser = () => {
             toastMsg.error(toast, 'Xóa khách hàng thất bại')
         }
     }, [deleteUser, dispatch])
-
     useEffect(() => {
         if (rowdata?.data) {
-            // setValue("fullname", rowdata?.data?.fullname)
-            // setValue("phone", rowdata?.data?.phone)
-            // setValue("births", new Date(rowdata?.data?.births))
-            // setValue("start_day", new Date(rowdata?.data?.start_day))
-            // setValue("address", rowdata?.data?.address)
-            // setValue("email", rowdata?.data?.email)
             if (rowdata?.data?.role) {
                 for (let item of role) {
                     if (item.code === rowdata?.data?.role) {
@@ -78,8 +70,7 @@ const InformationUser = () => {
                 }
             }
         }
-    }, [rowdata, setValue])
-
+    }, [rowdata, setValue, dispatch])
     const onSubmit = (data) => {
         delete data["births"];
         delete data["start_day"];
