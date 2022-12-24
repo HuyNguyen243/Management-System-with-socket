@@ -67,7 +67,7 @@ const CreateCustomer = () => {
             setCities(countries[e.value])
         }
     }
-    
+
   return (
     <>
         <Toast ref={toast} position="bottom-left"/>
@@ -82,7 +82,7 @@ const CreateCustomer = () => {
                             <span htmlFor="autocomplete">Nhập tên khách hàng: <span className="warning">*</span></span>
                                 <Controller name="fullname" 
                                     control={control} 
-                                    rules={{ required: "Chưa điền tên khách hàng" }} render={({ field, fieldState }) => (
+                                    rules={{ required: "Chưa điền tên khách hàng", minLength: 6 }} render={({ field, fieldState }) => (
                                     <InputText 
                                     id={field.name} 
                                     {...field}
@@ -92,6 +92,9 @@ const CreateCustomer = () => {
                                 )} />
                                 {
                                 errors?.fullname &&  <span className="warning" style={{fontSize:"12px"}}>{errors?.fullname.message}</span>
+                                }
+                                {
+                                errors?.fullname?.type === "minLength" &&  <span className="warning" style={{fontSize:"12px"}}>Tên ít nhất 6 ký tự</span>
                                 }
                         </div>
                         <div className="field col-12 md:col-6 create__job--calendar">
