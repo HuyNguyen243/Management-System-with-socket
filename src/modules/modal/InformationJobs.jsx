@@ -150,18 +150,18 @@ const InformationJobs = () => {
                 Object.assign(formDataPut, { [item]: data[item] })
             }
         });
-        if (Object.keys(formDataPut).length > 0 ) {
+        if (Object.keys(formDataPut).length > 0) {
             Object.assign(formDataPut, { id_system: rowdata?.data?.id_system })
             const formData = {
                 data: data,
                 result: formDataPut,
                 index: rowdata?.index
             }
-            if( user?.data?.role !== "LEADER_EDITOR" && user?.data?.role !== "EDITOR"){
+            if (user?.data?.role !== "LEADER_EDITOR" && user?.data?.role !== "EDITOR") {
                 dispatch(editJobsRequest(formData))
-            }else{
+            } else {
                 dispatch(doneJobsRequest(formData))
-        
+
             }
         }
     };
@@ -193,8 +193,8 @@ const InformationJobs = () => {
                             {user?.data?.role !== "LEADER_EDITOR" && user?.data?.role !== "EDITOR" &&
                                 <div className="field col-12 md:col-6">
                                     <span htmlFor="status_customer">Trạng thái khách hàng :<span className="warning">*</span></span>
-                                    <span onClick={(e) => handleOpenInput("status_customer")} className={"p-float-label cursor__edit " + (isOpenInput?.status_customer ? "" : " mt-3 ")}>
-                                        {isOpenInput?.status_customer ?
+                                    <span onClick={(e) => handleOpenInput("status_customer")} className={"p-float-label " + (rowdata?.data?.finished_link !== NOT_SET_ADMIN ? "cursor__edit " : isOpenInput?.status_customer ? "" : " mt-3 ")}>
+                                        {(rowdata?.data?.finished_link !== NOT_SET_ADMIN && isOpenInput?.status_customer) ?
                                             (
                                                 <Dropdown
                                                     options={customer_status}
