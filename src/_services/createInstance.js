@@ -4,16 +4,10 @@ import {storage} from "./sesionStorage"
 import {NAME_SESSION_STORAGE_TOKEN} from "../constants"
 import { Cookie } from "../commons/cookie"
 
-export const createAxios = (token) =>{
-  const URL = process.env.REACT_APP_API || process.env.REACT_APP_DEV_API
-  const refreshToken = async (formData)=>{
-    try{
-      const res = await axios.post(`${URL}/auth/token`,formData,{headers:{ 'Authorization': `1TouchAuthorization ${token}`}});
-      return res.data;
-    }catch(err){
-      return err
-    }
-  }
+const URL = process.env.REACT_APP_API || process.env.REACT_APP_DEV_API
+
+export const createAxios = () =>{
+  const token = storage.get(NAME_SESSION_STORAGE_TOKEN)
   const logout = ()=>{
     storage.delete(NAME_SESSION_STORAGE_TOKEN)
     setTimeout(() =>{
@@ -24,16 +18,23 @@ export const createAxios = (token) =>{
     newInstance.interceptors.request.use(
         async(config) => {
             const decodedToken = jwt_decode(token.trim())
+            const refreshToken = async (formData)=>{
+              try{
+                const res = await axios.post(`${URL}/auth/token`,formData,{headers:{ 'Authorization': `1TouchAuthorization ${token}`}});
+                return res.data;
+              }catch(err){
+                return err
+              }
+            }
             let date = new Date()
             let default_token = token;
-            
-            if(decodedToken.exp < date.getTime()/1000 - 5*60000){
+            if(decodedToken.exp * 1000 - (60 * 1000 * 5) <= date.getTime()){
               const formData = {
                 _id_activity : decodedToken._id
               }
               const refreshtoken = await refreshToken(formData)
 
-              if(refreshtoken?.data?.access_token && refreshtoken?.status){
+              if(refreshtoken?.data?.access_token){
                 default_token = refreshtoken?.data?.access_token
                 storage.save(NAME_SESSION_STORAGE_TOKEN,default_token)
                 Cookie.set(default_token)
@@ -43,12 +44,6 @@ export const createAxios = (token) =>{
                 Cookie.delete()
               }
             }
-
-            if(!decodedToken?._id || !decodedToken?.id_system || !decodedToken?.role){
-              logout()
-              Cookie.delete()
-            }
-            
             config.headers["Authorization"] = "1TouchAuthorization " + default_token
           return config;
         },
