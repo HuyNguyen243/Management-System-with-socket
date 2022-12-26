@@ -16,10 +16,12 @@ import { Dropdown } from 'primereact/dropdown';
 import { EMAIL_REGEX, PHONE_REGEX } from '../../constants';
 import { toastMsg } from '../../commons/toast';
 import { setIsOpenModalCreateCustomer } from '../../redux/modal/modalSlice';
+import { overlay } from '../../commons/overlay';
 
 const CreateCustomer = () => {
     const toast = useRef(null);
     const isOpenCreateCustomer = useSelector(state => state.modal.isOpenModalCreateCustomer)
+
     const dispatch = useDispatch()
     const defaultValues = {
         fullname: '',
@@ -35,6 +37,14 @@ const CreateCustomer = () => {
     const customer = useSelector(state=>state.sale.customer)
     const [countries,setCountries] =React.useState([])
     const [cities,setCities] = React.useState([]);
+
+    useEffect(()=>{
+        if(isOpenCreateCustomer){
+            overlay.enable()
+        }else{
+            overlay.disable()
+        }
+    },[isOpenCreateCustomer])
 
     useEffect(() => {
         const getcountries = new getCountries()

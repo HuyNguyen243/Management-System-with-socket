@@ -19,6 +19,7 @@ import { toastMsg } from '../../commons/toast';
 import { Toast } from 'primereact/toast';
 import { addJobsRequest } from "../../redux/overviewJobs/actionJobs";
 import { itemCustomerTemplate } from '../modal/TemplateDropDown';
+import { overlay } from '../../commons/overlay';
 
 const CreateJobs = () => {
 
@@ -43,6 +44,14 @@ const CreateJobs = () => {
     const isOpenCreateJob = useSelector(state => state.modal.isOpenModalCreateJob)
 
     const dispatch = useDispatch()
+
+    useEffect(()=>{
+        if(isOpenCreateJob){
+            overlay.disable()
+        }else{
+            overlay.enable()
+        }
+    },[isOpenCreateJob])
 
     useEffect(() => {
         if (addjobs?.data && !addjobs?.error) {
@@ -106,6 +115,7 @@ const CreateJobs = () => {
                                             itemTemplate={itemCustomerTemplate}
                                             value={field.value} onChange={(e) => field.onChange(e.value)}
                                             className={classNames({ 'p-invalid': fieldState.invalid }, "create__job_type")}
+                                            placeholder="Chọn khách hàng "
                                             />
                                         )} />
                                 </span>
@@ -115,7 +125,7 @@ const CreateJobs = () => {
                             </div>
                             <div className="field col-12 md:col-6">
                                 <span>Mã khách hàng: </span>
-                                <span className="p-float-label pt-3 flex justify-content-between cursor__normal">
+                                <span className=" pt-3 flex justify-content-between cursor__normal">
                                     <span className='font-bold'>{customerSelect?.id_system}</span>
                                 </span>
                             </div>
@@ -124,7 +134,7 @@ const CreateJobs = () => {
                             </div>
                             <div className="field col-12 md:col-6 create__job--calendar">
                                 <span htmlFor="calendar">Chọn ngày hạn chót:<span className="warning">*</span></span>
-                                <span className="p-float-label ">
+                                <span className="">
                                     <Controller name="end_day"
                                         control={control}
                                         rules={{ required: "Chọn ngày hết hạn" }} render={({ field, fieldState }) => (
@@ -133,6 +143,7 @@ const CreateJobs = () => {
                                                 minDate={minDate}
                                                 id={field.name} className={classNames({ 'p-invalid': fieldState.invalid })}
                                                 value={field.value} onChange={(e) => field.onChange(e.value)}
+                                                placeholder="Chọn ngày hết hạn"
                                             />
                                         )} />
                                 </span>
@@ -143,13 +154,14 @@ const CreateJobs = () => {
                             </div>
                             <div className="field col-12 md:col-3">
                                 <span htmlFor="type_models">Loại ảnh: <span className="warning">*</span></span>
-                                <span className="p-float-label">
+                                <span className="">
                                     <Controller name="type_models"
                                         control={control}
                                         rules={{ required: "Chưa điền loại ảnh" }} render={({ field, fieldState }) => (
                                             <InputText id={field.name}
                                                 {...field}
                                                 className={classNames({ 'p-invalid': fieldState.invalid })}
+                                                placeholder="Chọn ảnh"
                                             />
                                         )} />
                                 </span>
@@ -159,11 +171,16 @@ const CreateJobs = () => {
                             </div>
                             <div className="field col-12 md:col-3 ">
                                 <span htmlFor="withoutgrouping">Số lượng: <span className="warning">*</span></span>
-                                <span className="p-float-label">
+                                <span className="">
                                     <Controller name="quality_img"
                                         control={control}
                                         rules={{ required: "Chưa điền số lượng" }} render={({ field, fieldState }) => (
-                                            <InputNumber value={field.value} onValueChange={(e) => field.onChange(e.value)} mode="decimal"  className={classNames({ 'p-invalid': fieldState.invalid })}/>
+                                            <InputNumber 
+                                                value={field.value} 
+                                                onValueChange={(e) => field.onChange(e.value)} mode="decimal"  
+                                                className={classNames({ 'p-invalid': fieldState.invalid })}
+                                                placeholder="Điền số lượng ảnh"
+                                            />
                                         )} />
                                 </span>
                                 {
@@ -172,7 +189,7 @@ const CreateJobs = () => {
                             </div>
                             <div className="field col-12 md:col-6">
                                 <span htmlFor="original__link">Link ảnh gốc: <span className="warning">*</span></span>
-                                <span className="p-float-label">
+                                <span className="">
                                     <Controller name="org_link"
                                         control={control}
                                         rules={{ required: "Chưa điền link ảnh gốc" }} render={({ field, fieldState }) => (
@@ -180,6 +197,7 @@ const CreateJobs = () => {
                                                 id={field.name}
                                                 {...field}
                                                 className={classNames({ 'p-invalid': fieldState.invalid })}
+                                                placeholder="Điền link ảnh"
                                             />
                                         )} />
                                 </span>
@@ -189,7 +207,7 @@ const CreateJobs = () => {
                             </div>
                             <div className="field col-12 md:col-6">
                                 <span htmlFor="original__link">Định dạng file: <span className="warning">*</span></span>
-                                <span className="p-float-label">
+                                <span className="">
                                     <Controller name="photo_types"
                                         control={control}
                                         rules={{ required: "Chọn định dạng file ảnh" }} render={({ field, fieldState }) => (
@@ -198,6 +216,7 @@ const CreateJobs = () => {
                                                 optionLabel="name"
                                                 value={field.value} onChange={(e) => field.onChange(e.value)}
                                                 className={classNames({ 'p-invalid': fieldState.invalid }, "create__job_type")}
+                                                placeholder="Điền định dạng file"
                                             />
                                         )} />
                                 </span>
@@ -207,7 +226,7 @@ const CreateJobs = () => {
                             </div>
                             <div className="field col-12 md:col-6">
                                 <span htmlFor="cost">Chi phí: <span className="warning">*</span></span>
-                                <span className="p-float-label">
+                                <span className="">
                                     <Controller name="total_cost"
                                         control={control}
                                         rules={{ required: "Chưa điền Chi phí" }} render={({ field, fieldState }) => (
@@ -220,6 +239,7 @@ const CreateJobs = () => {
                                                 minFractionDigits={0}
                                                 useGrouping={true}
                                                 className={classNames({ 'p-invalid': fieldState.invalid })}
+                                                placeholder="Điền chi phí"
                                             />
                                         )} />
                                 </span>
@@ -231,7 +251,7 @@ const CreateJobs = () => {
                                 user?.data?.role === "ADMIN" &&
                                 <div className="field col-12 md:col-6">
                                     <span htmlFor="cost">Chi phí Editor:</span>
-                                    <span className="p-float-label">
+                                    <span className="">
                                         <Controller name="editor_cost"
                                             control={control}
                                             render={({ field, fieldState }) => (
@@ -243,6 +263,7 @@ const CreateJobs = () => {
                                                     locale="vi-VN"
                                                     useGrouping={true}
                                                     className={classNames({ 'p-invalid': fieldState.invalid })}
+                                                    placeholder="Chi phí"
                                                 />
                                             )} />
                                     </span>
@@ -250,7 +271,7 @@ const CreateJobs = () => {
                             }
                             <div className="field col-12 md:col-12">
                                 <span htmlFor="employees">Nội dung yêu cầu: <span className="warning">*</span></span>
-                                <span className="p-float-label">
+                                <span className="">
                                     <Controller name="request_content"
                                         control={control}
                                         rules={{ required: "Chưa điền nội dung yêu cầu" }} render={({ field, fieldState }) => (
@@ -259,6 +280,7 @@ const CreateJobs = () => {
                                                 id={field.name}
                                                 {...field}
                                                 className={classNames({ 'p-invalid': fieldState.invalid }, "create__job_area")}
+                                                placeholder="Nội dung yêu cầu"
                                             />
                                     )} />
                                 </span>
@@ -267,7 +289,7 @@ const CreateJobs = () => {
                                 }
                             </div>
                             <div className="field col-12 md:col-12">
-                                <span className="p-float-label">
+                                <span className="">
                                     <span >Lưu ý của khách hàng:<span className="warning">*</span></span>
                                     <Controller name="work_notes"
                                         control={control}
@@ -277,6 +299,7 @@ const CreateJobs = () => {
                                                 id={field.name}
                                                 {...field}
                                                 className={classNames({ 'p-invalid': fieldState.invalid }, "create__job_area")}
+                                                placeholder="Lưu ý khách hàng"
                                             />
                                         )} />
                                 </span>
@@ -290,12 +313,12 @@ const CreateJobs = () => {
                         </div>
                         <div className="btn_modal field col-12 md:col-12 grid">
                             <div className="field col-12 md:col-6">
-                                <span className="p-float-label">
+                                <span className="">
                                     <Button label="Hủy bỏ" className="p-button-outlined cancel--btn" onClick={handleCloseModal} />
                                 </span>
                             </div>
                             <div className="field col-12 md:col-6">
-                                <span className="p-float-label">
+                                <span className="">
                                     <Button label="Tạo mới" className="p-button-outlined p-button-secondary confirm--btn" type="submit" />
                                 </span>
                             </div>

@@ -15,6 +15,7 @@ import { role } from "./dropDown";
 import { toastMsg } from '../../commons/toast';
 import { EMAIL_REGEX, PHONE_REGEX } from '../../constants';
 import { setIsOpenModalCreateUser } from '../../redux/modal/modalSlice';
+import { overlay } from '../../commons/overlay';
 
 const CreateUser = () => {
     const toast = useRef(null);
@@ -38,6 +39,14 @@ const CreateUser = () => {
     const employee = useSelector(state => state.employee?.user)
     const randomPass = Math.random().toString(36).slice(-8);
     const [password] = useState(randomPass || null)
+    
+    useEffect(()=>{
+        if(isOpenCreateUser){
+            overlay.disable()
+        }else{
+            overlay.enable()
+        }
+    },[isOpenCreateUser])
 
     const onSubmit = (data) => {
         if (Object.keys(errors).length === 0) {
@@ -75,7 +84,7 @@ const CreateUser = () => {
             copy(watch().username);
         }
     }
-    console.log(errors)
+
     return (
         <>
             <Toast ref={toast} position="bottom-left" />
@@ -88,7 +97,7 @@ const CreateUser = () => {
                         <div className="field col-12 md:col-12 grid">
                             <div className="field col-12 md:col-12">
                                 <span >Nhập tên nhân viên: <span className="warning">*</span></span>
-                                <span className="p-float-label">
+                                <span className="">
                                     <Controller name="fullname"
                                         control={control}
                                         rules={{ required: "Chưa điền tên nhân viên" , minLength: 6 }} render={({ field, fieldState }) => (
@@ -97,6 +106,7 @@ const CreateUser = () => {
                                                 id={field.name}
                                                 {...field}
                                                 className={classNames({ 'p-invalid': fieldState.invalid })}
+                                                placeholder="Chọn nhân viên"
                                             />
                                         )} />
                                 </span>
@@ -109,7 +119,7 @@ const CreateUser = () => {
                             </div>
                             <div className="field col-12 md:col-12">
                                 <span >Nhập tên đăng nhập: <span className="warning">*</span></span>
-                                <span className="p-float-label">
+                                <span className="relative">
                                     <Controller name="username"
                                         control={control}
                                         rules={{ required: "Chưa điền tên đăng nhập" , minLength: 6 }} render={({ field, fieldState }) => (
@@ -123,6 +133,7 @@ const CreateUser = () => {
                                                 id={field.name}
                                                 {...field}
                                                 className={classNames({ 'p-invalid': fieldState.invalid })}
+                                                placeholder="Điền tên đăng nhập"
                                             />
                                         )} />
                                     <img src="images/copy.svg" alt="" label="Bottom Left" className='copy__icon absolute copy__name' onClick={() => copyToClipboard("name")} />
@@ -149,7 +160,7 @@ const CreateUser = () => {
                             </div>
                             <div className="field col-12 md:col-6 create__user--calendar">
                                 <span htmlFor="calendar">Ngày tháng năm sinh:</span>
-                                <span className="p-float-label">
+                                <span className="">
                                     <Controller name="births"
                                         control={control}
                                         rules={{ required: false }} render={({ field, fieldState }) => (
@@ -158,6 +169,7 @@ const CreateUser = () => {
                                                 maxDate={maxDate}
                                                 id={field.name} className={classNames({ 'p-invalid': fieldState.invalid })}
                                                 value={field.value} onChange={(e) => field.onChange(e.value)}
+                                                placeholder="Chọn ngày tháng năm sinh"
                                             />
                                         )} />
                                 </span>
@@ -165,7 +177,7 @@ const CreateUser = () => {
                             </div>
                             <div className="field col-12 md:col-6 create__user--calendar">
                                 <span htmlFor="calendar">Ngày bắt đầu làm:</span>
-                                <span className="p-float-label ">
+                                <span className=" ">
                                     <Controller name="start_day"
                                         control={control}
                                         rules={{ required: false }} render={({ field, fieldState }) => (
@@ -174,6 +186,7 @@ const CreateUser = () => {
                                                 maxDate={maxDate}
                                                 id={field.name} className={classNames({ 'p-invalid': fieldState.invalid })}
                                                 value={field.value} onChange={(e) => field.onChange(e.value)}
+                                                placeholder="Chọn ngày bắt đầu làm"
                                             />
                                         )} />
                                 </span>
@@ -181,7 +194,7 @@ const CreateUser = () => {
                             </div>
                             <div className="field col-12 md:col-6 ">
                                 <span htmlFor="withoutgrouping">Số điện thoại: <span className="warning">*</span></span>
-                                <span className="p-float-label">
+                                <span className="">
                                     <Controller name="phone"
                                         control={control}
                                         rules={{ required: "chưa điền số điện thoại", pattern: { value: PHONE_REGEX } }} render={({ field, fieldState }) => (
@@ -195,6 +208,7 @@ const CreateUser = () => {
                                                 id={field.name}
                                                 {...field}
                                                 className={classNames({ 'p-invalid': fieldState.invalid })}
+                                                placeholder="Số điện thoại"
                                             />
                                         )} />
                                 </span>
@@ -207,7 +221,7 @@ const CreateUser = () => {
                             </div>
                             <div className="field col-12 md:col-6">
                                 <span htmlFor="employees">Chức vụ: <span className="warning">*</span></span>
-                                <span className="p-float-label">
+                                <span className="">
                                     <Controller name="role"
                                         control={control}
                                         rules={{ required: "Chọn chức vụ" }} render={({ field, fieldState }) => (
@@ -216,6 +230,7 @@ const CreateUser = () => {
                                                 optionLabel="name"
                                                 value={field.value} onChange={(e) => field.onChange(e.value)}
                                                 className={classNames({ 'p-invalid': fieldState.invalid }, "create__role_type")}
+                                                placeholder="Chọn chức vụ"
                                             />
                                         )} />
                                 </span>
@@ -225,7 +240,7 @@ const CreateUser = () => {
                             </div>
                             <div className="field col-12 md:col-6">
                                 <span htmlFor="original__link">Email: <span className="warning">*</span></span>
-                                <span className="p-float-label">
+                                <span className="">
                                     <Controller name="email"
                                         control={control}
                                         rules={{ required: "Chưa điền email", pattern: { value: EMAIL_REGEX } }} render={({ field, fieldState }) => (
@@ -234,6 +249,7 @@ const CreateUser = () => {
                                                 id={field.name}
                                                 {...field}
                                                 className={classNames({ 'p-invalid': fieldState.invalid })}
+                                                placeholder="Điền email"
                                             />
                                         )} />
                                 </span>
@@ -247,7 +263,7 @@ const CreateUser = () => {
 
                             <div className="field col-12 md:col-6">
                                 <span htmlFor="employees">Địa chỉ nhân viên:</span>
-                                <span className="p-float-label">
+                                <span className="">
                                     <Controller name="address"
                                         control={control}
                                         rules={{ required: false }} render={({ field, fieldState }) => (
@@ -256,6 +272,7 @@ const CreateUser = () => {
                                                 id={field.name}
                                                 {...field}
                                                 className={classNames({ 'p-invalid': fieldState.invalid })}
+                                                placeholder="Điền địa chỉ"
                                             />
                                         )} />
                                 </span>
@@ -264,13 +281,13 @@ const CreateUser = () => {
                         {createSuccess &&
                             <div className="btn_modal field col-12 md:col-12 grid position_bottom">
                                 <div className="field col-12 md:col-6">
-                                    <span className="p-float-label">
+                                    <span className="">
                                         <Button label="Hủy bỏ" className="p-button-outlined cancel--btn"
                                             onClick={() => { reset(); dispatch(setIsOpenModalCreateUser(false)); }} />
                                     </span>
                                 </div>
                                 <div className="field col-12 md:col-6">
-                                    <span className="p-float-label">
+                                    <span className="">
                                         <Button label="Tạo mới" className="p-button-outlined p-button-secondary confirm--btn" type="submit" />
                                     </span>
                                 </div>

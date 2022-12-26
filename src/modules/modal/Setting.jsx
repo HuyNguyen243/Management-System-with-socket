@@ -10,6 +10,7 @@ import { setIsOpenModalSetting } from '../../redux/modal/modalSlice';
 import { InputNumber } from 'primereact/inputnumber';
 import { settingRequest, updateRequest } from "../../redux/admin/action";
 import { Toast } from 'primereact/toast';
+import { overlay } from '../../commons/overlay';
 
 const Setting = () => {
     const toast = useRef(null);
@@ -25,8 +26,12 @@ const Setting = () => {
     useEffect(() => {
         if (isOpenSetting) {
             dispatch(settingRequest())
+            overlay.disable()
+        }else{
+            overlay.enable()
         }
     }, [isOpenSetting, dispatch])
+
     const onSubmit = (data) => {
         const formDataPut = {}
         Object.keys(data).forEach(item => {

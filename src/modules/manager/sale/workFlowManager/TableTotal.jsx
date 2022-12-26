@@ -105,7 +105,7 @@ const TableTotal = () => {
               <Column body={()=>bodyTable(dataTable?.kpi)} header={()=>headerTable("KPI")} />
         </DataTable>
       <div className="field col-12 md:col-7 " >
-	  		<Calendar id="yearpicker " className="w-3 calendar__year" value={year} onChange={handleChangeYear} view="year" dateFormat="yy" placeholder="Chọn ngày"/>
+	  		<Calendar id="yearpicker " className="w-3 calendar__year" value={year} onChange={handleChangeYear} view="year" dateFormat="yy" placeholder="Chọn năm"/>
           	<Chart type="bar"  className="chart_bar"  data={dataKPis} options={horizontalOptions}/>
       </div>
 	  <div className="table__analysis field col-12 md:col-5">

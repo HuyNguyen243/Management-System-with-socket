@@ -76,7 +76,7 @@ const InformationCustomer = () => {
         const getcountries = new getCountries()
         getcountries.get().then(data => setCountries(data));
     }, []);
-
+ 
     const getStatus = (status, getName = false) => {
         for (let item of customer_status) {
             if (item.code === status) {
@@ -377,7 +377,7 @@ const InformationCustomer = () => {
                                                 disabled={user?.data?.role !== UserRules.ROLE.ADMIN ? true : false}
                                             />
                                             :
-                                            <p onClick={() => handleOpenInput("status")} className={"p-label font-bold mt-3 m-0 " + (rowdata?.data?.status === CustomerRules.STATUS.PENDING ? "btn_pending" : ( rowdata?.data?.status === CustomerRules.STATUS.REQUEST ? "btn_success" : "btn_stop" )) }>{getStatus(rowdata?.data?.status, true)}</p>
+                                            <p onClick={() => handleOpenInput("status")} className={"p-label mt-3 m-0 " + (rowdata?.data?.status === CustomerRules.STATUS.PENDING ? "btn_pending" : ( rowdata?.data?.status === CustomerRules.STATUS.REQUEST ? "btn_success" : "btn_stop" )) }>{getStatus(rowdata?.data?.status, true)}</p>
                                     }
                                 </span>
                             </div>

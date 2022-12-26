@@ -20,6 +20,8 @@ import { InputNumber } from 'primereact/inputnumber';
 import { Calendar } from 'primereact/calendar';
 import { formatUSD, formatVND, convertUSD } from '../../commons/formatCost';
 import { itemUserTemplate } from '../modal/TemplateDropDown';
+import { overlay } from '../../commons/overlay';
+
 const InformationJobs = () => {
     const toast = useRef(null);
     const dispatch = useDispatch()
@@ -40,6 +42,14 @@ const InformationJobs = () => {
     const { register, setValue, handleSubmit, formState: { errors }, reset } = useForm();
 
     const employees = useSelector(state => state.employee?.dashboard)
+
+    useEffect(()=>{
+        if(isOpenInformationJob){
+            overlay.disable()
+        }else{
+            overlay.enable()
+        }
+    },[isOpenInformationJob])
 
     useEffect(() => {
         if (rowdata?.data?.status_jobs) {

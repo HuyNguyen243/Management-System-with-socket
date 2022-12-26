@@ -22,6 +22,7 @@ import {
     setIsOpenModalCreateUser,
     setIsOpenModalInformationUser,
 } from '../../redux/modal/modalSlice';
+import { overlay } from '../../commons/overlay';
 
 const InformationUser = () => {
     const [userRole, setUserRole] = useState(null);
@@ -31,13 +32,21 @@ const InformationUser = () => {
     const [isEditRole, setEditRole] = useState(false);
     const putUser = useSelector(state => state.employee?.edituser)
     const deleteUser = useSelector(state => state.employee?.deleteuser)
-    const isOpenInformationUse = useSelector(state => state.modal?.isOpenModalInformationUser)
+    const isOpenInformationUser = useSelector(state => state.modal?.isOpenModalInformationUser)
     const rowdata = useSelector(state => state.modal?.dataModalInformationUser)
 
     const dispatch = useDispatch()
     const { register, setValue, handleSubmit, formState: { errors }, reset } = useForm();
     const toast = useRef(null);
     const user = useSelector(state => state.auth.user)
+
+    useEffect(()=>{
+        if(isOpenInformationUser){
+            overlay.disable()
+        }else{
+            overlay.enable()
+        }
+    },[isOpenInformationUser])
 
     useEffect(() => {
         if (putUser?.data && !putUser?.error) {
@@ -134,7 +143,7 @@ const InformationUser = () => {
         <>
             <ConfirmPopup />
             <Toast ref={toast} position="bottom-left" />
-            <Sidebar visible={isOpenInformationUse} position="right" onHide={handleCloseModal} className="create__job">
+            <Sidebar visible={isOpenInformationUser} position="right" onHide={handleCloseModal} className="create__job">
                 <div className="creat__job">
                     <div className="creat__job--title flex justify-content-between">
                         <h2>Thông tin nhân viên </h2>

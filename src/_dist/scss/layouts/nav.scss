@@ -128,7 +128,7 @@
 
 .p-inputtext{
     width: 100% ;
-    background-color: $color-input;
+    // background-color: $color-input;
 }
 
 .creat__job{
@@ -294,7 +294,16 @@
 .modal__creat--job .field div span textarea,
 .modal__creat--job .field div span .p-dropdown,
 .modal__creat--job .field div span input{
-    background-color: $color-input;
+    // background-color: $color-input;
+}
+
+.p-dropdown .p-dropdown-label.p-placeholder {
+    color: #6c757d;
+    font-size: 13px;
+}
+
+.p-dropdown .p-dropdown-label {
+    font-size: 13px;
 }
 
 .create_new_customer{

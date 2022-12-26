@@ -1,4 +1,4 @@
-import React,{useRef} from 'react'
+import React,{useEffect, useRef} from 'react'
 import { Sidebar } from 'primereact/sidebar';
 import { Button } from 'primereact/button';
 import { InputTextarea } from 'primereact/inputtextarea';
@@ -6,7 +6,7 @@ import { Toast } from 'primereact/toast';
 import { toastMsg } from '../../commons/toast';
 import { setIsOpenModalJobEditor } from '../../redux/modal/modalSlice';
 import { useDispatch, useSelector } from 'react-redux';
-
+import { overlay } from '../../commons/overlay';
 import copy from "copy-to-clipboard"; 
 
 const ModalJobEditor = () => {
@@ -17,6 +17,14 @@ const ModalJobEditor = () => {
         copy("any text");
     }
     const isOpenJobEditor = useSelector(state => state.modal.isOpenModalJobEditor)
+
+    useEffect(()=>{
+        if(isOpenJobEditor){
+            overlay.disable()
+        }else{
+            overlay.enable()
+        }
+    },[isOpenJobEditor])
     
   return (
     <Sidebar visible={isOpenJobEditor} position="right" onHide={() => dispatch(setIsOpenModalJobEditor(false))} className="create__job">

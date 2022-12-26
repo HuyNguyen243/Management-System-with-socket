@@ -151,6 +151,7 @@ const Table = ({
             first={currentLocation}
             rows={perpage} 
             onPage={handleSetPage}
+            emptyMessage={"Không có kết quả tìm kiếm"}
             >
             {
                 old_Data?.length > 0 

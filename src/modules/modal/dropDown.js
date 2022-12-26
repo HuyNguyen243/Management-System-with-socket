@@ -30,9 +30,9 @@ export const names =[
 
 export const customer_status= [
     { name: 'Đã hoàn thành', code: CustomerRules.STATUS.DONE },
-    // { name: 'Đang yêu cầu', code: CustomerRules.STATUS.REQUEST },
+    { name: 'Đang yêu cầu', code: CustomerRules.STATUS.REQUEST },
     { name: 'Đang xử lý yêu cầu', code: CustomerRules.STATUS.PENDING },
-    // { name: 'Ngưng yêu cầu', code: CustomerRules.STATUS.UNREQUEST },
+    { name: 'Ngưng yêu cầu', code: CustomerRules.STATUS.UNREQUEST },
 ]
 
 export const role= [

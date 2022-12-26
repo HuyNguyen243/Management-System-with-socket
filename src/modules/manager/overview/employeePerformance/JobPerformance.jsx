@@ -149,7 +149,7 @@ const JobPerformance = () => {
                         handleCreate={false}
                     />
                     <div className="pt-2" style={{paddingLeft:"90px"}}>
-                        <Calendar id="yearpicker " className="w-3 calendar__year" value={year} onChange={handleChangeYear} view="year" dateFormat="yy" />
+                        <Calendar id="yearpicker " className="w-3 calendar__year" value={year} onChange={handleChangeYear} view="year" dateFormat="yy" placeholder="Chọn năm"/>
                         <Chart type="bar" data={dataKPis} options={horizontalOptions} max={100}/>
                     </div>
                 </div>
