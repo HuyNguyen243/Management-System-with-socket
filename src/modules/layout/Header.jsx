@@ -181,7 +181,7 @@ export default function Header() {
 					</div>
 					<div className="header__right--profile" onClick={()=>{ setOpen(false)}}>
 						<Stack direction="row" spacing={2}>
-						<Avatar alt="" src={avatar} />
+						<Avatar crossorigin="anonymous" alt="" src={avatar} />
 						</Stack>
 						<div className="header__right--information">
 							<div className="information__name">
