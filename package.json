@@ -1,6 +1,6 @@
 {
-  "name": "fe-app",
-  "version": "0.1.0",
+  "name": "1touchteam",
+  "version": "1.1.0",
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.10.4",
@@ -35,7 +35,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "GENERATE_SOURCEMAP=false react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

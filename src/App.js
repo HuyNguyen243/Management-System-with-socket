@@ -12,6 +12,7 @@ import BtnMess from "./modules/layout/messages/BtnMess";
 import Modal from "./modules/modal/Modal";
 import Notfound from "./404";
 import 'primeicons/primeicons.css';
+import Loader from "./commons/loader"
 
 function App() {
     const user = useSelector((state) => state.auth.token);
@@ -70,6 +71,7 @@ function App() {
                     <Modal />
                 </>
             )}
+            <Loader />
         </BrowserRouter>
     );
 }

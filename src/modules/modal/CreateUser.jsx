@@ -75,7 +75,7 @@ const CreateUser = () => {
             copy(watch().username);
         }
     }
-
+    console.log(errors)
     return (
         <>
             <Toast ref={toast} position="bottom-left" />
@@ -91,7 +91,7 @@ const CreateUser = () => {
                                 <span className="p-float-label">
                                     <Controller name="fullname"
                                         control={control}
-                                        rules={{ required: "Chưa điền tên nhân viên" }} render={({ field, fieldState }) => (
+                                        rules={{ required: "Chưa điền tên nhân viên" , minLength: 6 }} render={({ field, fieldState }) => (
                                             <InputText
                                                 autoComplete="off"
                                                 id={field.name}
@@ -103,13 +103,16 @@ const CreateUser = () => {
                             {
                                 errors?.fullname &&  <span className="warning" style={{fontSize:"12px"}}>{errors?.fullname.message}</span>
                             }
+                            {
+                                errors?.fullname?.type === "minLength" &&  <span className="warning" style={{fontSize:"12px"}}>Tên nhân viên ít nhất 6 ký tự</span>
+                            }
                             </div>
                             <div className="field col-12 md:col-12">
                                 <span >Nhập tên đăng nhập: <span className="warning">*</span></span>
                                 <span className="p-float-label">
                                     <Controller name="username"
                                         control={control}
-                                        rules={{ required: "Chưa điền tên đăng nhập" }} render={({ field, fieldState }) => (
+                                        rules={{ required: "Chưa điền tên đăng nhập" , minLength: 6 }} render={({ field, fieldState }) => (
                                             <InputText
                                                 onKeyPress={(event) => {
                                                     if (event.key === " ") {
@@ -127,6 +130,9 @@ const CreateUser = () => {
                                 {
                                     errors?.username &&  <span className="warning" style={{fontSize:"12px"}}>{errors?.username.message}</span>
                                 }
+                                 {
+                                errors?.username?.type === "minLength" &&  <span className="warning" style={{fontSize:"12px"}}>Tên đăng nhập ít nhất 6 ký tự</span>
+                            }
                             </div>
                             <div className="field col-12 md:col-12">
                                 <span htmlFor="autocomplete">Mật khẩu mặc định:</span>
