@@ -139,7 +139,7 @@
 }
 
 .table__body-name{
-    font-size: 14px;
+    font-size: 13px;
 }
 
 .table__body-col.center{
@@ -173,11 +173,11 @@
     border-radius: 5px;
     padding: 2px 10px;
     width: 155px;
-    height : 50px;
+    height : 40px;
     text-align: center;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: center !important;
     margin: auto;
     .dots_online{
         margin-right: 20px;
@@ -190,11 +190,11 @@
     border-radius: 5px;
     padding: 2px 10px;
     width: 155px;
-    height : 50px;
+    height : 40px;
     text-align: center;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: center !important;
     margin: auto;
     .dots_offline{
         margin-right: 20px;
@@ -207,12 +207,12 @@
     border-radius: 5px;
     padding: 2px 10px;
     width: 155px;
-    height : 50px;
+    height : 40px;
     display: block;
     text-align: center;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: center !important;
     margin: auto;
     .dots_offline{
         margin-right: 20px;

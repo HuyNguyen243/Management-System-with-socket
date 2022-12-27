@@ -11,7 +11,7 @@ import {
 const initialState = {
     dashboard: {
         loading: false,
-        data: null,
+        data: [],
         error: false,
     },
     user: {

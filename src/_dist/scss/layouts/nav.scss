@@ -126,8 +126,19 @@
     }
 }
 
+.font-bold{
+    font-weight: bold !important;
+    font-size: 13px;
+}
+
+.p-float-label,
+.p-float-label a{
+    font-size: 13px;
+}
+
 .p-inputtext{
     width: 100% ;
+    font-size: 13px;
     // background-color: $color-input;
 }
 
