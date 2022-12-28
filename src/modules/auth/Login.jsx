@@ -19,7 +19,7 @@ const Login = () => {
     const dispatch = useDispatch()
     const toast = useRef(null);
 
-    const onSubmit = data => {
+    const onSubmit = (data) => {
         if (data) {
             const result = {
                 data: data,
@@ -28,8 +28,9 @@ const Login = () => {
             dispatch(userloginRequest(result))
         }
     };
+    console.log(user)
     useEffect(() => {
-        if (user?.error) {
+        if (user?.error && !user?.data) {
             toastMsg.error(toast, "Tài khoản hoặc mật khẩu không chính xác")
         }
     }, [user])
