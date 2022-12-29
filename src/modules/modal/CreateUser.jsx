@@ -65,7 +65,7 @@ const CreateUser = () => {
     useEffect(() => {
         if (employee?.data && !employee?.error) {
             setCreateSuccess(false)
-            toastMsg.success(toast, 'Tạo khách hàng mới thành công')
+            toastMsg.success(toast, 'Tạo thành viên mới thành công')
         }
         if (employee?.error) {
             setCreateSuccess(true)

@@ -11,7 +11,7 @@ import { toastMsg } from '../../commons/toast';
 
 const Login = () => {
     const navigate = useNavigate()
-    const { register, handleSubmit, formState: { errors } } = useForm({});
+    const { register, formState: { errors },watch } = useForm();
 
     const [haveSeenPwd, setHaveSeenPwd] = useState(false)
     const [checked, setChecked] = useState(Cookie.getChecked() || false)
@@ -19,8 +19,12 @@ const Login = () => {
     const dispatch = useDispatch()
     const toast = useRef(null);
 
-    const onSubmit = (data) => {
-        if (data) {
+    const onSubmit = (e) => {
+        e.preventDefault();
+        const data = watch()
+        const { username, password} = data
+
+        if(username && password && username!== "" && password !== ""){
             const result = {
                 data: data,
                 checked: checked
@@ -28,7 +32,7 @@ const Login = () => {
             dispatch(userloginRequest(result))
         }
     };
-    console.log(user)
+
     useEffect(() => {
         if (user?.error && !user?.data) {
             toastMsg.error(toast, "Tài khoản hoặc mật khẩu không chính xác")
@@ -43,7 +47,6 @@ const Login = () => {
 
     return (
         <div className="login__container">
-            <Toast ref={toast} position="bottom-left" />
             <div className="login__bg">
             </div>
             <div className="login__form">
@@ -55,7 +58,7 @@ const Login = () => {
                 <div className="login__route">
                     Đăng nhập
                 </div>
-                <form onSubmit={handleSubmit(onSubmit)} autoComplete="off" >
+                <form onSubmit={onSubmit}>
                     <div className="form__email">
                         <p>Tên đăng nhập:</p>
                         <div className="form__input">
@@ -101,6 +104,7 @@ const Login = () => {
                     </div>
                 </form>
             </div>
+            <Toast ref={toast} position="bottom-left" />
         </div>
     )
 }

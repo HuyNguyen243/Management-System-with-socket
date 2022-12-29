@@ -13,6 +13,11 @@
     background-color: $color-border-input;
 }
 
+.css-jedpe8-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input,
+.css-1n4twyu-MuiInputBase-input-MuiOutlinedInput-input{
+    padding: 6.5px 14px !important;
+}
+
 .css-1t62lt9{
     margin-right: 10px;
 }
@@ -169,4 +174,9 @@
 
 .p-inputtext:enabled:focus {
     border-color: inherit;
+}
+
+.p-inputswitch.p-inputswitch-checked:not(.p-disabled):hover .p-inputswitch-slider,
+.p-inputswitch.p-inputswitch-checked .p-inputswitch-slider {
+    background: $color-primary;
 }
