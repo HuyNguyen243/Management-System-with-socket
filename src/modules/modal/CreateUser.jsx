@@ -38,7 +38,7 @@ const CreateUser = () => {
     const user = useSelector(state => state.auth?.user)
     const employee = useSelector(state => state.employee?.user)
     const randomPass = Math.random().toString(36).slice(-8);
-    const [password] = useState(randomPass || null)
+    const [password] = useState(randomPass)
     
     useEffect(()=>{
         if(isOpenCreateUser){
@@ -48,6 +48,12 @@ const CreateUser = () => {
         }
     },[isOpenCreateUser])
 
+    useEffect(() => {
+        if (password) {
+            setValue("password", password)
+        }
+    }, [password, setValue])
+
     const onSubmit = (data) => {
         if (Object.keys(errors).length === 0) {
             data.create_by = user?.data.id_system;
@@ -55,12 +61,6 @@ const CreateUser = () => {
             dispatch(addEmployeeRequest(data))
         }
     };
-
-    useEffect(() => {
-        if (password) {
-            setValue("password", password)
-        }
-    }, [password, setValue])
 
     useEffect(() => {
         if (employee?.data && !employee?.error) {
