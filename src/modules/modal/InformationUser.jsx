@@ -62,10 +62,10 @@ const InformationUser = () => {
     useEffect(() => {
         if (deleteUser?.data && !deleteUser?.error) {
             dispatch(setIsOpenModalInformationUser(false))
-            toastMsg.success(toast, 'Xóa khách hàng thành công')
+            toastMsg.success(toast, 'Xóa thành viên thành công')
         }
         if (deleteUser?.error) {
-            toastMsg.error(toast, 'Xóa khách hàng thất bại')
+            toastMsg.error(toast, 'Xóa thành viên thất bại')
         }
     }, [deleteUser, dispatch])
     useEffect(() => {
