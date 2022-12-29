@@ -88,7 +88,7 @@ const CreateUser = () => {
     return (
         <>
             <Toast ref={toast} position="bottom-left" />
-            <Sidebar visible={isOpenCreateUser} position="right" onHide={() => { dispatch(setIsOpenModalCreateUser(false)); reset();setCreateSuccess(false) }} className="create__job">
+            <Sidebar visible={isOpenCreateUser} position="right" onHide={() => { dispatch(setIsOpenModalCreateUser(false)); reset();setCreateSuccess(true) }} className="create__job">
                 <div className="creat__job">
                     <div className="creat__job--title">
                         <h2>Tạo nhân viên mới</h2>
@@ -283,7 +283,7 @@ const CreateUser = () => {
                                 <div className="field col-12 md:col-6">
                                     <span className="">
                                         <Button label="Hủy bỏ" className="p-button-outlined cancel--btn" type="button"
-                                            onClick={() => { dispatch(setIsOpenModalCreateUser(false));reset();setCreateSuccess(false) }} />
+                                            onClick={() => { dispatch(setIsOpenModalCreateUser(false));reset();setCreateSuccess(true) }} />
                                     </span>
                                 </div>
                                 <div className="field col-12 md:col-6">
