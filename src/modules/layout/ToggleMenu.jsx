@@ -64,7 +64,7 @@ const ToggleMenu = () => {
         {
           label:'Thông tin cá nhân',
           command: ()=>{
-            navigate("/perosonal-information")
+            navigate("/personal-information")
           }
         },
         {

@@ -58,7 +58,7 @@ export const routes = [
         main: () => <JobsOverview />,
     },
     {
-        path: "/perosonal-information",
+        path: "/personal-information",
         exact: true,
         role: ["SALER", "ADMIN", "LEADER_EDITOR", "EDITOR"],
         main: () => <PersonalInfor />,
