@@ -43,13 +43,13 @@ const InformationJobs = () => {
 
     const employees = useSelector(state => state.employee?.dashboard)
 
-    useEffect(()=>{
-        if(isOpenInformationJob){
+    useEffect(() => {
+        if (isOpenInformationJob) {
             overlay.disable()
-        }else{
+        } else {
             overlay.enable()
         }
-    },[isOpenInformationJob])
+    }, [isOpenInformationJob])
 
     useEffect(() => {
         if (rowdata?.data?.status_jobs) {
@@ -148,9 +148,17 @@ const InformationJobs = () => {
         myConfirm.show();
     }
 
-    const copyToClipboard = () => {
-        toastMsg.success(toast, 'Sao chép mã thành công')
-        copy(rowdata?.data?.id_system);
+    const copyToClipboard = (type) => {
+        toastMsg.success(toast, 'Sao chép thành công')
+        if (type === "id_system") {
+            copy(rowdata?.data?.id_system);
+        }
+        if (type === "org_link") {
+            copy(rowdata?.data?.org_link);
+        }
+        if (type === "finished_link") {
+            copy(rowdata?.data?.finished_link);
+        }
     }
 
     const onSubmit = (data) => {
@@ -194,7 +202,7 @@ const InformationJobs = () => {
                                 <span htmlFor="autocomplete">Mã công việc :</span>
                                 <span className="p-float-label mt-3 flex justify-content-between cursor__normal">
                                     <span className='font-bold mt-1'>{rowdata?.data?.id_system}</span>
-                                    <img src="images/copy.svg" alt="" label="Bottom Right" onClick={copyToClipboard} className="cursor-pointer" />
+                                    <img src="images/copy.svg" alt="id_system" label="Bottom Right" onClick={(e) => copyToClipboard(e.target.alt)} className="cursor-pointer" />
                                 </span>
                             </div>
                             {user?.data?.role !== "LEADER_EDITOR" && user?.data?.role !== "EDITOR" &&
@@ -341,8 +349,9 @@ const InformationJobs = () => {
                                                 className={errors?.org_link && "p-invalid"}
                                             />
                                         ) : (
-                                            <span className="p-float-label mt-3">
+                                            <span className="p-float-label mt-3 flex justify-content-between">
                                                 <a href={rowdata?.data?.org_link} target="_blank" rel="noreferrer">Link liên kết</a>
+                                                <img src="images/copy.svg" alt="org_link" label="Bottom Right" onClick={(e) => copyToClipboard(e.target.alt)} className="cursor-pointer" />
                                             </span>
                                         )
                                     }
@@ -361,11 +370,14 @@ const InformationJobs = () => {
                                                     className={errors?.finished_link && "p-invalid"}
                                                 />
                                             ) : (
-                                                <span className=''>
+                                                <span className='flex justify-content-between'>
                                                     {rowdata?.data?.finished_link === NOT_SET_ADMIN ?
                                                         "Trống"
                                                         :
-                                                        < a href={rowdata?.data?.finished_link} target="_blank" rel="noreferrer">Link liên kết</a>
+                                                        <>
+                                                            < a href={rowdata?.data?.finished_link} target="_blank" rel="noreferrer">Link liên kết</a>
+                                                            <img src="images/copy.svg" alt="finished_link" label="Bottom Right" onClick={(e) => copyToClipboard(e.target.alt)} className="cursor-pointer" />
+                                                        </>
                                                     }
                                                 </span>
                                             )
@@ -375,11 +387,14 @@ const InformationJobs = () => {
                                     < div className="field col-12 md:col-6 create__job--calendar">
                                         <span htmlFor="finished_link">Link ảnh hoàn thành :</span>
                                         <span className={"p-float-label  mt-3"}>
-                                            <span className=''>
+                                            <span className='flex justify-content-between'>
                                                 {rowdata?.data?.finished_link === NOT_SET_ADMIN ?
                                                     "Trống"
                                                     :
-                                                    < a href={rowdata?.data?.finished_link} target="_blank" rel="noreferrer">Link liên kết</a>
+                                                    <>
+                                                        < a href={rowdata?.data?.finished_link} target="_blank" rel="noreferrer">Link liên kết</a>
+                                                        <img src="images/copy.svg" alt="finished_link" label="Bottom Right" onClick={(e) => copyToClipboard(e.target.alt)} className="cursor-pointer" />
+                                                    </>
                                                 }
                                             </span>
                                         </span>
