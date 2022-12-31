@@ -12,6 +12,8 @@ const initialState = {
     isOpenModalJobEditor: false,
     isOpenInformationJob: false,
     dataModalInformationJob: null,
+    isOpenModalInformationPayment: false,
+    dataModalInformationPayment:null,
 };
 
 const modalSlice = createSlice({
@@ -36,8 +38,14 @@ const modalSlice = createSlice({
         setIsOpenModalInformationUser: (state, { payload }) => {
             state.isOpenModalInformationUser = payload;
         },
+        setIsOpenModalInformationPayment: (state, { payload }) => {
+            state.isOpenModalInformationPayment = payload;
+        },
         setDataModalInformationUser: (state, { payload }) => {
             state.dataModalInformationUser = payload;
+        },
+        setDataModalInformationPayment: (state, { payload }) => {
+            state.dataModalInformationPayment = payload;
         },
         setIsOpenModalCreateJob: (state, { payload }) => {
             state.isOpenModalCreateJob = payload;
@@ -76,5 +84,8 @@ export const {
 
     setIsOpenInformationJob,
     setDataModalInformationJob,
+
+    setIsOpenModalInformationPayment,
+    setDataModalInformationPayment,
 } = modalSlice.actions;
 export default modalSlice.reducer;

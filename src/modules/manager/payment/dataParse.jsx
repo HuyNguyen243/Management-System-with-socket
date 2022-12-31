@@ -22,7 +22,9 @@ export const dataParseManagement = (data) => {
                 staff_is_pay:  item?.staff_is_pay,
                 pay_role : item?.pay_role,
                 pay_employees: item?.pay_employees,
-                status_pay: item?.status
+                status_pay: item?.status,
+                id_system: item?.id_system,
+                _create_at: item?._create_at,
             }
             return newobject
         })

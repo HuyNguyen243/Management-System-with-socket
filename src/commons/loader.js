@@ -15,6 +15,7 @@ const Loader = () => {
   const customer = useSelector(state=>state.sale.customer)
   const editUser = useSelector(state=> state.auth.editUser)
   const user = useSelector(state => state.auth?.user)
+  const paymentUpdate = useSelector(state => state.payment.updatepay)
 
   return (
     <div className="container__loader">
@@ -32,6 +33,7 @@ const Loader = () => {
         ${customer?.loading && "block"}
         ${editUser?.loading && "block"}
         ${user?.loading && "block"}
+        ${paymentUpdate?.loading && "block"}
       `}>
           <div id="loader"></div>
       </div>

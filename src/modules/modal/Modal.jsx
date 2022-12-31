@@ -7,6 +7,7 @@ import InformationUser from "./InformationUser"
 import CreateJobs from './CreateJobs';
 import ModalJobEditor from './ModalJobEditor';
 import InformationJobs from './InformationJobs';
+import InformationPayment from './InformationPayment';
 
 const Modal = () => {
   return (
@@ -19,6 +20,7 @@ const Modal = () => {
         <CreateJobs />
         <ModalJobEditor />
         <InformationJobs />
+        <InformationPayment />
     </>
   )
 }

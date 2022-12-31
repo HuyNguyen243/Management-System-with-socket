@@ -9,7 +9,9 @@ import {
     setIsOpenInformationJob,
     setDataModalInformationJob,
     setIsOpenModalInformationUser,
-    setDataModalInformationUser
+    setDataModalInformationUser,
+    setIsOpenModalInformationPayment,
+    setDataModalInformationPayment
 } from '../../../redux/modal/modalSlice';
 import { getEmployeeRequest } from "../../../redux/overviewEmployee/actionEmployee";
 
@@ -44,6 +46,7 @@ const PaymentManagement = () => {
             dispatch(setDataModalInformationUser(employees))
         }
     }, [employees, dispatch])
+
     const handleRowClick = (rowdata) => {
         const el = rowdata.originalEvent.target.closest("td").childNodes[1];
         const data = {}
@@ -59,6 +62,9 @@ const PaymentManagement = () => {
                 dispatch(getEmployeeRequest(data));
                 dispatch(setIsOpenModalInformationUser(true))
             }
+        }else{
+            dispatch(setIsOpenModalInformationPayment(true))
+            dispatch(setDataModalInformationPayment(rowdata))
         }
     }
 

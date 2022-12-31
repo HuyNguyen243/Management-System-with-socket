@@ -58,6 +58,7 @@ const CreateUser = () => {
         if (Object.keys(errors).length === 0) {
             data.create_by = user?.data.id_system;
             data.role = data.role?.code;
+            data.password = password;
             dispatch(addEmployeeRequest(data))
         }
     };

@@ -146,6 +146,7 @@ const Notification = ({isOpenNotification, setisOpenNotification}) => {
             default:
                 break;
         }
+        
         navigate({
             pathname: pathname,
             search: `?keyword=${id_job}`,
