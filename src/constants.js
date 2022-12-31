@@ -150,12 +150,14 @@ export const NAME_NOTIFICATION = {
 
 export const NotificationRules = {
     STATUS: {
+        ADD_JOB: "ADD_JOB",
         CREATE_JOB: "CREATE_JOB",
         COMPLETE_JOB: "COMPLETE_JOB",
         DELETE_JOB: "DELETE_JOB",
         EDIT_JOB: "EDIT_JOB",
-        ADD_JOB: "ADD_JOB",
         FIXED: "FIXED",
+        PAYMENT_JOB_PAID: "PAYMENT_JOB_PAID",
+        PAYMENT_JOB_UNPAY: "PAYMENT_JOB_UNPAY",
     },
 };
 

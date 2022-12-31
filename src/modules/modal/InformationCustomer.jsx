@@ -199,7 +199,7 @@ const InformationCustomer = () => {
             setIsOpenInput({ ...isOpenInput, [key]: true })
         }
     }
-
+    console.log(rowdata?.error)
     return (
         <>
             <ConfirmPopup />
@@ -208,9 +208,16 @@ const InformationCustomer = () => {
                 <div className="creat__job">
                     <div className="creat__job--title flex justify-content-between" style={{ marginRight: "10px" }}>
                         <h2>Thông tin khách hàng </h2>
+                        {
+                            !rowdata?.error &&
                         <Button onClick={handleRemoveRow}><img src="images/trash.svg" alt="" className="image__trash" /></Button>
+                        }
                     </div>
                     <form className=" grid modal__creat--job no_flex" onSubmit={handleSubmit(onSubmit)}>
+                        {
+                            rowdata?.error ? 
+                            <span className="notfound">Thông tin khách hàng không tồn tại</span>
+                            :
                         <div className="field col-12 md:col-12 grid">
                             <div className="field col-12 md:col-6 ">
                                 <span htmlFor="autocomplete">Tên khách hàng: <span className="warning">*</span></span>
@@ -403,17 +410,21 @@ const InformationCustomer = () => {
                                 </div>
                             }
                         </div>
+                        }
                         <div className="btn_modal field col-12 md:col-12 grid position_bottom">
                             <div className="field col-12 md:col-6">
                                 <span className="p-float-label">
                                     <Button label="Hủy bỏ" className="p-button-outlined cancel--btn" type="button" onClick={resetModal} />
                                 </span>
                             </div>
+                            {
+                                !rowdata?.error &&
                             <div className="field col-12 md:col-6">
                                 <span className="p-float-label">
                                     <Button label="Cập nhật" className="p-button-outlined p-button-secondary confirm--btn" type="submit" />
                                 </span>
                             </div>
+                            }
                         </div>
                     </form>
                 </div>

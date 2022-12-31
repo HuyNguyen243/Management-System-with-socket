@@ -59,7 +59,6 @@ const Notification = ({isOpenNotification, setisOpenNotification}) => {
             setNotifications(notifys?.data)
         }
     },[notifys])
-
     useEffect(() =>{
         if(notifyupdate?.data){
          
@@ -127,26 +126,46 @@ const Notification = ({isOpenNotification, setisOpenNotification}) => {
         }
     })
 
-    const handleSeenNotify = (id, id_job)=>{
+    // ADD_JOB: "ADD_JOB",
+    // CREATE_JOB: "CREATE_JOB",
+    // COMPLETE_JOB: "COMPLETE_JOB",
+    // DELETE_JOB: "DELETE_JOB",
+    // EDIT_JOB: "EDIT_JOB",
+    // FIXED: "FIXED",
+    // PAYMENT_JOB_PAID: "PAYMENT_JOB_PAID",
+    // PAYMENT_JOB_UNPAY: "PAYMENT_JOB_UNPAY",
+    const handleSeenNotify = (id, id_job, status)=>{
         const id_system = user?.data?.id_system
         socket.emit("reset-notify",id, id_system)
         setisOpenNotification(false)
         let pathname;
         switch (user?.data?.role) {
             case UserRules.ROLE.ADMIN:
-                pathname = "/jobs-overview"
+                if(status === NotificationRules.STATUS.COMPLETE_JOB){
+                    pathname = "/payment-management"
+                }else{
+                    pathname = "/jobs-overview"
+                }
                 break;
             case UserRules.ROLE.SALER:
-                pathname = "/workflow-management"
+                if(status === NotificationRules.STATUS.PAYMENT_JOB_PAID || status === NotificationRules.STATUS.PAYMENT_JOB_UNPAY){
+                    pathname = "/payment"
+                }else{
+                    pathname = "/workflow-management"
+                }
                 break;
             case UserRules.ROLE.EDITOR:
             case UserRules.ROLE.LEADER_EDITOR:
-                pathname = "/"
+                if(status === NotificationRules.STATUS.PAYMENT_JOB_PAID || status === NotificationRules.STATUS.PAYMENT_JOB_UNPAY){
+                    pathname = "/payment"
+                }else{
+                    pathname = "/"
+                }
                 break;
             default:
                 break;
         }
-        
+
         navigate({
             pathname: pathname,
             search: `?keyword=${id_job}`,
@@ -160,7 +179,7 @@ const Notification = ({isOpenNotification, setisOpenNotification}) => {
                     <div 
                     className={`notification_item ${notify?.member_check_notify?.[user?.data?.id_system] && "active"}`} 
                     key={index}
-                    onClick={()=>handleSeenNotify(notify?._id,notify?.id_job)}
+                    onClick={()=>handleSeenNotify(notify?._id,notify?.id_job,notify?.status)}
                     >
                         <p className="notification__name">{notify?.id_job}</p>
                         <div className="notification__i">

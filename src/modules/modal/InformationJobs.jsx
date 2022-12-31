@@ -7,7 +7,7 @@ import { toastMsg } from '../../commons/toast';
 import copy from "copy-to-clipboard";
 import { setIsOpenInformationJob } from '../../redux/modal/modalSlice';
 import { useDispatch, useSelector } from 'react-redux';
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { Dropdown } from 'primereact/dropdown';
 import { customer_status, type_files } from "./dropDown";
 import { UserRules, JobRules, NOT_SET_ADMIN } from "../../constants";
@@ -39,7 +39,7 @@ const InformationJobs = () => {
     const deletejobs = useSelector(state => state.jobs?.deletejobs)
     const updatejobs = useSelector(state => state.jobs?.editjobs)
     const donejobs = useSelector(state => state.jobs?.donejobs)
-    const { register, setValue, handleSubmit, formState: { errors }, reset } = useForm();
+    const {control, register, setValue, handleSubmit, formState: { errors }, reset } = useForm();
 
     const employees = useSelector(state => state.employee?.dashboard)
 
@@ -183,6 +183,12 @@ const InformationJobs = () => {
         }
     };
 
+    useEffect(()=>{
+        if(rowdata?.data?.org_link){
+            setValue("org_link", rowdata?.data?.org_link)
+        }
+    },[rowdata, setValue])
+
     return (
         <>
             <ConfirmPopup />
@@ -192,11 +198,15 @@ const InformationJobs = () => {
                     <div className="creat__job--title flex justify-content-between">
                         <h2>Thông tin công việc </h2>
                         {
-                            user?.data?.role === "ADMIN" &&
+                            user?.data?.role === "ADMIN" && rowdata?.data && Object?.keys(rowdata?.data).length > 0 &&
                             <Button onClick={handleRemoveRow}><img src="images/trash.svg" alt="" className="image__trash" /></Button>
                         }
                     </div>
                     <form className=" grid modal__creat--job no_flex" onSubmit={handleSubmit(onSubmit)}>
+                        {
+                           rowdata?.data && Object?.keys(rowdata?.data).length === 0 ?
+                            <span className="notfound">Thông tin công việc không tồn tại</span>
+                            :
                         <div className="field col-12 md:col-12 grid">
                             <div className="field col-12 md:col-6">
                                 <span htmlFor="autocomplete">Mã công việc :</span>
@@ -342,11 +352,31 @@ const InformationJobs = () => {
                                 <span onClick={(e) => handleOpenInput("org_link")} className={"p-float-label  " + ((user?.data?.role !== "LEADER_EDITOR" && user?.data?.role !== "EDITOR") ? "cursor__edit" : isOpenInput?.org_link ? "" : " mt-3 ")}>
                                     {user?.data?.role !== "LEADER_EDITOR" && user?.data?.role !== "EDITOR" && isOpenInput?.org_link ?
                                         (
-                                            <InputText
-                                                defaultValue={rowdata?.data?.org_link}
-                                                onChange={(e) => setValue("org_link", e.target.value)}
-                                                {...register("org_link", { required: true })}
-                                                className={errors?.org_link && "p-invalid"}
+                                            // <InputText
+                                            //     defaultValue={rowdata?.data?.org_link}
+                                            //     onChange={(e) => setValue("org_link", e.target.value)}
+                                            //     {...register("org_link", { required: true })}
+                                            //     className={errors?.org_link && "p-invalid"}
+                                            // />
+                                            <Controller
+                                            control={control}
+                                            rules={{
+                                             required: true,
+                                            }}
+                                            render={({ field: { onChange, onBlur, value } }) => (
+                                              <InputText
+                                                onBlur={onBlur}
+                                                onChange={onChange}
+                                                value={value}
+                                              />
+                                                // <InputText
+                                            //     defaultValue={rowdata?.data?.org_link}
+                                            //     onChange={(e) => setValue("org_link", e.target.value)}
+                                            //     {...register("org_link", { required: true })}
+                                            //     className={errors?.org_link && "p-invalid"}
+                                            // />
+                                            )}
+                                            name="org_link"
                                             />
                                         ) : (
                                             <span className="p-float-label mt-3 flex justify-content-between">
@@ -495,17 +525,24 @@ const InformationJobs = () => {
                                 />
                             </div>
                         </div>
+                        }
                         <div className="btn_modal field col-12 md:col-12 grid position_bottom">
-                            <div className="field col-12 md:col-6">
+                            <div className={`field col-12 md:col-${rowdata?.data && Object?.keys(rowdata?.data).length === 0 ? "12" : "6"}`}>
                                 <span className="p-float-label">
                                     <Button label="Hủy bỏ" className="p-button-outlined cancel--btn" type="button" onClick={handleCloseModal} />
                                 </span>
                             </div>
-                            <div className="field col-12 md:col-6">
-                                <span className="p-float-label">
-                                    <Button label="Cập nhật" className="p-button-outlined p-button-secondary confirm--btn" type="submit" />
-                                </span>
-                            </div>
+                            {
+                                rowdata?.data && Object?.keys(rowdata?.data).length === 0 ?
+                                ""
+                                :
+                                <div className="field col-12 md:col-6">
+                                    <span className="p-float-label">
+                                        <Button label="Cập nhật" className="p-button-outlined p-button-secondary confirm--btn" type="submit" />
+                                    </span>
+                                </div>
+                            }
+                          
                         </div>
                     </form>
                 </div>
