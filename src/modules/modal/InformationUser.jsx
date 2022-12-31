@@ -147,10 +147,17 @@ const InformationUser = () => {
                 <div className="creat__job">
                     <div className="creat__job--title flex justify-content-between">
                         <h2>Thông tin nhân viên </h2>
-                        <Button onClick={handleRemoveRow}><img src="images/trash.svg" alt="" className="image__trash" /></Button>
+                        {
+                            !rowdata?.error &&
+                            <Button onClick={handleRemoveRow}><img src="images/trash.svg" alt="" className="image__trash" /></Button>
+                        }
                     </div>
                     <form className=" grid modal__creat--job no_flex" autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
-                        <div className="field col-12 md:col-12 grid">
+                        {
+                            rowdata?.error ?
+                            <span className="notfound">Nhân viên không tồn tại</span>
+                            :
+                            <div className="field col-12 md:col-12 grid">
                             <div className="field col-12 md:col-6">
                                 <span htmlFor="autocomplete">Mã nhân viên: </span>
                                 <span className="p-float-label pt-3 flex justify-content-between cursor__normal">
@@ -270,18 +277,23 @@ const InformationUser = () => {
                                     <span className='font-bold'>{rowdata?.data?.address}</span>
                                 </span>
                             </div>
-                        </div>
+                            </div>
+                        }
+                       
                         <div className="btn_modal field col-12 md:col-12 grid position_bottom">
-                            <div className="field col-12 md:col-6">
+                            <div className={`field col-12 md:col-${rowdata?.error ? "12" : "6"}`}>
                                 <span className="p-float-label">
                                     <Button label="Hủy bỏ" className="p-button-outlined cancel--btn" type="button" onClick={handleCloseModal} />
                                 </span>
                             </div>
-                            <div className="field col-12 md:col-6">
-                                <span className="p-float-label">
-                                    <Button label="Cập nhật" className="p-button-outlined p-button-secondary confirm--btn" type="submit" />
-                                </span>
-                            </div>
+                            {
+                                !rowdata?.error &&
+                                <div className="field col-12 md:col-6">
+                                    <span className="p-float-label">
+                                        <Button label="Cập nhật" className="p-button-outlined p-button-secondary confirm--btn" type="submit" />
+                                    </span>
+                                </div>
+                            }
                         </div>
                     </form>
                 </div>

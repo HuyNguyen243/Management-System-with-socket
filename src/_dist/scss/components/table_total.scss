@@ -201,6 +201,14 @@
     }
 }
 
+.notfound{
+    text-align: center;
+    padding: 10px;
+    font-size: 18px;
+    color: #cbcbcb;
+    text-transform: uppercase;
+}
+
 .p-label.btn_stop,.p-float-label.btn_stop,.table__body-name.btn_stop{
     color: $color-danger;
     background-color: #ffbdc9;
