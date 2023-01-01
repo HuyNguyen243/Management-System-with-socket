@@ -24,7 +24,7 @@ import { overlay } from '../../commons/overlay';
 
 const InformationJobs = () => {
     const toast = useRef(null);
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
     let minDate = new Date();
     const [typeFile, setTypeFile] = useState(false);
     const [statusCustomer, setStatusCustomer] = useState(false);
