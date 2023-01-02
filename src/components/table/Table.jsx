@@ -146,7 +146,7 @@ const Table = ({
             breakpoint="1400px"
             onRowClick={handleRowClick}
             paginator 
-            paginatorTemplate={pathname !== "/job-performance" ? paginate : false} 
+            paginatorTemplate={pathname !== "/job-performance" && old_Data?.length > 0 ? paginate : false} 
             first={currentLocation}
             rows={perpage} 
             onPage={handleSetPage}

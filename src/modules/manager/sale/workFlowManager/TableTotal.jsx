@@ -81,19 +81,7 @@ const TableTotal = () => {
 		const getYear = new Date(e.value).getFullYear()
 		dispatch(kpiYearOfMonth(`?year=${getYear}`))
 	}
-
-	const checkData = ()=>{
-        if(performance?.data){
-            if(performance?.data?.job_pending > 0 || performance?.data?.job_incomplete > 0 ||  performance?.data?.job_complete > 0){
-                return true
-            }else{
-                return false
-            }
-        }else{
-            return false
-        }
-    }
-
+  
   return (
     <div className="grid">
         <DataTable value={[dataTable]} responsiveLayout="stack" breakpoint="1400px" className="table__total--workflow--management field col-12 md:col-12 m-0">
@@ -110,17 +98,6 @@ const TableTotal = () => {
       </div>
 	  <div className="table__analysis field col-12 md:col-5">
         <Analysis />
-		{
-            (performance?.data?.job_pending || performance?.data?.job_incomplete || performance?.data?.job_complete) && checkData 
-            ?
-            <div className="grid  pt-4">
-                <div className="field col-4 md:col-4 chart__color red flex justify-content-center">Tạm hoãn</div>
-                <div className="field col-4 md:col-4 chart__color yellow flex justify-content-center">Đang xử lý</div>
-                <div className="field col-4 md:col-4 chart__color blue flex justify-content-center">Hoàn thành</div>
-            </div>
-            :
-            ""
-    	}
       </div>
     </div>
   )

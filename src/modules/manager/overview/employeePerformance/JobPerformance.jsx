@@ -22,6 +22,7 @@ const JobPerformance = () => {
     useEffect(() => {
         if(performance?.data) {
             const _data = {
+                labels: ['Tạm hoãn', 'Đang xử lý', 'Đã hoàn thành'],
                 datasets: [
                     {
                         data: [
@@ -44,7 +45,7 @@ const JobPerformance = () => {
             setChartData(_data)
         }
     },[setChartData,performance])
-    
+
     const [dataKPis,setDataKPis] = useState({
         labels: ['T1', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'T8', 'T9', 'T10', 'T11', 'T12'],
         datasets: [{
@@ -115,19 +116,6 @@ const JobPerformance = () => {
     }
     const handleRowClick = (rowdata) => {}
 
-    const checkData = ()=>{
-        if(data){
-            for(const index in data){
-                if(data[index] > 0){
-                    return true
-                }
-            }
-            return false
-        }else{
-            return false
-        }
-    }
-
     const handleChangeYear = (e)=>{
         setyear(e.value)
         const getYear = new Date(e.value).getFullYear()
@@ -157,20 +145,6 @@ const JobPerformance = () => {
                     <Chart type="doughnut" data={chartData}
                     style={{ position: 'relative', width: '60%', paddingTop: "200px", marginLeft: "100px"}} className="pt-9"
                     />
-
-                    <div className="flex pt-6 grid">
-                        {
-                            (data?.job_pending || data?.job_incomplete || data?.job_complete) && checkData 
-                            ?
-                            <>
-                                <div className="field col-4 md:col-4 chart__color red">Tạm hoãn</div>
-                                <div className="field col-4 md:col-4 chart__color yellow">Đang xử lý</div>
-                                <div className="field col-4 md:col-4 chart__color blue">Hoàn thành</div>
-                            </>
-                            :
-                            ""
-                        }
-                    </div>
                 </div>
             </div>
         </>

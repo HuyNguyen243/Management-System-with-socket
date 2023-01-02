@@ -17,6 +17,12 @@
     margin-left: 10px !important;
 }
 
+.MuiFormLabel-root,
+.status__content,
+#filter__label{
+    font-size: 12px !important;
+}
+
 #filter__label,
 #select-label{
     background-color: $color-white !important;

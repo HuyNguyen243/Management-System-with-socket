@@ -10,6 +10,7 @@ const Analysis = () => {
     useEffect(() => {
         if(performance?.data) {
             const _data = {
+                labels: ['Tạm hoãn', 'Đang xử lý', 'Đã hoàn thành'],
                 datasets: [
                     {
                         data: [
