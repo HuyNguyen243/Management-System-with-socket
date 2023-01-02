@@ -11,12 +11,13 @@ import { useDispatch,useSelector } from 'react-redux';
 import { CustomerRules } from '../../constants';
 import { Toast } from 'primereact/toast';
 import { getCountries } from '../../commons/getCountry';
-import { Dropdown } from 'primereact/dropdown';
+import { AutoComplete } from 'primereact/autocomplete';
 
 import { EMAIL_REGEX, PHONE_REGEX } from '../../constants';
 import { toastMsg } from '../../commons/toast';
 import { setIsOpenModalCreateCustomer } from '../../redux/modal/modalSlice';
 import { overlay } from '../../commons/overlay';
+import { searchDropdown } from '../../commons/searchDropDown';
 
 const CreateCustomer = () => {
     const toast = useRef(null);
@@ -37,6 +38,8 @@ const CreateCustomer = () => {
     const customer = useSelector(state=>state.sale.customer)
     const [countries,setCountries] =React.useState([])
     const [cities,setCities] = React.useState([]);
+    const [filteredCountry, setFilteredCountry] = React.useState(null);
+    const [filteredCity, setFilteredCity] = React.useState(null);
 
     useEffect(()=>{
         if(isOpenCreateCustomer){
@@ -74,7 +77,8 @@ const CreateCustomer = () => {
         setValue("city","")
         field.onChange(e.value)
         if(countries[e.value]){
-            setCities(countries[e.value])
+            const filteredCity = countries[e.value].filter((item, index)=>{ return countries[e.value].indexOf(item) !== index })
+            setCities(filteredCity)
         }
     }
 
@@ -160,37 +164,44 @@ const CreateCustomer = () => {
                         </div>
                         <div className="field col-12 md:col-6">
                             <span htmlFor="original__link">Quốc gia: <span className="warning">*</span></span>
-                                <Controller name="country" 
-                                    control={control} 
-                                    rules={{ required: "Chọn quốc gia" }} render={({ field, fieldState }) => (
-                                    <Dropdown
-                                        options={Object?.keys(countries) || []}
-                                        optionLabel=""
-                                        value={field.value}
-                                        onChange={(e) =>{handleChangeCountry(e,field) }}
-                                        placeholder="Quốc gia"
-                                        className={classNames({ 'p-invalid': fieldState.invalid })}
-                                    />
-                                )} />
+                                <Controller name="country"
+                                    control={control}
+                                    rules={{ required: true }} render={({ field, fieldState }) => (
+                                        <AutoComplete
+                                            suggestions={filteredCountry}
+                                            completeMethod={(e) => searchDropdown(e, countries, setFilteredCountry)} field=""
+                                            aria-label="Countries"
+                                            id={field.name}
+                                            value={field.value} onChange={(e) => handleChangeCountry(e, field)}
+                                            className={errors?.country && "p-invalid"}
+                                            dropdownAriaLabel="Select name"
+                                            placeholder="Quốc gia"
+                                        />
+                                    )}
+                                />
                             {
                                 errors?.country &&  <span className="warning" style={{fontSize:"12px"}}>{errors?.country.message}</span>
                             }
                         </div>
                         <div className="field col-12 md:col-6">
                             <span htmlFor="cost">Thành phố: <span className="warning">*</span></span>
-                                <Controller name="city" 
-                                    control={control} 
-                                    rules={{ required: "Chọn thành phố" }} render={({ field, fieldState }) => (
-                                    <Dropdown
-                                        options={cities}
-                                        optionLabel=""
-                                        value={field.value}
-                                        onChange={(e) =>{field.onChange(e.value)}}
-                                        disabled={!cities ? true : false}
-                                        placeholder="Thành phố"
-                                        className={classNames({ 'p-invalid': fieldState.invalid })}
-                                    />
-                                )} />
+                                    {
+                                        <Controller name="city"
+                                            control={control}
+                                            rules={{ required: true }} render={({ field, fieldState }) => (
+                                                <AutoComplete
+                                                    suggestions={filteredCity}
+                                                    completeMethod={(e) => searchDropdown(e, cities, setFilteredCity)} field=""
+                                                    aria-label="Cities"
+                                                    id={field.name}
+                                                    value={field.value} onChange={(e) => { field.onChange(e.value) }}
+                                                    className={errors?.city && "p-invalid"}
+                                                    dropdownAriaLabel="Select name"
+                                                    placeholder="Thành phố"
+                                                />
+                                            )}
+                                        />
+                                    }
                             {
                                 errors?.city &&  <span className="warning" style={{fontSize:"12px"}}>{errors?.city.message}</span>
                             }

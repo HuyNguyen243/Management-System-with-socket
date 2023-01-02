@@ -109,7 +109,8 @@ const InformationCustomer = () => {
         setValue("city", "")
         field.onChange(e.value)
         if (countries[e.value]) {
-            setCities(countries[e.value])
+            const filteredCity = countries[e.value].filter((item, index)=>{ return countries[e.value].indexOf(item) !== index })
+            setCities(filteredCity)
         }
     }
 
@@ -199,7 +200,7 @@ const InformationCustomer = () => {
             setIsOpenInput({ ...isOpenInput, [key]: true })
         }
     }
-    console.log(rowdata?.error)
+
     return (
         <>
             <ConfirmPopup />
@@ -349,7 +350,6 @@ const InformationCustomer = () => {
                                             :
                                             <p onClick={() => handleOpenInput("city")} className="font-bold mt-3 ">{rowdata?.data?.information?.address?.city}</p>
                                     }
-
                                 </span>
                             </div>
                             <div className="field col-12 md:col-6">

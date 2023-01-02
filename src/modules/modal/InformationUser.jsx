@@ -271,12 +271,6 @@ const InformationUser = () => {
                                     {rowdata?.data?.address ? (<span className='font-bold'>{rowdata?.data?.address}</span>) : (<span className=''>Trống</span>)}
                                 </span>
                             </div>
-                            <div className="field col-12 md:col-12">
-                                <span htmlFor="original__link">Danh sách công việc:</span>
-                                <span className="p-float-label cursor__normal mt-3">
-                                    <span className='font-bold'>{rowdata?.data?.address}</span>
-                                </span>
-                            </div>
                             </div>
                         }
                        
