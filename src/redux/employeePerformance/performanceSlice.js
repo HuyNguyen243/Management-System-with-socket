@@ -20,6 +20,11 @@ const initialState = {
 const employeePerformanceReducer = createSlice({
     name: "employeePerformance",
     initialState,
+    reducers:{
+        resetKpis: (state) => {
+            state.employeePerformance.data = null;
+        },
+    },
     extraReducers: {
         [getEmployeePerformance.pending]: (state) => {
             Object.assign(
@@ -98,5 +103,9 @@ const employeePerformanceReducer = createSlice({
         },
     },
 });
+
+export const {
+    resetKpis,
+} = employeePerformanceReducer.actions;
 
 export default employeePerformanceReducer.reducer;

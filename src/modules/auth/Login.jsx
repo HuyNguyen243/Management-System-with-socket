@@ -32,7 +32,7 @@ const Login = () => {
             dispatch(userloginRequest(result))
         }
     };
-    console.log(user)
+
     useEffect(() => {
         if (user?.error && !user?.data) {
             toastMsg.error(toast, "Tài khoản hoặc mật khẩu không chính xác")

@@ -77,8 +77,7 @@ const CreateCustomer = () => {
         setValue("city","")
         field.onChange(e.value)
         if(countries[e.value]){
-            const filteredCity = countries[e.value].filter((item, index)=>{ return countries[e.value].indexOf(item) !== index })
-            setCities(filteredCity)
+            setCities(countries[e.value])
         }
     }
 

@@ -48,7 +48,6 @@ const Table = ({
     },[perpageURL, pageURL])
 
 
-
     const handleSetPage = (event) => {
         setCurrentLocation(event.first);
         setPerpage(event.rows);
@@ -138,7 +137,7 @@ const Table = ({
         {haveTotalTable && <TotalTable />}
         <div className="table__container">
             <div className="table__perpage" >
-                {Object.keys(old_Data).length > 0 && <span>Rows per page:</span>}
+                {Object.keys(old_Data).length > 0 && pathname !== "/job-performance" && <span>Rows per page:</span>}
             </div>
             <DataTable
             loading={loading}
@@ -147,7 +146,7 @@ const Table = ({
             breakpoint="1400px"
             onRowClick={handleRowClick}
             paginator 
-            paginatorTemplate={Object.keys(old_Data).length > perpage ? paginate : false} 
+            paginatorTemplate={pathname !== "/job-performance" ? paginate : false} 
             first={currentLocation}
             rows={perpage} 
             onPage={handleSetPage}

@@ -15,8 +15,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Toast } from 'primereact/toast';
 import copy from "copy-to-clipboard";
 import { useForm } from "react-hook-form";
-import { Dropdown } from 'primereact/dropdown';
-import { role } from "./dropDown";
 import { editEmployeeRequest, deleteEmployeeRequest } from "../../redux/overviewEmployee/actionEmployee";
 import {
     setIsOpenModalCreateUser,
@@ -25,11 +23,9 @@ import {
 import { overlay } from '../../commons/overlay';
 
 const InformationUser = () => {
-    const [userRole, setUserRole] = useState(null);
     const [isEditUsername, setEditUsername] = useState(false);
     const [isEditPhone, setEditPhone] = useState(false);
     const [isEditEmail, setEditEmail] = useState(false);
-    const [isEditRole, setEditRole] = useState(false);
     const putUser = useSelector(state => state.employee?.edituser)
     const deleteUser = useSelector(state => state.employee?.deleteuser)
     const isOpenInformationUser = useSelector(state => state.modal?.isOpenModalInformationUser)
@@ -38,7 +34,6 @@ const InformationUser = () => {
     const dispatch = useDispatch()
     const { register, setValue, handleSubmit, formState: { errors }, reset } = useForm();
     const toast = useRef(null);
-    const user = useSelector(state => state.auth.user)
 
     useEffect(()=>{
         if(isOpenInformationUser){
@@ -47,7 +42,7 @@ const InformationUser = () => {
             overlay.enable()
         }
     },[isOpenInformationUser])
-
+    
     useEffect(() => {
         if (putUser?.data && !putUser?.error) {
             dispatch(setIsOpenModalInformationUser(false))
@@ -68,18 +63,7 @@ const InformationUser = () => {
             toastMsg.error(toast, 'Xóa thành viên thất bại')
         }
     }, [deleteUser, dispatch])
-    useEffect(() => {
-        if (rowdata?.data) {
-            if (rowdata?.data?.role) {
-                for (let item of role) {
-                    if (item.code === rowdata?.data?.role) {
-                        setUserRole(item)
-                        break
-                    }
-                }
-            }
-        }
-    }, [rowdata, setValue, dispatch])
+
     const onSubmit = (data) => {
         delete data["births"];
         delete data["start_day"];
@@ -104,7 +88,6 @@ const InformationUser = () => {
         dispatch(setIsOpenModalInformationUser(false))
         setEditEmail(false)
         setEditPhone(false)
-        setEditRole(false)
         setEditUsername(false)
         reset()
     }
@@ -189,29 +172,13 @@ const InformationUser = () => {
                             </div>
                             <div className="field col-12 md:col-6">
                                 <span htmlFor="employees">Chức vụ nhân viên:<span className="warning">*</span></span>
-                                <span onClick={(e) => setEditRole(true)} className="p-float-label cursor__edit ">
-                                    {isEditRole ?
-                                        (
-                                            <Dropdown
-                                                options={role}
-                                                optionLabel="name"
-                                                defaultValue={userRole}
-                                                value={userRole}
-                                                onChange={(e) => { setValue("role", e.value.code); setUserRole(e.value) }}
-                                                disabled={user?.data?.role !== UserRules.ROLE.ADMIN ? true : false}
-                                                className="mt-1"
-                                            />
-                                        ) : (
-                                            <span className='p-float-label mt-3'>
-                                                <span className='font-bold'>{UserRules.ROLE_NAME[rowdata?.data?.role]}</span>
-                                            </span>
-                                        )
-                                    }
-                                </span>
+                                    <span className='p-float-label mt-4'>
+                                        <span className='font-bold'>{UserRules.ROLE_NAME[rowdata?.data?.role]}</span>
+                                    </span>
                             </div>
-                            <div className="field col-12 md:col-12 ">
+                            <div className="field col-12 md:col-6 ">
                                 <span htmlFor="autocomplete">Tên nhân viên: <span className="warning">*</span></span>
-                                <span onClick={(e) => setEditUsername(true)} className="p-float-label cursor__edit mt-3">
+                                <span onClick={(e) => setEditUsername(true)} className="p-float-label cursor__edit mt-4">
                                     {isEditUsername ?
                                         (
                                             < InputText
@@ -228,7 +195,7 @@ const InformationUser = () => {
                             </div>
                             <div className="field col-12 md:col-6 ">
                                 <span htmlFor="withoutgrouping">Số điện thoại: <span className="warning">*</span></span>
-                                <span onClick={(e) => setEditPhone(true)} className="p-float-label cursor__edit mt-3">
+                                <span onClick={(e) => setEditPhone(true)} className="p-float-label cursor__edit mt-4">
                                     {isEditPhone ?
                                         (
                                             <InputText
@@ -250,7 +217,7 @@ const InformationUser = () => {
                             </div>
                             <div className="field col-12 md:col-6">
                                 <span htmlFor="original__link">Email: <span className="warning">*</span></span>
-                                <span onClick={(e) => setEditEmail(true)} className="p-float-label cursor__edit mt-3">
+                                <span onClick={(e) => setEditEmail(true)} className="p-float-label cursor__edit mt-4">
                                     {isEditEmail ?
                                         (
                                             <InputText
@@ -267,7 +234,7 @@ const InformationUser = () => {
                             </div>
                             <div className="field col-12 md:col-6">
                                 <span htmlFor="original__link">Địa chỉ: <span className="warning">*</span></span>
-                                <span className="p-float-label cursor__normal mt-3">
+                                <span className="p-float-label cursor__normal mt-4">
                                     {rowdata?.data?.address ? (<span className='font-bold'>{rowdata?.data?.address}</span>) : (<span className=''>Trống</span>)}
                                 </span>
                             </div>

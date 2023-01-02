@@ -44,7 +44,7 @@ const JobPerformance = () => {
             setChartData(_data)
         }
     },[setChartData,performance])
-
+    
     const [dataKPis,setDataKPis] = useState({
         labels: ['T1', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'T8', 'T9', 'T10', 'T11', 'T12'],
         datasets: [{
@@ -133,7 +133,7 @@ const JobPerformance = () => {
         const getYear = new Date(e.value).getFullYear()
         dispatch(kpiYearOfMonth(`?year=${getYear}`))
     }
-
+    
     return (
         <>
             <div className="grid ">

@@ -53,6 +53,7 @@ const JobsOverview = () => {
             if (el.innerHTML) {
                 data.id = el.innerHTML;
                 dispatch(getEmployeeRequest(data));
+                dispatch(setIsOpenModalInformationUser(true))
             }
         } else if (el.className.includes("id_customer")) {
             //OPEN CUSTOMER

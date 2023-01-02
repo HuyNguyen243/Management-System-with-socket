@@ -18,5 +18,12 @@ export const searchDropdown =(e,data,setFilter)=>{
                 })
             }
         }
-        setFilter(result)
+
+        const filterData = result.filter(onlyUnique);
+
+        function onlyUnique(value, index, self) {
+            return self.indexOf(value) === index;
+        }
+
+        setFilter(filterData)
 }

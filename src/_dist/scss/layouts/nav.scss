@@ -253,6 +253,7 @@
 .p-inputtext:enabled:hover{
     border: 1px solid $color-border-input;
     outline: none;
+    outline-offset: none;
     box-shadow: none;
 }
 .p-inputtext:enabled:focus{

@@ -9,8 +9,9 @@ import DatePicker from "./DatePicker"
 import { useNavigate, useLocation } from 'react-router';
 import { dateString } from "../../commons/dateTime"
 import { debounce } from 'lodash'
-import { useSelector } from "react-redux";
+import { useSelector,useDispatch } from "react-redux";
 import { Dropdown } from 'primereact/dropdown';
+import { resetKpis } from '../../redux/employeePerformance/performanceSlice';
 
 const Filter = ({ DataFilter, sortBy, sortValue, setSortBy, setSortValue, search, setsearch, dropdown }) => {
     const queryParams = new URLSearchParams(window.location.search)
@@ -23,6 +24,7 @@ const Filter = ({ DataFilter, sortBy, sortValue, setSortBy, setSortValue, search
     const [isOpenFilter, setIsOpenFilter] = useState(false)
     const pageURL = Number(queryParams?.get('page'))
     const perpageURL = Number(queryParams?.get('perpage'))
+    const dispatch = useDispatch()
 
     const [dates, setDates] = useState(start_dateURL && end_dateURL ? [new Date(dateString(start_dateURL)), new Date(dateString(end_dateURL))] : undefined)
     const [status, setStatus] = useState('');
@@ -72,6 +74,7 @@ const Filter = ({ DataFilter, sortBy, sortValue, setSortBy, setSortValue, search
             pathname: pathname,
             search: "",
         });
+        dispatch(resetKpis())
     }
 
     useEffect(() => {
@@ -169,10 +172,7 @@ const Filter = ({ DataFilter, sortBy, sortValue, setSortBy, setSortValue, search
     return (
         <>
             <div className={`page__filter align-items-center flex grid  `}>
-                {
-                    pathname !== "/job-performance" &&
                     <img src="images/reset.svg" alt="" onClick={handleReset} />
-                }
                 <Box
                     component="form"
                     sx={{

@@ -22,6 +22,7 @@ import { UserRules } from '../../constants';
 import copy from "copy-to-clipboard";
 import { setIsOpenModalInformationCustomer } from '../../redux/modal/modalSlice';
 import { timezoneToDate } from '../../commons/dateTime';
+import { overlay } from '../../commons/overlay';
 
 const InformationCustomer = () => {
     const [customerStatus, setCustomerStatus] = useState(null);
@@ -29,7 +30,7 @@ const InformationCustomer = () => {
     const rowdata = useSelector(state => state.modal.dataModalInformationCustomer)
     const putCustomer = useSelector(state => state.sale.editcustomer)
     const deleteCustomer = useSelector(state => state.sale.deletecustomer)
-    const isOpenInformationCustome = useSelector(state => state.modal.isOpenModalInformationCustomer)
+    const isOpenInformationCustomer = useSelector(state => state.modal.isOpenModalInformationCustomer)
     const user = useSelector(state => state.auth.user)
     const [cities, setCities] = React.useState(null);
     const [filteredCity, setFilteredCity] = React.useState(null);
@@ -47,6 +48,14 @@ const InformationCustomer = () => {
         reset({ data: 'test' })
         setIsOpenInput({})
     }, [dispatch, reset])
+
+    useEffect(()=>{
+        if(isOpenInformationCustomer){
+            overlay.disable()
+        }else{
+            overlay.enable()
+        }
+    },[isOpenInformationCustomer])
 
     useEffect(() => {
         if (putCustomer?.data && !putCustomer?.error) {
@@ -109,8 +118,7 @@ const InformationCustomer = () => {
         setValue("city", "")
         field.onChange(e.value)
         if (countries[e.value]) {
-            const filteredCity = countries[e.value].filter((item, index)=>{ return countries[e.value].indexOf(item) !== index })
-            setCities(filteredCity)
+            setCities(countries[e.value])
         }
     }
 
@@ -205,7 +213,7 @@ const InformationCustomer = () => {
         <>
             <ConfirmPopup />
             <Toast ref={toast} position="bottom-left" />
-            <Sidebar visible={isOpenInformationCustome} position="right" onHide={resetModal} className="create__job">
+            <Sidebar visible={isOpenInformationCustomer} position="right" onHide={resetModal} className="create__job">
                 <div className="creat__job">
                     <div className="creat__job--title flex justify-content-between" style={{ marginRight: "10px" }}>
                         <h2>Thông tin khách hàng </h2>
