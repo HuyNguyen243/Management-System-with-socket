@@ -1,6 +1,6 @@
 import React,{ useState, useEffect } from 'react';
 // import { useDispatch } from "react-redux"
-import { customer_status,user_status,jobs_status, } from "./status"
+import { customer_status, user_status, jobs_status, payment_status } from "./status"
 import Filter from './Filter'
 import TotalTable from './TotalTable'
 import { DataTable } from 'primereact/datatable';
@@ -13,7 +13,8 @@ import Stack from '@mui/material/Stack';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { convertDate } from '../../commons/dateTime';
 import { getEmployeePerformance } from '../../redux/employeePerformance/action';
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
+import { JobRules } from '../../constants';
 
 const Table = ({
     dataTable = [],
@@ -37,6 +38,7 @@ const Table = ({
     const old_Data = Array.isArray(dataTable) ? dataTable : []
     const [currentLocation, setCurrentLocation] = useState(0);
     const [search,setsearch ] = useState('');
+    const user = useSelector(state=> state.auth.user)
 
     const urlParams = new URLSearchParams(window.location.search);
     const pageURL = Number(urlParams?.get('page'))
@@ -68,22 +70,25 @@ const Table = ({
     }
 
     useEffect(() => {
-        let data = {}
-        let search = ""
-        if (dateWorkFlow?.length > 0 && dateWorkFlow[1]) {
-            const arr = convertDate(dateWorkFlow)
-            data.start_date = arr[0]
-            data.end_date = arr[1]
-
-            if(Object.keys(data).length > 0){
-                search = "?start_date=" + data?.start_date + "&end_date=" + data?.end_date
-            }else{
-                search = ""
-            }
-        }
-        dispatch(getEmployeePerformance(search))
-      }, [dateWorkFlow, dispatch])
+        if(user?.data?.role !== JobRules?.ROLE?.EDITOR){
+            let data = {}
+            let search = ""
+            if (dateWorkFlow?.length > 0 && dateWorkFlow[1]) {
+                const arr = convertDate(dateWorkFlow)
+                data.start_date = arr[0]
+                data.end_date = arr[1]
     
+                if(Object.keys(data).length > 0){
+                    search = "?start_date=" + data?.start_date + "&end_date=" + data?.end_date
+                }else{
+                    search = ""
+                }
+            }
+            dispatch(getEmployeePerformance(search))
+        }
+        
+    }, [dateWorkFlow, dispatch, user])
+
     const handleSort = (e)=>{
         setSortBy(e.currentTarget.getAttribute("data-by"))
         setSortValue(e.currentTarget.getAttribute("data-value"))
@@ -118,8 +123,11 @@ const Table = ({
                 break
             case "/payment-management":
             case "/payment":
+                setDropDown(payment_status)
+                break
             case "/workflow-management":
             case "/jobs-overview":
+            case "/":
                 setDropDown(jobs_status)
                 break
             case "/customer-management":
@@ -155,7 +163,7 @@ const Table = ({
         search={search}
         setsearch={setsearch}
         />
-        {haveTotalTable && <TotalTable />}
+        {haveTotalTable && <TotalTable data={old_Data}/>}
         <div className="table__container">
             <div className="table__perpage" >
                 {Object.keys(old_Data).length > 0 && pathname !== "/job-performance" && <span>Rows per page:</span>}

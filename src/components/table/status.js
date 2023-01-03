@@ -1,4 +1,4 @@
-import { CustomerRules, UserRules, JobRules } from "../../constants";
+import { CustomerRules, UserRules, JobRules, PayRules } from "../../constants";
 
 export const customer_status = [
     {
@@ -75,5 +75,28 @@ export const jobs_status = [
         status: "Chưa hoàn thành",
         image: "icon_close",
         id: JobRules.STATUS_JOBS.INCOMPLETE,
+    },
+];
+
+export const payment_status = [
+    {
+        status: "None",
+        image: "",
+        id: "",
+    },
+    {
+        status: "Đã thanh toán",
+        image: "icon_success",
+        id: PayRules?.STATUS?.PAID,
+    },
+    {
+        status: "Chưa thanh toán",
+        image: "icon_pending",
+        id: PayRules?.STATUS?.UNPAID,
+    },
+    {
+        status: "Đã hủy",
+        image: "icon_close",
+        id: PayRules?.STATUS?.CANCEL,
     },
 ];

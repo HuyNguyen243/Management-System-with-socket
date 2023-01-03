@@ -4,7 +4,7 @@ export const table_work_flowManager = [
         haveSort: false,
     },
     {
-        name: "Mã khách hàng",
+        name: "Mã KH",
         haveSort: true,
     },
     {
@@ -20,7 +20,7 @@ export const table_work_flowManager = [
         haveSort: true,
     },
     {
-        name: "Ngày hạn chốt",
+        name: "Hạn chốt",
         haveSort: true,
     },
     {
@@ -149,7 +149,7 @@ export const table_jobs_overview = [
         haveSort: false,
     },
     {
-        name: "ID khách hàng",
+        name: "ID KH",
         haveSort: false,
     },
     {
@@ -169,7 +169,7 @@ export const table_jobs_overview = [
         haveSort: true,
     },
     {
-        name: "Ngày hạn chốt",
+        name: "Hạn chốt",
         haveSort: true,
     },
     {

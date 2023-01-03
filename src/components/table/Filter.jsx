@@ -12,6 +12,7 @@ import { debounce } from 'lodash'
 import { useSelector,useDispatch } from "react-redux";
 import { Dropdown } from 'primereact/dropdown';
 import { resetKpis } from '../../redux/employeePerformance/performanceSlice';
+import { getEmployeePerformance } from '../../redux/employeePerformance/action';
 
 const Filter = ({ DataFilter, sortBy, sortValue, setSortBy, setSortValue, search, setsearch, dropdown }) => {
     const queryParams = new URLSearchParams(window.location.search)
@@ -75,6 +76,9 @@ const Filter = ({ DataFilter, sortBy, sortValue, setSortBy, setSortValue, search
             search: "",
         });
         dispatch(resetKpis())
+        if(pathname === "/job-performance"){
+            dispatch(getEmployeePerformance())
+        }
     }
 
     useEffect(() => {

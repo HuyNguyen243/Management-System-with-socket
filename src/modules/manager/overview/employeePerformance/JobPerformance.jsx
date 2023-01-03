@@ -8,7 +8,6 @@ import { getEmployeePerformance, kpiYearOfMonth } from "../../../../redux/employ
 import { dataParse, initialDataChart, horizontalOptions } from "./dataparse";
 import { Chart } from 'primereact/chart';
 import { Calendar } from 'primereact/calendar';
-import { resetKpis } from '../../../../redux/employeePerformance/performanceSlice';
 
 
 const JobPerformance = () => {
@@ -22,9 +21,6 @@ const JobPerformance = () => {
     const [chartData,setChartData] = useState(initialDataChart);
     const user = useSelector(state=> state.auth.user)
 
-    useEffect(()=>{
-        dispatch(resetKpis())
-    },[dispatch])
 
     useEffect(() => {
         if(performance?.data) {
@@ -51,7 +47,7 @@ const JobPerformance = () => {
             }
             setChartData(_data)
         }
-    },[setChartData,performance])
+    },[performance])
 
     const [dataKPis,setDataKPis] = useState({
         labels: ['T1', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'T8', 'T9', 'T10', 'T11', 'T12'],
@@ -117,10 +113,8 @@ const JobPerformance = () => {
         if(data.length > 0 && data.includes("id")) {
             setSearch(data)
         }
-        if(data === ""){
-            setChartData(initialDataChart)
-        }
     }
+
     const handleRowClick = (rowdata) => {}
 
     const handleChangeYear = (e)=>{

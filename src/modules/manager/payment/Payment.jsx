@@ -35,14 +35,10 @@ const Payment = () => {
     const DataFilter = (data) => {
         setFilter(data)
     }
-
     const handleRowClick = (rowdata) => {
-        const el = rowdata.originalEvent.target.closest("td").childNodes[1];
         const data = {}
-        if (el.className.includes("id_job")) {
-            data.id = el.innerHTML;
-            dispatch(getJobsRequest(data));
-        }
+        data.id = rowdata?.data?.id_job;
+        dispatch(getJobsRequest(data));
     }
 
     return (
