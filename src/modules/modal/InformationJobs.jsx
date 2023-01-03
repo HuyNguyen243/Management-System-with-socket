@@ -21,12 +21,16 @@ import { Calendar } from 'primereact/calendar';
 import { formatUSD, formatVND, convertUSD } from '../../commons/formatCost';
 import { itemUserTemplate } from '../modal/TemplateDropDown';
 import { overlay } from '../../commons/overlay';
+import { getEmployeePerformance } from '../../redux/employeePerformance/action';
+import { useLocation } from 'react-router';
 
 const InformationJobs = () => {
     const toast = useRef(null);
     const dispatch = useDispatch();
     let minDate = new Date();
     const [typeFile, setTypeFile] = useState(false);
+    const location = useLocation();
+    const { pathname } = location;
     const [statusCustomer, setStatusCustomer] = useState(false);
     const [workNotes, setWorkNotes] = useState(false);
     const [requestContent, setRequestContent] = useState(false);
@@ -78,13 +82,16 @@ const InformationJobs = () => {
 
     useEffect(() => {
         if (deletejobs?.data) {
+            if(pathname === "/workflow-management"){
+                dispatch(getEmployeePerformance())
+            }
             dispatch(setIsOpenInformationJob(false))
             toastMsg.success(toast, 'Xóa công việc thành công')
         }
         if (deletejobs?.error) {
             toastMsg.error(toast, 'Xóa công việc thất bại')
         }
-    }, [deletejobs, dispatch])
+    }, [deletejobs, dispatch, pathname])
 
     useEffect(() => {
         if (isOpenInformationJob && user?.data?.role !== "LEADER_EDITOR" && user?.data?.role !== "EDITOR") {
@@ -111,22 +118,28 @@ const InformationJobs = () => {
     useEffect(() => {
         if (updatejobs?.data && !updatejobs?.error) {
             handleCloseModal()
+            if(pathname === "/workflow-management"){
+                dispatch(getEmployeePerformance())
+            }
             toastMsg.success(toast, 'Cập nhật thành công')
         }
         if (updatejobs?.error) {
             toastMsg.error(toast, updatejobs?.data?.message)
         }
-    }, [updatejobs, dispatch, handleCloseModal])
+    }, [updatejobs, dispatch, handleCloseModal, pathname])
 
     useEffect(() => {
         if (donejobs?.data && !donejobs?.error) {
+            if(pathname === "/workflow-management"){
+                dispatch(getEmployeePerformance())
+            }
             handleCloseModal()
             toastMsg.success(toast, 'Cập nhật thành công')
         }
         if (donejobs?.error) {
             toastMsg.error(toast, donejobs?.data?.message)
         }
-    }, [donejobs, dispatch, handleCloseModal])
+    }, [donejobs, dispatch, handleCloseModal, pathname])
 
     const handleDeleteJobs = () => {
         const formdata = {}

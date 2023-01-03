@@ -26,7 +26,6 @@ import { overlay } from '../../commons/overlay';
 
 const InformationCustomer = () => {
     const [customerStatus, setCustomerStatus] = useState(null);
-    const [listJobs, setlistJobs] = useState([]);
     const rowdata = useSelector(state => state.modal.dataModalInformationCustomer)
     const putCustomer = useSelector(state => state.sale.editcustomer)
     const deleteCustomer = useSelector(state => state.sale.deletecustomer)
@@ -100,7 +99,6 @@ const InformationCustomer = () => {
 
     useEffect(() => {
         if (rowdata?.data) {
-            setlistJobs(rowdata?.data?.list_jobs)
             setValue("fullname", rowdata?.data?.fullname)
             setValue("phone", rowdata?.data?.information?.phone)
             setValue("birth", new Date(rowdata?.data?.information?.birth))
@@ -396,27 +394,6 @@ const InformationCustomer = () => {
                                     }
                                 </span>
                             </div>
-                            {
-                                Array.isArray(listJobs) && listJobs.length > 0 &&
-                                <div className="field col-12 md:col-12 grid">
-                                    <div className="field col-12 md:col-12 ">
-                                        <span htmlFor="employees">Mã công việc đang yêu cầu: <span className="warning">*</span></span>
-                                    </div>
-                                    {
-                                        listJobs.map((item) => (
-                                            <div>
-                                                <div className="field col-12 md:col-6 id_jobs">
-                                                    12345.S.67890
-                                                </div>
-                                                <div className="field col-12 md:col-6 btn_information_jobs">
-                                                    Thông tin mã yêu cầu
-                                                </div>
-                                            </div>
-                                        ))
-                                    }
-
-                                </div>
-                            }
                         </div>
                         }
                         <div className="btn_modal field col-12 md:col-12 grid position_bottom">

@@ -11,6 +11,9 @@ import { Button } from 'primereact/button';
 import { paginate } from "./paginate"
 import Stack from '@mui/material/Stack';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { convertDate } from '../../commons/dateTime';
+import { getEmployeePerformance } from '../../redux/employeePerformance/action';
+import { useDispatch } from "react-redux"
 
 const Table = ({
     dataTable = [],
@@ -24,12 +27,13 @@ const Table = ({
 }) => {
     const navigate = useNavigate()
     const location = useLocation()
+    const dispatch = useDispatch()
     const { pathname } = location
     const [perpage, setPerpage] = React.useState(10);
     const [sortBy, setSortBy] = useState("");
     const [sortValue, setSortValue] = useState("");
     const [ dropdown,setDropDown ] = useState([]);
-    // const dispatch = useDispatch()
+    const [dateWorkFlow, setDateWorkFlow] = useState([]);
     const old_Data = Array.isArray(dataTable) ? dataTable : []
     const [currentLocation, setCurrentLocation] = useState(0);
     const [search,setsearch ] = useState('');
@@ -62,6 +66,23 @@ const Table = ({
             search: result
         })
     }
+
+    useEffect(() => {
+        let data = {}
+        let search = ""
+        if (dateWorkFlow?.length > 0 && dateWorkFlow[1]) {
+            const arr = convertDate(dateWorkFlow)
+            data.start_date = arr[0]
+            data.end_date = arr[1]
+
+            if(Object.keys(data).length > 0){
+                search = "?start_date=" + data?.start_date + "&end_date=" + data?.end_date
+            }else{
+                search = ""
+            }
+        }
+        dispatch(getEmployeePerformance(search))
+      }, [dateWorkFlow, dispatch])
     
     const handleSort = (e)=>{
         setSortBy(e.currentTarget.getAttribute("data-by"))
@@ -183,7 +204,7 @@ const Table = ({
          
         {
             pathname === "/workflow-management" &&
-            <TableTotal data={old_Data}/>
+            <TableTotal data={old_Data} setDateWorkFlow={setDateWorkFlow} dateWorkFlow={dateWorkFlow}/>
         }
     </div>
   )

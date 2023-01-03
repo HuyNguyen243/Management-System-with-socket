@@ -6,7 +6,11 @@ export const getEmployeePerformance = createAsyncThunk(
     'getEmployeePerformance',
     async (data, { rejectWithValue }) => {
         try {
-            const res = await get(`performance/employee${data}`)
+            let url = "performance/employee"
+            if(data){
+                url = `performance/employee${data}`
+            }
+            const res = await get(url)
             return res.data
         } catch (error) {
             return rejectWithValue(error?.response?.data);

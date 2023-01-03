@@ -8,12 +8,14 @@ import { getNotify } from '../../../redux/notification/notificationSlice';
 import { useNavigate } from 'react-router';
 import { get } from "../../../_services/apiRequest"
 import { timeAgo } from '../../../commons/message.common';
+import { dashboardEmployeeRequest } from '../../../redux/overviewEmployee/actionEmployee';
 
 const Notification = ({isOpenNotification, setisOpenNotification}) => {
     const user = useSelector(state=> state.auth.user)
     const addjobs = useSelector(state => state.jobs.addjobs)
     const notifys = useSelector(state => state.notification.fetchAllNotification)
     const notifyupdate= useSelector(state => state.notification.updatenotification)
+    const employees = useSelector(state => state.employee.dashboard)
 
     const [ notifications, setNotifications ] = useState([])
 
@@ -24,6 +26,11 @@ const Notification = ({isOpenNotification, setisOpenNotification}) => {
 
     const soundUrl = './sound/notify.mp3';
     const audio = new Audio(soundUrl);
+    useEffect(() => {
+        if(user?.data?.id_system && user?.data?.role === UserRules?.ROLE?.ADMIN){
+            dispatch(dashboardEmployeeRequest())
+        }
+    }, [dispatch, user])
 
     const handleInfiniteScroll = async() => {
           const element = document.querySelector('.notification__block');
@@ -126,14 +133,6 @@ const Notification = ({isOpenNotification, setisOpenNotification}) => {
         }
     })
 
-    // ADD_JOB: "ADD_JOB",
-    // CREATE_JOB: "CREATE_JOB",
-    // COMPLETE_JOB: "COMPLETE_JOB",
-    // DELETE_JOB: "DELETE_JOB",
-    // EDIT_JOB: "EDIT_JOB",
-    // FIXED: "FIXED",
-    // PAYMENT_JOB_PAID: "PAYMENT_JOB_PAID",
-    // PAYMENT_JOB_UNPAY: "PAYMENT_JOB_UNPAY",
     const handleSeenNotify = (id, id_job, status)=>{
         const id_system = user?.data?.id_system
         socket.emit("reset-notify",id, id_system)
@@ -172,9 +171,23 @@ const Notification = ({isOpenNotification, setisOpenNotification}) => {
         });
     }
 
+    const checkname = (id_user)=>{
+        if(employees?.data && employees?.data.length > 0){
+            const news = employees?.data.filter((item)=>{
+                return item.id_system === id_user && item
+            })
+            return news?.[0]?.fullname || id_user
+        }else{
+            return id_user
+        }
+    }
+
     const showNotifications = ()=>{
         if(notifications && notifications?.length > 0 ){
             return notifications?.map((notify,index)=>{
+                const arrTittle = notify?.title.split(" ")
+                const name = checkname(arrTittle?.[arrTittle?.length - 1])
+                arrTittle.splice(arrTittle?.length - 1, 1 , name)
                 return (
                     <div 
                     className={`notification_item ${notify?.member_check_notify?.[user?.data?.id_system] && "active"}`} 
@@ -183,7 +196,7 @@ const Notification = ({isOpenNotification, setisOpenNotification}) => {
                     >
                         <p className="notification__name">{notify?.id_job}</p>
                         <div className="notification__i">
-                            <p className="notification__note">{notify?.title}</p>
+                            <p className="notification__note">{arrTittle.join(" ")}</p>
                             {
                                 notify?.member_check_notify?.[user?.data?.id_system]
                                 &&

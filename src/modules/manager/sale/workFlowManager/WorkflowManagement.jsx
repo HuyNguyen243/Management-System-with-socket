@@ -6,7 +6,6 @@ import { table_work_flowManager } from '../../../../components/table/header_tabl
 import { dashboardJobsRequest } from '../../../../redux/overviewJobs/actionJobs';
 import { setIsOpenModalCreateJob, setIsOpenInformationJob, setDataModalInformationJob } from '../../../../redux/modal/modalSlice';
 import { getEmployeePerformance, kpiYearOfMonth } from "../../../../redux/employeePerformance/action";
-import { RESET_REQUEST } from '../../../../commons/support';
 
 const WorkflowManagement = () => {
     const dispatch = useDispatch()
@@ -20,24 +19,16 @@ const WorkflowManagement = () => {
 
     useEffect(() => {
         dispatch(dashboardJobsRequest(filter))
-        if(filter && filter.length > 0 && filter?.includes("start_date") && filter?.includes("end_date")){
-            const newSearch = filter + "&id=" + user?.data?.id_system
-            RESET_REQUEST(dispatch, newSearch, getEmployeePerformance)
-        }else{
-            const now = new Date();
-            const firstDay = new Date(now.getFullYear(), now.getMonth(), 1);
-            const lastDay = new Date(now.getFullYear(), now.getMonth() + 1, 0);
-            const format = (newDate)=>{
-                const arr = newDate.toLocaleString().split(",");
-                const newArr = arr[0].split("/");
-                const month = newArr[0] <= 9 ? "0" + newArr[0] : newArr[0];
-                const day = newArr[1] <= 9 ? "0" + newArr[1] : newArr[1];
-                const year = newArr[2];
-                return day + "-" + month + "-" + year
-            }
 
-            const newSearch = `?start_date=${format(firstDay)}&end_date=${format(lastDay)}&id=${user?.data?.id_system}`
-            RESET_REQUEST(dispatch, newSearch, getEmployeePerformance)
+        if(filter && filter.length > 0 &&( filter?.includes("start_date") || filter?.includes("end_date"))){
+            // const newSearch = filter + "&id=" + user?.data?.id_system
+            // RESET_REQUEST(dispatch, newSearch, getEmployeePerformance)
+        }else{
+            let search = filter
+            if(Object.keys(filter).length === 0){
+                search = ""
+            }
+            dispatch(getEmployeePerformance(search))
         }
     }, [dispatch, filter, user])
 

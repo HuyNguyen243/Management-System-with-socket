@@ -8,17 +8,24 @@ import { getEmployeePerformance, kpiYearOfMonth } from "../../../../redux/employ
 import { dataParse, initialDataChart, horizontalOptions } from "./dataparse";
 import { Chart } from 'primereact/chart';
 import { Calendar } from 'primereact/calendar';
+import { resetKpis } from '../../../../redux/employeePerformance/performanceSlice';
 
 
 const JobPerformance = () => {
     const dispatch = useDispatch()
     const performance = useSelector(state => state.performanceReducer.employeePerformance)
+
     const kpisYear = useSelector(state => state.performanceReducer?.kpis)
     const [search,setSearch] = useState("")
     const [year, setyear] = useState(null);
 
     const [chartData,setChartData] = useState(initialDataChart);
     const user = useSelector(state=> state.auth.user)
+
+    useEffect(()=>{
+        dispatch(resetKpis())
+    },[dispatch])
+
     useEffect(() => {
         if(performance?.data) {
             const _data = {

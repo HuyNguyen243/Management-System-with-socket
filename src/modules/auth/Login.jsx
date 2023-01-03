@@ -32,10 +32,14 @@ const Login = () => {
             dispatch(userloginRequest(result))
         }
     };
-
+    
     useEffect(() => {
         if (user?.error && !user?.data) {
-            toastMsg.error(toast, "Tài khoản hoặc mật khẩu không chính xác")
+            if(user?.error?.payload?.message && (user?.error?.payload?.message).includes("expired")){
+                toastMsg.error(toast, "Phiên đăng nhập vừa hết hạn, ENTER để tạo phiên đăng nhập mới")
+            }else{
+                toastMsg.error(toast, "Tài khoản hoặc mật khẩu không chính xác")
+            }
         }
     }, [user])
 

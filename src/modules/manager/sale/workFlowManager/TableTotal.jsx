@@ -8,7 +8,7 @@ import { Chart } from 'primereact/chart';
 import { Calendar } from 'primereact/calendar';
 import {  kpiYearOfMonth } from "../../../../redux/employeePerformance/action";
 
-const TableTotal = () => {
+const TableTotal = ({ setDateWorkFlow, dateWorkFlow }) => {
   const performance = useSelector(state => state.performanceReducer.employeePerformance)
   const dataTable = dataParse(performance?.data)
   const kpisYear = useSelector(state => state.performanceReducer?.kpis)
@@ -96,7 +96,8 @@ const TableTotal = () => {
 	  		<Calendar id="yearpicker " className="w-3 calendar__year" value={year} onChange={handleChangeYear} view="year" dateFormat="yy" placeholder="Chọn năm"/>
           	<Chart type="bar"  className="chart_bar"  data={dataKPis} options={horizontalOptions}/>
       </div>
-	  <div className="table__analysis field col-12 md:col-5">
+	  <div className="table__analysis field col-12 md:col-5 mt-0">
+        <Calendar id="" className="w-5 mb-2" value={dateWorkFlow} onChange={e=>setDateWorkFlow(e.value)} selectionMode="range" placeholder="Select date"/>
         <Analysis />
       </div>
     </div>

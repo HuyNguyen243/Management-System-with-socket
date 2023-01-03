@@ -75,12 +75,12 @@ const userReducer = createSlice({
                 }
             })
         },
-        [userloginRequest.rejected]: (state) => {
+        [userloginRequest.rejected]: (state,action) => {
             Object.assign(state,{},{
                 token: {
                     isAuth : false,
                     loading : false,
-                    error : true,
+                    error : action,
                     data : null,
                 }
             })

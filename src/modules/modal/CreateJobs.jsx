@@ -20,6 +20,8 @@ import { Toast } from 'primereact/toast';
 import { addJobsRequest } from "../../redux/overviewJobs/actionJobs";
 import { itemCustomerTemplate } from '../modal/TemplateDropDown';
 import { overlay } from '../../commons/overlay';
+import { getEmployeePerformance } from '../../redux/employeePerformance/action';
+import { useLocation } from "react-router"
 
 const CreateJobs = () => {
 
@@ -40,6 +42,8 @@ const CreateJobs = () => {
     const customers = useSelector(state => state.sale.customers)
     const addjobs = useSelector(state => state.jobs.addjobs)
     const user = useSelector(state => state.auth?.user)
+    const location = useLocation()
+    const { pathname } = location
     let minDate = new Date();
     const isOpenCreateJob = useSelector(state => state.modal.isOpenModalCreateJob)
 
@@ -56,6 +60,9 @@ const CreateJobs = () => {
     useEffect(() => {
         if (addjobs?.data && !addjobs?.error) {
             reset();
+            if(pathname === "/workflow-management"){
+                dispatch(getEmployeePerformance())
+            }
             dispatch(setIsOpenModalCreateJob(false))
             toastMsg.success(toast, 'Tạo công việc mới thành công')
         }
@@ -64,7 +71,7 @@ const CreateJobs = () => {
             toastMsg.error(toast, addjobs?.data?.message)
         }
     }, [
-        addjobs, reset, dispatch
+        addjobs, reset, dispatch, pathname
     ])
 
     useEffect(() => {
