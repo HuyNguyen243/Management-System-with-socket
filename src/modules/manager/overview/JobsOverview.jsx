@@ -23,9 +23,9 @@ const JobsOverview = () => {
     const jobs = useSelector(state => state.jobs?.dashboard)
     const employees = useSelector(state => state.employee?.inforuser)
     const customer = useSelector(state => state.sale?.getcustomer)
-    
+
     useEffect(() => {
-        RESET_REQUEST(dispatch,filter,dashboardJobsRequest)
+        RESET_REQUEST(dispatch, filter, dashboardJobsRequest)
     }, [dispatch, filter])
 
     useEffect(() => {
@@ -46,31 +46,26 @@ const JobsOverview = () => {
 
     const handleRowClick = (rowdata) => {
         const el = rowdata.originalEvent.target.closest("td").childNodes[1]
-        
-        if (el.className.includes("id_saler")) {
+        if (el.getAttribute("alt-saler")) {
             //OPEN SALE
             const data = {}
-            if (el.innerHTML) {
-                data.id = el.innerHTML;
-                dispatch(getEmployeeRequest(data));
-                dispatch(setIsOpenModalInformationUser(true))
-            }
-        } else if (el.className.includes("id_customer")) {
+            data.id = el.getAttribute("alt-saler");
+            dispatch(getEmployeeRequest(data));
+            dispatch(setIsOpenModalInformationUser(true))
+        } else if (el.getAttribute("alt-customer")) {
             //OPEN CUSTOMER
             const data = {}
-            if (el.innerHTML) {
-                data.id = el.innerHTML;
-                dispatch(getCustomerRequest(data))
+            data.id = el.getAttribute("alt-customer");
+            dispatch(getCustomerRequest(data))
             dispatch(setIsOpenModalInformationCustomer(true))
-            }
-        } else if (el.className.includes("id_editor")) {
+        } else if (el.getAttribute("alt-editor")) {
             //OPEN EDITOR 
             const data = {}
-            if (el.innerHTML) {
-                data.id = el.innerHTML;
+            if (el.getAttribute("alt-editor") !== "NOT_SET_BY_ADMIN") {
+                data.id = el.getAttribute("alt-editor");
                 dispatch(getEmployeeRequest(data));
-                dispatch(setIsOpenModalInformationUser(true))
             }
+            dispatch(setIsOpenModalInformationUser(true))
         }
         else {
             dispatch(setIsOpenInformationJob(true))

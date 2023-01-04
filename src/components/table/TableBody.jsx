@@ -159,11 +159,28 @@ const TableBody = ({ rowData, item }) => {
                 return (
                     <span className="table__body-name " >{rowData?.[item]}</span>
                 )
+            case("reminder_saler"):
+            case("reminder_editor"):
+            case("reminder_customer"):
+                if(item === "reminder_saler"){
+                    return (
+                        <span alt-saler={rowData?.id_saler} className={` table__body-name text-bold ${item}`} >{rowData?.[item] !== "NOT_SET_BY_ADMIN" && rowData?.[item] }</span>
+                    )
+                }
+                if(item === "reminder_customer"){
+                    return (
+                        <span alt-customer={rowData?.id_customer} className={` table__body-name text-bold ${item}`} >{rowData?.[item] !== "NOT_SET_BY_ADMIN" && rowData?.[item] }</span>
+                    )
+                }
+                if(item === "reminder_editor"){
+                    return (
+                        <span alt-editor={rowData?.id_editor} className={` table__body-name text-bold ${item}`} >{rowData?.[item] !== "NOT_SET_BY_ADMIN" && rowData?.[item] }</span>
+                    )
+                }
+                break;
+            case("infor_reminder"):
             case ("staff_is_pay"):
             case ("id_job"):
-                return (
-                    <span className={` table__body-name text-bold ${item}`} >{rowData?.[item] !== "NOT_SET_BY_ADMIN" && rowData?.[item] }</span>
-                )
             case ("id_customer"):
             case ("id_editor"):
             case ("id_saler"):

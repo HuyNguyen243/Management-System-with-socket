@@ -37,9 +37,9 @@ export const dataParse = (data) => {
         const result = data.map((item) => {
             const newobject = {
                 id_system: item?.infor_id?.id_system,
-                id_customer: item?.infor_id?.id_customer,
-                id_saler: item?.infor_id?.id_saler,
-                id_editor: item?.infor_id?.id_editor,
+                reminder_customer: item?.infor_reminder?.reminder_customer,
+                reminder_saler: item?.infor_reminder?.reminder_saler,
+                reminder_editor: item?.infor_reminder?.reminder_editor,
                 total_cost: item?.cost?.total_cost,
                 start_day: item?.infor?.start_day,
                 end_day: item?.infor?.end_day,
@@ -56,6 +56,9 @@ export const dataParse = (data) => {
                 status_editor: item?.infor?.status_editor,
                 status_customer: item?.infor?.status_customer,
                 type_models: item?.infor?.type_models,
+                id_customer: item?.infor_id?.id_customer,
+                id_saler: item?.infor_id?.id_saler,
+                id_editor: item?.infor_id?.id_editor,
             }
             return newobject
         })
