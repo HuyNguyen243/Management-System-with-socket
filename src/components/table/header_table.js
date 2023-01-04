@@ -149,15 +149,15 @@ export const table_jobs_overview = [
         haveSort: false,
     },
     {
-        name: "ID KH",
+        name: "Tên KH",
         haveSort: false,
     },
     {
-        name: "ID Saler",
+        name: "Tên Saler",
         haveSort: false,
     },
     {
-        name: "ID Editor",
+        name: "Tên Editor",
         haveSort: false,
     },
     {
