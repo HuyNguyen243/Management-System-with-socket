@@ -2,7 +2,7 @@ export const dataParse = (data)=>{
     if(Array.isArray(data)){
         const result = data.map((item)=>{
             const newobject = {
-                id_system: item?.id_system,
+                infor_reminder: item?.infor_reminder,
                 fullname: item?.fullname,
                 role: item?.role,
                 start_day: item?.start_day,
@@ -11,6 +11,7 @@ export const dataParse = (data)=>{
                 births: item?.births,
                 phone: item?.phone,
                 email: item?.email,
+                id_system: item?.id_system
             }
             return newobject
         })
