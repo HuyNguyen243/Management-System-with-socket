@@ -161,6 +161,9 @@ const TableBody = ({ rowData, item }) => {
                 )
             case ("staff_is_pay"):
             case ("id_job"):
+                return (
+                    <span className={` table__body-name text-bold ${item}`} >{rowData?.[item] !== "NOT_SET_BY_ADMIN" && rowData?.[item] }</span>
+                )
             case ("id_customer"):
             case ("id_editor"):
             case ("id_saler"):

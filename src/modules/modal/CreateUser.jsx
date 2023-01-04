@@ -33,20 +33,21 @@ const CreateUser = () => {
         email: '',
         role: '',
         address: '',
+        infor_reminder: ''
     }
     const { control, formState: { errors }, handleSubmit, reset, setValue, watch } = useForm({ defaultValues });
     const user = useSelector(state => state.auth?.user)
     const employee = useSelector(state => state.employee?.user)
     const randomPass = Math.random().toString(36).slice(-8);
     const [password] = useState(randomPass)
-    
-    useEffect(()=>{
-        if(isOpenCreateUser){
+
+    useEffect(() => {
+        if (isOpenCreateUser) {
             overlay.disable()
-        }else{
+        } else {
             overlay.enable()
         }
-    },[isOpenCreateUser])
+    }, [isOpenCreateUser])
 
     useEffect(() => {
         if (password) {
@@ -89,7 +90,7 @@ const CreateUser = () => {
     return (
         <>
             <Toast ref={toast} position="bottom-left" />
-            <Sidebar visible={isOpenCreateUser} position="right" onHide={() => { dispatch(setIsOpenModalCreateUser(false)); reset();setCreateSuccess(true) }} className="create__job">
+            <Sidebar visible={isOpenCreateUser} position="right" onHide={() => { dispatch(setIsOpenModalCreateUser(false)); reset(); setCreateSuccess(true) }} className="create__job">
                 <div className="creat__job">
                     <div className="creat__job--title">
                         <h2>Tạo nhân viên mới</h2>
@@ -101,7 +102,7 @@ const CreateUser = () => {
                                 <span className="">
                                     <Controller name="fullname"
                                         control={control}
-                                        rules={{ required: "Chưa điền tên nhân viên" , minLength: 6 }} render={({ field, fieldState }) => (
+                                        rules={{ required: "Chưa điền tên nhân viên", minLength: 6 }} render={({ field, fieldState }) => (
                                             <InputText
                                                 autoComplete="off"
                                                 id={field.name}
@@ -111,19 +112,38 @@ const CreateUser = () => {
                                             />
                                         )} />
                                 </span>
-                            {
-                                errors?.fullname &&  <span className="warning" style={{fontSize:"12px"}}>{errors?.fullname.message}</span>
-                            }
-                            {
-                                errors?.fullname?.type === "minLength" &&  <span className="warning" style={{fontSize:"12px"}}>Tên nhân viên ít nhất 6 ký tự</span>
-                            }
+                                {
+                                    errors?.fullname && <span className="warning" style={{ fontSize: "12px" }}>{errors?.fullname.message}</span>
+                                }
+                                {
+                                    errors?.fullname?.type === "minLength" && <span className="warning" style={{ fontSize: "12px" }}>Tên nhân viên ít nhất 6 ký tự</span>
+                                }
                             </div>
+                            <div className="field col-12 md:col-12">
+                                <span >Biệt danh:  <span className="warning">*</span></span>
+                                <span className="">
+                                    <Controller name="infor_reminder"
+                                        control={control}
+                                        rules={{ required: "Chưa điền biệt danh" }} render={({ field, fieldState }) => (
+                                            <InputText
+                                                autoComplete="disabled"
+                                                id={field.name}
+                                                {...field}
+                                                className={classNames({ 'p-invalid': fieldState.invalid })}
+                                                placeholder="Điền biệt danh"
+                                            />
+                                        )} />
+                                </span>
+                            </div>
+                            {
+                                errors?.infor_reminder && <span className="warning" style={{ fontSize: "12px" }}>{errors?.infor_reminder.message}</span>
+                            }
                             <div className="field col-12 md:col-12">
                                 <span >Nhập tên đăng nhập: <span className="warning">*</span></span>
                                 <span className="relative">
                                     <Controller name="username"
                                         control={control}
-                                        rules={{ required: "Chưa điền tên đăng nhập" , minLength: 6 }} render={({ field, fieldState }) => (
+                                        rules={{ required: "Chưa điền tên đăng nhập", minLength: 6 }} render={({ field, fieldState }) => (
                                             <InputText
                                                 onKeyPress={(event) => {
                                                     if (event.key === " ") {
@@ -140,11 +160,11 @@ const CreateUser = () => {
                                     <img src="images/copy.svg" alt="" label="Bottom Left" className='copy__icon absolute copy__name' onClick={() => copyToClipboard("name")} />
                                 </span>
                                 {
-                                    errors?.username &&  <span className="warning" style={{fontSize:"12px"}}>{errors?.username.message}</span>
+                                    errors?.username && <span className="warning" style={{ fontSize: "12px" }}>{errors?.username.message}</span>
                                 }
-                                 {
-                                errors?.username?.type === "minLength" &&  <span className="warning" style={{fontSize:"12px"}}>Tên đăng nhập ít nhất 6 ký tự</span>
-                            }
+                                {
+                                    errors?.username?.type === "minLength" && <span className="warning" style={{ fontSize: "12px" }}>Tên đăng nhập ít nhất 6 ký tự</span>
+                                }
                             </div>
                             <div className="field col-12 md:col-12">
                                 <span htmlFor="autocomplete">Mật khẩu mặc định:</span>
@@ -214,10 +234,10 @@ const CreateUser = () => {
                                         )} />
                                 </span>
                                 {
-                                    errors?.phone &&  <span className="warning" style={{fontSize:"12px"}}>{errors?.phone.message}</span>
+                                    errors?.phone && <span className="warning" style={{ fontSize: "12px" }}>{errors?.phone.message}</span>
                                 }
                                 {
-                                    errors?.phone?.type === "pattern" &&  <span className="warning" style={{fontSize:"12px"}}>Số điện thoại không hợp lệ</span>
+                                    errors?.phone?.type === "pattern" && <span className="warning" style={{ fontSize: "12px" }}>Số điện thoại không hợp lệ</span>
                                 }
                             </div>
                             <div className="field col-12 md:col-6">
@@ -236,7 +256,7 @@ const CreateUser = () => {
                                         )} />
                                 </span>
                                 {
-                                    errors?.role &&  <span className="warning" style={{fontSize:"12px"}}>{errors?.role.message}</span>
+                                    errors?.role && <span className="warning" style={{ fontSize: "12px" }}>{errors?.role.message}</span>
                                 }
                             </div>
                             <div className="field col-12 md:col-6">
@@ -255,10 +275,10 @@ const CreateUser = () => {
                                         )} />
                                 </span>
                                 {
-                                    errors?.email &&  <span className="warning" style={{fontSize:"12px"}}>{errors?.email.message}</span>
+                                    errors?.email && <span className="warning" style={{ fontSize: "12px" }}>{errors?.email.message}</span>
                                 }
                                 {
-                                    errors?.email?.type === "pattern" &&  <span className="warning" style={{fontSize:"12px"}}>Email không hợp lệ</span>
+                                    errors?.email?.type === "pattern" && <span className="warning" style={{ fontSize: "12px" }}>Email không hợp lệ</span>
                                 }
                             </div>
 
@@ -284,7 +304,7 @@ const CreateUser = () => {
                                 <div className="field col-12 md:col-6">
                                     <span className="">
                                         <Button label="Hủy bỏ" className="p-button-outlined cancel--btn" type="button"
-                                            onClick={() => { dispatch(setIsOpenModalCreateUser(false));reset();setCreateSuccess(true) }} />
+                                            onClick={() => { dispatch(setIsOpenModalCreateUser(false)); reset(); setCreateSuccess(true) }} />
                                     </span>
                                 </div>
                                 <div className="field col-12 md:col-6">

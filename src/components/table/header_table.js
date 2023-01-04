@@ -74,17 +74,17 @@ export const table_dashboard = [
 
 export const table_customer_management = [
     {
-        name: "Id",
+        name: "Biệt danh",
         haveSort: false,
     },
     {
         name: "Tên khách hàng",
         haveSort: true,
     },
-    {
-        name: "Saler",
-        haveSort: true,
-    },
+    // {
+    //     name: "Saler",
+    //     haveSort: true,
+    // },
 
     {
         name: "Ngày bắt đầu thuê",
@@ -184,7 +184,7 @@ export const table_jobs_overview = [
 
 export const table_employee_overview = [
     {
-        name: "Id",
+        name: "Biệt danh",
         haveSort: false,
     },
     {
