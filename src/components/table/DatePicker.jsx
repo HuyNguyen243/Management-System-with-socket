@@ -32,7 +32,7 @@ const DatePicker = ({dates ,setDates}) => {
     
   return (
     <div className="calendar relative ">
-        <Calendar id="range" value={dates} onChange={e=>setDates(e.value)} selectionMode="range" placeholder="Select date"/>
+        <Calendar value={dates} onChange={e=>setDates(e.value)} selectionMode="range" placeholder="Select date" className="filter__calendar"/>
         <img src='images/calendar.svg' alt='' className="image__calendar"/>
     </div>
   )

@@ -173,7 +173,7 @@ const InformationJobs = () => {
             copy(rowdata?.data?.finished_link);
         }
     }
-
+    
     const onSubmit = (data) => {
         const formDataPut = {}
         Object.keys(data).forEach(item => {
@@ -188,6 +188,7 @@ const InformationJobs = () => {
                 result: formDataPut,
                 index: rowdata?.index
             }
+       
             if (user?.data?.role !== "LEADER_EDITOR" && user?.data?.role !== "EDITOR") {
                 dispatch(editJobsRequest(formData))
             } else {

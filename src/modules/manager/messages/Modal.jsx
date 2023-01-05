@@ -225,7 +225,7 @@ const Modal = ({isOpenCreateGroup, setIsOpenCreateGroup, nameModal , editDataGro
                         </div>
                     </div>
                 </form>
-                <Button label="Hủy bỏ" icon="pi pi-times" onClick={()=>resetModal()} className="p-button-text btn__close w-full" />
+                <Button label="Hủy bỏ" icon="pi pi-times" onClick={()=>resetModal()} className="p-button-text btn__close w-full pr-5" />
             </Dialog>
         </>
     )

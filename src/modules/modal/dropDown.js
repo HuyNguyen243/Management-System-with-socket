@@ -40,6 +40,7 @@ export const role= [
     { name: 'Leader Editor', code: 'LEADER_EDITOR' },
     { name: 'Editor', code: 'EDITOR' },
     { name: 'Saler', code: 'SALER' },
+    { name: 'Admin', code: 'ADMIN' },
 ]
 
 
@@ -47,4 +48,5 @@ export const roleGroup= [
     { name: 'Leader Editor', code: 'LEADER_EDITOR' },
     { name: 'Editor', code: 'EDITOR' },
     { name: 'Saler', code: 'SALER' },
+    { name: 'Admin', code: 'ADMIN' },
 ]

@@ -119,7 +119,6 @@ const InformationCustomer = () => {
             setCities(countries[e.value])
         }
     }
-
     const onSubmit = (data) => {
         if (Object.keys(isOpenInput).length > 0) {
             const obj = {};
@@ -136,6 +135,7 @@ const InformationCustomer = () => {
                     }
                 },
                 status: customerStatus?.code,
+                infor_reminder: data?.infor_reminder,
                 create_by: rowdata?.data?.create_by,
                 id_system: rowdata?.data?.id_system,
                 list_jobs: rowdata?.data?.list_jobs,
@@ -145,6 +145,10 @@ const InformationCustomer = () => {
 
             for (let item in result) {
                 if (item !== "information" && result[item] !== rowdata?.data[item]) {
+                    obj[item] = result[item]
+                }
+                
+                if (item === "infor_reminder" && result.infor_reminder !== rowdata?.data?.infor_reminder) {
                     obj[item] = result[item]
                 }
                 if (item === "information") {
@@ -168,6 +172,7 @@ const InformationCustomer = () => {
                     }
                 }
             }
+    
             if (Object.keys(obj).length > 0) {
                 const formData = {
                     data: obj,
@@ -245,6 +250,24 @@ const InformationCustomer = () => {
                                                     />
                                                     :
                                                     <p onClick={() => handleOpenInput("fullname")} className="font-bold mt-3">{rowdata?.data?.fullname}</p>
+                                            }
+
+                                        </span>
+                                    </div>
+                                    <div className="field col-12 md:col-6 ">
+                                        <span htmlFor="autocomplete">Biệt danh: <span className="warning">*</span></span>
+                                        <span className="p-float-label cursor__edit">
+                                            {
+                                                isOpenInput?.infor_reminder
+                                                    ?
+                                                    <InputText
+                                                        defaultValue={rowdata?.data?.infor_reminder}
+                                                        onChange={(e) => setValue("infor_reminder", e.target.value)}
+                                                        {...register("infor_reminder", { required: true })}
+                                                        className={errors?.fullname && "p-invalid"}
+                                                    />
+                                                    :
+                                                    <p onClick={() => handleOpenInput("infor_reminder")} className="font-bold mt-3">{rowdata?.data?.infor_reminder}</p>
                                             }
 
                                         </span>

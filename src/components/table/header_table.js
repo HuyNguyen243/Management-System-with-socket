@@ -226,7 +226,7 @@ export const table_total_work_flowManager = [
 
 export const table_personal_information = [
     {
-        name: "Cách thức thanh toán",
+        name: "Thanh toán",
         haveSort: false,
     },
     {

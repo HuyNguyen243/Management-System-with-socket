@@ -133,10 +133,19 @@ const Notification = ({isOpenNotification, setisOpenNotification}) => {
         }
     })
 
-    const handleSeenNotify = (id, id_job, status)=>{
+    const handleSeenNotify = (id, id_job, status, index)=>{
         const id_system = user?.data?.id_system
         socket.emit("reset-notify",id, id_system)
+
         setisOpenNotification(false)
+        const newNotifys = [...notifications]
+        const memberChecknotifys = newNotifys[index].member_check_notify
+        const news = {...memberChecknotifys, [id_system]: false }
+        const newObject = Object.assign({},newNotifys[index],{
+            member_check_notify : news
+        })
+        newNotifys.splice(index, 1, newObject)
+        setNotifications(newNotifys)
         let pathname;
         switch (user?.data?.role) {
             case UserRules.ROLE.ADMIN:
@@ -192,7 +201,7 @@ const Notification = ({isOpenNotification, setisOpenNotification}) => {
                     <div 
                     className={`notification_item ${notify?.member_check_notify?.[user?.data?.id_system] && "active"}`} 
                     key={index}
-                    onClick={()=>handleSeenNotify(notify?._id,notify?.id_job,notify?.status)}
+                    onClick={()=>handleSeenNotify(notify?._id,notify?.id_job,notify?.status, index)}
                     >
                         <p className="notification__name">{notify?.id_job}</p>
                         <div className="notification__i">
