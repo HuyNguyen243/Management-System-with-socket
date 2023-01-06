@@ -106,6 +106,7 @@ const InformationCustomer = () => {
             setValue("country", rowdata?.data?.information?.address?.country)
             setValue("city", rowdata?.data?.information?.address?.city)
             setValue("email", rowdata?.data?.information?.email)
+            setValue("infor_reminder", rowdata?.data?.infor_reminder)
             if (rowdata?.data?.status) {
                 setCustomerStatus(getStatus(rowdata?.data?.status))
             }
@@ -148,9 +149,6 @@ const InformationCustomer = () => {
                     obj[item] = result[item]
                 }
                 
-                if (item === "infor_reminder" && result.infor_reminder !== rowdata?.data?.infor_reminder) {
-                    obj[item] = result[item]
-                }
                 if (item === "information") {
                     for (let item2 in result.information) {
                         const child2 = result[item][item2]
@@ -264,7 +262,7 @@ const InformationCustomer = () => {
                                                         defaultValue={rowdata?.data?.infor_reminder}
                                                         onChange={(e) => setValue("infor_reminder", e.target.value)}
                                                         {...register("infor_reminder", { required: true })}
-                                                        className={errors?.fullname && "p-invalid"}
+                                                        className={errors?.infor_reminder && "p-invalid"}
                                                     />
                                                     :
                                                     <p onClick={() => handleOpenInput("infor_reminder")} className="font-bold mt-3">{rowdata?.data?.infor_reminder}</p>
