@@ -38,6 +38,26 @@ const initialState = {
 const employeeReducer = createSlice({
     name: "dashboard",
     initialState,
+    reducers:{
+        resetEditUser: (state)=>{
+            Object.assign(state,{},{
+                edituser:{
+                    loading: false,
+                    data : null,
+                    error: false,
+                },
+            })
+        },
+        resetCreateUser: (state)=>{
+            Object.assign(state,{},{
+                user:{
+                    loading: false,
+                    data : null,
+                    error: false,
+                },
+            })
+        },
+    },
     extraReducers: {
         [dashboardEmployeeRequest.pending]: (state) => {
             Object.assign(
@@ -233,5 +253,5 @@ const employeeReducer = createSlice({
         },
     },
 });
-
+export const { resetEditUser, resetCreateUser } = employeeReducer.actions
 export default employeeReducer.reducer;

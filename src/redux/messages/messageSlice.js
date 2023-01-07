@@ -70,6 +70,24 @@ const messagesSlice = createSlice({
         groupScrollTop: (state, { payload })=>{
             state.groupsScrollTop = payload
         },
+        resetGroupEdit: (state)=>{
+            Object.assign(state,{},{
+                updateGroupMsg: {
+                    isLoading: false,
+                    data: null,
+                    error: false
+                },
+            })
+        },
+        resetGroupCreate: (state)=>{
+            Object.assign(state,{},{
+                createGroupMsg: {
+                    isLoading: false,
+                    data: null,
+                    error: false
+                },
+            })
+        },
     },
     extraReducers:{
         [createGroupMsgRequest.pending]: (state) => {
@@ -179,5 +197,16 @@ const messagesSlice = createSlice({
     }
 })
 
-export const { getCurrentUser, getCurrentRoom , setIsOpenChat, getAllgroups, getAllMembers, getMsgsByIdSystem, userScrollTop, groupScrollTop } = messagesSlice.actions
+export const { 
+    getCurrentUser, 
+    getCurrentRoom , 
+    setIsOpenChat, 
+    getAllgroups, 
+    getAllMembers, 
+    getMsgsByIdSystem, 
+    userScrollTop, 
+    groupScrollTop,
+    resetGroupCreate,
+    resetGroupEdit,
+} = messagesSlice.actions
 export default messagesSlice.reducer

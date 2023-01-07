@@ -23,6 +23,7 @@ import copy from "copy-to-clipboard";
 import { setIsOpenModalInformationCustomer } from '../../redux/modal/modalSlice';
 import { timezoneToDate } from '../../commons/dateTime';
 import { overlay } from '../../commons/overlay';
+import { resetEditCustomer } from '../../redux/sale/saleSlice';
 
 const InformationCustomer = () => {
     const [customerStatus, setCustomerStatus] = useState(null);
@@ -60,6 +61,9 @@ const InformationCustomer = () => {
         if (putCustomer?.data && !putCustomer?.error) {
             resetModal()
             toastMsg.success(toast, 'Cập nhật thành công')
+            setTimeout(() => {
+                dispatch(resetEditCustomer())
+            }, 500);
         }
 
         if (putCustomer?.error) {

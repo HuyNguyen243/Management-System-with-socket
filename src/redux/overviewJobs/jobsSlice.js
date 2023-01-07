@@ -45,6 +45,31 @@ const initialState = {
 const jobsReducer = createSlice({
     name: "dashboard",
     initialState,
+    reducers:{
+        resetJobRequest: (state)=>{
+            Object.assign(state,{},{
+                donejobs:{
+                    loading: false,
+                    data : null,
+                    error: false,
+                },
+                editjobs: {
+                    loading: false,
+                    data: null,
+                    error: false,
+                },
+            })
+        },
+        resetJobCreate:(state)=>{
+            Object.assign(state,{},{
+                addjobs:{
+                    loading: false,
+                    data : null,
+                    error: false,
+                },
+            })
+        }
+    },
     extraReducers: {
         [dashboardJobsRequest.pending]: (state) => {
             Object.assign(
@@ -288,5 +313,5 @@ const jobsReducer = createSlice({
         },
     },
 });
-
+export const { resetJobRequest, resetJobCreate } = jobsReducer.actions
 export default jobsReducer.reducer;

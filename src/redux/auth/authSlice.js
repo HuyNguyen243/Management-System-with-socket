@@ -56,6 +56,15 @@ const userReducer = createSlice({
                 userByToken: action.payload
             })
         },
+        resetEditStaff: (state)=>{
+            Object.assign(state,{},{
+                editUser:{
+                    loading: false,
+                    data : null,
+                    error: false,
+                },
+            })
+        },
     },
     extraReducers:{
         [userloginRequest.pending]: (state) => {
@@ -249,6 +258,6 @@ const userReducer = createSlice({
         },
     }
 })
-export const { profileUserByToken } = userReducer.actions
+export const { profileUserByToken, resetEditStaff } = userReducer.actions
 
 export default userReducer.reducer

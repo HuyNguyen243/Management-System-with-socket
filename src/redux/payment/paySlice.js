@@ -20,6 +20,17 @@ const initialState = {
 const payReducer = createSlice({
     name: "dashboard",
     initialState,
+    reducer:{
+        resetPaymentUpdate: (state)=>{
+            Object.assign(state,{},{
+                updatepay:{
+                    loading: false,
+                    data : null,
+                    error: false,
+                },
+            })
+        },
+    },
     extraReducers: {
         [getPayRequest.pending]: (state) => {
             Object.assign(
@@ -99,5 +110,6 @@ const payReducer = createSlice({
         },
     },
 });
+export const { resetPaymentUpdate } = payReducer.actions
 
 export default payReducer.reducer;

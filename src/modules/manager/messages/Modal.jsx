@@ -18,6 +18,7 @@ import { Toast } from 'primereact/toast';
 import { toastMsg } from '../../../commons/toast';
 import { useForm, Controller } from "react-hook-form";
 import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog';
+import { resetGroupEdit, resetGroupCreate } from "../../../redux/messages/messageSlice"
 
 const Modal = ({isOpenCreateGroup, setIsOpenCreateGroup, nameModal , editDataGroup, setEditDataGroup, setMembersInGroup}) => {
     const dispatch = useDispatch()
@@ -50,20 +51,26 @@ const Modal = ({isOpenCreateGroup, setIsOpenCreateGroup, nameModal , editDataGro
             setValue("members",[user?.data?.id_system])
             setValue("role",{})
         }
-    },[editDataGroup, setValue, nameModal, user])
+    },[editDataGroup, setValue, nameModal, user,])
     useEffect(() => {
         if(createGroup?.data){
             toastMsg.success(toast,'Tạo nhóm thành công')
             resetModal()
+            setTimeout(() => {
+                dispatch(resetGroupCreate())
+            }, 500);
         }
-    },[createGroup, setIsOpenCreateGroup, user, resetModal])
+    },[createGroup, setIsOpenCreateGroup, user, resetModal, dispatch])
     
     useEffect(() => {
         if(updateGroup?.data){
             toastMsg.success(toast,'Cập nhật thành công.')
             resetModal()
+            setTimeout(() => {
+                dispatch(resetGroupEdit())
+            }, 500);
         }
-    },[updateGroup, setIsOpenCreateGroup, user, resetModal])
+    },[updateGroup, setIsOpenCreateGroup, user, resetModal, dispatch])
 
     const handleAddMember = (e)=>{
         const { value } = e

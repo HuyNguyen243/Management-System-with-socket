@@ -13,6 +13,7 @@ import { storage } from '../../../_services/sesionStorage';
 import { Toast } from 'primereact/toast';
 import { toastMsg } from '../../../commons/toast';
 import { formatDate } from '../../../commons/dateTime';
+import { resetEditStaff } from '../../../redux/auth/authSlice';
 
 const PersonalInfor = () => {
     const dispatch = useDispatch()
@@ -42,12 +43,15 @@ const PersonalInfor = () => {
             setConfirmPassword("")
             setPassword("")
             toastMsg.success(toast,'Cập nhật thành công')
+            setTimeout(() => {
+                dispatch(resetEditStaff())
+            }, 500);
         }
 
         if(editUser?.error){
             toastMsg.error(toast,'Cập nhật thất bại')
         }
-    },[setConfirmPassword, setPassword,editUser])
+    },[setConfirmPassword, setPassword, editUser, dispatch])
 
     useEffect(()=>{
         if(user?.data){
@@ -153,6 +157,12 @@ const PersonalInfor = () => {
                         return result["births"] = newData["births"]
                     }
                 }
+            }
+            if(result.fullname){
+                delete result.fullname
+            }
+            if(result.username){
+                delete result.username
             }
             if(Object.keys(result).length > 0){
                 const formData = new FormData()

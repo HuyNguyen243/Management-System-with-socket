@@ -21,7 +21,8 @@ import { addJobsRequest } from "../../redux/overviewJobs/actionJobs";
 import { itemCustomerTemplate } from '../modal/TemplateDropDown';
 import { overlay } from '../../commons/overlay';
 import { getEmployeePerformance } from '../../redux/employeePerformance/action';
-import { useLocation } from "react-router"
+import { useLocation } from "react-router";
+import { resetJobCreate } from "../../redux/overviewJobs/jobsSlice"
 
 const CreateJobs = () => {
 
@@ -65,6 +66,9 @@ const CreateJobs = () => {
             }
             dispatch(setIsOpenModalCreateJob(false))
             toastMsg.success(toast, 'Tạo công việc mới thành công')
+            setTimeout(() => {
+                dispatch(resetJobCreate())
+            }, 500);
         }
         if (addjobs?.error) {
             dispatch(setIsOpenModalCreateJob(true))

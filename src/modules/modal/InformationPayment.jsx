@@ -12,6 +12,7 @@ import { Dropdown } from 'primereact/dropdown';
 import { PayRules } from '../../constants';
 import { updatePayRequest } from '../../redux/payment/actionPay';
 import { overlay } from '../../commons/overlay';
+import { resetPaymentUpdate } from '../../redux/payment/paySlice';
 
 const InformationPayment = () => {
     const isOpenModalInformationPayment = useSelector(state => state.modal.isOpenModalInformationPayment)
@@ -34,6 +35,9 @@ const InformationPayment = () => {
         if(paymentUpdate?.data){
             dispatch(setIsOpenModalInformationPayment(false))
             toastMsg.success(toast, 'thay đổi trạng thái thanh toán thành công')
+            setTimeout(() => {
+                dispatch(resetPaymentUpdate())
+            }, 500);
         }else if(paymentUpdate?.error){
             toastMsg.error(toast, 'thay đổi trạng thái thanh toán thất bại')
         }

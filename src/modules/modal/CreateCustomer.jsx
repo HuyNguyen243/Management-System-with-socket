@@ -18,6 +18,7 @@ import { toastMsg } from '../../commons/toast';
 import { setIsOpenModalCreateCustomer } from '../../redux/modal/modalSlice';
 import { overlay } from '../../commons/overlay';
 import { searchDropdown } from '../../commons/searchDropDown';
+import { resetCreateCustomer } from '../../redux/sale/saleSlice';
 
 const CreateCustomer = () => {
     const toast = useRef(null);
@@ -59,6 +60,9 @@ const CreateCustomer = () => {
         if (customer?.data && !customer?.error) {
             dispatch(setIsOpenModalCreateCustomer(false))
             toastMsg.success(toast, 'Tạo khách hàng mới thành công')
+            setTimeout(() => {
+                dispatch(resetCreateCustomer())
+            }, 500);
         }
         if (customer?.error) {
             toastMsg.error(toast, 'Tạo khách hàng mới thất bại')

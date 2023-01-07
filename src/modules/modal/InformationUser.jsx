@@ -20,6 +20,7 @@ import {
     setIsOpenModalCreateUser,
     setIsOpenModalInformationUser,
 } from '../../redux/modal/modalSlice';
+import { resetEditUser } from '../../redux/overviewEmployee/employeeSlice';
 import { overlay } from '../../commons/overlay';
 
 const InformationUser = () => {
@@ -45,6 +46,9 @@ const InformationUser = () => {
         if (putUser?.data && !putUser?.error) {
             dispatch(setIsOpenModalInformationUser(false))
             toastMsg.success(toast, 'Cập nhật thành công')
+            setTimeout(()=>{
+                dispatch(resetEditUser())
+            },500)
         }
 
         if (putUser?.error) {

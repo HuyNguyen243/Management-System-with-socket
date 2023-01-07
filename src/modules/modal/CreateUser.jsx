@@ -16,6 +16,7 @@ import { toastMsg } from '../../commons/toast';
 import { EMAIL_REGEX, PHONE_REGEX } from '../../constants';
 import { setIsOpenModalCreateUser } from '../../redux/modal/modalSlice';
 import { overlay } from '../../commons/overlay';
+import { resetCreateUser } from '../../redux/overviewEmployee/employeeSlice';
 
 const CreateUser = () => {
     const toast = useRef(null);
@@ -68,6 +69,9 @@ const CreateUser = () => {
         if (employee?.data && !employee?.error) {
             setCreateSuccess(false)
             toastMsg.success(toast, 'Tạo thành viên mới thành công')
+            setTimeout(() => {
+                dispatch(resetCreateUser())
+            }, 500);
         }
         if (employee?.error) {
             setCreateSuccess(true)

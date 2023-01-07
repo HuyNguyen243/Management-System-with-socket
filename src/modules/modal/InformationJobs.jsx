@@ -23,6 +23,7 @@ import { itemUserTemplate } from '../modal/TemplateDropDown';
 import { overlay } from '../../commons/overlay';
 import { getEmployeePerformance } from '../../redux/employeePerformance/action';
 import { useLocation } from 'react-router';
+import { resetJobRequest } from '../../redux/overviewJobs/jobsSlice';
 
 const InformationJobs = () => {
     const toast = useRef(null);
@@ -122,6 +123,9 @@ const InformationJobs = () => {
                 dispatch(getEmployeePerformance())
             }
             toastMsg.success(toast, 'Cập nhật thành công')
+            setTimeout(() => {
+                dispatch(resetJobRequest())
+            }, 500);
         }
         if (updatejobs?.error) {
             toastMsg.error(toast, updatejobs?.data?.message)
@@ -135,6 +139,9 @@ const InformationJobs = () => {
             }
             handleCloseModal()
             toastMsg.success(toast, 'Cập nhật thành công')
+            setTimeout(() => {
+                dispatch(resetJobRequest())
+            }, 500);
         }
         if (donejobs?.error) {
             toastMsg.error(toast, donejobs?.data?.message)
