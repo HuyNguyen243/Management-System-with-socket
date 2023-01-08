@@ -278,7 +278,7 @@ const BoxChat = () => {
         <div className="chat-header ">
             <div className="chat__close" onClick={()=>dispatch(setIsOpenChat(false))}></div>
             {
-                namePrivateRoom &&  <div className="chat_img" role={namePrivateRoom.charAt(0) + namePrivateRoom.charAt(1)} ></div>
+                namePrivateRoom &&  <div className="chat_img" role={namePrivateRoom?.charAt(0) + namePrivateRoom?.charAt(1)} ></div>
             }
             <span className="id__me">{currentUser?.id_system}</span>
             <div className="chat-about">

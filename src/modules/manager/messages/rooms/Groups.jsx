@@ -178,8 +178,8 @@ const Groups = ({
                 const arrStaffs = room?._id?.name.split("-")
                 const mb1= checkNameReminder(arrStaffs?.[1])
                 const mb2= checkNameReminder(arrStaffs?.[2])
-                const firstChartMb1 = mb1 ? mb1.charAt(0) : ""
-                const firstChartMb2 = mb2 ? mb1.charAt(0) : ""
+                const firstChartMb1 = mb1 ? mb1?.charAt(0) : ""
+                const firstChartMb2 = mb2 ? mb1?.charAt(0) : ""
                 return(
                     <div key={index} onClick={()=>handleGroupView(room)} >
                         {

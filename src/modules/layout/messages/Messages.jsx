@@ -115,12 +115,12 @@ const Messages = ({isOpenMessages, setisOpenMessages}) => {
                             return CharacterRoom(member.role)
                         }
                         if(member?.fullname === name && currentUser?.role === UserRules.ROLE.ADMIN){
-                            return CharacterRoom(member?.fullname.charAt(0).toUpperCase())
+                            return CharacterRoom(member?.fullname?.charAt(0).toUpperCase())
                         }
                     }
                 }
             }else if(type === NAME_ROOM.GROUP){
-                return name.charAt(0) + name.charAt(1)
+                return name?.charAt(0) + name?.charAt(1)
             }
         }
     }
