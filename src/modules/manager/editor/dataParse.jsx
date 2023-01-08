@@ -5,6 +5,7 @@ export const dataParse = (data) => {
                 id_system: item?.infor_id?.id_system,
                 id_customer: item?.infor_id?.id_customer,
                 id_saler: item?.infor_id?.id_saler,
+                id_editor: item?.infor_id?.id_editor,
                 editor_cost: item?.cost?.editor_cost,
                 start_day: item?.infor?.start_day,
                 end_day: item?.infor?.end_day,

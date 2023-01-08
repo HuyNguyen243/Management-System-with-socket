@@ -39,7 +39,21 @@ const BoxChat = () => {
     const [nameModal, setNameModal] = useState("");
     const [editDataGroup, setEditDataGroup] = useState({});
     const user = useSelector(state=> state.auth.user)
+    const userReminders = useSelector(state => state.auth.userReminders)
 
+    const checkNameReminder = (id)=>{
+        if(user?.data?.role !== UserRules?.ROLE?.ADMIN && userReminders?.data?.data){
+            const reminders = userReminders?.data?.data
+
+           for(let i = 0; i < reminders.length; i++){
+               if(reminders[i]?._id?.id_system === id){
+                   return reminders[i]?._id?.infor_reminder
+               }
+           }
+        }else{
+            return id
+        }
+    }
     const messageEndRef = useRef(null);
     // scroll bottom
     useEffect(() => {
@@ -269,7 +283,7 @@ const BoxChat = () => {
             <span className="id__me">{currentUser?.id_system}</span>
             <div className="chat-about">
             <div className="chat-with">
-                {( currentUser?.role === UserRules.ROLE.ADMIN ? replaceName(privateMemberMsg) : privateMemberMsg ) || namePrivateRoom}
+                {( currentUser?.role === UserRules.ROLE.ADMIN ? replaceName(privateMemberMsg) : checkNameReminder(privateMemberMsg) ) || namePrivateRoom}
             </div>
             <div className="chat-num-messages">{role}</div>
             {

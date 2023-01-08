@@ -67,8 +67,8 @@ function App() {
             </Routes>
             {userIsAuth && (
                 <>
-                    <BtnMess />
                     <Modal />
+                    <BtnMess />
                 </>
             )}
             <Loader />

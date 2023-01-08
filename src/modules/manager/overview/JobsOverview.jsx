@@ -29,6 +29,16 @@ const JobsOverview = () => {
     }, [dispatch, filter])
 
     useEffect(() => {
+        let interval = setInterval(() => {
+            RESET_REQUEST(dispatch, filter, dashboardJobsRequest)
+        }, 60000 * 5 );
+
+        return () => {
+            clearInterval(interval);
+        };
+    }, [filter, dispatch]);
+
+    useEffect(() => {
         if (employees?.data) {
             dispatch(setDataModalInformationUser(employees))
         }
@@ -46,6 +56,7 @@ const JobsOverview = () => {
 
     const handleRowClick = (rowdata) => {
         const el = rowdata.originalEvent.target.closest("td").childNodes[1]
+
         if (el.getAttribute("alt-saler")) {
             //OPEN SALE
             const data = {}
@@ -61,11 +72,11 @@ const JobsOverview = () => {
         } else if (el.getAttribute("alt-editor")) {
             //OPEN EDITOR 
             const data = {}
-            if (el.getAttribute("alt-editor") !== "NOT_SET_BY_ADMIN") {
-                data.id = el.getAttribute("alt-editor");
+            data.id = el.getAttribute("alt-editor");
+            if(data.id !== "NOT_SET_BY_ADMIN" ){
                 dispatch(getEmployeeRequest(data));
+                dispatch(setIsOpenModalInformationUser(true))
             }
-            dispatch(setIsOpenModalInformationUser(true))
         }
         else {
             dispatch(setIsOpenInformationJob(true))

@@ -114,6 +114,18 @@ export const forgotPassword = createAsyncThunk(
     }
 );
 
+export const userGetReminderRequest = createAsyncThunk(
+    "getReminderRequest",
+    async (data, { rejectWithValue }) => {
+        try {
+            const res= await get(`users/reminders`);
+            return res;
+        } catch (error) {
+            return rejectWithValue(error?.response?.data?.message);
+        }
+    }
+);
+
 export const resetPassword = createAsyncThunk(
     "resetPassword",
     async (data, { rejectWithValue }) => {
