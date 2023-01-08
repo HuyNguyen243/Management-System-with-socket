@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from "react-redux"
 import Table from "../../../components/table/Table";
 import { table_payment_managerment } from '../../../components/table/header_table';
-import { getPayRequest } from '../../../redux/payment/actionPay';
+import { getPayStaffRequest } from '../../../redux/payment/actionPay';
 import { dataParseManagement } from '../payment/dataParse';
 import { getJobsAdminRequest } from '../../../redux/overviewJobs/actionJobs';
 import {
@@ -17,17 +17,14 @@ import { getEmployeeRequest } from "../../../redux/overviewEmployee/actionEmploy
 
 const PaymentManagement = () => {
     const dispatch = useDispatch()
-    const user = useSelector(state => state.auth?.user);
     const payment = useSelector(state => state.payment?.getpay);
     const jobs = useSelector(state => state.jobs?.getjobs)
     const [filter, setFilter] = useState("");
     const employees = useSelector(state => state.employee?.inforuser)
 
     useEffect(() => {
-        let id = user?.data?.id_system
-        const data_search = [filter, id]
-        dispatch(getPayRequest(data_search))
-    }, [dispatch, filter, user])
+        dispatch(getPayStaffRequest(filter))
+    }, [dispatch, filter])
 
     const DataFilter = (data) => {
         setFilter(data)

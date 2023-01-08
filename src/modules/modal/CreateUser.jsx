@@ -40,7 +40,7 @@ const CreateUser = () => {
     const user = useSelector(state => state.auth?.user)
     const employee = useSelector(state => state.employee?.user)
     const randomPass = Math.random().toString(36).slice(-8);
-    const [password] = useState(randomPass)
+    const [password,setPassword] = useState(randomPass)
 
     useEffect(() => {
         if (isOpenCreateUser) {
@@ -94,7 +94,7 @@ const CreateUser = () => {
     return (
         <>
             <Toast ref={toast} position="bottom-left" />
-            <Sidebar visible={isOpenCreateUser} position="right" onHide={() => { dispatch(setIsOpenModalCreateUser(false)); reset(); setCreateSuccess(true) }} className="create__job">
+            <Sidebar visible={isOpenCreateUser} position="right" onHide={() => { dispatch(setIsOpenModalCreateUser(false)); reset(); setCreateSuccess(true);setPassword(randomPass) }} className="create__job">
                 <div className="creat__job">
                     <div className="creat__job--title">
                         <h2>Tạo nhân viên mới</h2>

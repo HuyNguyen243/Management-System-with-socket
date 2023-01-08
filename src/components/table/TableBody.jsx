@@ -109,14 +109,14 @@ const TableBody = ({ rowData, item }) => {
                 break;
             case ("status_customer"):
                 const status_customer = rowData?.[item]
-                if (status_customer === JobRules.STATUS_CUSTOMER.COMPLETE) {
+                if (status_customer === JobRules.STATUS_CUSTOMER.DONE) {
                     return (
                         <span className="table__body-name btn_success flex justify-content-center" >{CUSTOMER_REQUEST_DONE}</span>
                     )
                 }
-                if (status_customer === JobRules.STATUS_CUSTOMER.INCOMPLETE) {
+                if (status_customer === JobRules.STATUS_CUSTOMER.REQUEST) {
                     return (
-                        <span className="table__body-name btn_stop flex justify-content-center" >{CUSTOMER_REQUEST_CANCEL}</span>
+                        <span className="table__body-name btn_stop flex justify-content-center" >{CUSTOMER_REQUEST_REQUEST}</span>
                     )
                 }
                 if (status_customer === JobRules.STATUS_CUSTOMER.PENDING) {
@@ -160,6 +160,7 @@ const TableBody = ({ rowData, item }) => {
                     <span className="table__body-name " >{rowData?.[item]}</span>
                 )
             case("reminder_saler"):
+            case("reminder_staff"):
             case("reminder_editor"):
             case("reminder_customer"):
                 if(item === "reminder_saler"){
@@ -175,6 +176,11 @@ const TableBody = ({ rowData, item }) => {
                 if(item === "reminder_editor"){
                     return (
                         <span alt-editor={rowData?.id_editor} className={` table__body-name text-bold ${item}`} >{rowData?.[item] !== "NOT_SET_BY_ADMIN" && rowData?.[item] }</span>
+                    )
+                }
+                if(item === "reminder_staff"){
+                    return (
+                        <span alt-staff={rowData?.staff_is_pay} className={` table__body-name text-bold ${item}`} >{rowData?.[item] !== "NOT_SET_BY_ADMIN" && rowData?.[item] }</span>
                     )
                 }
                 break;

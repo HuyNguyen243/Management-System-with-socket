@@ -101,22 +101,6 @@ const Setting = () => {
                                     />
                                 </span>
                             </div>
-                            <div className="field col-12 md:col-12">
-                                <span htmlFor="kpi_sale">KPI SALER: <span className="warning">*</span></span>
-                                <span className="p-float-label">
-                                    <InputNumber
-                                        id="kpi_sale"
-                                        value={setting?.data?.kpi_sale}
-                                        onValueChange={(e) => setValue("kpi_sale",e.value)}
-                                        inputId="currency-vn"
-                                        mode="currency"
-                                        currency="VND"
-                                        locale="vi-VN"
-                                        useGrouping={true}
-                                        className={errors?.kpi_sale && "p-invalid"}
-                                    />
-                                </span>
-                            </div>
                         </div>
                         <div className="btn_modal field col-12 md:col-12 grid position_bottom">
                             <div className="field col-12 md:col-6">

@@ -3,8 +3,8 @@ export const dataParse = (data) => {
         const result = data.map((item) => {
             const newobject = {
                 id_system: item?.infor_id?.id_system,
-                id_customer: item?.infor_id?.id_customer,
-                id_editor: item?.infor_id?.id_editor,
+                reminder_customer: item?.infor_reminder?.reminder_customer,
+                reminder_editor: item?.infor_reminder?.reminder_editor,
                 saler_cost: item?.cost?.saler_cost,
                 start_day: item?.infor?.start_day,
                 end_day: item?.infor?.end_day,
@@ -21,6 +21,8 @@ export const dataParse = (data) => {
                 finished_link: item?.infor?.finished_link,
                 type_models: item?.infor?.type_models,
                 total_cost: item?.cost?.total_cost,
+                id_customer: item?.infor_id?.id_customer,
+                id_editor: item?.infor_id?.id_editor,
             }
             return newobject
         })
