@@ -68,7 +68,8 @@ const JobPerformance = () => {
 
     useEffect(() => {
             dispatch(dashboardEmployeeRequest("?saler=true"))
-            dispatch(kpiYearOfMonth())
+            const getYear = new Date().getFullYear()
+            dispatch(kpiYearOfMonth(`?year=${getYear}`))
     }, [dispatch, user])
 
     useEffect(() => {
@@ -119,7 +120,10 @@ const JobPerformance = () => {
 
     const handleChangeYear = (e)=>{
         setyear(e.value)
-        const getYear = new Date(e.value).getFullYear()
+        let getYear = new Date(e.value).getFullYear()
+        if(getYear === 1970){
+            getYear = new Date().getFullYear()
+        }
         dispatch(kpiYearOfMonth(`?year=${getYear}`))
     }
     

@@ -4,7 +4,7 @@ import { socket } from "../../../../_services/socket";
 import { Toast } from 'primereact/toast';
 import { toastMsg } from '../../../../commons/toast';
 import {useSelector ,useDispatch} from "react-redux"
-import { groupScrollTop } from '../../../../redux/messages/messageSlice';
+import { groupScrollTop, userViewScrollTop } from '../../../../redux/messages/messageSlice';
 
 const Groups = ({ 
     groups,
@@ -25,7 +25,9 @@ const Groups = ({
     const toast = useRef(null);
     const [roomview,setRoomView] = useState(null)
     const groupTopRef = useRef(null);
+    const UserViewTopRef = useRef(null);
     const isScrollTop = useSelector(state=>state.message.groupsScrollTop)
+    const userViewScrollTopSelector = useSelector(state=>state.message.userViewScrollTop)
     const dispatch = useDispatch()
     const userReminders = useSelector(state => state.auth.userReminders)
 
@@ -51,6 +53,16 @@ const Groups = ({
             },[700])
         }
     })
+
+    React.useEffect(()=>{
+        if(userViewScrollTopSelector){
+            usersViewcrollToTop()
+            setTimeout(() => {
+                dispatch(userViewScrollTop(false))
+            },[700])
+        }
+    })
+
 
     const handlePrivateGroup = (group)=>{
         const id_Group = NAME_ROOM.GROUP + "-" + group._id
@@ -114,6 +126,10 @@ const Groups = ({
         groupTopRef.current?.scrollIntoView({ behavior: "smooth" });
     }
 
+    const usersViewcrollToTop = () => {
+        UserViewTopRef.current?.scrollIntoView({ behavior: "smooth" });
+    }
+
     const handleGroupView = (room)=>{
         joinRoom(room?._id?.name)
 
@@ -171,7 +187,7 @@ const Groups = ({
                 <span className="title_members">Room thành viên</span>
             </li>
         }
-        <div ref={groupTopRef}></div>
+        <div ref={UserViewTopRef}></div>
         {
             roomview && roomview?.length > 0 &&
             roomview.map((room,index)=>{
@@ -201,6 +217,7 @@ const Groups = ({
                 <span className="title_members">Nhóm</span>
             </li>
         }
+        <div ref={groupTopRef}></div>
         {showGroups()}
         </>
     )

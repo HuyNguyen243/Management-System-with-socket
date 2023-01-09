@@ -3,14 +3,9 @@ export const dataParse = (data) => {
         const result = data.map((item) => {
             const newobject = {
                 id_system: item?.infor_id?.id_system,
-<<<<<<< src/modules/manager/editor/dataParse.jsx
                 reminder_customer: item?.infor_reminder?.reminder_customer,
                 reminder_saler: item?.infor_reminder?.reminder_saler,
-=======
-                id_customer: item?.infor_id?.id_customer,
-                id_saler: item?.infor_id?.id_saler,
                 id_editor: item?.infor_id?.id_editor,
->>>>>>> src/modules/manager/editor/dataParse.jsx
                 editor_cost: item?.cost?.editor_cost,
                 start_day: item?.infor?.start_day,
                 end_day: item?.infor?.end_day,

@@ -251,7 +251,7 @@ const Index = (
     }
 
     return (
-        <div className={`people-list ${isOpen && "active"}`} id="people-list" onClick={handleOpenMembersBlock}>
+        <div className={`people-list ${isOpen && "active"} ${currentUser.role !== UserRules.ROLE.ADMIN && "opacity-0 max-w-0"}`} id="people-list" onClick={handleOpenMembersBlock}>
         <div className="message__title h-0 p-0">
             <div className="notification-message__search ">
                 <TextField

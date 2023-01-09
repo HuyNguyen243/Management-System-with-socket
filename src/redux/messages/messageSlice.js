@@ -30,6 +30,7 @@ const initialState = {
     messagesByIdSystem: null,
     usersScrollTop: false,
     groupsScrollTop: false,
+    userViewScrollTop: false,
 
     uploadImage:{
         isLoading: false,
@@ -69,6 +70,9 @@ const messagesSlice = createSlice({
         },
         groupScrollTop: (state, { payload })=>{
             state.groupsScrollTop = payload
+        },
+        userViewScrollTop: (state, { payload })=>{
+            state.userViewScrollTop = payload
         },
         resetGroupEdit: (state)=>{
             Object.assign(state,{},{
@@ -208,5 +212,6 @@ export const {
     groupScrollTop,
     resetGroupCreate,
     resetGroupEdit,
+    userViewScrollTop,
 } = messagesSlice.actions
 export default messagesSlice.reducer

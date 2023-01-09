@@ -4,7 +4,7 @@ import { socket } from "../../../_services/socket";
 import { getFormattedDate } from '../../../commons/message.common';
 import { NAME_ROOM } from '../../../constants';
 import { useDispatch, useSelector } from 'react-redux';
-import { setIsOpenChat, userScrollTop, groupScrollTop } from '../../../redux/messages/messageSlice';
+import { setIsOpenChat, userScrollTop, groupScrollTop, userViewScrollTop } from '../../../redux/messages/messageSlice';
 import { postImagesMessage } from '../../../redux/messages/action';
 
 import Modal from "./Modal";
@@ -127,33 +127,58 @@ const BoxChat = () => {
             const toDayDate = getFormattedDate()
             let allmembers;
             let type ;
-            if(nameRoom?.includes(NAME_ROOM.USER)){
-                allmembers = [privateMemberMsg, currentUser?.id_system]
-                type = NAME_ROOM.USER;
-                dispatch(userScrollTop(true))
+            if(currentRoom !==  groups_id){
+                if(nameRoom?.includes(NAME_ROOM.USER)){
+                    allmembers = [privateMemberMsg, currentUser?.id_system]
+                    type = NAME_ROOM.USER;
+                    dispatch(userScrollTop(true))
+                }else{
+                    allmembers = membersInGroup
+                    type = NAME_ROOM.GROUP;
+                    dispatch(groupScrollTop(true))
+                }
             }else{
-                allmembers = membersInGroup
-                type = NAME_ROOM.GROUP;
-                dispatch(groupScrollTop(true))
+                dispatch(userViewScrollTop(true))
             }
+        
           
             const fileData = new FormData();
             for(let i=0; i < images.length; i++){
                 fileData.append('images', images[i])
             }
-
-            dispatch(postImagesMessage(fileData));
-            setScrollBottom(true)
-            setTimeout(() => {
-                socket.emit('message-room', nameRoom, messages, currentUser?.id_system, time, toDayDate, allmembers, type, groups_id, privateMemberMsg,multiImages)
-                setMessages("")
-                setMultiPreviewImages([])
-                setMultiImages([])
-                setImages([])
-            },500)
+            if(currentRoom !==  groups_id){
+                dispatch(postImagesMessage(fileData));
+                setScrollBottom(true)
+                setTimeout(() => {
+                    socket.emit('message-room', nameRoom, messages, currentUser?.id_system, time, toDayDate, allmembers, type, groups_id, privateMemberMsg,multiImages)
+                    setMessages("")
+                    setMultiPreviewImages([])
+                    setMultiImages([])
+                    setImages([])
+                },500)
+            }else{
+                const allmember = nameRoom.split("-")
+                allmember.splice(0,1,currentUser?.id_system)
+                
+                let editorReceived = ""
+                for(const member of allmember){
+                    if(member.includes(UserRules._ROLE.EDITOR)){
+                        editorReceived = member
+                        break
+                    }
+                }
+                dispatch(postImagesMessage(fileData));
+                setScrollBottom(true)
+                setTimeout(() => {
+                    socket.emit('message-room', nameRoom, messages, currentUser?.id_system, time, toDayDate, allmember, NAME_ROOM.USER , "", editorReceived,multiImages)
+                    setMessages("")
+                    setMultiPreviewImages([])
+                    setMultiImages([])
+                    setImages([])
+                },500)
+            }
         }
     }
-
     //PRESS ENTER TO SUBMIT
     useEffect(() => {
         const submitForm= (event)=>{
@@ -228,18 +253,18 @@ const BoxChat = () => {
         setMultiPreviewImages(images)
     }
 
-    useEffect(() => {
-        if(multiPreviewImages.length === 0){
-            document.getElementById('file_chat').value= null;
-        }
-    },[multiPreviewImages])
+    // useEffect(() => {
+    //     if(multiPreviewImages.length === 0){
+    //         document.getElementById('file_chat').value= null;
+    //     }
+    // },[multiPreviewImages])
 
   return (
     <div className={`chat-container page ${!isOpenChat && "hidden"}`}>
         {
             user?.data?.role === UserRules.ROLE.ADMIN &&
             <>
-                <div className="chat__createGroup" 
+                <div className="chat__createGroup hidden" 
                 onClick={()=>{ setNameModal(NAME_ROOM.CREATE);setIsOpenCreateGroup(!isOpenCreateGroup);setEditDataGroup({})} } 
                 ></div>
                 <Modal 
@@ -293,7 +318,7 @@ const BoxChat = () => {
             </div>
         </div> 
         {/* end chat-header */}
-        <div className={`chat-history relative ${multiPreviewImages.length > 0 && "have__img"} ${ !currentRoom || groups_id.includes("USER") ? "full_chat" : ""}`} >
+        <div className={`chat-history relative ${multiPreviewImages.length > 0 && "have__img"}`} >
             <ul className="group__message">
                 <Messages messagesOnRoom={messagesOnRoom}  currentUser={currentUser} />
             </ul>
@@ -302,9 +327,6 @@ const BoxChat = () => {
 
         {/* end chat-history */}
         {
-            groups_id.includes("USER") ?
-            ""
-            :
             <form onSubmit={handleSubmit} className={`chat-message align-items-end clearfix ${!currentRoom ? "hidden" : ""}`}>
                     <div className="chat__file">
                         <input type="file" className="hidden" 

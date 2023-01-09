@@ -13,7 +13,8 @@ const WorkflowManagement = () => {
     const jobs = useSelector(state => state.jobs?.dashboard)
 
     useEffect(()=>{
-        dispatch(kpiYearOfMonth())
+        const getYear = new Date().getFullYear()
+        dispatch(kpiYearOfMonth(`?year=${getYear}`))
     },[dispatch])
 
     useEffect(() => {
