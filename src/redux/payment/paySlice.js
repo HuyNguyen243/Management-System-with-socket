@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import {
     getPayRequest,
     updatePayRequest,
+    getPayStaffRequest,
 } from "./actionPay";
 
 const initialState = {
@@ -12,6 +13,11 @@ const initialState = {
         error: false,
     },
     updatepay: {
+        loading: false,
+        data: null,
+        error: false,
+    },
+    getstaff: {
         loading: false,
         data: null,
         error: false,
@@ -101,6 +107,44 @@ const payReducer = createSlice({
                 {},
                 {
                     updatepay: {
+                        loading: false,
+                        data: null,
+                        error: true,
+                    },
+                }
+            );
+        },
+
+        [getPayStaffRequest.pending]: (state) => {
+            Object.assign(
+                state,
+                {},
+                {
+                    getstaff: {
+                        loading: true,
+                    },
+                }
+            );
+        },
+        [getPayStaffRequest.fulfilled]: (state, action) => {
+            Object.assign(
+                state,
+                {},
+                {
+                    getstaff: {
+                        loading: false,
+                        data: action.payload,
+                        error: false,
+                    },
+                }
+            );
+        },
+        [getPayStaffRequest.rejected]: (state, action) => {
+            Object.assign(
+                state,
+                {},
+                {
+                    getstaff: {
                         loading: false,
                         data: null,
                         error: true,

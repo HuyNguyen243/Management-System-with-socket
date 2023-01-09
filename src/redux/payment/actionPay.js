@@ -3,7 +3,7 @@ import { get, put } from "../../_services/apiRequest"
 
 
 export const getPayRequest = createAsyncThunk(
-    'getJobs',
+    'getPays',
     async (data, { rejectWithValue }) => {
         try {
             const search = typeof data[0] === 'string' ?  data[0] : ""
@@ -23,6 +23,19 @@ export const updatePayRequest = createAsyncThunk(
             if(res.data){
                 return data.result
             }
+        } catch (error) {
+            return rejectWithValue(error?.response?.data);
+        }
+    }
+)
+
+export const getPayStaffRequest = createAsyncThunk(
+    'getPayStaffs',
+    async (data, { rejectWithValue }) => {
+        try {
+            const search = typeof data === 'string' ?  data : ""
+            const res = await get(`pays/payment-staff${search}`)
+            return res.data
         } catch (error) {
             return rejectWithValue(error?.response?.data);
         }

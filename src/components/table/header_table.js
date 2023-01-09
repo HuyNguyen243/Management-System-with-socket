@@ -4,11 +4,11 @@ export const table_work_flowManager = [
         haveSort: false,
     },
     {
-        name: "Mã KH",
+        name: "Biệt danh KH",
         haveSort: true,
     },
     {
-        name: "Editor",
+        name: "Biệt danh Editor",
         haveSort: true,
     },
     {
@@ -43,11 +43,11 @@ export const table_dashboard = [
         haveSort: false,
     },
     {
-        name: "Mã khách hàng",
+        name: "Tên khách hàng",
         haveSort: true,
     },
     {
-        name: "Saler",
+        name: "Tên Saler",
         haveSort: true,
     },
     {
@@ -98,11 +98,6 @@ export const table_customer_management = [
 
 export const table_payment = [
     {
-        name: "Id",
-        haveSort: false,
-        element_body_text: "normal",
-    },
-    {
         name: "Mã công việc",
         haveSort: true,
     },
@@ -122,11 +117,11 @@ export const table_payment = [
 
 export const table_payment_managerment = [
     {
-        name: "Id",
+        name: "Tháng",
         haveSort: false,
     },
     {
-        name: "Mã nhân viên",
+        name: "Biệt danh nhân viên",
         haveSort: true,
     },
     {
