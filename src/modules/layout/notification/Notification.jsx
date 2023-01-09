@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router';
 import { get } from "../../../_services/apiRequest"
 import { timeAgo } from '../../../commons/message.common';
 import { dashboardEmployeeRequest } from '../../../redux/overviewEmployee/actionEmployee';
+import { userGetReminderRequest } from '../../../redux/auth/action';
 
 const Notification = ({isOpenNotification, setisOpenNotification}) => {
     const user = useSelector(state=> state.auth.user)
@@ -16,6 +17,7 @@ const Notification = ({isOpenNotification, setisOpenNotification}) => {
     const notifys = useSelector(state => state.notification.fetchAllNotification)
     const notifyupdate= useSelector(state => state.notification.updatenotification)
     const employees = useSelector(state => state.employee.dashboard)
+    const userReminders = useSelector(state => state.auth.userReminders)
 
     const [ notifications, setNotifications ] = useState([])
 
@@ -30,7 +32,22 @@ const Notification = ({isOpenNotification, setisOpenNotification}) => {
         if(user?.data?.id_system && user?.data?.role === UserRules?.ROLE?.ADMIN){
             dispatch(dashboardEmployeeRequest())
         }
+        dispatch(userGetReminderRequest())
     }, [dispatch, user])
+
+    const checkNameReminder = (id)=>{
+        if( userReminders?.data?.data){
+            const reminders = userReminders?.data?.data
+
+           for(let i = 0; i < reminders.length; i++){
+               if(reminders[i]?._id?.id_system === id){
+                   return reminders[i]?._id?.infor_reminder
+               }
+           }
+        }else{
+            return id
+        }
+    }
 
     const handleInfiniteScroll = async() => {
           const element = document.querySelector('.notification__block');
@@ -196,7 +213,7 @@ const Notification = ({isOpenNotification, setisOpenNotification}) => {
             return notifications?.map((notify,index)=>{
                 const arrTittle = notify?.title.split(" ")
                 const name = checkname(arrTittle?.[arrTittle?.length - 1])
-                arrTittle.splice(arrTittle?.length - 1, 1 , name)
+                arrTittle.splice(arrTittle?.length - 1, 1 , checkNameReminder(name))
                 return (
                     <div 
                     className={`notification_item ${notify?.member_check_notify?.[user?.data?.id_system] && "active"}`} 

@@ -1,4 +1,4 @@
-import React,{ useRef } from 'react'
+import React,{ useEffect, useRef, useState } from 'react'
 import { orderIds } from '../../../../commons/message.common';
 import { NAME_ROOM } from '../../../../constants';
 import { socket } from "../../../../_services/socket";
@@ -20,7 +20,43 @@ const Members = ({
 }) => {
     const userTopRef = useRef(null);
     const isScrollTop = useSelector(state=>state.message.usersScrollTop)
+    const userReminders = useSelector(state => state.auth.userReminders)
+    const user = useSelector(state=> state.auth.user)
+    const [newmembers, setNewMembers ]= useState([])
     const dispatch = useDispatch()
+
+    const checkNameReminder = (id)=>{
+        if(user?.data?.role !== UserRules?.ROLE?.ADMIN && userReminders?.data?.data){
+            const reminders = userReminders?.data?.data
+
+           for(let i = 0; i < reminders.length; i++){
+               if(reminders[i]?._id?.id_system === id){
+                   return reminders[i]?._id?.infor_reminder
+               }
+           }
+        }else{
+            return id
+        }
+    }
+
+    useEffect(()=>{
+        if(members?.length > 0){
+                let newsmembers = []
+            if(user?.data?.role === UserRules.ROLE.EDITOR){
+                newsmembers = members.filter((member)=>{
+                    return member.role !== UserRules.ROLE.EDITOR
+                })
+            }else if(user?.data?.role === UserRules.ROLE.SALER){
+                newsmembers = members.filter((member)=>{
+                    return member.role !== UserRules.ROLE.SALER
+                })
+            }else{
+                newsmembers = members
+            }
+            setNewMembers(newsmembers)
+        }
+      
+    },[user, members])
 
     const handlePrivateRoom = (member)=>{
 
@@ -54,14 +90,14 @@ const Members = ({
         </li>
         <div ref={userTopRef}></div>
         { 
-            members?.map((member,index)=>(
+            newmembers?.map((member,index)=>(
                 <div key={index}>
                 {
                     member?.id_system !== currentUser?.id_system &&
                     <li className={privateMemberMsg === member.id_system ? "active" : ""} onClick={()=>handlePrivateRoom(member)}>
                     <div className="chat_img" data={member?.status} role={CharacterRoom(member.role)} ></div>
                     <div className="about">
-                    <div className="name">{ currentUser?.role === UserRules.ROLE.ADMIN ? member?.fullname : member?.id_system}</div>
+                    <div className="name">{ currentUser?.role === UserRules.ROLE.ADMIN ? member?.fullname :checkNameReminder(member?.id_system)}</div>
                         {
                         currentUser?.newMessages && Object?.keys(currentUser?.newMessages)?.map((room,index2)=>{
                             return(

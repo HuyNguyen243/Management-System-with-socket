@@ -28,7 +28,6 @@ const Payment = () => {
         if (jobs?.data) {
             data_push.data = {};
             Object.assign(data_push.data, jobs?.data?.infor,jobs?.data?.infor_id,jobs?.data?.cost)
-            dispatch(setIsOpenInformationJob(true))
             dispatch(setDataModalInformationJob(data_push))
         }
     }, [dispatch, jobs]);
@@ -39,6 +38,7 @@ const Payment = () => {
         const data = {}
         data.id = rowdata?.data?.id_job;
         dispatch(getJobsRequest(data));
+        dispatch(setIsOpenInformationJob(true))
     }
 
     return (

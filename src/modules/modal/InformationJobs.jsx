@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useForm, Controller } from "react-hook-form";
 import { Dropdown } from 'primereact/dropdown';
 import { customer_status, type_files } from "./dropDown";
-import { UserRules, JobRules, NOT_SET_ADMIN } from "../../constants";
+import { UserRules, JobRules, NOT_SET_ADMIN, NAME_ROOM } from "../../constants";
 import { InputText } from 'primereact/inputtext';
 import { timezoneToDate } from '../../commons/dateTime';
 import { ConfirmPopup, confirmPopup } from 'primereact/confirmpopup';
@@ -24,6 +24,9 @@ import { overlay } from '../../commons/overlay';
 import { getEmployeePerformance } from '../../redux/employeePerformance/action';
 import { useLocation } from 'react-router';
 import { resetJobRequest } from '../../redux/overviewJobs/jobsSlice';
+import { orderIds } from '../../commons/message.common'
+import { socket } from "../../_services/socket";
+import { getCurrentRoom, setIsOpenChat } from '../../redux/messages/messageSlice';
 
 const InformationJobs = () => {
     const toast = useRef(null);
@@ -37,6 +40,8 @@ const InformationJobs = () => {
     const [requestContent, setRequestContent] = useState(false);
     const [selectEditor, setSelectEditor] = useState(false);
     const [isOpenInput, setIsOpenInput] = useState({})
+    const [idUserCreateJob, setIdUserCreateJob] = useState("")
+    const [idEditorAdded, setIdEditorAdded] = useState("")
 
     const user = useSelector(state => state.auth.user)
     const isOpenInformationJob = useSelector(state => state.modal.isOpenInformationJob)
@@ -44,6 +49,9 @@ const InformationJobs = () => {
     const deletejobs = useSelector(state => state.jobs?.deletejobs)
     const updatejobs = useSelector(state => state.jobs?.editjobs)
     const donejobs = useSelector(state => state.jobs?.donejobs)
+    const members = useSelector(state=> state.message.allMembers)
+    const currentUser = useSelector(state=> state.message.currentUser)
+
     const { control, register, setValue, handleSubmit, formState: { errors }, reset } = useForm();
 
     const employees = useSelector(state => state.employee?.dashboard)
@@ -79,6 +87,10 @@ const InformationJobs = () => {
         if (rowdata?.data?.request_content) {
             setRequestContent(rowdata?.data?.request_content)
         }
+        if(rowdata?.data){
+            setIdUserCreateJob(rowdata?.data?.id_saler)
+            setIdEditorAdded(rowdata?.data?.id_editor)
+        }
     }, [rowdata, setValue])
 
     useEffect(() => {
@@ -113,7 +125,7 @@ const InformationJobs = () => {
         reset()
     }, [dispatch,
         setSelectEditor,
-        reset
+        reset,
     ])
 
     useEffect(() => {
@@ -210,17 +222,48 @@ const InformationJobs = () => {
         }
     }, [rowdata, setValue])
 
+    const handleRedirectMessage = ()=>{
+        if(idUserCreateJob !== "" && idEditorAdded !== "" && idEditorAdded !== UserRules.ROLE.NOT_SET_BY_ADMIN){
+            const idRoom = orderIds(idUserCreateJob, idEditorAdded, NAME_ROOM.USER)
+            let room = ""
+            if(user?.data?.role === UserRules?.ROLE?.SALER || user?.data?.role === UserRules?.ROLE?.ADMIN){
+                room = idEditorAdded
+            }else if(user?.data?.role === UserRules?.ROLE?.EDITOR ){
+                room = idUserCreateJob
+            }
+            const result = {
+                name : room,
+                room : idRoom
+            }
+            for( let member of members){
+                if(member.id_system === room){
+                    result.type = member?.role
+                    break
+                }
+            }
+
+            socket.emit("reset-notifications",result?.room, currentUser?.id_system)
+            dispatch(getCurrentRoom(result))
+            dispatch(setIsOpenChat(true))
+            dispatch(setIsOpenInformationJob(false));
+        }
+    }
+
     return (
         <>
             <ConfirmPopup />
             <Toast ref={toast} position="bottom-left" />
             <Sidebar visible={isOpenInformationJob} position="right" onHide={handleCloseModal} className="create__job">
                 <div className="creat__job">
-                    <div className="creat__job--title flex justify-content-between">
+                    <div className="creat__job--title flex justify-content-between align-items-center">
                         <h2>Thông tin công việc </h2>
                         {
                             user?.data?.role === "ADMIN" && rowdata?.data && Object?.keys(rowdata?.data).length > 0 &&
                             <Button onClick={handleRemoveRow}><img src="images/trash.svg" alt="" className="image__trash" /></Button>
+                        }
+                        {
+                            idUserCreateJob !== "" && idEditorAdded !== "" && idEditorAdded !== UserRules.ROLE.NOT_SET_BY_ADMIN && 
+                            <img src="images/btn_chat.svg" alt="" className="cursor-pointer" onClick={handleRedirectMessage}/>
                         }
                     </div>
                     <form className=" grid modal__creat--job no_flex" onSubmit={handleSubmit(onSubmit)}>

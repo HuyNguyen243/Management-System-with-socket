@@ -12,7 +12,6 @@ import {
 import { NAME_ROOM } from '../../../../constants';
 import Members from './Members';
 import Groups from './Groups';
-import { CharacterRoom } from '../../../../commons/message.common';
 import { UserRules } from '../../../../constants';
 
 const Index = (
@@ -253,19 +252,18 @@ const Index = (
 
     return (
         <div className={`people-list ${isOpen && "active"}`} id="people-list" onClick={handleOpenMembersBlock}>
-        <div className="message__title">
-            <div className="notification-message__search">
+        <div className="message__title h-0 p-0">
+            <div className="notification-message__search ">
                 <TextField
                     label="Tìm kiếm"
                     id="outlined-size-small"
                     value={keyword}
                     size="small"
                     onChange={handleSearchRoom}
+                    className="hidden w-0"
                 />
-                <img src="../../images/search_blue.svg" alt="" className="filter__btn--search"/>
             </div>
             <div className="flex flex-column justify-content-center">
-                <div className="chat_img avatar_me" data={user?.data?.status} role={CharacterRoom(currentUser?.role)}></div>
             </div>
         </div>
         <ul className="list">

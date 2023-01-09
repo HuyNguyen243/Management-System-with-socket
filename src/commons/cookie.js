@@ -10,7 +10,7 @@ export const Cookie = {
         const cookie_token = document.cookie.split(';');
         for (let i = 0; i < cookie_token.length; i++) {
             let c = cookie_token[i];
-            while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+            while (c?.charAt(0) === ' ') c = c.substring(1, c.length);
             if (c.indexOf(NAME_SESSION_STORAGE_TOKEN) === 0){
                 const str = c.substring(NAME_SESSION_STORAGE_TOKEN.length, c.length)?.replace(`=`, " ");
                 return str.trim();
@@ -26,7 +26,7 @@ export const Cookie = {
         const checked = document.cookie.split(';');
         for (let i = 0; i < checked.length; i++) {
             let c = checked[i];
-            while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+            while (c?.charAt(0) === ' ') c = c.substring(1, c.length);
             if (c.indexOf("checked") === 0){
                 const str = c.substring("checked".length, c.length)?.replace(`=`, " ");
                 return JSON.parse(str.trim());

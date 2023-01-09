@@ -15,6 +15,7 @@ const Navigation = ({ open, getBtnNavIsOpen }) => {
     const [activeRoute, setActiveRoute] = useState([])
     const dispatch = useDispatch()
     const user = useSelector(state => state?.auth?.user)
+
     const handleRedirect = (isRederect, route, indexElParent, item) => {
         if (isRederect && route) {
             navigate(route)
@@ -34,7 +35,6 @@ const Navigation = ({ open, getBtnNavIsOpen }) => {
         if (item?.name_image === "setting") {
             dispatch(setIsOpenModalSetting(true))
         }
-
     }
 
     const showNavChild = (elements) => {

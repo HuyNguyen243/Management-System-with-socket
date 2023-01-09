@@ -27,6 +27,21 @@ const Groups = ({
     const groupTopRef = useRef(null);
     const isScrollTop = useSelector(state=>state.message.groupsScrollTop)
     const dispatch = useDispatch()
+    const userReminders = useSelector(state => state.auth.userReminders)
+
+    const checkNameReminder = (id)=>{
+        if(userReminders?.data?.data){
+            const reminders = userReminders?.data?.data
+
+           for(let i = 0; i < reminders.length; i++){
+               if(reminders[i]?._id?.id_system === id){
+                   return reminders[i]?._id?.infor_reminder
+               }
+           }
+        }else{
+            return id
+        }
+    }
 
     React.useEffect(()=>{
         if(isScrollTop){
@@ -84,7 +99,15 @@ const Groups = ({
     })
 
     socket.off('groups-preview').on('groups-preview', (payload)=>{
-       setRoomView(payload)
+        const roomOfStaffs = payload.reduce((acc,room)=>{
+            const dup = acc.find((addr) => addr?._id?._id === room?._id?._id );
+            if (dup) {
+                return acc;
+            }
+            return acc.concat(room);
+        },[])
+
+       setRoomView(roomOfStaffs)
     })
 
     const scrollToTop = () => {
@@ -99,8 +122,10 @@ const Groups = ({
         setPrivateMemberMsg("")
         setRole("GROUP TO VIEW")
         setMembersInGroup(room?._id?.members)
-        setNamePrivateRoom(room?._id?.name)
-
+        const arrStaffs = room?._id?.name.split("-")
+        const mb1= checkNameReminder(arrStaffs?.[1])
+        const mb2= checkNameReminder(arrStaffs?.[2])
+        setNamePrivateRoom(mb1 + "-" + mb2)
     }
 
     const resetRoomAfterDelete = ()=>{
@@ -150,14 +175,22 @@ const Groups = ({
         {
             roomview && roomview?.length > 0 &&
             roomview.map((room,index)=>{
+                const arrStaffs = room?._id?.name.split("-")
+                const mb1= checkNameReminder(arrStaffs?.[1])
+                const mb2= checkNameReminder(arrStaffs?.[2])
+                const firstChartMb1 = mb1 ? mb1?.charAt(0) : ""
+                const firstChartMb2 = mb2 ? mb1?.charAt(0) : ""
                 return(
                     <div key={index} onClick={()=>handleGroupView(room)} >
-                        <li className={privateGroupMsg === room?._id?._id ? "active" : ""}>
-                        <div className="chat_img" ></div>
-                            <div className="about">
-                            <div className="name">{room?._id?.name}</div>
-                        </div>
-                        </li>
+                        {
+                            mb1 && mb2 && 
+                            <li className={privateGroupMsg === room?._id?._id ? "active" : ""}>
+                                <div className="chat_img" role={firstChartMb1 + firstChartMb2}></div>
+                                    <div className="about">
+                                    <div className="name">{mb1 + "-" + mb2}</div>
+                                </div>
+                            </li>
+                        }
                     </div>
                 )
             })

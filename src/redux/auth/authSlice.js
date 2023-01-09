@@ -6,7 +6,8 @@ import {
     userEditProfile,
     userChangeStatus,
     forgotPassword,
-    resetPassword
+    resetPassword,
+    userGetReminderRequest,
 } from './action'
 import { NAME_SESSION_STORAGE_TOKEN } from '../../constants';
 
@@ -46,6 +47,11 @@ const initialState = {
         data : null,
         error: false,
     },
+    userReminders:{
+        loading: false,
+        data : null,
+        error: false,
+    }
 }
 const userReducer = createSlice({
     name: 'user',
@@ -250,6 +256,32 @@ const userReducer = createSlice({
         [resetPassword.rejected]: (state,action) => {
             Object.assign(state,{},{
                 resetpassword: {
+                    loading : false,
+                    error : true,
+                    data : action.payload,
+                }
+            })
+        },
+
+        [userGetReminderRequest.pending]: (state) => {
+            Object.assign(state,{},{
+                userReminders:{
+                    loading : true
+                }
+            })
+        },
+        [userGetReminderRequest.fulfilled]: (state,action) => {
+            Object.assign(state,{},{
+                userReminders: {
+                    loading : false,
+                    error : false,
+                    data : action.payload,
+                }
+            })
+        },
+        [userGetReminderRequest.rejected]: (state,action) => {
+            Object.assign(state,{},{
+                userReminders: {
                     loading : false,
                     error : true,
                     data : action.payload,

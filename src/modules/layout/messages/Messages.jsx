@@ -11,7 +11,6 @@ import { useLocation } from 'react-router';
 import { NAME_NOTIFICATION } from '../../../constants';
 import { postFireBaseNotification } from '../../../_services/apiRequest';
 
-
 const Messages = ({isOpenMessages, setisOpenMessages}) => {
     const [messages,setMessages] = useState([])
     const [token,setToken] = useState(null)
@@ -23,6 +22,7 @@ const Messages = ({isOpenMessages, setisOpenMessages}) => {
     const location = useLocation()
     const { search } = location
     const pathNameURL = window.location.href.replace(search,"")
+    const userReminders = useSelector(state => state.auth.userReminders)
 
     requestPermission(setToken)
 
@@ -115,17 +115,29 @@ const Messages = ({isOpenMessages, setisOpenMessages}) => {
                             return CharacterRoom(member.role)
                         }
                         if(member?.fullname === name && currentUser?.role === UserRules.ROLE.ADMIN){
-                            return CharacterRoom(member?.fullname.charAt(0).toUpperCase())
+                            return CharacterRoom(member?.fullname?.charAt(0).toUpperCase())
                         }
                     }
                 }
             }else if(type === NAME_ROOM.GROUP){
-                return name.charAt(0) + name.charAt(1)
+                return name?.charAt(0) + name?.charAt(1)
             }
         }
     }
 
+    const checkNameReminder = (id)=>{
+        if(user?.data?.role !== UserRules?.ROLE?.ADMIN && userReminders?.data?.data){
+            const reminders = userReminders?.data?.data
 
+           for(let i = 0; i < reminders.length; i++){
+               if(reminders[i]?._id?.id_system === id){
+                   return reminders[i]?._id?.infor_reminder
+               }
+           }
+        }else{
+            return id
+        }
+    }
 
     return (
         <div className={`notification-message__container ${!isOpenMessages && "hidden"}`}>
@@ -136,6 +148,7 @@ const Messages = ({isOpenMessages, setisOpenMessages}) => {
                 {
                     messages?.length > 0 ?
                     messages.map((item,index)=>{
+                        const name = checkNameReminder(replaceName(item?._id))
                         return(
                             <div className="notification-message__block " 
                                 key={index} 
@@ -148,7 +161,7 @@ const Messages = ({isOpenMessages, setisOpenMessages}) => {
                                     <div className="chat_img" data="ADMIN" role={setCharacterForImage(replaceName(item?._id),item.type)}></div>
                                     <div className="notification-message_item">
                                         <p className="notification-message__name flex justify-content-between">
-                                            <span >{replaceName(item?._id) }</span>
+                                            <span >{name}</span>
                                             <span className="notification__time">{timeAgo(item?.time)}</span>
                                         </p>
                                         <div className="notification-message__i">

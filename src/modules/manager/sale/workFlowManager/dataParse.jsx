@@ -3,8 +3,14 @@ export const dataParse = (data) => {
         const result = data.map((item) => {
             const newobject = {
                 id_system: item?.infor_id?.id_system,
+<<<<<<< src/modules/manager/sale/workFlowManager/dataParse.jsx
                 reminder_customer: item?.infor_reminder?.reminder_customer,
                 reminder_editor: item?.infor_reminder?.reminder_editor,
+=======
+                id_customer: item?.infor_id?.id_customer,
+                id_editor: item?.infor_id?.id_editor,
+                id_saler: item?.infor_id?.id_saler,
+>>>>>>> src/modules/manager/sale/workFlowManager/dataParse.jsx
                 saler_cost: item?.cost?.saler_cost,
                 start_day: item?.infor?.start_day,
                 end_day: item?.infor?.end_day,

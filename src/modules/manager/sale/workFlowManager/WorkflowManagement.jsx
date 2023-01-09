@@ -11,7 +11,6 @@ const WorkflowManagement = () => {
     const dispatch = useDispatch()
     const [filter, setFilter] = useState("")
     const jobs = useSelector(state => state.jobs?.dashboard)
-    const user = useSelector(state=> state.auth.user)
 
     useEffect(()=>{
         dispatch(kpiYearOfMonth())
@@ -19,18 +18,19 @@ const WorkflowManagement = () => {
 
     useEffect(() => {
         dispatch(dashboardJobsRequest(filter))
+        dispatch(getEmployeePerformance())
+    }, [dispatch, filter])
 
-        if(filter && filter.length > 0 &&( filter?.includes("start_date") || filter?.includes("end_date"))){
-            // const newSearch = filter + "&id=" + user?.data?.id_system
-            // RESET_REQUEST(dispatch, newSearch, getEmployeePerformance)
-        }else{
-            let search = filter
-            if(Object.keys(filter).length === 0){
-                search = ""
-            }
-            dispatch(getEmployeePerformance(search))
-        }
-    }, [dispatch, filter, user])
+    useEffect(() => {
+        let interval = setInterval(() => {
+            dispatch(dashboardJobsRequest(filter))
+            dispatch(getEmployeePerformance())
+        }, 60000 * 5 );
+        
+        return () => {
+            clearInterval(interval);
+        };
+    }, [filter, dispatch]);
 
     const DataFilter = (data) => {
         setFilter(data)

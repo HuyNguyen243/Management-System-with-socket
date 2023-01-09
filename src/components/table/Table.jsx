@@ -179,7 +179,7 @@ const Table = ({
             first={currentLocation}
             rows={perpage} 
             onPage={handleSetPage}
-            emptyMessage={"Không có kết quả tìm kiếm"}
+            emptyMessage={"Không có dữ liệu"}
             >
             {
                 old_Data?.length > 0 

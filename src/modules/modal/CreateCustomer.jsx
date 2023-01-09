@@ -99,7 +99,7 @@ const CreateCustomer = () => {
                                 <span htmlFor="autocomplete">Nhập tên khách hàng: <span className="warning">*</span></span>
                                 <Controller name="fullname"
                                     control={control}
-                                    rules={{ required: "Chưa điền tên khách hàng", minLength: 6 }} render={({ field, fieldState }) => (
+                                    rules={{ required: "Chưa điền tên khách hàng", minLength: 3 }} render={({ field, fieldState }) => (
                                         <InputText
                                             id={field.name}
                                             {...field}

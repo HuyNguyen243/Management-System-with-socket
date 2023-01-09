@@ -87,9 +87,9 @@ const InformationUser = () => {
     };
 
     const handleCloseModal = () => {
-        dispatch(setIsOpenModalInformationUser(false))
         setIsOpenInput({});
         reset()
+        dispatch(setIsOpenModalInformationUser(false))
     }
 
     const handleDeleteUser = () => {

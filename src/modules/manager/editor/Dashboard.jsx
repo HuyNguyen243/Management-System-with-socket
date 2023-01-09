@@ -17,6 +17,16 @@ const Dashboard = () => {
         RESET_REQUEST(dispatch,filter,dashboardJobsRequest)
     }, [dispatch, filter])
 
+    useEffect(() => {
+        let interval = setInterval(() => {
+            RESET_REQUEST(dispatch,filter,dashboardJobsRequest)
+        }, 60000 * 5 );
+        
+        return () => {
+            clearInterval(interval);
+        };
+    }, [filter, dispatch]);
+
     const DataFilter = (data) => {
         setFilter(data)
     }

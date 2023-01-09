@@ -247,7 +247,7 @@ const InformationCustomer = () => {
                                                     <InputText
                                                         defaultValue={rowdata?.data?.fullname}
                                                         onChange={(e) => setValue("fullname", e.target.value)}
-                                                        {...register("fullname", { required: true })}
+                                                        {...register("fullname", { required: true, minLength: 3 })}
                                                         className={errors?.fullname && "p-invalid"}
                                                     />
                                                     :

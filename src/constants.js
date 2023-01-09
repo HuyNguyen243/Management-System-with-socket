@@ -33,6 +33,7 @@ export const UserRules = {
         LEADER_EDITOR: "LEADER_EDITOR",
         JOB: "JOB",
         PAY: "PAY",
+        NOT_SET_BY_ADMIN: "NOT_SET_BY_ADMIN",
     },
     ROLE_NAME: {
         SALER: "SALER",
