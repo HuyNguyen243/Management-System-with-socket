@@ -11,7 +11,8 @@ export const dataParse = (data)=>{
                 births: item?.births,
                 phone: item?.phone,
                 email: item?.email,
-                id_system: item?.id_system
+                id_system: item?.id_system,
+                kpi_saler: item?.kpi_saler,
             }
             return newobject
         })

@@ -22,6 +22,7 @@ import {
 } from '../../redux/modal/modalSlice';
 import { resetEditUser } from '../../redux/overviewEmployee/employeeSlice';
 import { overlay } from '../../commons/overlay';
+import { InputNumber } from 'primereact/inputnumber';
 
 const InformationUser = () => {
     const putUser = useSelector(state => state.employee?.edituser)
@@ -128,6 +129,7 @@ const InformationUser = () => {
         toastMsg.success(toast, 'Sao chép mã nhân viên thành công')
         copy(rowdata?.data?.id_system);
     }
+
     return (
         <>
             <ConfirmPopup />
@@ -258,9 +260,27 @@ const InformationUser = () => {
                                     <div className="field col-12 md:col-6">
                                         <span htmlFor="original__link">Địa chỉ: </span>
                                         <span className="p-float-label cursor__normal mt-4">
-                                            {rowdata?.data?.address ? (<span className='font-bold'>{rowdata?.data?.address}</span>) : (<span className=''>Trống</span>)}
+                                            {rowdata?.data?.address ? (<span className='font-bold mt-5 block'>{rowdata?.data?.address}</span>) : (<span className=''>Trống</span>)}
                                         </span>
                                     </div>
+                                    {
+                                        rowdata?.data?.role === UserRules?.ROLE?.SALER && 
+                                        <div className="field col-12 md:col-6">
+                                            <span htmlFor="original__link">Số tiền hoàn thành: </span>
+                                            <span className="p-float-label cursor__normal mt-4">
+                                                <InputNumber id="editor_cost"
+                                                    inputId="currency-vn"
+                                                    value={rowdata?.data?.kpi_saler}
+                                                    onValueChange={(e) => setValue("kpi_saler", e.target.value)}
+                                                    mode="currency"
+                                                    currency="VND"
+                                                    locale="vi-VN"
+                                                    useGrouping={true}
+                                                    className={"m-0"}
+                                                />
+                                            </span>
+                                        </div>
+                                    }
                                 </div>
                         }
 
