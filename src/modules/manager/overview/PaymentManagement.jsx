@@ -17,7 +17,8 @@ import { getEmployeeRequest } from "../../../redux/overviewEmployee/actionEmploy
 
 const PaymentManagement = () => {
     const dispatch = useDispatch()
-    const payment = useSelector(state => state.payment?.getpay);
+    // const payment = useSelector(state => state.payment?.getpay);
+    const paymentStaff = useSelector(state => state.payment?.getstaff);
     const jobs = useSelector(state => state.jobs?.getjobs)
     const [filter, setFilter] = useState("");
     const employees = useSelector(state => state.employee?.inforuser)
@@ -67,8 +68,8 @@ const PaymentManagement = () => {
 
     return (
         <Table
-            dataTable={dataParseManagement(payment?.data)}
-            loading={payment?.loading}
+            dataTable={dataParseManagement(paymentStaff?.data)}
+            loading={paymentStaff?.loading}
             DataFilter={DataFilter}
             haveTotalTable={false}
             header={table_payment_managerment}
