@@ -7,11 +7,14 @@ import { dataParse , horizontalOptions} from '../../overview/employeePerformance
 import { Chart } from 'primereact/chart';
 import { Calendar } from 'primereact/calendar';
 import {  kpiYearOfMonth } from "../../../../redux/employeePerformance/action";
+import { UserRules } from '../../../../constants';
 
 const TableTotal = ({ setDateWorkFlow, dateWorkFlow }) => {
   const performance = useSelector(state => state.performanceReducer.employeePerformance)
   const dataTable = dataParse(performance?.data)
   const kpisYear = useSelector(state => state.performanceReducer?.kpis)
+  const user = useSelector(state=> state.auth.user)
+
   const [year, setyear] = useState(null);
   const dispatch = useDispatch()
 
@@ -84,7 +87,7 @@ const TableTotal = ({ setDateWorkFlow, dateWorkFlow }) => {
     }
 		dispatch(kpiYearOfMonth(`?year=${getYear}`))
 	}
-  
+
   return (
     <div className="grid">
         <DataTable value={[dataTable]} responsiveLayout="stack" breakpoint="1400px" className="table__total--workflow--management field col-12 md:col-12 m-0">
@@ -93,7 +96,10 @@ const TableTotal = ({ setDateWorkFlow, dateWorkFlow }) => {
               <Column body={()=>bodyTable(dataTable?.job_complete)} header={()=>headerTable("Đã hoàn thành")} />
               <Column body={()=>bodyTable(dataTable?.cost_jobs)} header={()=>headerTable("Doanh thu")} />
               <Column body={()=>bodyTable(dataTable?.bonus)} header={()=>headerTable("Bonus")} />
-              <Column body={()=>bodyTable(dataTable?.kpi)} header={()=>headerTable("KPI")} />
+              {
+                user?.data?.role !== UserRules?.ROLE?.ADMIN &&
+                <Column body={()=>bodyTable(dataTable?.kpi)} header={()=>headerTable("KPI")}/>
+              }
         </DataTable>
       <div className="field col-12 md:col-7 " >
 	  		<Calendar id="yearpicker " className="w-3 calendar__year" value={year} onChange={handleChangeYear} view="year" dateFormat="yy" placeholder="Chọn năm"/>

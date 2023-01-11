@@ -35,3 +35,39 @@ export const kpiYearOfMonth = createAsyncThunk(
         }
     }
 )
+
+export const jobsStaffSaler = createAsyncThunk(
+    'jobsStaffSaler',
+    async (data, { rejectWithValue }) => {
+        try {
+            let url;
+            if(data){
+                url = `performance/staffSaler${data}`
+            }else{
+                url = `performance/staffSaler`
+            }
+            const res = await get(url)
+            return res.data
+        } catch (error) {
+            return rejectWithValue(error?.response?.data);
+        }
+    }
+)
+
+export const jobsStaffEditor = createAsyncThunk(
+    'jobsStaffEditor',
+    async (data, { rejectWithValue }) => {
+        try {
+            let url;
+            if(data){
+                url = `performance/staffEditor${data}`
+            }else{
+                url = `performance/staffEditor`
+            }
+            const res = await get(url)
+            return res.data
+        } catch (error) {
+            return rejectWithValue(error?.response?.data);
+        }
+    }
+)

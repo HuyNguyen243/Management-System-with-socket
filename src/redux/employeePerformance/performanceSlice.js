@@ -3,6 +3,8 @@ import { createSlice } from "@reduxjs/toolkit";
 import {
     getEmployeePerformance,
     kpiYearOfMonth,
+    jobsStaffSaler,
+    jobsStaffEditor
 } from "./action";
 
 const initialState = {
@@ -12,6 +14,16 @@ const initialState = {
         error: false,
     },
     kpis: {
+        loading: false,
+        data: null,
+        error: false,
+    },
+    jobsStaffSaler: {
+        loading: false,
+        data: null,
+        error: false,
+    },
+    jobsStaffEditor: {
         loading: false,
         data: null,
         error: false,
@@ -94,6 +106,82 @@ const employeePerformanceReducer = createSlice({
                 {},
                 {
                     kpis: {
+                        loading: false,
+                        data: null,
+                        error: true,
+                    },
+                }
+            );
+        },
+
+        [jobsStaffSaler.pending]: (state) => {
+            Object.assign(
+                state,
+                {},
+                {
+                    jobsStaffSaler: {
+                        loading: true,
+                    },
+                }
+            );
+        },
+        [jobsStaffSaler.fulfilled]: (state, action) => {
+            Object.assign(
+                state,
+                {},
+                {
+                    jobsStaffSaler: {
+                        loading: false,
+                        data: action.payload,
+                        error: false,
+                    },
+                }
+            );
+        },
+        [jobsStaffSaler.rejected]: (state, action) => {
+            Object.assign(
+                state,
+                {},
+                {
+                    jobsStaffSaler: {
+                        loading: false,
+                        data: null,
+                        error: true,
+                    },
+                }
+            );
+        },
+
+        [jobsStaffEditor.pending]: (state) => {
+            Object.assign(
+                state,
+                {},
+                {
+                    jobsStaffEditor: {
+                        loading: true,
+                    },
+                }
+            );
+        },
+        [jobsStaffEditor.fulfilled]: (state, action) => {
+            Object.assign(
+                state,
+                {},
+                {
+                    jobsStaffEditor: {
+                        loading: false,
+                        data: action.payload,
+                        error: false,
+                    },
+                }
+            );
+        },
+        [jobsStaffEditor.rejected]: (state, action) => {
+            Object.assign(
+                state,
+                {},
+                {
+                    jobsStaffEditor: {
                         loading: false,
                         data: null,
                         error: true,
