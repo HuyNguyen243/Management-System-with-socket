@@ -167,23 +167,17 @@ const Notification = ({isOpenNotification, setisOpenNotification}) => {
         switch (user?.data?.role) {
             case UserRules.ROLE.ADMIN:
                 if(status === NotificationRules.STATUS.COMPLETE_JOB){
-                    pathname = "/payment-management"
-                }else{
                     pathname = "/jobs-overview"
                 }
                 break;
             case UserRules.ROLE.SALER:
                 if(status === NotificationRules.STATUS.PAYMENT_JOB_PAID || status === NotificationRules.STATUS.PAYMENT_JOB_UNPAY){
-                    pathname = "/payment"
-                }else{
                     pathname = "/workflow-management"
                 }
                 break;
             case UserRules.ROLE.EDITOR:
             case UserRules.ROLE.LEADER_EDITOR:
                 if(status === NotificationRules.STATUS.PAYMENT_JOB_PAID || status === NotificationRules.STATUS.PAYMENT_JOB_UNPAY){
-                    pathname = "/payment"
-                }else{
                     pathname = "/"
                 }
                 break;
