@@ -260,15 +260,19 @@ const InformationJobs = () => {
             <Sidebar visible={isOpenInformationJob} position="right" onHide={handleCloseModal} className="create__job">
                 <div className="creat__job">
                     <div className="creat__job--title flex justify-content-between align-items-center">
-                        <h2>Thông tin công việc </h2>
-                        {
-                            user?.data?.role === "ADMIN" && rowdata?.data && Object?.keys(rowdata?.data).length > 0 &&
-                            <Button onClick={handleRemoveRow}><img src="images/trash.svg" alt="" className="image__trash" /></Button>
-                        }
-                        {
-                            idUserCreateJob !== "" && idEditorAdded !== "" && idEditorAdded !== UserRules.ROLE.NOT_SET_BY_ADMIN && 
-                            <img src="images/btn_chat.svg" alt="" className="cursor-pointer" onClick={handleRedirectMessage}/>
-                        }
+                        <div className="flex align-items-center">
+                            <h2 className="mr-2">
+                                Thông tin công việc
+                            </h2>
+                            {
+                                idUserCreateJob !== "" && idEditorAdded !== "" && idEditorAdded !== UserRules.ROLE.NOT_SET_BY_ADMIN && 
+                                <img src="images/btn_chat.svg" alt="" className="cursor-pointer" onClick={handleRedirectMessage}/>
+                            }
+                        </div>
+                            {
+                                user?.data?.role === "ADMIN" && rowdata?.data && Object?.keys(rowdata?.data).length > 0 &&
+                                <Button onClick={handleRemoveRow}><img src="images/trash.svg" alt="" className="image__trash" /></Button>
+                            }
                     </div>
                     <form className=" grid modal__creat--job no_flex" onSubmit={handleSubmit(onSubmit)}>
                         {
