@@ -5,7 +5,7 @@ export const dataParse = (data) => {
                 id_job: item?.id_job,
                 pay_employees: item?.pay_employees,
                 _create_at: item?._create_at,
-                status_pay: item?.status,
+                status: item?.status,
                 id_system: item?.id_system,
             }
             return newobject
