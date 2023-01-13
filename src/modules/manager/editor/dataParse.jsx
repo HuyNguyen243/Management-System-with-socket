@@ -5,7 +5,6 @@ export const dataParse = (data) => {
                 id_system: item?.infor_id?.id_system,
                 reminder_customer: item?.infor_reminder?.reminder_customer,
                 reminder_saler: item?.infor_reminder?.reminder_saler,
-                id_editor: item?.infor_id?.id_editor,
                 editor_cost: item?.cost?.editor_cost,
                 start_day: item?.infor?.start_day,
                 end_day: item?.infor?.end_day,
@@ -21,6 +20,7 @@ export const dataParse = (data) => {
                 type_models: item?.infor?.type_models,
                 id_customer: item?.infor_id?.id_customer,
                 id_saler: item?.infor_id?.id_saler,
+                id_editor: item?.infor_id?.id_editor,
             }
             return newobject
         })
