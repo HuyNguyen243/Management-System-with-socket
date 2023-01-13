@@ -12,7 +12,10 @@ import {
     JOB_DONE,
     JOB_PENDING,
     JOB_INCOMPLETE,
-    CUSTOMER_REQUEST_DONE
+    CUSTOMER_REQUEST_DONE,
+    PAY_PAID,
+    PAY_UNPAY,
+    PAY_CANCEL,
 } from '../../constants'
 import { timezoneToDate } from '../../commons/dateTime'
 import { formatUSD, formatVND } from '../../commons/formatCost'
@@ -52,22 +55,20 @@ const TableBody = ({ rowData, item }) => {
                         <span className="table__body-name btn_pending flex align-items-center" >{USER_IS_STOPPING}</span>
                     )
                 }
-                break;
-            case ("status_pay"):
-                const status_pay = rowData?.[item]
-                if (status_pay === CustomerRules.STATUS_PAY.PAID) {
+
+                if (status === CustomerRules.STATUS_PAY.PAID) {
                     return (
-                        <span className="table__body-name btn_success flex justify-content-center" >{JOB_DONE}</span>
+                        <span className="table__body-name btn_success flex justify-content-center" >{PAY_PAID}</span>
                     )
                 }
-                if (status_pay === CustomerRules.STATUS_PAY.CANCEL) {
+                if (status === CustomerRules.STATUS_PAY.CANCEL) {
                     return (
-                        <span className="table__body-name btn_stop flex justify-content-center" >{JOB_INCOMPLETE}</span>
+                        <span className="table__body-name btn_stop flex justify-content-center" >{PAY_CANCEL}</span>
                     )
                 }
-                if (status_pay === CustomerRules.STATUS_PAY.UNPAID) {
+                if (status === CustomerRules.STATUS_PAY.UNPAID) {
                     return (
-                        <span className="table__body-name btn_pending flex justify-content-center" >{JOB_PENDING}</span>
+                        <span className="table__body-name btn_pending flex justify-content-center" >{PAY_UNPAY}</span>
                     )
                 }
                 break;
@@ -184,6 +185,10 @@ const TableBody = ({ rowData, item }) => {
                     )
                 }
                 break;
+            case("date"):
+                return (
+                    <span className='table__body-name text-bold' >{rowData?.[item]}</span>
+                )
             case("infor_reminder"):
             case ("staff_is_pay"):
             case ("id_job"):

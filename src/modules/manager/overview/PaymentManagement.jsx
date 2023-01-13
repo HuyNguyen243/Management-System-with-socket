@@ -4,16 +4,12 @@ import Table from "../../../components/table/Table";
 import { table_payment_managerment } from '../../../components/table/header_table';
 import { getPayStaffRequest } from '../../../redux/payment/actionPay';
 import { dataParseManagement } from '../payment/dataParse';
-import { getJobsAdminRequest } from '../../../redux/overviewJobs/actionJobs';
 import {
-    setIsOpenInformationJob,
     setDataModalInformationJob,
-    setIsOpenModalInformationUser,
     setDataModalInformationUser,
     setIsOpenModalInformationPayment,
     setDataModalInformationPayment
 } from '../../../redux/modal/modalSlice';
-import { getEmployeeRequest } from "../../../redux/overviewEmployee/actionEmployee";
 
 const PaymentManagement = () => {
     const dispatch = useDispatch()
@@ -46,26 +42,9 @@ const PaymentManagement = () => {
     }, [employees, dispatch])
 
     const handleRowClick = (rowdata) => {
-        const el = rowdata.originalEvent.target.closest("td").childNodes[1];
-        const data = {}
-        if (el.className.includes("id_job")) {
-            data.id = el.innerHTML;
-            dispatch(getJobsAdminRequest(data));
-            dispatch(setIsOpenInformationJob(true))
-        } else if (el.className.includes("staff_is_pay")) {
-            //OPEN EDITOR 
-            const data = {}
-            if (el.innerHTML) {
-                data.id = el.innerHTML;
-                dispatch(getEmployeeRequest(data));
-                dispatch(setIsOpenModalInformationUser(true))
-            }
-        }else{
-            dispatch(setIsOpenModalInformationPayment(true))
-            dispatch(setDataModalInformationPayment(rowdata))
-        }
+        dispatch(setIsOpenModalInformationPayment(true))
+        dispatch(setDataModalInformationPayment(rowdata))
     }
-
     return (
         <Table
             dataTable={dataParseManagement(paymentStaff?.data)}

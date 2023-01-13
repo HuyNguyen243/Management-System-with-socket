@@ -6,10 +6,14 @@ export const JOB_DONE = "Đã hoàn thành";
 export const JOB_INCOMPLETE = "Chưa hoàn thành";
 export const JOB_PENDING = "Đang xử lý";
 
+export const PAY_PAID = "Đã thanh toán";
+export const PAY_UNPAY = "Chưa thanh toán";
+export const PAY_CANCEL = "Bị từ chối";
+
 export const CUSTOMER_REQUEST_REQUEST = "Đang yêu cầu";
 export const CUSTOMER_REQUEST_PENDING = "Đang xử lý yêu cầu";
 export const CUSTOMER_REQUEST_CANCEL = "Ngưng yêu cầu";
-export const CUSTOMER_REQUEST_DONE = "Đã hoàn thành"
+export const CUSTOMER_REQUEST_DONE = "Đã hoàn thành";
 
 export const PAY_DONE = "Đã thanh toán";
 export const PAY_PENDING = "Chưa thanh toán";
@@ -66,7 +70,10 @@ export const PayRules = {
     STATUS: {
         PAID: "PAID",
         UNPAID: "UNPAY",
-        CANCEL: "CANCEL",
+    },
+    STATUS_NAME: {
+        PAID: PAY_PAID,
+        UNPAID: PAY_UNPAY,
     },
 };
 
@@ -119,7 +126,7 @@ export const JobRules = {
         REQUEST: CUSTOMER_REQUEST_REQUEST,
         UNREQUEST: CUSTOMER_REQUEST_CANCEL,
         PENDING: CUSTOMER_REQUEST_PENDING,
-        DONE: CUSTOMER_REQUEST_DONE
+        DONE: CUSTOMER_REQUEST_DONE,
     },
 };
 
@@ -147,7 +154,7 @@ export const NAME_ROOM = {
 export const NAME_NOTIFICATION = {
     MESSAGE: "Tin nhắn",
     NOTIFICATION: "Thông báo",
-}
+};
 
 export const NotificationRules = {
     STATUS: {
@@ -169,7 +176,7 @@ export const NOTIFICATION_TITLE = {
     DELETE_JOB: "Một công việc đã được xóa bởi",
     EDIT_JOB: "Một công việc đã được chỉnh sửa bởi",
     FIXED: "Một công việc đã hoàn lại bởi ",
-}
+};
 
 export const CONFIG_COST = {
     EXCHANGE_RATE: 22000,
