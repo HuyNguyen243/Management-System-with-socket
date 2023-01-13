@@ -99,7 +99,7 @@ const payReducer = createSlice({
                     },
                 }
             );
-            state.getpay.data.splice(action?.payload?.index, 1, action.payload.data)
+            state?.getstaff?.data?.splice(action?.payload?.index, 1, action.payload.data)
         },
         [updatePayRequest.rejected]: (state, action) => {
             Object.assign(

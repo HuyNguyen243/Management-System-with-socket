@@ -37,7 +37,6 @@ export const editJobsRequest = createAsyncThunk(
                 res.data_user = data?.result
                 res.index = data?.index
             }
-            console.log(res)
             return res;
         } catch (error) {
             return rejectWithValue(error?.response?.data);

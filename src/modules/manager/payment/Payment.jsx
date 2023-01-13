@@ -16,7 +16,6 @@ const Payment = () => {
     const jobs = useSelector(state => state.jobs?.getjobs)
 
     const [filter, setFilter] = useState("");
-    console.log(payment)
     useEffect(() => {
         let id = user?.data?.id_system
         const data_search = [filter, id]
