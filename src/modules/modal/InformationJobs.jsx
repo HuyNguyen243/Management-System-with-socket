@@ -211,7 +211,11 @@ const InformationJobs = () => {
             if (user?.data?.role !== "LEADER_EDITOR" && user?.data?.role !== "EDITOR") {
                 dispatch(editJobsRequest(formData))
             } else {
-                dispatch(doneJobsRequest(formData))
+                if(formData?.result?.finished_link){
+                    dispatch(doneJobsRequest(formData))
+                }else{
+                    toastMsg.error(toast, 'Chưa cập nhật Link hoàn thành')
+                }
             }
         }
     };
