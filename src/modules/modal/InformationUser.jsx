@@ -266,17 +266,18 @@ const InformationUser = () => {
                                     {
                                         rowdata?.data?.role === UserRules?.ROLE?.SALER && 
                                         <div className="field col-12 md:col-6">
-                                            <span htmlFor="original__link">Số tiền hoàn thành: </span>
+                                            <span htmlFor="original__link">Số tiền hoàn thành:($) </span>
                                             <span className="p-float-label cursor__normal mt-4">
                                                 <InputNumber id="editor_cost"
-                                                    inputId="currency-vn"
+                                                    inputId="currency-us"
                                                     value={rowdata?.data?.kpi_saler}
                                                     onValueChange={(e) => setValue("kpi_saler", e.target.value)}
                                                     mode="currency"
-                                                    currency="VND"
-                                                    locale="vi-VN"
+                                                    currency="USD"
+                                                    locale="en-US"
                                                     useGrouping={true}
                                                     className={"m-0"}
+                                                    minFractionDigits={0}
                                                 />
                                             </span>
                                         </div>
