@@ -60,7 +60,7 @@ const jobsReducer = createSlice({
                 },
             })
         },
-        resetJobCreate:(state)=>{
+        resetJobCreated:(state)=>{
             Object.assign(state,{},{
                 addjobs:{
                     loading: false,
@@ -307,10 +307,15 @@ const jobsReducer = createSlice({
                     loading: false,
                     data: action?.payload,
                     error: true
-                }
+                },
+                editjobs: {
+                    loading: false,
+                    data: null,
+                    error: false,
+                },
             })
         },
     },
 });
-export const { resetJobRequest, resetJobCreate } = jobsReducer.actions
+export const { resetJobRequest, resetJobCreated } = jobsReducer.actions
 export default jobsReducer.reducer;
