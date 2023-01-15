@@ -166,7 +166,7 @@ const InformationPayment = () => {
                                                 <span className='font-bold col-3 md:col-3'>{index + 1}.</span>
                                                 <span className='font-bold text-left col-3 md:col-3'>{item?.id_job}</span>
                                                 <span className='font-bold text-right col-3 md:col-3 color__green'>{formatVND(item?.pay_employees)}</span>
-                                                <img src="images/copy.svg" alt="" label="Bottom Right" onClick={() => copyToClipboard(item?.id_job)} className="cursor-pointer col-3 md:col-3 copy__icon" />
+                                                <img src="images/copy.svg" alt="" label="Bottom Right" onClick={() => copyToClipboard(item?.id_job)} className="cursor-pointer col-3 md:col-3 copy__icon__payments" />
                                             </div>
                                         )
                                     })

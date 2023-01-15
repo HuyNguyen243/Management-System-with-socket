@@ -4,15 +4,15 @@ export const table_work_flowManager = [
         haveSort: false,
     },
     {
-        name: "Biệt danh KH",
+        name: "KH",
         haveSort: true,
     },
     {
-        name: "Biệt danh Editor",
+        name: "Editor",
         haveSort: true,
     },
     {
-        name: "Số tiền nhận được",
+        name: "Số tiền",
         haveSort: true,
     },
     {
