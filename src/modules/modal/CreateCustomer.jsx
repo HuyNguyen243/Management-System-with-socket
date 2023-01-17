@@ -129,10 +129,11 @@ const CreateCustomer = () => {
                                             />
                                         )} />
                                 </span>
-                            </div>
-                            {
+                                {
                                 errors?.infor_reminder && <span className="warning" style={{ fontSize: "12px" }}>{errors?.infor_reminder.message}</span>
-                            }
+                                }
+                            </div>
+                          
                             <div className="field col-12 md:col-6 create__job--calendar">
                                 <span htmlFor="calendar">Ngày tháng năm sinh:<span className="warning">*</span></span>
                                 <Controller name="birth"
