@@ -67,11 +67,7 @@ const jobsReducer = createSlice({
                     loading: false,
                     data: null,
                     error: false,
-<<<<<<< src/redux/overviewJobs/jobsSlice.js
                 }
-=======
-                },
->>>>>>> src/redux/overviewJobs/jobsSlice.js
             })
         },
         resetJobCreated:(state)=>{
