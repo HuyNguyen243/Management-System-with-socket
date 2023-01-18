@@ -80,7 +80,7 @@ const InformationCustomer = () => {
             resetModal()
             toastMsg.success(toast, 'Xóa khách hàng thành công')
             setTimeout(() => {
-                dispatch(resetDeleteCustomer())
+                dispatch(resetEditCustomer())
             }, 500);
         }
 

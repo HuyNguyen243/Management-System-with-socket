@@ -50,7 +50,7 @@ const employeeReducer = createSlice({
                     loading: false,
                     data: null,
                     error: false,
-                },
+                }
             })
         },
         resetdeleteUser: (state)=>{

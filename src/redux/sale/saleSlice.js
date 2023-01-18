@@ -50,7 +50,7 @@ const saleSlice = createSlice({
                     loading: false,
                     data: null,
                     error: false,
-                }
+                },
             })
         },
         resetCreateCustomer: (state)=>{
