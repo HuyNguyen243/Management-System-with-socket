@@ -27,7 +27,7 @@ import { resetJobRequest } from '../../redux/overviewJobs/jobsSlice';
 import { orderIds } from '../../commons/message.common'
 import { socket } from "../../_services/socket";
 import { getCurrentRoom, setIsOpenChat } from '../../redux/messages/messageSlice';
-import { resetJobCreated } from '../../redux/overviewJobs/jobsSlice';
+import { resetJobCreated, resetJobdeleted } from '../../redux/overviewJobs/jobsSlice';
 
 const InformationJobs = () => {
     const toast = useRef(null);
@@ -106,7 +106,7 @@ const InformationJobs = () => {
             toastMsg.error(toast, 'Xóa công việc thất bại')
         }
         setTimeout(() => {
-            dispatch(resetJobCreated())
+            dispatch(resetJobdeleted())
         }, 500);
     }, [deletejobs, dispatch, pathname])
 
