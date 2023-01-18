@@ -61,6 +61,9 @@ const InformationUser = () => {
         if (deleteUser?.data && !deleteUser?.error) {
             dispatch(setIsOpenModalInformationUser(false))
             toastMsg.success(toast, 'Xóa thành viên thành công')
+            setTimeout(()=>{
+                dispatch(resetEditUser())
+            },500)
         }
         if (deleteUser?.error) {
             toastMsg.error(toast, 'Xóa thành viên thất bại')

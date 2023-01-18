@@ -101,6 +101,9 @@ const InformationJobs = () => {
             }
             dispatch(setIsOpenInformationJob(false))
             toastMsg.success(toast, 'Xóa công việc thành công')
+            setTimeout(() => {
+                dispatch(resetJobRequest())
+            }, 500);
         }
         if (deletejobs?.error) {
             toastMsg.error(toast, 'Xóa công việc thất bại')

@@ -46,6 +46,11 @@ const employeeReducer = createSlice({
                     data : null,
                     error: false,
                 },
+                deleteuser: {
+                    loading: false,
+                    data: null,
+                    error: false,
+                }
             })
         },
         resetCreateUser: (state)=>{

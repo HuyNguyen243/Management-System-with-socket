@@ -77,6 +77,9 @@ const InformationCustomer = () => {
         if (deleteCustomer?.data && !deleteCustomer?.error) {
             resetModal()
             toastMsg.success(toast, 'Xóa khách hàng thành công')
+            setTimeout(() => {
+                dispatch(resetEditCustomer())
+            }, 500);
         }
 
         if (deleteCustomer?.error) {

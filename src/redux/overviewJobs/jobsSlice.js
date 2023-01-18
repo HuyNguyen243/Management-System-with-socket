@@ -58,6 +58,11 @@ const jobsReducer = createSlice({
                     data: null,
                     error: false,
                 },
+                deletejobs: {
+                    loading: false,
+                    data: null,
+                    error: false,
+                }
             })
         },
         resetJobCreated:(state)=>{
