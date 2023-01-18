@@ -20,7 +20,7 @@ import {
     setIsOpenModalCreateUser,
     setIsOpenModalInformationUser,
 } from '../../redux/modal/modalSlice';
-import { resetEditUser } from '../../redux/overviewEmployee/employeeSlice';
+import { resetEditUser, resetdeleteUser } from '../../redux/overviewEmployee/employeeSlice';
 import { overlay } from '../../commons/overlay';
 import { InputNumber } from 'primereact/inputnumber';
 
@@ -61,9 +61,15 @@ const InformationUser = () => {
         if (deleteUser?.data && !deleteUser?.error) {
             dispatch(setIsOpenModalInformationUser(false))
             toastMsg.success(toast, 'Xóa thành viên thành công')
+            setTimeout(()=>{
+                dispatch(resetdeleteUser())
+            },500)
         }
         if (deleteUser?.error) {
             toastMsg.error(toast, 'Xóa thành viên thất bại')
+            setTimeout(()=>{
+                dispatch(resetdeleteUser())
+            },500)
         }
     }, [deleteUser, dispatch])
 

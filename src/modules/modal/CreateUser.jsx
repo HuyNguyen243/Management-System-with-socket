@@ -84,6 +84,9 @@ const CreateUser = () => {
         if (employee?.error) {
             setCreateSuccess(true)
             toastMsg.error(toast, employee?.data?.message)
+            setTimeout(() => {
+                dispatch(resetCreateUser())
+            }, 500);
         }
     }, [
         employee, reset, dispatch

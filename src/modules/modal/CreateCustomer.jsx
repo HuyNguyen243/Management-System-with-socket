@@ -66,6 +66,9 @@ const CreateCustomer = () => {
         }
         if (customer?.error) {
             toastMsg.error(toast, 'Tạo khách hàng mới thất bại')
+            setTimeout(() => {
+                dispatch(resetCreateCustomer())
+            }, 500);
         }
     }, [customer, reset, dispatch])
 
