@@ -53,7 +53,17 @@ const jobsReducer = createSlice({
                     data : null,
                     error: false,
                 },
+                addjobs: {
+                    loading: false,
+                    data: null,
+                    error: false,
+                },
                 editjobs: {
+                    loading: false,
+                    data: null,
+                    error: false,
+                },
+                deletejobs: {
                     loading: false,
                     data: null,
                     error: false,
