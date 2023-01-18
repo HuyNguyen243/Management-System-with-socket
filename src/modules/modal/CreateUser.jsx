@@ -17,6 +17,8 @@ import { EMAIL_REGEX, PHONE_REGEX } from '../../constants';
 import { setIsOpenModalCreateUser } from '../../redux/modal/modalSlice';
 import { overlay } from '../../commons/overlay';
 import { resetCreateUser } from '../../redux/overviewEmployee/employeeSlice';
+import { UserRules } from '../../constants';
+import { InputNumber } from 'primereact/inputnumber';
 
 const CreateUser = () => {
     const toast = useRef(null);
@@ -24,23 +26,26 @@ const CreateUser = () => {
     const dispatch = useDispatch()
     const [createSuccess, setCreateSuccess] = useState(true);
     const isOpenCreateUser = useSelector(state => state.modal.isOpenModalCreateUser)
-    const defaultValues = {
-        fullname: '',
-        username: '',
-        password: '',
-        births: null,
-        start_day: null,
-        phone: '',
-        email: '',
-        role: '',
-        address: '',
-        infor_reminder: ''
-    }
+    const [defaultValues,setDefaultValues] = useState(
+        {
+            fullname: '',
+            username: '',
+            password: '',
+            births: null,
+            start_day: null,
+            phone: '',
+            email: '',
+            role: '',
+            address: '',
+            infor_reminder: ''
+        }
+    )
     const { control, formState: { errors }, handleSubmit, reset, setValue, watch } = useForm({ defaultValues });
     const user = useSelector(state => state.auth?.user)
     const employee = useSelector(state => state.employee?.user)
     const randomPass = Math.random().toString(36).slice(-8);
     const [password,setPassword] = useState(randomPass)
+    const roleSelected = watch()?.role?.code
 
     useEffect(() => {
         if (isOpenCreateUser) {
@@ -58,6 +63,9 @@ const CreateUser = () => {
 
     const onSubmit = (data) => {
         if (Object.keys(errors).length === 0) {
+            if(data?.role?.code !== UserRules.ROLE.SALER){
+                delete data.kpi_saler
+            }
             data.create_by = user?.data.id_system;
             data.role = data.role?.code;
             data.password = password;
@@ -253,7 +261,20 @@ const CreateUser = () => {
                                             <Dropdown
                                                 options={role}
                                                 optionLabel="name"
-                                                value={field.value} onChange={(e) => field.onChange(e.value)}
+                                                value={field.value} 
+                                                onChange={(e) =>{
+                                                    field.onChange(e.value)
+
+                                                    if(e?.value?.code === UserRules.ROLE.SALER){
+                                                        const newDefaultValue = defaultValues
+                                                        newDefaultValue.kpi_saler = 0
+                                                        setDefaultValues(newDefaultValue)
+                                                    }else{
+                                                        const newDefaultValue = defaultValues
+                                                        delete newDefaultValue.kpi_saler
+                                                        setDefaultValues(newDefaultValue)
+                                                    }
+                                                }}
                                                 className={classNames({ 'p-invalid': fieldState.invalid }, "create__role_type")}
                                                 placeholder="Chọn chức vụ"
                                             />
@@ -295,6 +316,7 @@ const CreateUser = () => {
                                             <InputText
                                                 autoComplete="disabled"
                                                 id={field.name}
+                                                value={field.value}
                                                 {...field}
                                                 className={classNames({ 'p-invalid': fieldState.invalid })}
                                                 placeholder="Điền địa chỉ"
@@ -302,6 +324,33 @@ const CreateUser = () => {
                                         )} />
                                 </span>
                             </div>
+                            {
+                                roleSelected === UserRules?.ROLE?.SALER &&
+                                <div className="field col-12 md:col-6">
+                                    <span htmlFor="original__link">Kpi saler:($) </span>
+                                    <span className="p-float-label cursor__normal mt-4">
+                                    </span>
+                                    <span className="">
+                                    <Controller name="kpi_saler"
+                                        control={control}
+                                        rules={{ required: true }}
+                                        render={({ field, fieldState }) => (
+                                            <InputNumber
+                                                value={field.value} 
+                                                onValueChange={(e) => field.onChange(e.value)} mode="currency"  
+                                                className={`${classNames({ 'p-invalid': fieldState.invalid })} w-full`}
+                                                placeholder="Nhập số"
+                                                currency="USD"
+                                                locale="en-US"
+                                                minFractionDigits={0}
+                                            />
+                                        )} />
+                                    </span>
+                                    {
+                                        errors?.kpi_saler && <span className="warning" style={{ fontSize: "12px" }}>Nhập thêm kpi cho saler</span>
+                                    }
+                                </div>
+                            }
                         </div>
                         {createSuccess &&
                             <div className="btn_modal field col-12 md:col-12 grid position_bottom">

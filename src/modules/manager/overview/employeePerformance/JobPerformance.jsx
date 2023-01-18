@@ -216,7 +216,7 @@ const JobPerformance = () => {
                 const percent = ((bonus / defautBonus) * 100) / kpi_saler
                 return(
                     <div>
-                      <span className="table__body-name">{percent}%</span>
+                      <span className="table__body-name">{percent || 0}%</span>
                     </div>
                 )
             default:

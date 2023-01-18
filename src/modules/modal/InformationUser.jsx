@@ -266,7 +266,7 @@ const InformationUser = () => {
                                     {
                                         rowdata?.data?.role === UserRules?.ROLE?.SALER && 
                                         <div className="field col-12 md:col-6">
-                                            <span htmlFor="original__link">Số tiền hoàn thành:($) </span>
+                                            <span htmlFor="original__link">Kpi saler:($) </span>
                                             <span className="p-float-label cursor__normal mt-4">
                                                 <InputNumber id="editor_cost"
                                                     inputId="currency-us"
