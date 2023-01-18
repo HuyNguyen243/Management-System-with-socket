@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { Sidebar } from 'primereact/sidebar';
 import { InputText } from 'primereact/inputtext';
@@ -8,20 +8,16 @@ import { useForm, Controller } from 'react-hook-form';
 import { classNames } from 'primereact/utils';
 import { addEmployeeRequest } from '../../redux/overviewEmployee/actionEmployee';
 import { useDispatch, useSelector } from 'react-redux';
-import { Toast } from 'primereact/toast';
 import { Dropdown } from 'primereact/dropdown';
 import copy from "copy-to-clipboard";
 import { role } from "./dropDown";
-import { toastMsg } from '../../commons/toast';
 import { EMAIL_REGEX, PHONE_REGEX } from '../../constants';
 import { setIsOpenModalCreateUser } from '../../redux/modal/modalSlice';
 import { overlay } from '../../commons/overlay';
-import { resetCreateUser } from '../../redux/overviewEmployee/employeeSlice';
 import { UserRules } from '../../constants';
 import { InputNumber } from 'primereact/inputnumber';
-
+import { inforToast } from '../../commons/toast';
 const CreateUser = () => {
-    const toast = useRef(null);
     let maxDate = new Date();
     const dispatch = useDispatch()
     const [createSuccess, setCreateSuccess] = useState(true);
@@ -76,35 +72,27 @@ const CreateUser = () => {
     useEffect(() => {
         if (employee?.data && !employee?.error) {
             setCreateSuccess(false)
-            toastMsg.success(toast, 'Tạo thành viên mới thành công')
         }
         if (employee?.error) {
             setCreateSuccess(true)
-            toastMsg.error(toast, employee?.data?.message)
-            setTimeout(() => {
-                dispatch(resetCreateUser())
-            }, 500);
         }
-        setTimeout(() => {
-            dispatch(resetCreateUser())
-        }, 500);
+      
     }, [
         employee, reset, dispatch
     ])
 
     const copyToClipboard = (type) => {
         if (type === 'password') {
-            toastMsg.success(toast, 'Sao chép mật khẩu thành công')
+            inforToast('Sao chép mật khẩu thành công')
             copy(password);
         } else {
-            toastMsg.success(toast, 'Sao chép tên đăng nhập thành công')
+            inforToast('Sao chép tên đăng nhập thành công')
             copy(watch().username);
         }
     }
 
     return (
         <>
-            <Toast ref={toast} position="bottom-left" />
             <Sidebar visible={isOpenCreateUser} position="right" onHide={() => { dispatch(setIsOpenModalCreateUser(false)); reset(); setCreateSuccess(true);setPassword(randomPass) }} className="create__job">
                 <div className="creat__job">
                     <div className="creat__job--title">

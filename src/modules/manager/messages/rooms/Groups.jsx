@@ -1,16 +1,14 @@
 import React, { useRef,useState } from 'react'
 import { NAME_ROOM } from '../../../../constants';
 import { socket } from "../../../../_services/socket";
-import { Toast } from 'primereact/toast';
-import { toastMsg } from '../../../../commons/toast';
 import {useSelector ,useDispatch} from "react-redux"
 import { groupScrollTop, userViewScrollTop } from '../../../../redux/messages/messageSlice';
+import { inforToast } from '../../../../commons/toast';
 
 const Groups = ({ 
     groups,
     currentUser,
     currentRoom, 
-    membersInGroup, 
     setMembersInGroup , 
     setGroups_id, 
     setPrivateGroupMsg, 
@@ -22,7 +20,6 @@ const Groups = ({
     setCurrentRoom, 
     setMessageOnRoom ,
 }) => {
-    const toast = useRef(null);
     const [roomview,setRoomView] = useState(null)
     const groupTopRef = useRef(null);
     const UserViewTopRef = useRef(null);
@@ -91,7 +88,7 @@ const Groups = ({
             setNamePrivateRoom(payload?.nameRoom)
         }
         if(payload?.members.includes(currentUser?.id_system)){
-            toastMsg.warn(toast,`Bạn đã rời khỏi nhóm ${payload?.nameRoom}.`)
+            inforToast(`Bạn đã rời khỏi nhóm ${payload?.nameRoom}`)
             if(currentRoom === payload?.room){
                 resetRoomAfterDelete()
             }
@@ -105,7 +102,7 @@ const Groups = ({
         }
         if(currentRoom === payload?.room){
             resetRoomAfterDelete()
-            toastMsg.warn(toast,`Bạn đã rời khỏi nhóm ${payload?.nameRoom}.`)
+            inforToast(`Bạn đã rời khỏi nhóm ${payload?.nameRoom}`)
             socket.emit('messages-by-id-system',currentUser?.id_system)
         }
     })
@@ -180,7 +177,6 @@ const Groups = ({
     }
     return (
         <>
-        <Toast ref={toast} position="bottom-left"/>
         {
             roomview && roomview?.length > 0 &&
             <li className="msg__title">

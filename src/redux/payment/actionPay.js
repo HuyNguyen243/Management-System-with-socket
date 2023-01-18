@@ -1,5 +1,6 @@
 import {  createAsyncThunk } from '@reduxjs/toolkit'
 import { get, put } from "../../_services/apiRequest"
+import { successToast, errorToast } from '../../commons/toast'
 
 
 export const getPayRequest = createAsyncThunk(
@@ -20,10 +21,12 @@ export const updatePayRequest = createAsyncThunk(
     async (data, { rejectWithValue }) => {
         try {
             const res = await put(`pays/${data.id}`,data.data)
+            successToast("Thay đổi trạng thái thanh toán thành công")
             if(res.data){
                 return data.result
             }
         } catch (error) {
+            errorToast("Thay đổi trạng thái thanh toán thất bại")
             return rejectWithValue(error?.response?.data);
         }
     }

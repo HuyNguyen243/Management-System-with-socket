@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import { useForm } from "react-hook-form";
 import {
@@ -6,8 +6,7 @@ import {
 } from '../../redux/auth/action';
 import { useDispatch, useSelector } from "react-redux"
 import { Cookie } from '../../commons/cookie';
-import { Toast } from 'primereact/toast';
-import { toastMsg } from '../../commons/toast';
+import { errorToast } from '../../commons/toast';
 
 const Login = () => {
     const navigate = useNavigate()
@@ -17,7 +16,6 @@ const Login = () => {
     const [checked, setChecked] = useState(Cookie.getChecked() || false)
     const user = useSelector(state => state.auth.token)
     const dispatch = useDispatch()
-    const toast = useRef(null);
 
     const onSubmit = (e) => {
         e.preventDefault();
@@ -36,9 +34,9 @@ const Login = () => {
     useEffect(() => {
         if (user?.error && !user?.data) {
             if(user?.error?.payload?.message && (user?.error?.payload?.message).includes("expired")){
-                toastMsg.error(toast, "Phiên đăng nhập vừa hết hạn, ENTER để tạo phiên đăng nhập mới")
+                errorToast("Phiên đăng nhập vừa hết hạn, ENTER để tạo phiên đăng nhập mới")
             }else{
-                toastMsg.error(toast, "Tài khoản hoặc mật khẩu không chính xác")
+                errorToast("Tài khoản hoặc mật khẩu không chính xác")
             }
         }
     }, [user])
@@ -108,7 +106,6 @@ const Login = () => {
                     </div>
                 </form>
             </div>
-            <Toast ref={toast} position="bottom-left" />
         </div>
     )
 }

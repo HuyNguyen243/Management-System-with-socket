@@ -1,6 +1,6 @@
 import {  createAsyncThunk } from '@reduxjs/toolkit'
 import { get,put } from "../../_services/apiRequest"
-
+import { successToast, errorToast } from '../../commons/toast'
 
 export const settingRequest = createAsyncThunk(
     'getSystem',
@@ -19,8 +19,10 @@ export const updateRequest = createAsyncThunk(
     async (data,{ rejectWithValue }) => {
         try {
             const res = await put(`setting/${data?.result?.id_system}`,data?.result)
+            successToast("Cập nhật thành công")
             return res;
         } catch (error) {
+            errorToast("Cập nhật thất bại")
             return rejectWithValue(error?.response?.data);
         }
     }

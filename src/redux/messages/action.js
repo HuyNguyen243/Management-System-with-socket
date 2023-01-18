@@ -1,5 +1,6 @@
 import {  createAsyncThunk } from '@reduxjs/toolkit'
-import { post , put, del } from "../../_services/apiRequest"
+import { post , put, del } from "../../_services/apiRequest";
+import { successToast, errorToast } from '../../commons/toast';
 
 
 export const createGroupMsgRequest = createAsyncThunk(
@@ -7,8 +8,10 @@ export const createGroupMsgRequest = createAsyncThunk(
     async (data,{ rejectWithValue }) => {
         try {
             const res = await post(`group`,data)
+            successToast('Tạo nhóm thành công')
             return res?.data;
         } catch (error) {
+            errorToast('Tạo nhóm thất bại')
             return rejectWithValue(error?.response?.data);
         }
     }
@@ -19,8 +22,10 @@ export const updateGroupMsgRequest = createAsyncThunk(
     async (data,{ rejectWithValue }) => {
         try {
             await put(`group/${data.id}`,data.data)
+            successToast('Cập nhật thành công')
             return data.data;
         } catch (error) {
+            errorToast('Cập nhật thất bại')
             return rejectWithValue(error?.response?.data);
         }
     }

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Sidebar } from 'primereact/sidebar';
 import { InputText } from 'primereact/inputtext';
 import { Calendar } from 'primereact/calendar';
@@ -13,41 +13,45 @@ import {
     deleteCustomerRequest
 } from '../../redux/sale/action';
 import { useDispatch, useSelector } from 'react-redux';
-import { Toast } from 'primereact/toast';
 import { customer_status } from "./dropDown";
 import { getCountries } from '../../commons/getCountry';
 import { searchDropdown } from '../../commons/searchDropDown';
-import { toastMsg } from '../../commons/toast';
 import { UserRules } from '../../constants';
 import copy from "copy-to-clipboard";
 import { setIsOpenModalInformationCustomer } from '../../redux/modal/modalSlice';
 import { timezoneToDate } from '../../commons/dateTime';
 import { overlay } from '../../commons/overlay';
-import { resetEditCustomer, resetDeleteCustomer } from '../../redux/sale/saleSlice';
+import { resetEditCustomer } from '../../redux/sale/saleSlice';
+import { inforToast } from '../../commons/toast';
 
 const InformationCustomer = () => {
     const [customerStatus, setCustomerStatus] = useState(null);
     const rowdata = useSelector(state => state.modal.dataModalInformationCustomer)
     const putCustomer = useSelector(state => state.sale.editcustomer)
-    const deleteCustomer = useSelector(state => state.sale.deletecustomer)
     const isOpenInformationCustomer = useSelector(state => state.modal.isOpenModalInformationCustomer)
     const user = useSelector(state => state.auth.user)
     const [cities, setCities] = React.useState(null);
     const [filteredCity, setFilteredCity] = React.useState(null);
     const [countries, setCountries] = React.useState(null)
     const [filteredCountry, setFilteredCountry] = React.useState(null);
+    const deleteCustomer = useSelector(state => state.sale.deletecustomer)
 
     const [isOpenInput, setIsOpenInput] = useState({})
 
     const dispatch = useDispatch()
     const { control, register, setValue, handleSubmit, formState: { errors }, reset } = useForm();
-    const toast = useRef(null);
 
     const resetModal = React.useCallback(() => {
         dispatch(setIsOpenModalInformationCustomer(false))
         reset({ data: 'test' })
         setIsOpenInput({})
     }, [dispatch, reset])
+
+    useEffect(() => {
+        if (deleteCustomer?.data && !deleteCustomer?.error) {
+            resetModal()
+        }
+    }, [deleteCustomer, dispatch, resetModal])
 
     useEffect(() => {
         if (isOpenInformationCustomer) {
@@ -60,14 +64,10 @@ const InformationCustomer = () => {
     useEffect(() => {
         if (putCustomer?.data && !putCustomer?.error) {
             resetModal()
-            toastMsg.success(toast, 'Cập nhật thành công')
         }
 
         if (putCustomer?.error) {
-            toastMsg.error(toast, 'Cập nhật thất bại')
-            setTimeout(() => {
-                dispatch(resetEditCustomer())
-            }, 500);
+         
         }
         setTimeout(() => {
             dispatch(resetEditCustomer())
@@ -78,21 +78,8 @@ const InformationCustomer = () => {
     useEffect(() => {
         if (deleteCustomer?.data && !deleteCustomer?.error) {
             resetModal()
-            toastMsg.success(toast, 'Xóa khách hàng thành công')
-            setTimeout(() => {
-                dispatch(resetEditCustomer())
-            }, 500);
         }
-
-        if (deleteCustomer?.error) {
-            toastMsg.success(toast, 'Xóa khách hàng thất bại')
-            setTimeout(() => {
-                dispatch(resetDeleteCustomer())
-            }, 500);
-        }
-        setTimeout(() => {
-            dispatch(resetEditCustomer())
-        }, 500);
+  
     }, [deleteCustomer, dispatch, resetModal])
 
     useEffect(() => {
@@ -215,7 +202,7 @@ const InformationCustomer = () => {
     }
 
     const copyToClipboard = (type) => {
-        toastMsg.info(toast, 'Sao chép thành công')
+        inforToast('Sao chép thành công')
         if (type === "id_system") {
             copy(rowdata?.data?.id_system);
         }
@@ -233,7 +220,6 @@ const InformationCustomer = () => {
     return (
         <>
             <ConfirmPopup />
-            <Toast ref={toast} position="bottom-left" />
             <Sidebar visible={isOpenInformationCustomer} position="right" onHide={resetModal} className="create__job">
                 <div className="creat__job">
                     <div className="creat__job--title flex justify-content-between" style={{ marginRight: "10px" }}>

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect } from 'react'
 import { Sidebar } from 'primereact/sidebar';
 import { InputText } from 'primereact/inputtext';
 import { Dropdown } from 'primereact/dropdown';
@@ -15,8 +15,6 @@ import {
     setIsOpenModalCreateJob,
     setIsOpenModalCreateCustomer,
 } from '../../redux/modal/modalSlice';
-import { toastMsg } from '../../commons/toast';
-import { Toast } from 'primereact/toast';
 import { addJobsRequest } from "../../redux/overviewJobs/actionJobs";
 import { itemCustomerTemplate } from '../modal/TemplateDropDown';
 import { overlay } from '../../commons/overlay';
@@ -26,7 +24,6 @@ import { resetJobCreated } from "../../redux/overviewJobs/jobsSlice"
 
 const CreateJobs = () => {
 
-    const toast = useRef(null);
     const defaultValues = {
         end_day: null,
         quality_img: "",
@@ -65,17 +62,9 @@ const CreateJobs = () => {
                 dispatch(getEmployeePerformance())
             }
             dispatch(setIsOpenModalCreateJob(false))
-            toastMsg.success(toast, 'Tạo công việc mới thành công')
-            setTimeout(() => {
-                dispatch(resetJobCreated())
-            }, 500);
         }
         if (addjobs?.error) {
             dispatch(setIsOpenModalCreateJob(true))
-            toastMsg.error(toast, addjobs?.data?.message)
-            setTimeout(() => {
-                dispatch(resetJobCreated())
-            }, 500);
         }
 
     }, [
@@ -114,7 +103,6 @@ const CreateJobs = () => {
 
     return (
         <>
-            <Toast ref={toast} position="bottom-left" />
             <Sidebar visible={isOpenCreateJob} position="right" onHide={handleCloseModal} className="create__job">
                 <div className="creat__job">
                     <div className="creat__job--title">
