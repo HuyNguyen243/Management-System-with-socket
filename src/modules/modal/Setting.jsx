@@ -1,5 +1,4 @@
-import React, { useEffect, useRef } from 'react';
-import { toastMsg } from '../../commons/toast';
+import React, { useEffect } from 'react';
 
 import { Sidebar } from 'primereact/sidebar';
 import { Button } from 'primereact/button';
@@ -9,11 +8,9 @@ import { useDispatch } from 'react-redux';
 import { setIsOpenModalSetting } from '../../redux/modal/modalSlice';
 import { InputNumber } from 'primereact/inputnumber';
 import { settingRequest, updateRequest } from "../../redux/admin/action";
-import { Toast } from 'primereact/toast';
 import { overlay } from '../../commons/overlay';
 
 const Setting = () => {
-    const toast = useRef(null);
 
     const isOpenSetting = useSelector(state => state.modal.isOpenModalSetting)
     const dispatch = useDispatch()
@@ -56,17 +53,12 @@ const Setting = () => {
     useEffect(() => {
         if (updatestting?.data) {
             handleCloseModal()
-            toastMsg.success(toast, 'Cập nhật thành công')
         }
 
-        if (updatestting?.error) {
-            toastMsg.error(toast, 'Cập nhật thất bại')
-        }
     }, [updatestting, dispatch, handleCloseModal])
 
     return (
         <>
-            <Toast ref={toast} position="bottom-left" />
             <Sidebar visible={isOpenSetting} position="right" onHide={handleCloseModal} className="create__job">
                 <div className="creat__job">
                     <div className="creat__job--title">

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect } from 'react'
 import { Dialog } from 'primereact/dialog';
 import { Button } from 'primereact/button';
 import { InputText } from 'primereact/inputtext';
@@ -14,8 +14,6 @@ import {
     updateGroupMsgRequest,
     deleteGroupMsgRequest,
  } from '../../../redux/messages/action';
-import { Toast } from 'primereact/toast';
-import { toastMsg } from '../../../commons/toast';
 import { useForm, Controller } from "react-hook-form";
 import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog';
 import { resetGroupEdit, resetGroupCreate } from "../../../redux/messages/messageSlice"
@@ -27,7 +25,6 @@ const Modal = ({isOpenCreateGroup, setIsOpenCreateGroup, nameModal , editDataGro
     const updateGroup = useSelector(state => state.message.updateGroupMsg)
 
     const user = useSelector(state=> state.auth.user)
-    const toast = useRef(null);
 
     const { control, formState: { errors }, handleSubmit, reset, setValue, register, watch } = useForm();
 
@@ -54,7 +51,6 @@ const Modal = ({isOpenCreateGroup, setIsOpenCreateGroup, nameModal , editDataGro
     },[editDataGroup, setValue, nameModal, user,])
     useEffect(() => {
         if(createGroup?.data){
-            toastMsg.success(toast,'Tạo nhóm thành công')
             resetModal()
             setTimeout(() => {
                 dispatch(resetGroupCreate())
@@ -64,7 +60,6 @@ const Modal = ({isOpenCreateGroup, setIsOpenCreateGroup, nameModal , editDataGro
     
     useEffect(() => {
         if(updateGroup?.data){
-            toastMsg.success(toast,'Cập nhật thành công.')
             resetModal()
             setTimeout(() => {
                 dispatch(resetGroupEdit())
@@ -143,7 +138,6 @@ const Modal = ({isOpenCreateGroup, setIsOpenCreateGroup, nameModal , editDataGro
 
     return (
         <>
-            <Toast ref={toast} position="bottom-left"/>
             <ConfirmDialog />
             <Dialog 
                 header={nameModal === NAME_ROOM.CREATE ? "Tạo nhóm:" : "Sửa nhóm:" }

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 
 import { Sidebar } from 'primereact/sidebar';
 import { InputText } from 'primereact/inputtext';
@@ -9,19 +9,15 @@ import { classNames } from 'primereact/utils';
 import { addCustomerRequest } from '../../redux/sale/action';
 import { useDispatch, useSelector } from 'react-redux';
 import { CustomerRules } from '../../constants';
-import { Toast } from 'primereact/toast';
 import { getCountries } from '../../commons/getCountry';
 import { AutoComplete } from 'primereact/autocomplete';
 
 import { EMAIL_REGEX, PHONE_REGEX } from '../../constants';
-import { toastMsg } from '../../commons/toast';
 import { setIsOpenModalCreateCustomer } from '../../redux/modal/modalSlice';
 import { overlay } from '../../commons/overlay';
 import { searchDropdown } from '../../commons/searchDropDown';
-import { resetCreateCustomer } from '../../redux/sale/saleSlice';
 
 const CreateCustomer = () => {
-    const toast = useRef(null);
     const isOpenCreateCustomer = useSelector(state => state.modal.isOpenModalCreateCustomer)
 
     const dispatch = useDispatch()
@@ -37,11 +33,11 @@ const CreateCustomer = () => {
     }
     const { control, formState: { errors }, handleSubmit, reset, setValue } = useForm({ defaultValues });
     const user = useSelector(state => state.auth?.user)
-    const customer = useSelector(state => state.sale.customer)
     const [countries, setCountries] = React.useState([])
     const [cities, setCities] = React.useState([]);
     const [filteredCountry, setFilteredCountry] = React.useState(null);
     const [filteredCity, setFilteredCity] = React.useState(null);
+    const customer = useSelector(state => state.sale.customer)
 
     useEffect(() => {
         if (isOpenCreateCustomer) {
@@ -59,17 +55,7 @@ const CreateCustomer = () => {
     useEffect(() => {
         if (customer?.data && !customer?.error) {
             dispatch(setIsOpenModalCreateCustomer(false))
-            toastMsg.success(toast, 'Tạo khách hàng mới thành công')
         }
-        if (customer?.error) {
-            toastMsg.error(toast, 'Tạo khách hàng mới thất bại')
-            setTimeout(() => {
-                dispatch(resetCreateCustomer())
-            }, 500);
-        }
-        setTimeout(() => {
-            dispatch(resetCreateCustomer())
-        }, 500);
     }, [customer, reset, dispatch])
 
     const onSubmit = (data) => {
@@ -90,7 +76,6 @@ const CreateCustomer = () => {
 
     return (
         <>
-            <Toast ref={toast} position="bottom-left" />
             <Sidebar visible={isOpenCreateCustomer} position="right" onHide={() => {dispatch(setIsOpenModalCreateCustomer(false)); reset();}} className="create__job">
                 <div className="creat__job">
                     <div className="creat__job--title">

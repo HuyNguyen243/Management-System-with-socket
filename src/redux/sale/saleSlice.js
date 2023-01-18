@@ -7,6 +7,7 @@ import {
     deleteCustomerRequest,
     getCustomerRequest,
 } from "./action";
+// import { showSuccessToast } from "../../commons/toast";
 
 const initialState = {
     customers: {
