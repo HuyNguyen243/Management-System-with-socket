@@ -20,7 +20,7 @@ import {
     setIsOpenModalCreateUser,
     setIsOpenModalInformationUser,
 } from '../../redux/modal/modalSlice';
-import { resetEditUser } from '../../redux/overviewEmployee/employeeSlice';
+import { resetEditUser, resetdeleteUser } from '../../redux/overviewEmployee/employeeSlice';
 import { overlay } from '../../commons/overlay';
 import { InputNumber } from 'primereact/inputnumber';
 
@@ -47,14 +47,14 @@ const InformationUser = () => {
         if (putUser?.data && !putUser?.error) {
             dispatch(setIsOpenModalInformationUser(false))
             toastMsg.success(toast, 'Cập nhật thành công')
-            setTimeout(()=>{
-                dispatch(resetEditUser())
-            },500)
         }
 
         if (putUser?.error) {
             toastMsg.error(toast, 'Cập nhật thất bại')
         }
+        setTimeout(()=>{
+            dispatch(resetEditUser())
+        },500)
     }, [putUser, dispatch])
 
     useEffect(() => {
@@ -62,12 +62,22 @@ const InformationUser = () => {
             dispatch(setIsOpenModalInformationUser(false))
             toastMsg.success(toast, 'Xóa thành viên thành công')
             setTimeout(()=>{
+<<<<<<< src/modules/modal/InformationUser.jsx
                 dispatch(resetEditUser())
+=======
+                dispatch(resetdeleteUser())
+>>>>>>> src/modules/modal/InformationUser.jsx
             },500)
         }
         if (deleteUser?.error) {
             toastMsg.error(toast, 'Xóa thành viên thất bại')
+            setTimeout(()=>{
+                dispatch(resetdeleteUser())
+            },500)
         }
+        setTimeout(()=>{
+            dispatch(resetEditUser())
+        },500)
     }, [deleteUser, dispatch])
 
     const onSubmit = (data) => {

@@ -66,15 +66,18 @@ const CreateJobs = () => {
             }
             dispatch(setIsOpenModalCreateJob(false))
             toastMsg.success(toast, 'Tạo công việc mới thành công')
-          
+            setTimeout(() => {
+                dispatch(resetJobCreated())
+            }, 500);
         }
         if (addjobs?.error) {
             dispatch(setIsOpenModalCreateJob(true))
             toastMsg.error(toast, addjobs?.data?.message)
+            setTimeout(() => {
+                dispatch(resetJobCreated())
+            }, 500);
         }
-        setTimeout(() => {
-            dispatch(resetJobCreated())
-        }, 500);
+
     }, [
         addjobs, reset, dispatch, pathname
     ])

@@ -62,6 +62,15 @@ const saleSlice = createSlice({
                 },
             })
         },
+        resetDeleteCustomer: (state)=>{
+            Object.assign(state,{},{
+                deletecustomer:{
+                    loading: false,
+                    data : null,
+                    error: false,
+                },
+            })
+        },
     },
     extraReducers: {
         [saleCustomerRequest.pending]: (state) => {
@@ -262,5 +271,5 @@ const saleSlice = createSlice({
         },
     },
 });
-export const { resetEditCustomer, resetCreateCustomer } = saleSlice.actions
+export const { resetEditCustomer, resetCreateCustomer, resetDeleteCustomer } = saleSlice.actions
 export default saleSlice.reducer;

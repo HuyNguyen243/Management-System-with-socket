@@ -23,7 +23,7 @@ import copy from "copy-to-clipboard";
 import { setIsOpenModalInformationCustomer } from '../../redux/modal/modalSlice';
 import { timezoneToDate } from '../../commons/dateTime';
 import { overlay } from '../../commons/overlay';
-import { resetEditCustomer } from '../../redux/sale/saleSlice';
+import { resetEditCustomer, resetDeleteCustomer } from '../../redux/sale/saleSlice';
 
 const InformationCustomer = () => {
     const [customerStatus, setCustomerStatus] = useState(null);
@@ -61,15 +61,17 @@ const InformationCustomer = () => {
         if (putCustomer?.data && !putCustomer?.error) {
             resetModal()
             toastMsg.success(toast, 'Cập nhật thành công')
-            setTimeout(() => {
-                dispatch(resetEditCustomer())
-            }, 500);
         }
 
         if (putCustomer?.error) {
             toastMsg.error(toast, 'Cập nhật thất bại')
+            setTimeout(() => {
+                dispatch(resetEditCustomer())
+            }, 500);
         }
-
+        setTimeout(() => {
+            dispatch(resetEditCustomer())
+        }, 500);
 
     }, [putCustomer, dispatch, resetModal])
 
@@ -84,7 +86,13 @@ const InformationCustomer = () => {
 
         if (deleteCustomer?.error) {
             toastMsg.success(toast, 'Xóa khách hàng thất bại')
+            setTimeout(() => {
+                dispatch(resetDeleteCustomer())
+            }, 500);
         }
+        setTimeout(() => {
+            dispatch(resetEditCustomer())
+        }, 500);
     }, [deleteCustomer, dispatch, resetModal])
 
     useEffect(() => {

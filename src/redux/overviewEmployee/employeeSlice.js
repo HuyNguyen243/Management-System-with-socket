@@ -53,8 +53,17 @@ const employeeReducer = createSlice({
                 }
             })
         },
-        resetCreateUser: (state)=>{
+        resetdeleteUser: (state)=>{
             Object.assign(state,{},{
+                deleteuser:{
+                    loading: false,
+                    data : null,
+                    error: false,
+                },
+            })
+        },
+        resetCreateUser: (state)=>{
+            Object.assign(state,{},{ 
                 user:{
                     loading: false,
                     data : null,
@@ -258,5 +267,5 @@ const employeeReducer = createSlice({
         },
     },
 });
-export const { resetEditUser, resetCreateUser } = employeeReducer.actions
+export const { resetEditUser, resetCreateUser, resetdeleteUser } = employeeReducer.actions
 export default employeeReducer.reducer;
