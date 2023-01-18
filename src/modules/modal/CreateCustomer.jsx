@@ -60,13 +60,13 @@ const CreateCustomer = () => {
         if (customer?.data && !customer?.error) {
             dispatch(setIsOpenModalCreateCustomer(false))
             toastMsg.success(toast, 'Tạo khách hàng mới thành công')
-            setTimeout(() => {
-                dispatch(resetCreateCustomer())
-            }, 500);
         }
         if (customer?.error) {
             toastMsg.error(toast, 'Tạo khách hàng mới thất bại')
         }
+        setTimeout(() => {
+            dispatch(resetCreateCustomer())
+        }, 500);
     }, [customer, reset, dispatch])
 
     const onSubmit = (data) => {

@@ -61,15 +61,14 @@ const InformationCustomer = () => {
         if (putCustomer?.data && !putCustomer?.error) {
             resetModal()
             toastMsg.success(toast, 'Cập nhật thành công')
-            setTimeout(() => {
-                dispatch(resetEditCustomer())
-            }, 500);
         }
 
         if (putCustomer?.error) {
             toastMsg.error(toast, 'Cập nhật thất bại')
         }
-
+        setTimeout(() => {
+            dispatch(resetEditCustomer())
+        }, 500);
 
     }, [putCustomer, dispatch, resetModal])
 
@@ -82,6 +81,9 @@ const InformationCustomer = () => {
         if (deleteCustomer?.error) {
             toastMsg.success(toast, 'Xóa khách hàng thất bại')
         }
+        setTimeout(() => {
+            dispatch(resetEditCustomer())
+        }, 500);
     }, [deleteCustomer, dispatch, resetModal])
 
     useEffect(() => {

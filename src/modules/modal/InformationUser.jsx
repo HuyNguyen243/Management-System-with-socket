@@ -47,14 +47,14 @@ const InformationUser = () => {
         if (putUser?.data && !putUser?.error) {
             dispatch(setIsOpenModalInformationUser(false))
             toastMsg.success(toast, 'Cập nhật thành công')
-            setTimeout(()=>{
-                dispatch(resetEditUser())
-            },500)
         }
 
         if (putUser?.error) {
             toastMsg.error(toast, 'Cập nhật thất bại')
         }
+        setTimeout(()=>{
+            dispatch(resetEditUser())
+        },500)
     }, [putUser, dispatch])
 
     useEffect(() => {
@@ -65,6 +65,9 @@ const InformationUser = () => {
         if (deleteUser?.error) {
             toastMsg.error(toast, 'Xóa thành viên thất bại')
         }
+        setTimeout(()=>{
+            dispatch(resetEditUser())
+        },500)
     }, [deleteUser, dispatch])
 
     const onSubmit = (data) => {
