@@ -62,11 +62,7 @@ const InformationUser = () => {
             dispatch(setIsOpenModalInformationUser(false))
             toastMsg.success(toast, 'Xóa thành viên thành công')
             setTimeout(()=>{
-<<<<<<< src/modules/modal/InformationUser.jsx
                 dispatch(resetEditUser())
-=======
-                dispatch(resetdeleteUser())
->>>>>>> src/modules/modal/InformationUser.jsx
             },500)
         }
         if (deleteUser?.error) {
