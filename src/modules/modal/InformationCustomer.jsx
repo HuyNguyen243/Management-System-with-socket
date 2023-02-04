@@ -41,15 +41,20 @@ const InformationCustomer = () => {
     const dispatch = useDispatch()
     const { control, register, setValue, handleSubmit, formState: { errors }, reset } = useForm();
 
-    const resetModal = React.useCallback(() => {
+    const resetModal = React.useCallback((isResetCustomer = false) => {
         dispatch(setIsOpenModalInformationCustomer(false))
         reset({ data: 'test' })
         setIsOpenInput({})
+        if(isResetCustomer){
+            setTimeout(() => {
+                dispatch(resetEditCustomer())
+            }, 500);
+        }
     }, [dispatch, reset])
 
     useEffect(() => {
         if (deleteCustomer?.data && !deleteCustomer?.error) {
-            resetModal()
+            resetModal(true)
         }
     }, [deleteCustomer, dispatch, resetModal])
 
@@ -65,16 +70,10 @@ const InformationCustomer = () => {
         if (putCustomer?.data && !putCustomer?.error) {
             resetModal()
         }
-
-        if (putCustomer?.error) {
-         
-        }
-        setTimeout(() => {
-            dispatch(resetEditCustomer())
-        }, 500);
+    
 
     }, [putCustomer, dispatch, resetModal])
-
+    console.log(putCustomer)
     useEffect(() => {
         if (deleteCustomer?.data && !deleteCustomer?.error) {
             resetModal()
@@ -216,7 +215,7 @@ const InformationCustomer = () => {
             setIsOpenInput({ ...isOpenInput, [key]: true })
         }
     }
-
+    console.log(true)
     return (
         <>
             <ConfirmPopup />
@@ -296,7 +295,7 @@ const InformationCustomer = () => {
                                                 </>
                                                 :
                                                 <p onClick={() => handleOpenInput("birth")} className="font-bold mt-3 cursor__edit">
-                                                    {timezoneToDate(rowdata?.data?.information?.birth)}
+                                                    {/* {timezoneToDate(rowdata?.data?.information?.birth)} */}
                                                 </p>
                                         }
                                     </div>
