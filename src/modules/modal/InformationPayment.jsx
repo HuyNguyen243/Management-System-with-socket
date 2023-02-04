@@ -52,7 +52,6 @@ const InformationPayment = () => {
 
     useEffect(() => {
         if (dataModalInformationPayment && dataModalInformationPayment?.status) {
-            console.log(dataModalInformationPayment)
             setStatus(dataModalInformationPayment?.status)
             setListJobs(dataModalInformationPayment?.list_id)
             const init = []

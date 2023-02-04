@@ -12,7 +12,7 @@ export const routes = [
     {
         path: "/",
         exact: true,
-        role: ["EDITOR"],
+        role: ["EDITOR","LEADER_EDITOR"],
         main: () => <Dashboard />,
     },
     {
@@ -30,7 +30,7 @@ export const routes = [
     {
         path: "/payment",
         exact: true,
-        role: ["SALER", "EDITOR"],
+        role: ["SALER", "EDITOR","LEADER_EDITOR"],
         main: () => <Payment />,
     },
     {
