@@ -30,7 +30,7 @@ export const navButtons = [
     },
     {
         name_image : "work",
-        role: ["EDITOR"],
+        role: ["EDITOR","LEADER_EDITOR"],
         isRederect : false,
         route: "",
         name: "Công việc",
@@ -63,7 +63,7 @@ export const navButtons = [
     },
     {
         name_image : "money",
-        role: ["SALER","EDITOR"],
+        role: ["SALER","EDITOR","LEADER_EDITOR"],
         isRederect : false,
         route: "",
         name: "Thanh toán",

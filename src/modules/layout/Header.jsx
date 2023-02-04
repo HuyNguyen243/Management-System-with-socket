@@ -191,9 +191,10 @@ export default function Header() {
 								{user?.data?.status === UserRules.STATUS.OFFLINE &&  <span className="dots_offline"></span>}
 							</div>
 							<div className="information__roles">
-								{user?.data?.role === UserRules.ROLE_NAME.ADMIN && <p>Admin</p>}
-								{user?.data?.role === UserRules.ROLE_NAME.SALER && <p>Saler</p>}
-								{user?.data?.role === UserRules.ROLE_NAME.EDITOR && <p>Editor</p>}
+								{user?.data?.role === UserRules.ROLE.ADMIN && <p>Admin</p>}
+								{user?.data?.role === UserRules.ROLE.SALER && <p>Saler</p>}
+								{user?.data?.role === UserRules.ROLE.EDITOR && <p>Editor</p>}
+								{user?.data?.role === UserRules.ROLE.LEADER_EDITOR && <p>Leader Editor</p>}
 								{user?.data && <img src={`images/${openMenu ? "arrow_down" : "arrow_up"}.svg`} alt=""/>}
 							</div>
 						</div>
