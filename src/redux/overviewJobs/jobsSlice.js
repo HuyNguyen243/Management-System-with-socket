@@ -53,16 +53,35 @@ const jobsReducer = createSlice({
                     data : null,
                     error: false,
                 },
+                addjobs: {
+                    loading: false,
+                    data: null,
+                    error: false,
+                },
                 editjobs: {
                     loading: false,
                     data: null,
                     error: false,
                 },
+                deletejobs: {
+                    loading: false,
+                    data: null,
+                    error: false,
+                }
             })
         },
-        resetJobCreate:(state)=>{
+        resetJobCreated:(state)=>{
             Object.assign(state,{},{
                 addjobs:{
+                    loading: false,
+                    data : null,
+                    error: false,
+                },
+            })
+        },
+        resetJobdeleted:(state)=>{
+            Object.assign(state,{},{
+                deletejobs:{
                     loading: false,
                     data : null,
                     error: false,
@@ -307,10 +326,15 @@ const jobsReducer = createSlice({
                     loading: false,
                     data: action?.payload,
                     error: true
-                }
+                },
+                editjobs: {
+                    loading: false,
+                    data: null,
+                    error: false,
+                },
             })
         },
     },
 });
-export const { resetJobRequest, resetJobCreate } = jobsReducer.actions
+export const { resetJobRequest, resetJobCreated, resetJobdeleted } = jobsReducer.actions
 export default jobsReducer.reducer;

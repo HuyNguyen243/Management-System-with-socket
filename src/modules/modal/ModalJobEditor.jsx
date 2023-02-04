@@ -1,19 +1,17 @@
-import React,{useEffect, useRef} from 'react'
+import React,{useEffect} from 'react'
 import { Sidebar } from 'primereact/sidebar';
 import { Button } from 'primereact/button';
 import { InputTextarea } from 'primereact/inputtextarea';
-import { Toast } from 'primereact/toast';
-import { toastMsg } from '../../commons/toast';
 import { setIsOpenModalJobEditor } from '../../redux/modal/modalSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { overlay } from '../../commons/overlay';
 import copy from "copy-to-clipboard"; 
+import { inforToast } from '../../commons/toast';
 
 const ModalJobEditor = () => {
-    const toast = useRef(null);
     const dispatch = useDispatch();
     const copyToClipboard = () => {
-        toastMsg.info(toast,'Đã lưu')
+        inforToast('Đã lưu')
         copy("any text");
     }
     const isOpenJobEditor = useSelector(state => state.modal.isOpenModalJobEditor)
@@ -28,7 +26,6 @@ const ModalJobEditor = () => {
     
   return (
     <Sidebar visible={isOpenJobEditor} position="right" onHide={() => dispatch(setIsOpenModalJobEditor(false))} className="create__job">
-        <Toast ref={toast} position="bottom-right"/>
         <div className="information__job">
             <div className="grid">
                 <div className="field col-12 md:col-6 ">

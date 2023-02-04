@@ -1,17 +1,16 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Sidebar } from 'primereact/sidebar';
 import { Button } from 'primereact/button';
 import { ConfirmPopup } from 'primereact/confirmpopup';
 import { useDispatch, useSelector } from 'react-redux';
-import { Toast } from 'primereact/toast';
 import { setIsOpenModalInformationPayment } from '../../redux/modal/modalSlice';
 import copy from "copy-to-clipboard";
-import { toastMsg } from '../../commons/toast';
 import { formatVND } from '../../commons/formatCost';
 import { Dropdown } from 'primereact/dropdown';
 import { PayRules } from '../../constants';
 import { updatePayRequest } from '../../redux/payment/actionPay';
 import { overlay } from '../../commons/overlay';
+import { inforToast } from '../../commons/toast';
 // import { resetPaymentUpdate } from '../../redux/payment/paySlice';
 
 const InformationPayment = () => {
@@ -21,7 +20,6 @@ const InformationPayment = () => {
     const user = useSelector(state => state.auth.user?.data)
     const paymentUpdate = useSelector(state => state.payment.updatepay)
     const dispatch = useDispatch()
-    const toast = useRef(null);
     const [status, setStatus] = useState(null)
     const [listJobs, setListJobs] = useState([]);
     const [idSystems, setidSystems] = useState([]);
@@ -36,13 +34,10 @@ const InformationPayment = () => {
     useEffect(() => {
         if (paymentUpdate?.data) {
             dispatch(setIsOpenModalInformationPayment(false))
-            toastMsg.success(toast, 'Thay đổi trạng thái thanh toán thành công')
             // setTimeout(() => {
             //     dispatch(resetPaymentUpdate())
             // }, 500);
-        } else if (paymentUpdate?.error) {
-            toastMsg.error(toast, 'Thay đổi trạng thái thanh toán thất bại')
-        }
+        } 
     }, [dispatch, paymentUpdate])
 
 
@@ -88,7 +83,7 @@ const InformationPayment = () => {
     };
 
     const copyToClipboard = (code) => {
-        toastMsg.success(toast, 'Sao chép mã thành công')
+        inforToast('Sao chép mã thành công')
         copy(code);
     }
 
@@ -100,7 +95,6 @@ const InformationPayment = () => {
     return (
         <>
             <ConfirmPopup />
-            <Toast ref={toast} position="bottom-left" />
             <Sidebar visible={isOpenModalInformationPayment} position="right" onHide={resetModal} className="create__job">
                 <div className="creat__job">
                     <div className="creat__job--title flex justify-content-between" style={{ marginRight: "10px" }}>

@@ -1,9 +1,7 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Sidebar } from 'primereact/sidebar';
 import { Button } from 'primereact/button';
 import { InputTextarea } from 'primereact/inputtextarea';
-import { Toast } from 'primereact/toast';
-import { toastMsg } from '../../commons/toast';
 import copy from "copy-to-clipboard";
 import { setIsOpenInformationJob } from '../../redux/modal/modalSlice';
 import { useDispatch, useSelector } from 'react-redux';
@@ -27,9 +25,10 @@ import { resetJobRequest } from '../../redux/overviewJobs/jobsSlice';
 import { orderIds } from '../../commons/message.common'
 import { socket } from "../../_services/socket";
 import { getCurrentRoom, setIsOpenChat } from '../../redux/messages/messageSlice';
+import { resetJobCreated } from '../../redux/overviewJobs/jobsSlice';
+import { inforToast, errorToast } from '../../commons/toast';
 
 const InformationJobs = () => {
-    const toast = useRef(null);
     const dispatch = useDispatch();
     let minDate = new Date();
     const [typeFile, setTypeFile] = useState(false);
@@ -99,10 +98,6 @@ const InformationJobs = () => {
                 dispatch(getEmployeePerformance())
             }
             dispatch(setIsOpenInformationJob(false))
-            toastMsg.success(toast, 'Xóa công việc thành công')
-        }
-        if (deletejobs?.error) {
-            toastMsg.error(toast, 'Xóa công việc thất bại')
         }
     }, [deletejobs, dispatch, pathname])
 
@@ -134,14 +129,14 @@ const InformationJobs = () => {
             if(pathname === "/workflow-management"){
                 dispatch(getEmployeePerformance())
             }
-            toastMsg.success(toast, 'Cập nhật thành công')
             setTimeout(() => {
                 dispatch(resetJobRequest())
             }, 500);
         }
-        if (updatejobs?.error) {
-            toastMsg.error(toast, updatejobs?.data?.message)
-        }
+    
+        setTimeout(() => {
+            dispatch(resetJobCreated())
+        }, 500);
     }, [updatejobs, dispatch, handleCloseModal, pathname])
 
     useEffect(() => {
@@ -150,13 +145,9 @@ const InformationJobs = () => {
                 dispatch(getEmployeePerformance())
             }
             handleCloseModal()
-            toastMsg.success(toast, 'Cập nhật thành công')
             setTimeout(() => {
                 dispatch(resetJobRequest())
             }, 500);
-        }
-        if (donejobs?.error) {
-            toastMsg.error(toast, donejobs?.data?.message)
         }
     }, [donejobs, dispatch, handleCloseModal, pathname])
 
@@ -181,7 +172,7 @@ const InformationJobs = () => {
     }
 
     const copyToClipboard = (type) => {
-        toastMsg.success(toast, 'Sao chép thành công')
+        inforToast('Sao chép thành công')
         if (type === "id_system") {
             copy(rowdata?.data?.id_system);
         }
@@ -214,7 +205,7 @@ const InformationJobs = () => {
                 if(formData?.result?.finished_link){
                     dispatch(doneJobsRequest(formData))
                 }else{
-                    toastMsg.error(toast, 'Chưa cập nhật Link hoàn thành')
+                    errorToast('Chưa cập nhật Link hoàn thành')
                 }
             }
         }
@@ -256,7 +247,6 @@ const InformationJobs = () => {
     return (
         <>
             <ConfirmPopup />
-            <Toast ref={toast} position="bottom-left" />
             <Sidebar visible={isOpenInformationJob} position="right" onHide={handleCloseModal} className="create__job">
                 <div className="creat__job">
                     <div className="creat__job--title flex justify-content-between align-items-center">

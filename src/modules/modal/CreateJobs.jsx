@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect } from 'react'
 import { Sidebar } from 'primereact/sidebar';
 import { InputText } from 'primereact/inputtext';
 import { Dropdown } from 'primereact/dropdown';
@@ -15,18 +15,15 @@ import {
     setIsOpenModalCreateJob,
     setIsOpenModalCreateCustomer,
 } from '../../redux/modal/modalSlice';
-import { toastMsg } from '../../commons/toast';
-import { Toast } from 'primereact/toast';
 import { addJobsRequest } from "../../redux/overviewJobs/actionJobs";
 import { itemCustomerTemplate } from '../modal/TemplateDropDown';
 import { overlay } from '../../commons/overlay';
 import { getEmployeePerformance } from '../../redux/employeePerformance/action';
 import { useLocation } from "react-router";
-import { resetJobCreate } from "../../redux/overviewJobs/jobsSlice"
+import { resetJobCreated } from "../../redux/overviewJobs/jobsSlice"
 
 const CreateJobs = () => {
 
-    const toast = useRef(null);
     const defaultValues = {
         end_day: null,
         quality_img: "",
@@ -65,15 +62,11 @@ const CreateJobs = () => {
                 dispatch(getEmployeePerformance())
             }
             dispatch(setIsOpenModalCreateJob(false))
-            toastMsg.success(toast, 'Tạo công việc mới thành công')
-            setTimeout(() => {
-                dispatch(resetJobCreate())
-            }, 500);
         }
         if (addjobs?.error) {
             dispatch(setIsOpenModalCreateJob(true))
-            toastMsg.error(toast, addjobs?.data?.message)
         }
+
     }, [
         addjobs, reset, dispatch, pathname
     ])
@@ -81,6 +74,10 @@ const CreateJobs = () => {
     useEffect(() => {
         if (isOpenCreateJob) {
             dispatch(saleCustomerRequest());
+        }else{
+            setTimeout(() => {
+                dispatch(resetJobCreated())
+            }, 500);
         }
     }, [dispatch, isOpenCreateJob])
 
@@ -106,7 +103,6 @@ const CreateJobs = () => {
 
     return (
         <>
-            <Toast ref={toast} position="bottom-left" />
             <Sidebar visible={isOpenCreateJob} position="right" onHide={handleCloseModal} className="create__job">
                 <div className="creat__job">
                     <div className="creat__job--title">

@@ -11,17 +11,15 @@ import { Dropdown } from 'primereact/dropdown';
 import { Calendar } from 'primereact/calendar';
 import { convertDate } from '../../../../commons/dateTime';
 import { dashboardJobsRequest } from '../../../../redux/overviewJobs/actionJobs';
-
-
-// import { settingRequest } from '../../../../redux/admin/action';
+import { settingRequest } from "../../../../redux/admin/action";
 
 const JobPerformance = () => {
     const dispatch = useDispatch()
-    // const user = useSelector(state=> state.auth.user)
     const allJobsStaffSaler = useSelector(state => state.performanceReducer.jobsStaffSaler)
     const allJobsStaffEditor = useSelector(state => state.performanceReducer.jobsStaffEditor)
     const employees = useSelector(state => state.employee.dashboard)
- 
+    const setting = useSelector(state => state.setting?.system);
+
     const userReminders = useSelector(state => state.auth.userReminders)
     const [staffSaler, setStaffSaler] = useState([]);
 
@@ -32,12 +30,23 @@ const JobPerformance = () => {
     const editors =employees?.data ? employees?.data.filter((staff)=>{
         return staff?.role === UserRules?.ROLE?.EDITOR
     }) : []
-    // const setting = useSelector(state => state.setting?.system);
     const [user, setUser] = useState('');
     const [dates, setDates] = useState('');
 
     const [user2, setUser2] = useState('');
     const [dates2, setDates2] = useState('');
+
+    const [defautBonus,setDefaultBonus]= useState(1);
+
+    useEffect(() => {
+        dispatch(settingRequest())
+    }, [dispatch])
+
+    useEffect(()=>{
+        if(setting?.data?.exchange_rate){
+            setDefaultBonus(setting?.data?.exchange_rate)
+        }
+    },[setting])
 
     useEffect(()=>{
         if(allJobsStaffSaler?.data ){
@@ -125,7 +134,7 @@ const JobPerformance = () => {
         )
     }
 
-    const total_count = (rowdata, key, id,isEditor = false)=>{
+    const performanceSaler = (rowdata, key, id,isEditor = false)=>{
         switch (key) {
             case JobRules.STATUS_JOBS.INCOMPLETE:
                 const count_job_incomplete = rowdata.filter((item)=>{
@@ -155,36 +164,46 @@ const JobPerformance = () => {
                     </div>
                 )
             case "total_cost":
-                const total_cost = rowdata.reduce((acc,item)=>{
-                    return acc += item?.total_cost
-                },0)
+                let total_cost = 0
+                for(const item of rowdata){
+                    total_cost += item?.total_cost
+                }
                 return(
                     <div>
                       <span className="table__body-name">{formatVND(total_cost)}</span>
                     </div>
                 )
             case "bonus_incomplete":
-                const bonus_incomplete = rowdata.reduce((acc,item)=>{
-                    return item.status_jobs === JobRules.STATUS_JOBS.INCOMPLETE || item.status_jobs === JobRules.STATUS_JOBS.PENDING  ? acc += item?.saler_cost : 0
-                },0)
+                let bonus_incomplete = 0
+                for(const item of rowdata){
+                    if(item.status_jobs === JobRules.STATUS_JOBS.INCOMPLETE ){
+                        bonus_incomplete += item?.saler_cost
+                    }
+                }
                 return(
                     <div>
                       <span className="table__body-name">{formatVND(bonus_incomplete)}</span>
                     </div>
                 )
             case "bonus_complete":
-                const bonus_complete = rowdata.reduce((acc,item)=>{
-                    return item.status_jobs === JobRules.STATUS_JOBS.COMPLETE  ? acc += item?.saler_cost : 0
-                },0)
+                let bonus_complete = 0
+                for(const item of rowdata){
+                    if(item.status_jobs === JobRules.STATUS_JOBS.COMPLETE ){
+                        bonus_complete += item?.saler_cost
+                    }
+                }
                 return(
                     <div>
                       <span className="table__body-name">{formatVND(bonus_complete)}</span>
                     </div>
                 )
             case "kpi":
-                const bonus = rowdata.reduce((acc,item)=>{
-                    return item.status_jobs === JobRules.STATUS_JOBS.COMPLETE  ? acc += item?.saler_cost : 0
-                },0)
+                let bonus = 0
+                for(const item of rowdata){
+                    if(item.status_jobs === JobRules.STATUS_JOBS.COMPLETE ){
+                        bonus += item?.saler_cost
+                    }
+                }
                 let kpi_saler = 0
                 if(id && employees?.data && employees?.data?.length > 0){
                     for(const staff of employees?.data){
@@ -194,11 +213,10 @@ const JobPerformance = () => {
                         }
                     }
                 }
-                const percent = (bonus * 100) / kpi_saler || 0
-                
+                const percent = ((bonus / defautBonus) * 100) / kpi_saler
                 return(
                     <div>
-                      <span className="table__body-name">{percent}%</span>
+                      <span className="table__body-name">{percent || 0}%</span>
                     </div>
                 )
             default:
@@ -211,7 +229,7 @@ const JobPerformance = () => {
     }
 
 
-    const total_count2 = (rowdata, key, id)=>{
+    const performanceEditor = (rowdata, key, id)=>{
         switch (key) {
             case JobRules.STATUS_JOBS.INCOMPLETE:
                 const count_job_incomplete = rowdata.filter((item)=>{
@@ -240,28 +258,14 @@ const JobPerformance = () => {
                       <span className="table__body-name">{count_job_pending?.length}</span>
                     </div>
                 )
-            case "total_cost":
-                const total_cost = rowdata.reduce((acc,item)=>{
-                    return acc += item?.total_cost
-                },0)
-                return(
-                    <div>
-                      <span className="table__body-name">{formatVND(total_cost)}</span>
-                    </div>
-                )
-            case "bonus_incomplete":
-                const bonus_incomplete = rowdata.reduce((acc,item)=>{
-                        return item.status_jobs === JobRules.STATUS_JOBS.INCOMPLETE || item.status_jobs === JobRules.STATUS_JOBS.PENDING  ? acc += item?.editor_cost : 0
-                    },0)
-                return(
-                    <div>
-                      <span className="table__body-name">{formatVND(bonus_incomplete)}</span>
-                    </div>
-                )
             case "bonus_complete":
-                const bonus_complete = rowdata.reduce((acc,item)=>{
-                    return item.status_jobs === JobRules.STATUS_JOBS.COMPLETE  ? acc += item?.editor_cost : 0
-                },0)
+                let bonus_complete = 0
+
+                for(const item of rowdata){
+                    if(item.status_jobs === JobRules.STATUS_JOBS.COMPLETE){
+                        bonus_complete += item?.editor_cost
+                    }
+                }
                 return(
                     <div>
                       <span className="table__body-name">{formatVND(bonus_complete)}</span>
@@ -295,13 +299,13 @@ const JobPerformance = () => {
             </div>
             <DataTable value={staffSaler || []} responsiveLayout="stack" breakpoint="1400px" className="table__total--workflow--management field col-12 md:col-12 m-0">
                 <Column body={(rowdata)=>bodyTable(rowdata?._id)} header={()=>headerTable("Saler")} className="p-0"/>
-                <Column body={(rowdata)=>total_count(rowdata?.jobs, JobRules.STATUS_JOBS.INCOMPLETE)} header={()=>headerTable("Đang yêu cầu")} />
-                <Column body={(rowdata)=>total_count(rowdata?.jobs, JobRules.STATUS_JOBS.PENDING)} header={()=>headerTable("Đang xử lý")} />
-                <Column body={(rowdata)=>total_count(rowdata?.jobs, JobRules.STATUS_JOBS.COMPLETE)} header={()=>headerTable("Đã hoàn thành")} />
-                <Column body={(rowdata)=>total_count(rowdata?.jobs, "total_cost")} header={()=>headerTable("Doanh thu")} />
-                <Column body={(rowdata)=>total_count(rowdata?.jobs, "bonus_incomplete")} header={()=>headerTable("Bonus incomplete")} />
-                <Column body={(rowdata)=>total_count(rowdata?.jobs, "bonus_complete")} header={()=>headerTable("Bonus complete")} />
-                <Column body={(rowdata)=>total_count(rowdata?.jobs, "kpi", rowdata?._id)} header={()=>headerTable("Kpi")} />
+                <Column body={(rowdata)=>performanceSaler(rowdata?.jobs, JobRules.STATUS_JOBS.INCOMPLETE)} header={()=>headerTable("Đang yêu cầu")} />
+                <Column body={(rowdata)=>performanceSaler(rowdata?.jobs, JobRules.STATUS_JOBS.PENDING)} header={()=>headerTable("Đang xử lý")} />
+                <Column body={(rowdata)=>performanceSaler(rowdata?.jobs, JobRules.STATUS_JOBS.COMPLETE)} header={()=>headerTable("Đã hoàn thành")} />
+                <Column body={(rowdata)=>performanceSaler(rowdata?.jobs, "total_cost")} header={()=>headerTable("Doanh thu")} />
+                <Column body={(rowdata)=>performanceSaler(rowdata?.jobs, "bonus_incomplete")} header={()=>headerTable("Bonus incomplete")} />
+                <Column body={(rowdata)=>performanceSaler(rowdata?.jobs, "bonus_complete")} header={()=>headerTable("Bonus complete")} />
+                <Column body={(rowdata)=>performanceSaler(rowdata?.jobs, "kpi", rowdata?._id)} header={()=>headerTable("Kpi")} />
             </DataTable>
             <br/>
             <br/>
@@ -322,12 +326,10 @@ const JobPerformance = () => {
             </div>
             <DataTable value={allJobsStaffEditor?.data || []} responsiveLayout="stack" breakpoint="1400px" className="table__total--workflow--management field col-12 md:col-12 m-0">
                 <Column body={(rowdata)=>bodyTable(rowdata?._id)} header={()=>headerTable("Editor")} className="p-0"/>
-                <Column body={(rowdata)=>total_count2(rowdata?.jobs, JobRules.STATUS_JOBS.INCOMPLETE)} header={()=>headerTable("Đang yêu cầu")} />
-                <Column body={(rowdata)=>total_count2(rowdata?.jobs, JobRules.STATUS_JOBS.PENDING)} header={()=>headerTable("Đang xử lý")} />
-                <Column body={(rowdata)=>total_count2(rowdata?.jobs, JobRules.STATUS_JOBS.COMPLETE)} header={()=>headerTable("Đã hoàn thành")} />
-                <Column body={(rowdata)=>total_count2(rowdata?.jobs, "total_cost")} header={()=>headerTable("Doanh thu")} />
-                <Column body={(rowdata)=>total_count2(rowdata?.jobs, "bonus_incomplete", true)} header={()=>headerTable("Bonus incomplete")} />
-                <Column body={(rowdata)=>total_count2(rowdata?.jobs, "bonus_complete")} header={()=>headerTable("Bonus complete")} />
+                <Column body={(rowdata)=>performanceEditor(rowdata?.jobs, JobRules.STATUS_JOBS.INCOMPLETE)} header={()=>headerTable("Đang yêu cầu")} />
+                <Column body={(rowdata)=>performanceEditor(rowdata?.jobs, JobRules.STATUS_JOBS.PENDING)} header={()=>headerTable("Đang xử lý")} />
+                <Column body={(rowdata)=>performanceEditor(rowdata?.jobs, JobRules.STATUS_JOBS.COMPLETE)} header={()=>headerTable("Đã hoàn thành")} />
+                <Column body={(rowdata)=>performanceEditor(rowdata?.jobs, "bonus_complete")} header={()=>headerTable("Bonus complete")} />
             </DataTable>
         </div>
     )

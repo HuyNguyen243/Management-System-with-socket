@@ -7,6 +7,7 @@ import {
     ROOM_SESSION_MESSAGES,
 } from "../../constants";
 import jwt_decode from "jwt-decode";
+import { successToast, errorToast } from "../../commons/toast";
 
 export const userloginRequest = createAsyncThunk(
     "user_login",
@@ -80,11 +81,13 @@ export const userEditProfile = createAsyncThunk(
     async (result, { rejectWithValue }) => {
         try {
             const res = await put(`users/infor/update/${result.id}`,result?.data)
+            successToast('Cập nhật thành công')
             if(res){
                 storage.save("birth",res?.data?.births)
             }
             return res?.data;
         } catch (error) {
+            errorToast('Cập nhật thất bại')
             return rejectWithValue(error?.response?.data);
         }
     }

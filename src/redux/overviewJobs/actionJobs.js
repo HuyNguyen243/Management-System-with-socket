@@ -1,5 +1,6 @@
 import {  createAsyncThunk } from '@reduxjs/toolkit'
 import { get,post,put,del } from "../../_services/apiRequest"
+import { successToast, errorToast } from '../../commons/toast';
 
 
 export const dashboardJobsRequest = createAsyncThunk(
@@ -20,9 +21,11 @@ export const addJobsRequest = createAsyncThunk(
     'addJobs',
     async (data,{ rejectWithValue }) => {
         try {
+            successToast('Tạo công việc mới thành công')
             const res = await post("jobs/",data)
             return res.data;
         } catch (error) {
+            errorToast(error?.response?.data?.message)
             return rejectWithValue(error?.response?.data);
         }
     }
@@ -33,12 +36,14 @@ export const editJobsRequest = createAsyncThunk(
     async (data,{ rejectWithValue }) => {
         try {
             const res = await put(`jobs/${data?.result.id_system}`,data?.result)
+            successToast('Cập nhật thành công')
             if(res){
                 res.data_user = data?.result
                 res.index = data?.index
             }
             return res;
         } catch (error) {
+            errorToast(error?.response?.data?.mesage)
             return rejectWithValue(error?.response?.data);
         }
     }
@@ -49,12 +54,15 @@ export const doneJobsRequest = createAsyncThunk(
     async (data,{ rejectWithValue }) => {
         try {
             const res = await put(`jobs/done/${data?.result.id_system}`,data?.result)
+            successToast('Cập nhật thành công')
             if(res){
                 res.data_user = data?.result
                 res.index = data?.index
             }
             return res;
         } catch (error) {
+            errorToast(error?.response?.data?.mesage)
+
             return rejectWithValue(error?.response?.data);
         }
     }
@@ -64,12 +72,14 @@ export const deleteJobsRequest = createAsyncThunk(
     'deleteJobs',
     async (data,{ rejectWithValue }) => {
         try {
+            successToast('Xóa công việc thành công')
             const res = await del(`jobs/${data.id}`)
             if(res){
                 res.index = data?.index
             }
             return res;
         } catch (error) {
+            errorToast('Xóa công việc thất bại')
             return rejectWithValue(error?.response?.data);
         }
     }

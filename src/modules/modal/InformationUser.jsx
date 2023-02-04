@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { Sidebar } from 'primereact/sidebar';
 import { InputText } from 'primereact/inputtext';
@@ -10,9 +10,7 @@ import {
     PHONE_REGEX,
     UserRules,
 } from "../../constants"
-import { toastMsg } from '../../commons/toast';
 import { useDispatch, useSelector } from 'react-redux';
-import { Toast } from 'primereact/toast';
 import copy from "copy-to-clipboard";
 import { useForm } from "react-hook-form";
 import { editEmployeeRequest, deleteEmployeeRequest } from "../../redux/overviewEmployee/actionEmployee";
@@ -20,9 +18,9 @@ import {
     setIsOpenModalCreateUser,
     setIsOpenModalInformationUser,
 } from '../../redux/modal/modalSlice';
-import { resetEditUser } from '../../redux/overviewEmployee/employeeSlice';
 import { overlay } from '../../commons/overlay';
 import { InputNumber } from 'primereact/inputnumber';
+import { inforToast } from '../../commons/toast';
 
 const InformationUser = () => {
     const putUser = useSelector(state => state.employee?.edituser)
@@ -33,7 +31,6 @@ const InformationUser = () => {
 
     const dispatch = useDispatch()
     const { register, setValue, handleSubmit, formState: { errors }, reset } = useForm();
-    const toast = useRef(null);
 
     useEffect(() => {
         if (isOpenInformationUser) {
@@ -46,24 +43,14 @@ const InformationUser = () => {
     useEffect(() => {
         if (putUser?.data && !putUser?.error) {
             dispatch(setIsOpenModalInformationUser(false))
-            toastMsg.success(toast, 'Cập nhật thành công')
-            setTimeout(()=>{
-                dispatch(resetEditUser())
-            },500)
+          
         }
-
-        if (putUser?.error) {
-            toastMsg.error(toast, 'Cập nhật thất bại')
-        }
+     
     }, [putUser, dispatch])
 
     useEffect(() => {
         if (deleteUser?.data && !deleteUser?.error) {
             dispatch(setIsOpenModalInformationUser(false))
-            toastMsg.success(toast, 'Xóa thành viên thành công')
-        }
-        if (deleteUser?.error) {
-            toastMsg.error(toast, 'Xóa thành viên thất bại')
         }
     }, [deleteUser, dispatch])
 
@@ -126,14 +113,13 @@ const InformationUser = () => {
     }
 
     const copyToClipboard = () => {
-        toastMsg.success(toast, 'Sao chép mã nhân viên thành công')
+        inforToast('Sao chép mã nhân viên thành công')
         copy(rowdata?.data?.id_system);
     }
 
     return (
         <>
             <ConfirmPopup />
-            <Toast ref={toast} position="bottom-left" />
             <Sidebar visible={isOpenInformationUser} position="right" onHide={handleCloseModal} className="create__job">
                 <div className="creat__job">
                     <div className="creat__job--title flex justify-content-between">
@@ -266,17 +252,18 @@ const InformationUser = () => {
                                     {
                                         rowdata?.data?.role === UserRules?.ROLE?.SALER && 
                                         <div className="field col-12 md:col-6">
-                                            <span htmlFor="original__link">Số tiền hoàn thành: </span>
+                                            <span htmlFor="original__link">Kpi saler:($) </span>
                                             <span className="p-float-label cursor__normal mt-4">
                                                 <InputNumber id="editor_cost"
-                                                    inputId="currency-vn"
+                                                    inputId="currency-us"
                                                     value={rowdata?.data?.kpi_saler}
                                                     onValueChange={(e) => setValue("kpi_saler", e.target.value)}
                                                     mode="currency"
-                                                    currency="VND"
-                                                    locale="vi-VN"
+                                                    currency="USD"
+                                                    locale="en-US"
                                                     useGrouping={true}
                                                     className={"m-0"}
+                                                    minFractionDigits={0}
                                                 />
                                             </span>
                                         </div>

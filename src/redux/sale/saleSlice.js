@@ -7,6 +7,7 @@ import {
     deleteCustomerRequest,
     getCustomerRequest,
 } from "./action";
+// import { showSuccessToast } from "../../commons/toast";
 
 const initialState = {
     customers: {
@@ -46,11 +47,25 @@ const saleSlice = createSlice({
                     data : null,
                     error: false,
                 },
+                deletecustomer: {
+                    loading: false,
+                    data: null,
+                    error: false,
+                },
             })
         },
         resetCreateCustomer: (state)=>{
             Object.assign(state,{},{
                 customer:{
+                    loading: false,
+                    data : null,
+                    error: false,
+                },
+            })
+        },
+        resetDeleteCustomer: (state)=>{
+            Object.assign(state,{},{
+                deletecustomer:{
                     loading: false,
                     data : null,
                     error: false,
@@ -257,5 +272,5 @@ const saleSlice = createSlice({
         },
     },
 });
-export const { resetEditCustomer, resetCreateCustomer } = saleSlice.actions
+export const { resetEditCustomer, resetCreateCustomer, resetDeleteCustomer } = saleSlice.actions
 export default saleSlice.reducer;

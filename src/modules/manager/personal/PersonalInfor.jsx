@@ -1,4 +1,4 @@
-import React,{ useState, useEffect, useRef } from 'react'
+import React,{ useState, useEffect } from 'react'
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 import { Avatar } from 'primereact/avatar';
@@ -6,12 +6,10 @@ import TablePersonalInfor from "./TablePersonalInfor";
 import { useSelector } from "react-redux";
 import { PHONE_REGEX } from '../../../constants';
 import { useDispatch } from 'react-redux';
-import {userEditProfile} from "../../../redux/auth/action"
+import { userEditProfile } from "../../../redux/auth/action"
 import { Password } from 'primereact/password';
 import { Calendar } from 'primereact/calendar';
 import { storage } from '../../../_services/sesionStorage';
-import { Toast } from 'primereact/toast';
-import { toastMsg } from '../../../commons/toast';
 import { formatDate } from '../../../commons/dateTime';
 import { resetEditStaff } from '../../../redux/auth/authSlice';
 
@@ -36,21 +34,16 @@ const PersonalInfor = () => {
     const [birth,setBirth] = useState(null)
     const [imagePreview,setImagePreview] = useState(null)
     const birthStorage = storage.get("birth")
-    const toast = useRef(null);
 
     useEffect(() => {
         if(editUser?.data){
             setConfirmPassword("")
             setPassword("")
-            toastMsg.success(toast,'Cập nhật thành công')
             setTimeout(() => {
                 dispatch(resetEditStaff())
             }, 500);
         }
 
-        if(editUser?.error){
-            toastMsg.error(toast,'Cập nhật thất bại')
-        }
     },[setConfirmPassword, setPassword, editUser, dispatch])
 
     useEffect(()=>{
@@ -189,7 +182,6 @@ const PersonalInfor = () => {
 
   return (
     <div className="page">
-        <Toast ref={toast} position="bottom-left"/>
         <div className="grid" >
             <div className="field col-12 md:col-5">
                 <form className="infor__block grid" onSubmit={handleSubmit}>

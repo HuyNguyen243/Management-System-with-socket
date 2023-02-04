@@ -16,7 +16,6 @@ const Notification = ({isOpenNotification, setisOpenNotification}) => {
     const addjobs = useSelector(state => state.jobs.addjobs)
     const notifys = useSelector(state => state.notification.fetchAllNotification)
     const notifyupdate= useSelector(state => state.notification.updatenotification)
-    const employees = useSelector(state => state.employee.dashboard)
     const userReminders = useSelector(state => state.auth.userReminders)
 
     const [ notifications, setNotifications ] = useState([])
@@ -191,23 +190,13 @@ const Notification = ({isOpenNotification, setisOpenNotification}) => {
         });
     }
 
-    const checkname = (id_user)=>{
-        if(employees?.data && employees?.data.length > 0){
-            const news = employees?.data.filter((item)=>{
-                return item.id_system === id_user && item
-            })
-            return news?.[0]?.fullname || id_user
-        }else{
-            return id_user
-        }
-    }
 
     const showNotifications = ()=>{
         if(notifications && notifications?.length > 0 ){
             return notifications?.map((notify,index)=>{
                 const arrTittle = notify?.title.split(" ")
-                const name = checkname(arrTittle?.[arrTittle?.length - 1])
-                arrTittle.splice(arrTittle?.length - 1, 1 , checkNameReminder(name))
+                arrTittle.splice(arrTittle?.length - 1, 1 , checkNameReminder(arrTittle?.[arrTittle?.length - 1]))
+
                 return (
                     <div 
                     className={`notification_item ${notify?.member_check_notify?.[user?.data?.id_system] && "active"}`} 

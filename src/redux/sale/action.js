@@ -1,5 +1,6 @@
 import {  createAsyncThunk } from '@reduxjs/toolkit'
 import { get, post, put, del } from "../../_services/apiRequest"
+import { successToast, errorToast } from '../../commons/toast';
 
 export const saleCustomerRequest = createAsyncThunk(
     'Customers',
@@ -18,9 +19,11 @@ export const addCustomerRequest = createAsyncThunk(
     'Customer',
     async (data,{ rejectWithValue }) => {
         try {
+            successToast('Tạo khách hàng mới thành công')
             const res = await post("customers",data)
             return res;
         } catch (error) {
+            errorToast('Tạo khách hàng mới thất bại')
             return rejectWithValue(error?.response)
         }
     }
@@ -31,12 +34,15 @@ export const editCustomerRequest = createAsyncThunk(
     async (data,{ rejectWithValue }) => {
         try {
             let res = await put(`customers/${data?.result?.id_system}`,data?.data)
+            successToast('Cập nhật thành công')
             if(res){
                 res.data = data?.result
                 res.index = data?.index
             }
             return res;
         } catch (error) {
+            errorToast('Cập nhật thất bại')
+
             return rejectWithValue(error?.response)
         }
     }
@@ -47,11 +53,13 @@ export const deleteCustomerRequest = createAsyncThunk(
     async (data,{ rejectWithValue }) => {
         try {
             let res = await del(`customers/${data?.id}`)
+            successToast('Xóa khách hàng thành công')
             if(res){
                 res.index = data?.index
             }
             return res;
         } catch (error) {
+            errorToast('Xóa khách hàng thất bại')
             return rejectWithValue(error?.response)
         }
     }
