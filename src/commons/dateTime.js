@@ -69,6 +69,8 @@ export const timezoneToDate = (date)=>{
         const day = newArr[1] <= 9 ? "0" + newArr[1] : newArr[1];
         const year = newArr[2];
         return day + "/" + month + "/" + year
+    }else{
+        return ""
     }
 }
 
