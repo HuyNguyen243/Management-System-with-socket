@@ -25,7 +25,7 @@ const Notification = ({isOpenNotification, setisOpenNotification}) => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
-    const soundUrl = './sound/notify.mp3';
+    const soundUrl = './sound/notify2.mp3';
     const audio = new Audio(soundUrl);
     useEffect(() => {
         if(user?.data?.id_system && user?.data?.role === UserRules?.ROLE?.ADMIN){
