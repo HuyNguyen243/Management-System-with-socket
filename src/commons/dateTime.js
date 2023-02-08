@@ -58,20 +58,23 @@ export const dateString = (date)=>{
     }
 }
 
-export const timezoneToDate = (date)=>{
-    if(date){
-        let newDate = new Date(date);
-        newDate.setHours(newDate.getHours() - 7);
-        const arr = newDate.toLocaleString().split(",");
-        const newArr = arr[0].split("/");
-     
-        const month = newArr[0] <= 9 ? "0" + newArr[0] : newArr[0];
-        const day = newArr[1] <= 9 ? "0" + newArr[1] : newArr[1];
-        const year = newArr[2];
-        return day + "/" + month + "/" + year
-    }else{
-        return ""
-    }
+export const timezoneToDate = (input)=>{
+    //2022-12-12T12:24:20.038Z
+	if (input) {
+		const date = new Date(input);
+        if(date){
+            const month = date.getMonth();
+            const year = date.getFullYear();
+            const day = date.getDate();
+    
+            return day + '/' + month + '/' + year;
+        }else{
+            return ''
+        }
+	} else {
+		return '';
+	}
+	// December 23 20022
 }
 
 

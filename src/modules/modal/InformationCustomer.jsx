@@ -73,7 +73,7 @@ const InformationCustomer = () => {
     
 
     }, [putCustomer, dispatch, resetModal])
-    console.log(putCustomer)
+    
     useEffect(() => {
         if (deleteCustomer?.data && !deleteCustomer?.error) {
             resetModal()
@@ -215,7 +215,7 @@ const InformationCustomer = () => {
             setIsOpenInput({ ...isOpenInput, [key]: true })
         }
     }
-    console.log(true)
+
     return (
         <>
             <ConfirmPopup />
