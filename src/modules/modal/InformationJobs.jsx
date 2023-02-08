@@ -402,7 +402,7 @@ const InformationJobs = () => {
                                                         />
                                                     ) : (
                                                         <span className="p-float-label mt-3 font-bold" >
-                                                            {rowdata?.data?.id_editor !== "NOT_SET_BY_ADMIN" ? rowdata?.data?.id_editor : "Chưa giao việc"}
+                                                           {rowdata?.data?.id_editor !== "NOT_SET_BY_ADMIN" ? rowdata?.data?.reminder_editor: "Chưa giao việc"}
                                                         </span>
                                                     )
                                                 }
