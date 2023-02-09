@@ -347,7 +347,7 @@ const InformationJobs = () => {
                                         </span>
                                     </div>
                                     <div className="field col-12 md:col-6 create__job--calendar">
-                                        <span htmlFor="end_day">Ngày hạn chót công việc : {user?.data?.role !== "LEADER_EDITOR" && user?.data?.role !== "EDITOR" && <span className="warning">*</span>}</span>
+                                        <span htmlFor="end_day">Deadline : {user?.data?.role !== "LEADER_EDITOR" && user?.data?.role !== "EDITOR" && <span className="warning">*</span>}</span>
                                         <span onClick={(e) => handleOpenInput("end_day")} className={"p-float-label font-bold " + ((user?.data?.role !== "LEADER_EDITOR" && user?.data?.role !== "EDITOR") ? "cursor__edit" : isOpenInput?.end_day ? "" : " mt-3")} >
                                             {user?.data?.role !== "LEADER_EDITOR" && user?.data?.role !== "EDITOR" && isOpenInput?.end_day ?
                                                 (

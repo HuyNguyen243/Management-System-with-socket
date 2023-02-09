@@ -140,7 +140,7 @@ const CreateJobs = () => {
                                 <p onClick={handleCreateNewCustomer} style={{ width: "max-content" }}>Tạo khách hàng mới</p>
                             </div>
                             <div className="field col-12 md:col-6 create__job--calendar">
-                                <span htmlFor="calendar">Chọn ngày hạn chót:<span className="warning">*</span></span>
+                                <span htmlFor="calendar">Deadline: <span className="warning">*</span></span>
                                 <span className="">
                                     <Controller name="end_day"
                                         control={control}
