@@ -43,7 +43,7 @@ export const editJobsRequest = createAsyncThunk(
             }
             return res;
         } catch (error) {
-            errorToast(error?.response?.data?.mesage)
+            errorToast(error?.response?.data?.message)
             return rejectWithValue(error?.response?.data);
         }
     }
@@ -61,7 +61,7 @@ export const doneJobsRequest = createAsyncThunk(
             }
             return res;
         } catch (error) {
-            errorToast(error?.response?.data?.mesage)
+            errorToast(error?.response?.data?.message)
 
             return rejectWithValue(error?.response?.data);
         }
