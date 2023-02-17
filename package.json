@@ -40,9 +40,9 @@
         "build": "GENERATE_SOURCEMAP=false react-scripts build",
         "test": "react-scripts test",
         "eject": "react-scripts eject",
-        "lint": "eslint src/**/*.js src/**/*.jsx",
-		"lint:fix": "eslint --fix src/**/*.js src/**/*.jsx",
-        "prettier:fix": "prettier --write '**/*.scss' '**/*.{jsx,ts,tsx,js}'",
+        "lint": "eslint ./src/**/*.js ./src/**/*.jsx",
+		"lint:fix": "eslint --fix ./src/**/*.js ./src/**/*.jsx",
+        "prettier:fix": "prettier --write './src/**/*.scss' './src/**/*.{jsx,ts,tsx,js}'",
         "prettier:check": "prettier --check .",
         "postinstall": "husky install"
     },
@@ -74,11 +74,11 @@
         }
     },
     "lint-staged": {
-        "**/*.{js,jsx,ts,tsx}": [
+        "./src/**/*.{js,scss,jsx,ts,tsx}": [
             "prettier --write",
             "eslint --fix"
         ],
-        "**/*.scss": [
+        "./src/**/*.scss": [
             "prettier --write"
         ]
     }
