@@ -1,13 +1,12 @@
 @font-face {
-    font-family: "Be VietNam";
-    src: local("Be VietNam"),
-     url("../../../../public/fonts/Be_Vietnam_Pro/BeVietnamPro-Regular.ttf") format("truetype");
+	font-family: 'Be VietNam';
+	src: local('Be VietNam'), url('../../../../public/fonts/Be_Vietnam_Pro/BeVietnamPro-Regular.ttf') format('truetype');
 }
 
-.generalFont{
-    font-family: "Be VietNam" !important;
-    font-style: normal !important;
-    font-weight: 500 !important;
-    font-size: 14px !important;
-    line-height: 22px !important;
+.generalFont {
+	font-family: 'Be VietNam' !important;
+	font-style: normal !important;
+	font-weight: 500 !important;
+	font-size: 14px !important;
+	line-height: 22px !important;
 }

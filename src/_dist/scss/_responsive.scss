@@ -1,339 +1,336 @@
-.css-1dxveab-MuiDrawer-docked .MuiDrawer-paper{
-    z-index: 999999 !important;
+.css-1dxveab-MuiDrawer-docked .MuiDrawer-paper {
+	z-index: 999999 !important;
 }
-.MuiButtonBase-root{
-    padding-left: 0 !important;
+.MuiButtonBase-root {
+	padding-left: 0 !important;
 }
 @media (max-width: 1200px) {
-    .table__total--workflow--management{
-        .table__header-col span{
-            color: $color-name-notification;
-        }
-    }
-    .edit_bank{
-        width: 200px;
-    }
+	.table__total--workflow--management {
+		.table__header-col span {
+			color: $color-name-notification;
+		}
+	}
+	.edit_bank {
+		width: 200px;
+	}
 }
 
 @media (max-width: 1113px) {
-    .table__limit{
-        > span{
-            padding-bottom: 0px;
-            padding-top: 3px;
-        }
-    }
-    .infor_avatar {
-        width: 280px;
-        height: 280px;
-    }
-    .total__block{
-        width: 50%;
-        margin-bottom: 10px;
-        text-align: inherit;
-    }
-    .total__block:last-child{
-        width: 100%;
-    }
-    .calendar{
-        width: 100%;
-    }
-    .fiter__status{
-        width: 100%;
-        margin: 0 !important;
-    }
-    .page__filter{
-        >img{
-            position: absolute;
-            bottom: 17px;
-            left: 10px;
-        }
-    }
-    .filter__search{
-        width: 100%;
-        margin-bottom: 10px;
-        padding: 0px !important;
-    }
-    .calendar{
-        margin-bottom: 20px;
-    }
-    #filter__label{
-        font-size: 13px;
-    }
-    #outlined-size-small-label{
-        font-size: 13px !important;
-    }
-    .hide_filter{
-        display: none !important;
-    }
+	.table__limit {
+		> span {
+			padding-bottom: 0px;
+			padding-top: 3px;
+		}
+	}
+	.infor_avatar {
+		width: 280px;
+		height: 280px;
+	}
+	.total__block {
+		width: 50%;
+		margin-bottom: 10px;
+		text-align: inherit;
+	}
+	.total__block:last-child {
+		width: 100%;
+	}
+	.calendar {
+		width: 100%;
+	}
+	.fiter__status {
+		width: 100%;
+		margin: 0 !important;
+	}
+	.page__filter {
+		> img {
+			position: absolute;
+			bottom: 17px;
+			left: 10px;
+		}
+	}
+	.filter__search {
+		width: 100%;
+		margin-bottom: 10px;
+		padding: 0px !important;
+	}
+	.calendar {
+		margin-bottom: 20px;
+	}
+	#filter__label {
+		font-size: 13px;
+	}
+	#outlined-size-small-label {
+		font-size: 13px !important;
+	}
+	.hide_filter {
+		display: none !important;
+	}
 
-    .table__header-name{
-        color: $color-black !important;
-    }
-    .table__sort{
-        display: none;
-    }
-    .table__body-name.btn_success,
-    .table__body-name.btn_stop,
-    .table__body-name.btn_pending{
-        margin: 0px;
+	.table__header-name {
+		color: $color-black !important;
+	}
+	.table__sort {
+		display: none;
+	}
+	.table__body-name.btn_success,
+	.table__body-name.btn_stop,
+	.table__body-name.btn_pending {
+		margin: 0px;
+	}
+	.p-datatable .p-datatable-tbody > tr {
+		background-color: $color-border-input;
+	}
 
-    }
-    .p-datatable .p-datatable-tbody > tr {
-        background-color: $color-border-input;
-    }
+	.p-datatable-tbody tr td {
+		padding: 10px !important;
+	}
+	.p-column-title,
+	.table__body-name {
+		font-size: 12px;
+	}
+	.p-datatable-thead {
+		display: none;
+	}
+	.table__limit > span {
+		height: 40px;
+	}
+	.MuiSelect-select {
+		padding: 0;
+	}
+	.paginate {
+		padding: 15px 0;
+	}
+	.btn_filter {
+		display: block;
+		margin-left: 5px;
+	}
+	.login__container {
+		background-image: url('../../../public/images/bg_mb.jpeg');
+		background-repeat: no-repeat;
+		width: 100%;
+		height: 100vh;
+		background-position: center center;
+	}
+	.login__bg {
+		display: none;
+	}
+	.login__form {
+		background-color: $color-white;
+		padding: 20px;
+		border-radius: 20px;
+		box-shadow: 13px 24px 14px rgb(0 0 0 / 23%);
+		position: relative;
+	}
+	.login__container .login__route {
+		font-size: 40px;
+		margin-bottom: 10px;
+	}
+	.login__container .login__form .login__title {
+		flex-direction: column;
+		p:first-child {
+			display: none;
+		}
+		p:nth-child(2) {
+			margin-bottom: 5px;
+		}
+	}
+	.login__note {
+		display: block;
+	}
+	.forgotpassword__bg {
+		display: none;
+	}
+	.login__container:before {
+		content: '';
+		background-color: #9090904f;
+		width: 100vw;
+		height: 100vh;
+		display: block;
+		position: absolute;
+	}
 
-    .p-datatable-tbody tr td{
-        padding: 10px !important;
-    }
-    .p-column-title,
-    .table__body-name{
-        font-size: 12px;
-    }
-    .p-datatable-thead{
-        display: none;
-    }
-    .table__limit > span{
-        height: 40px;
-    }
-    .MuiSelect-select{
-        padding: 0;
-    }
-    .paginate{
-        padding: 15px 0;
-    }
-    .btn_filter{
-        display: block;
-        margin-left: 5px;
-    }
-    .login__container{
-        background-image: url("../../../public/images/bg_mb.jpeg");
-        background-repeat: no-repeat;
-        width: 100%;
-        height: 100vh;
-        background-position: center center;
-    }
-    .login__bg{
-        display: none;
-    }
-    .login__form{
-        background-color: $color-white;
-        padding: 20px;
-        border-radius: 20px;
-        box-shadow: 13px 24px 14px rgb(0 0 0 / 23%);
-        position: relative;
-    }
-    .login__container .login__route{
-        font-size: 40px;
-        margin-bottom: 10px;
-    }
-    .login__container .login__form .login__title {
-        flex-direction: column;
-        p:first-child{
-            display: none;
-        }
-        p:nth-child(2){
-            margin-bottom: 5px;
-        }
-    }
-    .login__note{
-        display: block;
-    }
-    .forgotpassword__bg{
-        display: none;
-    }
-    .login__container:before{
-        content: "";
-        background-color: #9090904f;
-        width: 100vw;
-        height: 100vh;
-        display: block;
-        position: absolute;
-    }
+	.btn_forgot {
+		position: absolute;
+		left: 20px;
+		right: 20px;
+		bottom: 90px;
+	}
 
-    .btn_forgot{
-        position: absolute;
-        left: 20px;
-        right: 20px;
-        bottom: 90px;
-    }
-
-    .form__message{
-        position: absolute;
-        left: 0px;
-        right: 0px;
-        bottom: 20px;
-        margin: 0 20px;
-        width: auto;
-    }
-    .forgot__form{
-        margin-top: 40px;
-    }
+	.form__message {
+		position: absolute;
+		left: 0px;
+		right: 0px;
+		bottom: 20px;
+		margin: 0 20px;
+		width: auto;
+	}
+	.forgot__form {
+		margin-top: 40px;
+	}
 }
 
 @media (max-width: 767px) {
-    .header__block{
-        position: absolute;
-        right: 10px;
-        width: max-content;
-    }
-    .header__left{
-        display: none;
-    }
-    .ava_right{
-        margin-top: 255px !important;
-        display:none;
-    }
-    .avatar__block {
-        padding-top: 10px;
-    }
-    .infor_avatar {
-        width: 200px;
-        height: 200px;
-    }
-    .label_avatar {
-        padding-left: 100px;
-    }
-    .ava_res{
-        display: flex;
-    }
-    .login__container .login__route {
-        font-size: 30px;
-        margin-bottom: 30px;
-        line-height: 50px;
-    }
-    .login__container form .form__email {
-        margin-bottom: 30px;
-    }
-    .form__forgot-pwd{
-        min-height: 475px;
-    }
-    .table__header-col span{
-        font-size: 13px;
-    }
-    #people-list.active {
-        width: 60px;
-    }
-    #people-list {
-        width: 60px;
-    }
-    .notification-message__search{
-        display: none;
-    }
-    .message__title{
-        height: 71px;
-    }
-    .chat__createGroup:after {
-        content: "+";
-        position: absolute;
-        left: 10px;
-        width: 40px;
-        height: 40px;
-        background: #0061F4;
-        font-size: 25px;
-        border-radius: 5px;
-        color: #FFFFFF;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        box-shadow: -3px 4px 4px rgb(0 0 0 / 17%);
-        cursor: pointer;
-        top: 12px;
-    }
-    .chat .chat-history .message-data-time::after,
-    .chat .chat-history .message-data-time::before{
-        width: 30%;
-    }
-    
+	.header__block {
+		position: absolute;
+		right: 10px;
+		width: max-content;
+	}
+	.header__left {
+		display: none;
+	}
+	.ava_right {
+		margin-top: 255px !important;
+		display: none;
+	}
+	.avatar__block {
+		padding-top: 10px;
+	}
+	.infor_avatar {
+		width: 200px;
+		height: 200px;
+	}
+	.label_avatar {
+		padding-left: 100px;
+	}
+	.ava_res {
+		display: flex;
+	}
+	.login__container .login__route {
+		font-size: 30px;
+		margin-bottom: 30px;
+		line-height: 50px;
+	}
+	.login__container form .form__email {
+		margin-bottom: 30px;
+	}
+	.form__forgot-pwd {
+		min-height: 475px;
+	}
+	.table__header-col span {
+		font-size: 13px;
+	}
+	#people-list.active {
+		width: 60px;
+	}
+	#people-list {
+		width: 60px;
+	}
+	.notification-message__search {
+		display: none;
+	}
+	.message__title {
+		height: 71px;
+	}
+	.chat__createGroup:after {
+		content: '+';
+		position: absolute;
+		left: 10px;
+		width: 40px;
+		height: 40px;
+		background: #0061f4;
+		font-size: 25px;
+		border-radius: 5px;
+		color: #ffffff;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		box-shadow: -3px 4px 4px rgb(0 0 0 / 17%);
+		cursor: pointer;
+		top: 12px;
+	}
+	.chat .chat-history .message-data-time::after,
+	.chat .chat-history .message-data-time::before {
+		width: 30%;
+	}
 }
 
 @media (max-width: 900px) {
-    .chat {
-        width: 350px;
-    }
-    .msg__title{
-        display: none !important;
-    }
+	.chat {
+		width: 350px;
+	}
+	.msg__title {
+		display: none !important;
+	}
 }
 
 @media (max-width: 739px) {
-    .chart__color{
-        height: 100px;
-    }
+	.chart__color {
+		height: 100px;
+	}
 
-    .table__header-col span{
-        font-size: 12px;
-    }
-    .table__body-name.btn_pending ,
-    .table__body-name.btn_stop,
-    .table__body-name.btn_success{
-        height: 30px;
-        width: 135px;
-    }
-    .table__perpage > span{
-        font-size: 14px;
-    }
+	.table__header-col span {
+		font-size: 12px;
+	}
+	.table__body-name.btn_pending,
+	.table__body-name.btn_stop,
+	.table__body-name.btn_success {
+		height: 30px;
+		width: 135px;
+	}
+	.table__perpage > span {
+		font-size: 14px;
+	}
 
-    .edit__group {
-        padding-left: 69px;
-    }
+	.edit__group {
+		padding-left: 69px;
+	}
 }
 @media (max-width: 600px) {
-   
-    .header__right{
-        justify-content: flex-end;
-    }
-    .header__block{
-        display: block !important;
-    }
-    .header__menu {
-        top: 59px !important;
-    }
-    .header__right--notification-msg {
-        img{
-            width: 35px;
-            margin: 0;
-            margin-top: 10px;
-        }
-    }
-    .header__right--notification{
-        img{
-            width: 35px;
-            margin: 0;
-            margin-top: 9px;
-        }
-    }
+	.header__right {
+		justify-content: flex-end;
+	}
+	.header__block {
+		display: block !important;
+	}
+	.header__menu {
+		top: 59px !important;
+	}
+	.header__right--notification-msg {
+		img {
+			width: 35px;
+			margin: 0;
+			margin-top: 10px;
+		}
+	}
+	.header__right--notification {
+		img {
+			width: 35px;
+			margin: 0;
+			margin-top: 9px;
+		}
+	}
 
-    .chat-container {
-        display: flex;
-        position: absolute;
-        bottom: 60px;
-        right: -12px;
-        z-index: 9999;
-        box-shadow: -2px 8px 8px rgb(0 0 0 / 30%);
-        border-radius: 10px;
-        height: 475px;
-    }
+	.chat-container {
+		display: flex;
+		position: absolute;
+		bottom: 60px;
+		right: -12px;
+		z-index: 9999;
+		box-shadow: -2px 8px 8px rgb(0 0 0 / 30%);
+		border-radius: 10px;
+		height: 475px;
+	}
 }
 
 @media (max-width: 520px) {
-    .login__form{
-        margin: auto 20px !important;
-    }
-    .notification-message__container,
-    .notification__container{
-        left: 40px;
-        top: 60px;
-    }
-    .id__me{
-        display: none;
-    }
-    .chat {
-        width: 270px;
-    }
+	.login__form {
+		margin: auto 20px !important;
+	}
+	.notification-message__container,
+	.notification__container {
+		left: 40px;
+		top: 60px;
+	}
+	.id__me {
+		display: none;
+	}
+	.chat {
+		width: 270px;
+	}
 }
 
 @media (max-width: 420px) {
-    .chat {
-        width: 240px;
-    }
+	.chat {
+		width: 240px;
+	}
 }

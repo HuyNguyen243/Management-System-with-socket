@@ -1,3 +1,3 @@
-export const RESET_REQUEST = (dispatch,filter,action)=>{
-    dispatch(action(filter))
-}
+export const RESET_REQUEST = (dispatch, filter, action) => {
+	dispatch(action(filter));
+};

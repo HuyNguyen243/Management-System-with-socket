@@ -1,71 +1,70 @@
 .information__job span {
-    font-size: 12px;
-    color: $color-black;
+	font-size: 12px;
+	color: $color-black;
 }
 
-
 .information_job_title {
-    font-weight: bold;
+	font-weight: bold;
 }
 
 .flex-space-between {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
 
-    img {
-        width: 20px;
-    }
+	img {
+		width: 20px;
+	}
 }
 
 .information__job .grid {
-    margin-right: -20px;
+	margin-right: -20px;
 }
 
 .information__job .grid .field {
-    margin-bottom: 20px;
+	margin-bottom: 20px;
 }
 
 .link {
-    color: $color-primary !important;
+	color: $color-primary !important;
 }
 
 .information_job_title .p-float-label {
-    padding-top: 10px;
+	padding-top: 10px;
 }
 
 .aria_content,
 .aria_note {
-    height: 150px;
+	height: 150px;
 }
 
 .p-sidebar-content {
-    padding: 10px 20px 0 20px !important;
+	padding: 10px 20px 0 20px !important;
 }
 
 .image_messager {
-    width: 30px;
+	width: 30px;
 }
 
 #editor {
-    width: 100%;
+	width: 100%;
 }
 
 .btn__close {
-    border: 1px solid #ccc;
-    margin-top: 10px;
-    color: $color-black !important;
+	border: 1px solid #ccc;
+	margin-top: 10px;
+	color: $color-black !important;
 }
 
 .p-button.p-button-text:enabled:hover,
 .p-button.p-button-text:not(button):not(a):not(.p-disabled):hover {
-    background: transparent;
-    color: none;
-    border-color: none;
+	background: transparent;
+	color: none;
+	border-color: none;
 }
 
 .text_seen {
-    cursor: url("../../images/edit.svg"), auto;
+	cursor: url('../../images/edit.svg'), auto;
 }
 
 #total_cost,
@@ -73,18 +72,18 @@
 #editor_cost,
 #rate_sale,
 #kpi_sale {
-    width: 100%;
+	width: 100%;
 }
 
-.MuiMenu-list li{
-    padding-left: 10px !important;
+.MuiMenu-list li {
+	padding-left: 10px !important;
 }
 
 .p-datatable-emptymessage td {
-    background-color: $color-bg-table !important;
-    border: none !important;
-    padding-bottom: 20px !important;
+	background-color: $color-bg-table !important;
+	border: none !important;
+	padding-bottom: 20px !important;
 }
-.copy__icon__payments{
-    width: 7% !important;
+.copy__icon__payments {
+	width: 7% !important;
 }

@@ -1,221 +1,230 @@
-import React,{ useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 // import { useDispatch } from "react-redux"
-import { customer_status, user_status, jobs_status, payment_status } from "./status"
-import Filter from './Filter'
-import TotalTable from './TotalTable'
+import { customer_status, user_status, jobs_status, payment_status } from './status';
+import Filter from './Filter';
+import TotalTable from './TotalTable';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
-import TableTotal from "../../modules/manager/sale/workFlowManager/TableTotal"
-import TableBody from "./TableBody"
+import TableTotal from '../../modules/manager/sale/workFlowManager/TableTotal';
+import TableBody from './TableBody';
 import { Button } from 'primereact/button';
-import { paginate } from "./paginate"
+import { paginate } from './paginate';
 import Stack from '@mui/material/Stack';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { convertDate } from '../../commons/dateTime';
 import { getEmployeePerformance } from '../../redux/employeePerformance/action';
-import { useDispatch, useSelector } from "react-redux"
+import { useDispatch, useSelector } from 'react-redux';
 import { JobRules } from '../../constants';
 
 const Table = ({
-    dataTable = [],
-    loading,
-    DataFilter,
-    haveTotalTable,
-    header,
-    handleRowClick,
-    name_btn_add,
-    handleCreate
+	dataTable = [],
+	loading,
+	DataFilter,
+	haveTotalTable,
+	header,
+	handleRowClick,
+	name_btn_add,
+	handleCreate,
 }) => {
-    const navigate = useNavigate()
-    const location = useLocation()
-    const dispatch = useDispatch()
-    const { pathname } = location
-    const [perpage, setPerpage] = React.useState(10);
-    const [sortBy, setSortBy] = useState("");
-    const [sortValue, setSortValue] = useState("");
-    const [ dropdown,setDropDown ] = useState([]);
-    const [dateWorkFlow, setDateWorkFlow] = useState([]);
-    const old_Data = Array.isArray(dataTable) ? dataTable : []
-    const [currentLocation, setCurrentLocation] = useState(0);
-    const [search,setsearch ] = useState('');
-    const user = useSelector(state=> state.auth.user)
+	const navigate = useNavigate();
+	const location = useLocation();
+	const dispatch = useDispatch();
+	const { pathname } = location;
+	const [perpage, setPerpage] = React.useState(10);
+	const [sortBy, setSortBy] = useState('');
+	const [sortValue, setSortValue] = useState('');
+	const [dropdown, setDropDown] = useState([]);
+	const [dateWorkFlow, setDateWorkFlow] = useState([]);
+	const old_Data = Array.isArray(dataTable) ? dataTable : [];
+	const [currentLocation, setCurrentLocation] = useState(0);
+	const [search, setsearch] = useState('');
+	const user = useSelector((state) => state.auth.user);
 
-    const urlParams = new URLSearchParams(window.location.search);
-    const pageURL = Number(urlParams?.get('page'))
-    const perpageURL = Number(urlParams?.get('perpage'))
+	const urlParams = new URLSearchParams(window.location.search);
+	const pageURL = Number(urlParams?.get('page'));
+	const perpageURL = Number(urlParams?.get('perpage'));
 
-    useEffect(()=>{
-        if(perpageURL){
-            setPerpage(perpageURL)
-        }
-        if(pageURL){
-            setCurrentLocation(pageURL * perpageURL - perpageURL)
-        }
-    },[perpageURL, pageURL])
+	useEffect(() => {
+		if (perpageURL) {
+			setPerpage(perpageURL);
+		}
+		if (pageURL) {
+			setCurrentLocation(pageURL * perpageURL - perpageURL);
+		}
+	}, [perpageURL, pageURL]);
 
+	const handleSetPage = (event) => {
+		setCurrentLocation(event.first);
+		setPerpage(event.rows);
+		let result = '';
+		if (search === '') {
+			result = `page=${event.page + 1}&perpage=${event.rows}`;
+		} else {
+			result = `${search}&page=${event.page + 1}&perpage=${event.rows}`;
+		}
+		navigate({
+			pathname: pathname,
+			search: result,
+		});
+	};
 
-    const handleSetPage = (event) => {
-        setCurrentLocation(event.first);
-        setPerpage(event.rows);
-        let result = "";
-        if(search === ""){
-            result = `page=${event.page + 1}&perpage=${event.rows}`
-        }else{
-            result = `${search}&page=${event.page + 1}&perpage=${event.rows}`
-        }
-        navigate({
-            pathname: pathname,
-            search: result
-        })
-    }
- 
-    useEffect(() => {
-        if(user?.data?.role !== JobRules?.ROLE?.EDITOR){
-            let data = {}
-            let search = ""
-            if (dateWorkFlow?.length > 0 && dateWorkFlow[1]) {
-                const arr = convertDate(dateWorkFlow)
-                data.start_date = arr[0]
-                data.end_date = arr[1]
-    
-                if(Object.keys(data).length > 0){
-                    search = "?start_date=" + data?.start_date + "&end_date=" + data?.end_date
-                }else{
-                    search = ""
-                }
-            }
-            dispatch(getEmployeePerformance(search))
-        }
-        
-    }, [dateWorkFlow, dispatch, user])
+	useEffect(() => {
+		if (user?.data?.role !== JobRules?.ROLE?.EDITOR) {
+			let data = {};
+			let search = '';
+			if (dateWorkFlow?.length > 0 && dateWorkFlow[1]) {
+				const arr = convertDate(dateWorkFlow);
+				data.start_date = arr[0];
+				data.end_date = arr[1];
 
-    const handleSort = (e)=>{
-        setSortBy(e.currentTarget.getAttribute("data-by"))
-        setSortValue(e.currentTarget.getAttribute("data-value"))
-    }
+				if (Object.keys(data).length > 0) {
+					search = '?start_date=' + data?.start_date + '&end_date=' + data?.end_date;
+				} else {
+					search = '';
+				}
+			}
+			dispatch(getEmployeePerformance(search));
+		}
+	}, [dateWorkFlow, dispatch, user]);
 
-    const headerTable = (header,sort_by)=>{
-        const value = typeof sort_by === "string" ? sort_by : ""
-        if(header)
-        return(
-        <div className="table__header-col flex flex-column" >
-        <span className="table__header-name">{header?.name}
-            {
-                header?.haveSort &&
-                <div className="table__sort">
-                    <img src={`../../images/${sortBy === value && sortValue === "ASC" && value !== "" ? "sort_up_disable":"sort_up"}.png`} 
-                    alt="" className="sort__up" data-by={value} data-value="ASC" onClick={handleSort}
-                    />
-                    <img src={`../../images/${sortBy === value && sortValue === "DESC" && value !== "" ? "sort_down_disable":"sort_down"}.png`} 
-                    alt="" className="sort__down" 
-                    data-by={value} data-value="DESC" onClick={handleSort}
-                    />
-                </div>
-            }
-        </span>
-        <span className="table__unit w-full">{header?.unit}</span>
-        </div>
-    )}
-    useEffect(() => {
-        switch(pathname){
-            case "/employee-overview":
-                setDropDown(user_status)
-                break
-            case "/payment-management":
-            case "/payment":
-                setDropDown(payment_status)
-                break
-            case "/workflow-management":
-            case "/jobs-overview":
-            case "/":
-                setDropDown(jobs_status)
-                break
-            case "/customer-management":
-                setDropDown(customer_status)
-                break
-            default:
-        }
+	const handleSort = (e) => {
+		setSortBy(e.currentTarget.getAttribute('data-by'));
+		setSortValue(e.currentTarget.getAttribute('data-value'));
+	};
 
-    },[pathname])
-    const bodyTable = (rowData,item,table)=>{
-        if(table)
-            return(
-                <TableBody rowData={rowData} item={item}/>
-            )
-    }
-  
-  return (
-    <div className="page">
-        {
-            name_btn_add &&
-            <Stack spacing={2} direction="row">
-                <Button variant="contained" className="table__add" onClick={handleCreate}>&#43; {name_btn_add}</Button>
-            </Stack>
-        }
-        <br />
-        <Filter 
-        DataFilter={DataFilter}  
-        sortBy={sortBy} 
-        sortValue={sortValue}
-        setSortBy={setSortBy}
-        setSortValue={setSortValue}
-        dropdown={dropdown}
-        search={search}
-        setsearch={setsearch}
-        />
-        {haveTotalTable && <TotalTable data={old_Data}/>}
-        <div className="table__container">
-            <div className="table__perpage" >
-                {Object.keys(old_Data).length > 0 && pathname !== "/job-performance" && <span>Rows per page:</span>}
-            </div>
-            <DataTable
-            loading={loading}
-            value={ old_Data } 
-            responsiveLayout="stack"
-            breakpoint="1113px"
-            onRowClick={handleRowClick}
-            paginator 
-            paginatorTemplate={pathname !== "/job-performance" && old_Data?.length > 0 ? paginate : false} 
-            first={currentLocation}
-            rows={perpage} 
-            onPage={handleSetPage}
-            emptyMessage={"Không có dữ liệu"}
-            >
-            {
-                old_Data?.length > 0 
-                ?
-                Object?.keys(old_Data?.[0]).map((item,index)=>{
-                    return(
-                        header?.[index] &&
-                        <Column 
-                        key={index}
-                        field={item || ""}  
-                        body={(rowData)=>( bodyTable(rowData,item,header?.[index]))}
-                        header={()=>headerTable(header?.[index],item)}
-                        />
-                    )
-                })
-                :
-                header?.map((item,index)=>{
-                    return (
-                        <Column 
-                        key={index}
-                        field={item || ""}  
-                        body=""
-                        header={()=>headerTable(header?.[index],item)}
-                        />
-                    )
-                })
-            }
-            </DataTable>
-        </div>
-         
-        {
-            pathname === "/workflow-management" &&
-            <TableTotal data={old_Data} setDateWorkFlow={setDateWorkFlow} dateWorkFlow={dateWorkFlow}/>
-        }
-    </div>
-  )
-}
+	const headerTable = (header, sort_by) => {
+		const value = typeof sort_by === 'string' ? sort_by : '';
+		if (header)
+			return (
+				<div className='table__header-col flex flex-column'>
+					<span className='table__header-name'>
+						{header?.name}
+						{header?.haveSort && (
+							<div className='table__sort'>
+								<img
+									src={`../../images/${
+										sortBy === value && sortValue === 'ASC' && value !== ''
+											? 'sort_up_disable'
+											: 'sort_up'
+									}.png`}
+									alt=''
+									className='sort__up'
+									data-by={value}
+									data-value='ASC'
+									onClick={handleSort}
+								/>
+								<img
+									src={`../../images/${
+										sortBy === value && sortValue === 'DESC' && value !== ''
+											? 'sort_down_disable'
+											: 'sort_down'
+									}.png`}
+									alt=''
+									className='sort__down'
+									data-by={value}
+									data-value='DESC'
+									onClick={handleSort}
+								/>
+							</div>
+						)}
+					</span>
+					<span className='table__unit w-full'>{header?.unit}</span>
+				</div>
+			);
+	};
+	useEffect(() => {
+		switch (pathname) {
+			case '/employee-overview':
+				setDropDown(user_status);
+				break;
+			case '/payment-management':
+			case '/payment':
+				setDropDown(payment_status);
+				break;
+			case '/workflow-management':
+			case '/jobs-overview':
+			case '/':
+				setDropDown(jobs_status);
+				break;
+			case '/customer-management':
+				setDropDown(customer_status);
+				break;
+			default:
+		}
+	}, [pathname]);
+	const bodyTable = (rowData, item, table) => {
+		if (table) return <TableBody rowData={rowData} item={item} />;
+	};
 
-export default Table
+	return (
+		<div className='page'>
+			{name_btn_add && (
+				<Stack spacing={2} direction='row'>
+					<Button variant='contained' className='table__add' onClick={handleCreate}>
+						&#43; {name_btn_add}
+					</Button>
+				</Stack>
+			)}
+			<br />
+			<Filter
+				DataFilter={DataFilter}
+				sortBy={sortBy}
+				sortValue={sortValue}
+				setSortBy={setSortBy}
+				setSortValue={setSortValue}
+				dropdown={dropdown}
+				search={search}
+				setsearch={setsearch}
+			/>
+			{haveTotalTable && <TotalTable data={old_Data} />}
+			<div className='table__container'>
+				<div className='table__perpage'>
+					{Object.keys(old_Data).length > 0 && pathname !== '/job-performance' && <span>Rows per page:</span>}
+				</div>
+				<DataTable
+					loading={loading}
+					value={old_Data}
+					responsiveLayout='stack'
+					breakpoint='1113px'
+					onRowClick={handleRowClick}
+					paginator
+					paginatorTemplate={pathname !== '/job-performance' && old_Data?.length > 0 ? paginate : false}
+					first={currentLocation}
+					rows={perpage}
+					onPage={handleSetPage}
+					emptyMessage={'Không có dữ liệu'}
+				>
+					{old_Data?.length > 0
+						? Object?.keys(old_Data?.[0]).map((item, index) => {
+								return (
+									header?.[index] && (
+										<Column
+											key={index}
+											field={item || ''}
+											body={(rowData) => bodyTable(rowData, item, header?.[index])}
+											header={() => headerTable(header?.[index], item)}
+										/>
+									)
+								);
+						  })
+						: header?.map((item, index) => {
+								return (
+									<Column
+										key={index}
+										field={item || ''}
+										body=''
+										header={() => headerTable(header?.[index], item)}
+									/>
+								);
+						  })}
+				</DataTable>
+			</div>
+
+			{pathname === '/workflow-management' && (
+				<TableTotal data={old_Data} setDateWorkFlow={setDateWorkFlow} dateWorkFlow={dateWorkFlow} />
+			)}
+		</div>
+	);
+};
+
+export default Table;
