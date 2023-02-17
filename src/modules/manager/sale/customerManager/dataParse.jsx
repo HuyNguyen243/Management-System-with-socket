@@ -10,6 +10,7 @@ export const dataParse = (data)=>{
                 list_jobs: item?.list_jobs || {},
                 id_system: item?.id_system,
                 create_by: item?.create_by,
+                link: item?.link,
             }
             return newobject
         })

@@ -1,9 +1,5 @@
 export const table_work_flowManager = [
     {
-        name: "Id",
-        haveSort: false,
-    },
-    {
         name: "KH",
         haveSort: true,
     },
@@ -12,7 +8,11 @@ export const table_work_flowManager = [
         haveSort: true,
     },
     {
-        name: "Số tiền",
+        name: "Bonus",
+        haveSort: true,
+    },
+    {
+        name: "Total cost",
         haveSort: true,
     },
     {
@@ -51,7 +51,7 @@ export const table_dashboard = [
         haveSort: true,
     },
     {
-        name: "Số tiền nhận được",
+        name: "Bonus",
         haveSort: true,
     },
     {
@@ -102,7 +102,7 @@ export const table_payment = [
         haveSort: true,
     },
     {
-        name: "Số tiền nhận được",
+        name: "Bonus",
         haveSort: true,
     },
     {
@@ -129,7 +129,7 @@ export const table_payment_managerment = [
         haveSort: true,
     },
     {
-        name: "Số tiền phải thanh toán",
+        name: "Thanh toán",
         haveSort: true,
     },
     {

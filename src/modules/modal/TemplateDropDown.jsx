@@ -16,7 +16,7 @@ export const itemUserTemplate = (item) => {
 export const itemCustomerTemplate = (item) => {
     return (
         <div className="dropdown-item flex justify-content-between align-items-center">
-            <div>{item.fullname}</div>
+            <div>{item.infor_reminder}</div>
             <div>{item.status === CustomerRules.STATUS.UNREQUEST ?
                 <span className="dots_offline"></span> :
                 (item.status === CustomerRules.STATUS.REQUEST ?

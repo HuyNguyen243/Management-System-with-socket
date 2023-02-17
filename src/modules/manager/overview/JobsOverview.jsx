@@ -87,7 +87,7 @@ const JobsOverview = () => {
     const handleCreate = () => {
         dispatch(setIsOpenModalCreateJob(true))
     }
-
+    
     return (
         <Table
             dataTable={dataParse(jobs?.data)}

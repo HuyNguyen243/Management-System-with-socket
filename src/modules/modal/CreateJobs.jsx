@@ -46,7 +46,7 @@ const CreateJobs = () => {
     const isOpenCreateJob = useSelector(state => state.modal.isOpenModalCreateJob)
 
     const dispatch = useDispatch()
-
+ 
     useEffect(()=>{
         if(isOpenCreateJob){
             overlay.disable()
@@ -118,7 +118,7 @@ const CreateJobs = () => {
                                         rules={{ required: "Chưa chọn khách hàng" }} render={({ field, fieldState }) => (
                                             <Dropdown
                                             options={customers.data}
-                                            optionLabel="fullname"
+                                            optionLabel="infor_reminder"
                                             itemTemplate={itemCustomerTemplate}
                                             value={field.value} onChange={(e) => field.onChange(e.value)}
                                             className={classNames({ 'p-invalid': fieldState.invalid }, "create__job_type")}

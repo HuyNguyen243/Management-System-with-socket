@@ -68,7 +68,7 @@ const Table = ({
             search: result
         })
     }
-
+ 
     useEffect(() => {
         if(user?.data?.role !== JobRules?.ROLE?.EDITOR){
             let data = {}
@@ -172,7 +172,7 @@ const Table = ({
             loading={loading}
             value={ old_Data } 
             responsiveLayout="stack"
-            breakpoint="1400px"
+            breakpoint="1113px"
             onRowClick={handleRowClick}
             paginator 
             paginatorTemplate={pathname !== "/job-performance" && old_Data?.length > 0 ? paginate : false} 

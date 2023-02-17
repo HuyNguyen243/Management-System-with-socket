@@ -67,7 +67,7 @@ export const timezoneToDate = (input)=>{
             const year = date.getFullYear();
             const day = date.getDate();
     
-            return day + '/' + month + '/' + year;
+            return day + '/' + (month + 1) + '/' + year;
         }else{
             return ''
         }

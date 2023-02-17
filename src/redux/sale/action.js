@@ -19,8 +19,10 @@ export const addCustomerRequest = createAsyncThunk(
     'Customer',
     async (data,{ rejectWithValue }) => {
         try {
-            successToast('Tạo khách hàng mới thành công')
             const res = await post("customers",data)
+            if(res){
+                successToast('Tạo khách hàng mới thành công')
+            }
             return res;
         } catch (error) {
             errorToast('Tạo khách hàng mới thất bại')

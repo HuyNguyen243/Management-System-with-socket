@@ -1,11 +1,12 @@
 export const dataParse = (data) => {
     if (Array.isArray(data)) {
         const result = data.map((item) => {
+            console.log(item)
             const newobject = {
-                id_system: item?.infor_id?.id_system,
                 reminder_customer: item?.infor_reminder?.reminder_customer,
                 reminder_editor: item?.infor_reminder?.reminder_editor,
                 saler_cost: item?.cost?.saler_cost,
+                total_cost: item?.cost?.total_cost,
                 start_day: item?.infor?.start_day,
                 end_day: item?.infor?.end_day,
                 quality: item?.infor?.quality,
@@ -20,10 +21,10 @@ export const dataParse = (data) => {
                 org_link: item?.infor?.org_link,
                 finished_link: item?.infor?.finished_link,
                 type_models: item?.infor?.type_models,
-                total_cost: item?.cost?.total_cost,
                 id_customer: item?.infor_id?.id_customer,
                 id_editor: item?.infor_id?.id_editor,
                 id_saler: item?.infor_id?.id_saler,
+                id_system: item?.infor_id?.id_system,
             }
             return newobject
         })

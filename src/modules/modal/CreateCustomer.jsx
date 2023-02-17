@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 
 import { Sidebar } from 'primereact/sidebar';
 import { InputText } from 'primereact/inputtext';
-import { Calendar } from 'primereact/calendar';
 import { Button } from 'primereact/button';
 import { useForm, Controller } from 'react-hook-form';
 import { classNames } from 'primereact/utils';
@@ -12,7 +11,7 @@ import { CustomerRules } from '../../constants';
 import { getCountries } from '../../commons/getCountry';
 import { AutoComplete } from 'primereact/autocomplete';
 
-import { EMAIL_REGEX, PHONE_REGEX } from '../../constants';
+import { EMAIL_REGEX } from '../../constants';
 import { setIsOpenModalCreateCustomer } from '../../redux/modal/modalSlice';
 import { overlay } from '../../commons/overlay';
 import { searchDropdown } from '../../commons/searchDropDown';
@@ -23,13 +22,11 @@ const CreateCustomer = () => {
     const dispatch = useDispatch()
     const defaultValues = {
         fullname: '',
-        birth: null,
-        phone: "",
         email: "",
         country: '',
         city: '',
-        address: '',
-        infor_reminder: ''
+        infor_reminder: '',
+        link : ''
     }
     const { control, formState: { errors }, handleSubmit, reset, setValue } = useForm({ defaultValues });
     const user = useSelector(state => state.auth?.user)
@@ -73,7 +70,7 @@ const CreateCustomer = () => {
             setCities(countries[e.value])
         }
     }
-
+    
     return (
         <>
             <Sidebar visible={isOpenCreateCustomer} position="right" onHide={() => {dispatch(setIsOpenModalCreateCustomer(false)); reset();}} className="create__job">
@@ -121,39 +118,6 @@ const CreateCustomer = () => {
                                 errors?.infor_reminder && <span className="warning" style={{ fontSize: "12px" }}>{errors?.infor_reminder.message}</span>
                                 }
                             </div>
-                          
-                            <div className="field col-12 md:col-6 create__job--calendar">
-                                <span htmlFor="calendar">Ngày tháng năm sinh:<span className="warning">*</span></span>
-                                <Controller name="birth"
-                                    control={control}
-                                    rules={{ required: false }} render={({ field, fieldState }) => (
-                                        <Calendar
-                                            id={field.name} className={classNames({ 'p-invalid': fieldState.invalid })}
-                                            value={field.value} onChange={(e) => field.onChange(e.value)}
-                                            placeholder="Ngày sinh"
-                                        />
-                                    )} />
-                                <img src="/images/calendar.svg" alt="" className="calendar__image" />
-                            </div>
-                            <div className="field col-12 md:col-6 ">
-                                <span htmlFor="withoutgrouping">Số điện thoại: <span className="warning">*</span></span>
-                                <Controller name="phone"
-                                    control={control}
-                                    rules={{ required: "Chưa điền số điện thoại", pattern: { value: PHONE_REGEX } }} render={({ field, fieldState }) => (
-                                        <InputText
-                                            id={field.name}
-                                            {...field}
-                                            className={classNames({ 'p-invalid': fieldState.invalid })}
-                                            placeholder="Số điện thoại"
-                                        />
-                                    )} />
-                                {
-                                    errors?.phone && <span className="warning" style={{ fontSize: "12px" }}>{errors?.phone.message}</span>
-                                }
-                                {
-                                    errors?.phone?.type === "pattern" && <span className="warning" style={{ fontSize: "12px" }}>Số điện thoại không hợp lệ</span>
-                                }
-                            </div>
                             <div className="field col-12 md:col-6">
                                 <span htmlFor="original__link">Email: <span className="warning">*</span></span>
                                 <Controller name="email"
@@ -177,7 +141,7 @@ const CreateCustomer = () => {
                                 <span htmlFor="original__link">Quốc gia: <span className="warning">*</span></span>
                                 <Controller name="country"
                                     control={control}
-                                    rules={{ required: true }} render={({ field, fieldState }) => (
+                                    rules={{ required: "Chưa điền quốc gia" }} render={({ field, fieldState }) => (
                                         <AutoComplete
                                             suggestions={filteredCountry}
                                             completeMethod={(e) => searchDropdown(e, countries, setFilteredCountry)} field=""
@@ -199,7 +163,7 @@ const CreateCustomer = () => {
                                 {
                                     <Controller name="city"
                                         control={control}
-                                        rules={{ required: true }} render={({ field, fieldState }) => (
+                                        rules={{ required: "Chưa điền thành phố" }} render={({ field, fieldState }) => (
                                             <AutoComplete
                                                 suggestions={filteredCity}
                                                 completeMethod={(e) => searchDropdown(e, cities, setFilteredCity)} field=""
@@ -217,23 +181,27 @@ const CreateCustomer = () => {
                                     errors?.city && <span className="warning" style={{ fontSize: "12px" }}>{errors?.city.message}</span>
                                 }
                             </div>
-                            <div className="field col-12 md:col-6">
-                                <span htmlFor="employees">Địa chỉ: <span className="warning">*</span></span>
-                                <Controller name="address"
-                                    control={control}
-                                    rules={{ required: "Chưa điền địa chỉ" }} render={({ field, fieldState }) => (
-                                        <InputText
-                                            id={field.name}
-                                            {...field}
-                                            className={classNames({ 'p-invalid': fieldState.invalid })}
-                                            placeholder="Địa chỉ"
-                                        />
-                                    )} />
+                            <div className="field col-6 md:col-6">
+                                <span >Link:  <span className="warning">*</span></span>
+                                <span className="">
+                                    <Controller name="link"
+                                        control={control}
+                                        rules={{ required: "Chưa điền link khách hàng" }} render={({ field, fieldState }) => (
+                                            <InputText
+                                                autoComplete="disabled"
+                                                id={field.name}
+                                                {...field}
+                                                className={classNames({ 'p-invalid': fieldState.invalid })}
+                                                placeholder="Điền link khách hàng"
+                                            />
+                                        )} />
+                                </span>
                                 {
-                                    errors?.address && <span className="warning" style={{ fontSize: "12px" }}>{errors?.address.message}</span>
+                                errors?.link && <span className="warning" style={{ fontSize: "12px" }}>{errors?.link.message}</span>
                                 }
                             </div>
                         </div>
+                      
                         <div className="btn_modal field col-12 md:col-12 grid position_bottom">
                             <div className="field col-12 md:col-6">
                                 <span className="p-float-label">
