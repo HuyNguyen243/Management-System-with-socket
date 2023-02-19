@@ -7,7 +7,7 @@
 @media (max-width: 1200px) {
 	.table__total--workflow--management {
 		.table__header-col span {
-			color: $color-name-notification;
+			color: $color-black;
 		}
 	}
 	.edit_bank {
@@ -227,7 +227,7 @@
 		left: 10px;
 		width: 40px;
 		height: 40px;
-		background: #0061f4;
+		background: $color-primary;
 		font-size: 25px;
 		border-radius: 5px;
 		color: #ffffff;

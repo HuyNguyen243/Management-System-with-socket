@@ -60,7 +60,10 @@ const Navigation = ({ open, getBtnNavIsOpen }) => {
 						key={index}
 						disablePadding
 						sx={{ display: 'block' }}
-						className={`${checkIsActive(item.navChild, location.pathname) && !open && 'nav__icon-active'}`}
+						className={`
+						${checkIsActive(item.navChild, location.pathname) && !open && 'nav__icon-active'} 
+						${item.name_image === "setting" && "absolute bottom-0"}
+						`}
 					>
 						<ListItemButton
 							sx={{
@@ -74,7 +77,7 @@ const Navigation = ({ open, getBtnNavIsOpen }) => {
                                 `}
 							onClick={() => handleRedirect(item.isRederect, '', index, item)}
 						>
-							<img src={`../../images/${item.name_image}.svg`} alt='' className='nav__icon' />
+							<img src={`../../images/${item.name_image}.svg`} alt='' className='nav__icon ' />
 							<ListItemText
 								primary={item.name}
 								sx={{ opacity: open ? 1 : 0 }}

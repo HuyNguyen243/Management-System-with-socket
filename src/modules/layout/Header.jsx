@@ -152,28 +152,28 @@ export default function Header() {
 							}}
 							className='header__button'
 						>
-							<img src='../../images/menu_blue.svg' alt='' />
+							<img src='../../images/menu.svg' alt='' />
 						</IconButton>
 						<div className='header__block'>
-							<div className='header__left'>One Touch</div>
+							<div className='header__left flex align-items-center '><img src='../../images/logo/logo.svg' className="pr-1"/>One Touch</div>
 							<div className='header__right'>
-								<div className='header__right--notification'>
-									<img
-										src='../../images/notifications.svg'
-										alt=''
-										onClick={() => socket.emit('reset-count-notify', user?.data?.id_system)}
-									/>
-									{currentUser?.notification_count && currentUser?.notification_count > 0 && (
-										<span className='count_notification'>{currentUser?.notification_count}</span>
-									)}
-								</div>
-								<div className='header__right--notification-msg'>
-									<img src='../../images/chat.svg' alt='' />
+								<div className='header__right--notification-msg mr-3'>
+									<img src='../../images/header/chat.svg' alt='' />
 									{currentUser?.newMessages && Object.keys(currentUser?.newMessages).length > 0 && (
 										<span className='count_notification'>
 											{Object.keys(currentUser?.newMessages).length}
 										</span>
 									)}
+								</div>
+								<div className='header__right--notification'>
+									<img
+										src='../../images/header/notification.svg'
+										alt=''
+										onClick={() => socket.emit('reset-count-notify', user?.data?.id_system)}
+									/>
+									{ currentUser?.notification_count > 0 && 
+										<span className='count_notification'>{currentUser?.notification_count}</span>
+									}
 								</div>
 								<div
 									className='header__right--profile'
@@ -224,7 +224,7 @@ export default function Header() {
 				<Drawer variant='permanent' open={open} className='nav__container'>
 					<DrawerHeader className='nav__btnMenu'>
 						<IconButton onClick={handleDrawer}>
-							<img src='images/menu.svg' alt='' />
+							<img src='images/menu_blue.svg' alt='' />
 						</IconButton>
 					</DrawerHeader>
 					<Divider />

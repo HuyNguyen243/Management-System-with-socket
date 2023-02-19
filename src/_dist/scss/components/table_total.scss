@@ -63,7 +63,7 @@
 	box-sizing: border-box;
 	font-size: 14px;
 	span {
-		color: $color-white;
+		color: $color-black;
 		font-weight: 600;
 		display: flex;
 		align-items: center;
@@ -74,12 +74,12 @@
 }
 
 .table__container {
-	background-color: $color-bg-table;
+	background-color: $color-white;
 	width: 100%;
 	border-radius: 10px;
-	box-shadow: 3px 4px 4px rgb(0 0 0 / 17%);
 	margin-top: 30px;
 	margin-bottom: 50px;
+	padding: 20px;
 }
 
 .table__limit {
@@ -120,10 +120,10 @@
 
 .sort__up {
 	position: absolute;
-	top: -7px;
-	left: 8px;
-	width: 10px;
-	margin-left: 4px;
+    top: -10px;
+    left: -4px;
+    width: 10px;
+    margin-left: 4px;
 }
 
 .sort__down {
@@ -275,7 +275,7 @@
 	align-items: center;
 	text-transform: uppercase;
 	height: 45px;
-	border-top: 1px solid gray;
+	padding: 10px !important;
 }
 
 .p-datatable .p-datatable-tbody > tr > td {
@@ -283,17 +283,18 @@
 	cursor: pointer;
 }
 
-.p-datatable .p-datatable-tbody > tr:nth-child(odd) {
-	background-color: $color-border-input;
-}
-
 .p-datatable .p-column-header-content {
 	justify-content: center !important;
-	margin-top: 20px;
+	border-right: 1px solid #dfdada;
+	height: 100%;
+}
+
+tr th:last-child .p-column-header-content{
+	border: none;
 }
 
 .p-datatable-thead {
-	height: 90px;
+	height: 50px;
 }
 
 .columnheader {
@@ -526,11 +527,13 @@
 .table__perpage {
 	height: 65px;
 	position: relative;
+	display: flex;
 	> span {
 		position: absolute;
 		right: 140px;
-		top: 25px;
-		color: $color-light-bloom;
+		top: 20px;
+		font-size: 13px;
+		color: $color-black;
 	}
 }
 
@@ -548,27 +551,20 @@
 
 .select__perpage {
 	width: inherit;
-	position: absolute;
-	top: -65px;
-	right: 45px;
-	background-color: $color-bg-table;
-	border: none;
-	border-radius: 0px;
+    position: absolute;
+    top: -65px;
+    right: 45px;
+    background-color: #fbfafa;
+    margin-top: 10px;
+    height: 40px;
 	.p-inputtext {
 		color: $color-black;
-		padding-top: 30px;
-	}
-	.p-dropdown-trigger {
-		padding-top: 30px;
 	}
 }
 
 .p-paginator {
 	padding: 0px;
-}
 
-.p-paginator .p-dropdown:hover {
-	border: none;
 }
 
 .p-paginator-current {
@@ -576,7 +572,7 @@
 }
 
 .p-dropdown-trigger-icon::before {
-	background-image: url('../../../../public/images/arrow_down.svg');
+	background-image: url('../../../../public/images/arrow_down_black.svg');
 	background-size: 10px;
 	background-repeat: no-repeat;
 	background-position: center;
@@ -622,6 +618,7 @@
 
 .p-button {
 	background-color: $color-primary;
+	border: none;
 }
 
 .empty_data {
@@ -713,7 +710,7 @@
 
 .pi-search:before {
 	content: '';
-	background-image: url('../../../../public/images/search_blue.svg');
+	background-image: url('../../../../public/images/search.svg');
 	width: 20px;
 	height: 20px;
 	display: block;
@@ -799,7 +796,7 @@
 
 .chart__color.blue:after {
 	content: ' ';
-	background-color: #0061f4;
+	background-color: $color-primary;
 	position: absolute;
 	bottom: 35px;
 	display: block;

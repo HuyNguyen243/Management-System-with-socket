@@ -106,7 +106,7 @@ const Table = ({
 										sortBy === value && sortValue === 'ASC' && value !== ''
 											? 'sort_up_disable'
 											: 'sort_up'
-									}.png`}
+									}.svg`}
 									alt=''
 									className='sort__up'
 									data-by={value}
@@ -118,7 +118,7 @@ const Table = ({
 										sortBy === value && sortValue === 'DESC' && value !== ''
 											? 'sort_down_disable'
 											: 'sort_down'
-									}.png`}
+									}.svg`}
 									alt=''
 									className='sort__down'
 									data-by={value}
@@ -159,27 +159,28 @@ const Table = ({
 	return (
 		<div className='page'>
 			{name_btn_add && (
-				<Stack spacing={2} direction='row'>
+				<Stack spacing={2} direction='row' >
 					<Button variant='contained' className='table__add' onClick={handleCreate}>
 						&#43; {name_btn_add}
 					</Button>
 				</Stack>
 			)}
 			<br />
-			<Filter
-				DataFilter={DataFilter}
-				sortBy={sortBy}
-				sortValue={sortValue}
-				setSortBy={setSortBy}
-				setSortValue={setSortValue}
-				dropdown={dropdown}
-				search={search}
-				setsearch={setsearch}
-			/>
+		
 			{haveTotalTable && <TotalTable data={old_Data} />}
 			<div className='table__container'>
 				<div className='table__perpage'>
-					{Object.keys(old_Data).length > 0 && pathname !== '/job-performance' && <span>Rows per page:</span>}
+					<Filter
+						DataFilter={DataFilter}
+						sortBy={sortBy}
+						sortValue={sortValue}
+						setSortBy={setSortBy}
+						setSortValue={setSortValue}
+						dropdown={dropdown}
+						search={search}
+						setsearch={setsearch}
+					/>
+					{Object.keys(old_Data).length > 0 && pathname !== '/job-performance' && <span>Display:</span>}
 				</div>
 				<DataTable
 					loading={loading}
