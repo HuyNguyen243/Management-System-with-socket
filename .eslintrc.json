@@ -13,7 +13,7 @@
 		"sourceType": "module"
 	},
 	"plugins": ["react"],
-	"ignorePatterns": ["**/*.css","**/*.scss"],
+	"ignorePatterns": ["**/*.css", "**/*.scss"],
 	"rules": {
 		"react/jsx-uses-react": "error",
 		"no-mixed-spaces-and-tabs": "off",
