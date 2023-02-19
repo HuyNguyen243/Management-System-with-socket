@@ -1,186 +1,186 @@
-.header__button{
-    margin-right: 10px !important;
+.header__button {
+	margin-right: 10px !important;
 }
 
 .css-1dxb3vu,
-.css-168noda{
-    background-color: $color-white !important;
-    box-shadow: none !important;
-    border-bottom: 1px solid $color-border-input !important;
+.css-168noda {
+	background-color: $color-white !important;
+	box-shadow: none !important;
+	border-bottom: 1px solid $color-border-input !important;
 }
 
-.disabled{
-    background-color: $color-border-input;
+.disabled {
+	background-color: $color-border-input;
 }
 
 .css-jedpe8-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input,
-.css-1n4twyu-MuiInputBase-input-MuiOutlinedInput-input{
-    padding: 6.5px 14px !important;
+.css-1n4twyu-MuiInputBase-input-MuiOutlinedInput-input {
+	padding: 6.5px 14px !important;
 }
 
-.css-1t62lt9{
-    margin-right: 10px;
+.css-1t62lt9 {
+	margin-right: 10px;
 }
 
-.header__container{
-    >.MuiPaper-root{
-        >.MuiToolbar-root{
-            padding: 0 20px !important;
-        }
-    }
-    .css-1191obr-MuiPaper-root-MuiAppBar-root,
-    .css-19z1ozs-MuiPaper-root-MuiAppBar-root{
-        background-color: $color-white !important;
-        box-shadow: none !important;
-        border: 1px solid $color-border-input !important;
-    }
+.header__container {
+	> .MuiPaper-root {
+		> .MuiToolbar-root {
+			padding: 0 20px !important;
+		}
+	}
+	.css-1191obr-MuiPaper-root-MuiAppBar-root,
+	.css-19z1ozs-MuiPaper-root-MuiAppBar-root {
+		background-color: $color-white !important;
+		box-shadow: none !important;
+		border: 1px solid $color-border-input !important;
+	}
 }
 
 .header__right,
 .information__roles,
-.header__right--profile{
-    display: flex;
+.header__right--profile {
+	display: flex;
 }
 
-.header__block{
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.header__block {
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
 }
 
-.header__left{
-    color: $color-primary;
-    font-size: 20px;
-    line-height: 23px;
+.header__left {
+	color: $color-primary;
+	font-size: 20px;
+	line-height: 23px;
 }
 
-.information__name{
-    color: $color-bloom;
-    display: flex;
-    align-items: center;
-    p{
-        font-weight: bold;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        -webkit-line-clamp: 1;
-        -webkit-box-orient: vertical;
-        white-space: nowrap;
-        max-width: 120px;
-    }
+.information__name {
+	color: $color-bloom;
+	display: flex;
+	align-items: center;
+	p {
+		font-weight: bold;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		-webkit-line-clamp: 1;
+		-webkit-box-orient: vertical;
+		white-space: nowrap;
+		max-width: 120px;
+	}
 }
 
-.information__roles{
-    color: $color-light-bloom;
-    p{
-        overflow: hidden;
-        text-overflow: ellipsis;
-        -webkit-line-clamp: 1;
-        -webkit-box-orient: vertical;
-        white-space: nowrap;
-        max-width: 135px;
-    }
+.information__roles {
+	color: $color-light-bloom;
+	p {
+		overflow: hidden;
+		text-overflow: ellipsis;
+		-webkit-line-clamp: 1;
+		-webkit-box-orient: vertical;
+		white-space: nowrap;
+		max-width: 135px;
+	}
 }
 
 .header__right--notification-msg,
-.header__right--notification{
-    position: relative;
-    cursor: pointer;
+.header__right--notification {
+	position: relative;
+	cursor: pointer;
 }
 
 .header__right--notification-msg img,
-.header__right--notification img{
-    padding: 12px;
-    background-color: $color-light-blue;
-    margin: 0 10px;
-    border-radius: 50%;
+.header__right--notification img {
+	padding: 12px;
+	background-color: $color-light-blue;
+	margin: 0 10px;
+	border-radius: 50%;
 }
 
-.header__right--profile{
-    margin-left: 20px;
-    width: 200px;
-    cursor: pointer;
-    .css-e53awj-MuiStack-root{
-        margin-right: 10px;
-    }
+.header__right--profile {
+	margin-left: 20px;
+	width: 200px;
+	cursor: pointer;
+	.css-e53awj-MuiStack-root {
+		margin-right: 10px;
+	}
 }
 
-.header__right--information{
-    width: 100%;
+.header__right--information {
+	width: 100%;
 }
-.information__roles{
-    justify-content: space-between;
-}
-
-.count_notification{
-    background: $color-danger;
-    width: 24px;
-    height: 24px;
-    position: absolute;
-    display: block;
-    border-radius: 50%;
-    text-align: center;
-    margin: auto 0;
-    font-weight: 600;
-    bottom: 0;
-    right: 0;
+.information__roles {
+	justify-content: space-between;
 }
 
-.dots_online{
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    background: $color-isOnline;
-    display: block;
-    margin-left: 5px;
+.count_notification {
+	background: $color-danger;
+	width: 24px;
+	height: 24px;
+	position: absolute;
+	display: block;
+	border-radius: 50%;
+	text-align: center;
+	margin: auto 0;
+	font-weight: 600;
+	bottom: 0;
+	right: 0;
 }
 
-.dots_busy{
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    background: $color-warning;
-    display: block;
-    margin-left: 5px;
+.dots_online {
+	width: 12px;
+	height: 12px;
+	border-radius: 50%;
+	background: $color-isOnline;
+	display: block;
+	margin-left: 5px;
 }
 
-.dots_offline{
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    background: $color-danger;
-    display: block;
-    margin-left: 5px;
+.dots_busy {
+	width: 12px;
+	height: 12px;
+	border-radius: 50%;
+	background: $color-warning;
+	display: block;
+	margin-left: 5px;
 }
 
-.header__menu{
-    position: absolute;
-    right: 0;
-    top: 65px;
-    .p-slidemenu .p-slidemenu-wrapper .p-slidemenu-backward .pi-chevron-left::before{
-        top: 20px;
-        left: 25px;
-    }
+.dots_offline {
+	width: 12px;
+	height: 12px;
+	border-radius: 50%;
+	background: $color-danger;
+	display: block;
+	margin-left: 5px;
 }
 
-.p-slidemenu .p-slidemenu-backward{
-    height: 40px;
+.header__menu {
+	position: absolute;
+	right: 0;
+	top: 65px;
+	.p-slidemenu .p-slidemenu-wrapper .p-slidemenu-backward .pi-chevron-left::before {
+		top: 20px;
+		left: 25px;
+	}
 }
 
-.header__menu-icon{
-    padding: 0 5px;
+.p-slidemenu .p-slidemenu-backward {
+	height: 40px;
 }
 
-.header__menu-icon.flex_right{
-    position: absolute;
-    right: 0px;
+.header__menu-icon {
+	padding: 0 5px;
+}
+
+.header__menu-icon.flex_right {
+	position: absolute;
+	right: 0px;
 }
 
 .p-inputtext:enabled:focus {
-    border-color: inherit;
+	border-color: inherit;
 }
 
 .p-inputswitch.p-inputswitch-checked:not(.p-disabled):hover .p-inputswitch-slider,
 .p-inputswitch.p-inputswitch-checked .p-inputswitch-slider {
-    background: $color-primary;
+	background: $color-primary;
 }

@@ -1,150 +1,151 @@
-.login__container{
-    display: flex;
-    .login__bg{
-        background-image: url("../../../../public/images/bg_login.jpg");
-        background-repeat: no-repeat;
-        width: 50%;
-        height: 100vh;
-        background-position: center center;
+.login__container {
+	display: flex;
+	.login__bg {
+		background-image: url('../../../../public/images/bg_login.jpg');
+		background-repeat: no-repeat;
+		width: 50%;
+		height: 100vh;
+		background-position: center center;
+	}
 
-    }
+	.login__form {
+		margin: 126px 0;
+		width: 500px;
+		margin: auto;
+		.login__title {
+			display: flex;
+			p:first-child {
+				font-size: 32px;
+				line-height: 47px;
+				color: $color-bloom;
+				margin-right: 5px;
+			}
+			p {
+				margin-top: unset;
+				font-size: 32px;
+				line-height: 47px;
+				color: $color-primary;
+			}
+		}
+	}
 
-    .login__form{
-        margin: 126px 0;
-        width: 500px;
-        margin: auto;
-        .login__title{
-            display: flex;
-            p:first-child{
-                font-size: 32px;
-                line-height: 47px;
-                color: $color-bloom;
-                margin-right: 5px;
-            }
-            p{
-                margin-top: unset;
-                font-size: 32px;
-                line-height: 47px;
-                color: $color-primary;
-            }
-        }
-    }
+	.login__route {
+		font-size: 50px;
+		line-height: 94px;
+		color: $color-bloom;
+		margin-bottom: 70px;
+		font-weight: bold;
+	}
 
-    .login__route{
-        font-size: 50px;
-        line-height: 94px;
-        color: $color-bloom;
-        margin-bottom: 70px;
-        font-weight: bold;
-    }
+	form {
+		.form__email {
+			margin-bottom: 40px;
+			p {
+				font-style: normal;
+				font-weight: 600;
+				font-size: 16px;
+				line-height: 23px;
+				color: $color-bloom;
+				margin-bottom: 15px;
+			}
+			input {
+				border: none;
+				font-size: 16px;
+				width: 100%;
+				&:focus-visible {
+					outline: none;
+					background: white;
+				}
+			}
+		}
+		.form__password {
+			margin: 20px 0;
+			p {
+				font-style: normal;
+				font-weight: 600;
+				font-size: 16px;
+				line-height: 23px;
+				color: $color-bloom;
+				margin-bottom: 15px;
+			}
+			.form__input {
+				display: flex;
+				input {
+					border: none;
+					font-size: 16px;
+					width: 100%;
+					&:focus-visible {
+						outline: none;
+					}
+				}
+				.show__password {
+					cursor: pointer;
+				}
+			}
+		}
 
-    form{
-        .form__email{
-            margin-bottom: 40px;
-            p{
-                font-style: normal;
-                font-weight: 600;
-                font-size: 16px;
-                line-height: 23px;
-                color: $color-bloom;
-                margin-bottom: 15px;
-            }
-            input{
-                border: none;
-                font-size: 16px;
-                width: 100%;
-                &:focus-visible{
-                    outline: none;
-                    background: white;
-                }
-            }
-        }
-        .form__password{
-            margin: 20px 0;
-            p{
-                font-style: normal;
-                font-weight: 600;
-                font-size: 16px;
-                line-height: 23px;
-                color: $color-bloom;
-                margin-bottom: 15px;
-            }
-            .form__input{
-                display: flex;
-                input{
-                    border: none;
-                    font-size: 16px;
-                    width: 100%;
-                    &:focus-visible{
-                        outline: none;
-                    }
-                }
-                .show__password{
-                    cursor: pointer;
-                }
-            }
-        }
+		.form__save--information {
+			display: flex;
+			justify-content: space-between;
+			margin-bottom: 40px;
+			.form__btn-forgotpwd {
+				font-size: 14px;
+				color: $color-primary;
+				line-height: 20px;
+			}
+		}
 
-        .form__save--information{
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 40px;
-            .form__btn-forgotpwd{
-                font-size: 14px;
-                color: $color-primary;
-                line-height: 20px;
-            }
-        }
-
-        .form__btn-submit{
-            button{
-                background-color: $color-primary;
-                color : $color-white;
-                font-size: 16px;
-                line-height: 100%;
-                border: none;
-                border-radius: 10px;
-                width: 100%;
-                padding: 15px 0;
-                cursor: pointer;
-
-            }
-        }
-    }
+		.form__btn-submit {
+			button {
+				background-color: $color-primary;
+				color: $color-white;
+				font-size: 16px;
+				line-height: 100%;
+				border: none;
+				border-radius: 10px;
+				width: 100%;
+				padding: 15px 0;
+				cursor: pointer;
+			}
+		}
+	}
 }
 
-.form__input{
-    width: 100%;
-    border: 1px solid $color-primary;
-    padding: 15px;
-    box-sizing: border-box;
-    border-radius: 10px;
+.form__input {
+	width: 100%;
+	border: 1px solid $color-primary;
+	padding: 15px;
+	box-sizing: border-box;
+	border-radius: 10px;
 }
 
-.save__me{
-    display: flex;
-    font-size: 14px;
-    color: $color-secondary;
-    line-height: 20px;
-    input{
-        width: 20px;
-        margin-right: 20px;
-    }
+.form__input__disabled {
+	background-color: #ccc7c74f;
+}
+.save__me {
+	display: flex;
+	font-size: 14px;
+	color: $color-secondary;
+	line-height: 20px;
+	input {
+		width: 20px;
+		margin-right: 20px;
+	}
 }
 
-.form__error{
-    color: $color-danger;
-    font-size: 14px;
-    padding-top: 15px;
-    display: block;
+.form__error {
+	color: $color-danger;
+	font-size: 14px;
+	padding-top: 15px;
+	display: block;
 }
 
-.login__note{
-    font-size: 12px;
-    color : #000C57;
-    display: none;
+.login__note {
+	font-size: 12px;
+	color: #000c57;
+	display: none;
 }
 
-.form__forgot-pwd{
-    min-height: 550px;
+.form__forgot-pwd {
+	min-height: 550px;
 }

@@ -1,20 +1,20 @@
-.infor__title{
-    font-size: 28px;
-    line-height: 35px;
-    font-weight: 700;
-    color :$color-primary;
+.infor__title {
+	font-size: 28px;
+	line-height: 35px;
+	font-weight: 700;
+	color: $color-primary;
 }
 
-.infor__block .field span:first-child{
-    font-size: 13px;
-    color: #979ba0;
+.infor__block .field span:first-child {
+	font-size: 13px;
+	color: #979ba0;
 }
 
-.infor__submit{
-    width: 120px;
-    background-color: $color-primary !important;
-    span{
-        color: $color-white !important;
-        font-size: 13px;
-    }
+.infor__submit {
+	width: 120px;
+	background-color: $color-primary !important;
+	span {
+		color: $color-white !important;
+		font-size: 13px;
+	}
 }

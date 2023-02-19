@@ -1,403 +1,407 @@
-.nav__container .MuiPaper-root{
-    background-color: $color-secondary !important;
-    box-shadow: 3px 0px 4px rgb(0 0 0 / 25%);
+.nav__container .MuiPaper-root {
+	background-color: $color-secondary !important;
+	box-shadow: 3px 0px 4px rgb(0 0 0 / 25%);
 }
 
-.nav__container .MuiPaper-root::-webkit-scrollbar{
-    display: none !important;
+.nav__container .MuiPaper-root::-webkit-scrollbar {
+	display: none !important;
 }
 
-.nav__name{
-    color: $color-white !important;
-    position: relative;
+.nav__name {
+	color: $color-white !important;
+	position: relative;
 }
 
-.nav__name.disabled{
-    opacity: 0;
-    width: 0px;
+.nav__name.disabled {
+	opacity: 0;
+	width: 0px;
 }
 
-.nav__name.enabled{
-    opacity: 1;
-    transition: 0.7s linear;
-    width: 100%;
+.nav__name.enabled {
+	opacity: 1;
+	transition: 0.7s linear;
+	width: 100%;
 }
 
-.nav__name.icon_arrow-up::after{
-    content:"";
-    background-image: url("../../../../public/images/arrow_up.svg");
-    width: 15px;
-    height: 15px;
-    display: block;
-    background-repeat: no-repeat;
-    position: absolute;
-    right: 10px;
-    top: 25%;
+.nav__name.icon_arrow-up::after {
+	content: '';
+	background-image: url('../../../../public/images/arrow_up.svg');
+	width: 15px;
+	height: 15px;
+	display: block;
+	background-repeat: no-repeat;
+	position: absolute;
+	right: 10px;
+	top: 25%;
 }
 
-.nav__name.icon_arrow-down::after{
-    content:"";
-    background-image: url("../../../../public/images/arrow_down.svg");
-    width: 15px;
-    height: 15px;
-    display: block;
-    background-repeat: no-repeat;
-    position: absolute;
-    right: 10px;
-    top: 25%;
+.nav__name.icon_arrow-down::after {
+	content: '';
+	background-image: url('../../../../public/images/arrow_down.svg');
+	width: 15px;
+	height: 15px;
+	display: block;
+	background-repeat: no-repeat;
+	position: absolute;
+	right: 10px;
+	top: 25%;
 }
 
-.nav__btnMenu{
-    justify-content: flex-start !important;
+.nav__btnMenu {
+	justify-content: flex-start !important;
 }
 
-.nav__icon{
-    margin: 5px 10px;
-    width: 24px;
+.nav__icon {
+	margin: 5px 10px;
+	width: 24px;
 }
 
-.nav__button{
-    height: 50px !important;
-    padding: 0!important;
-    margin: 8px 12px !important;
-    border-radius: 12px !important;
+.nav__button {
+	height: 50px !important;
+	padding: 0 !important;
+	margin: 8px 12px !important;
+	border-radius: 12px !important;
 }
 
-.show__password{
-    width: 20px;
+.show__password {
+	width: 20px;
 }
 
 .css-12i7wg6-MuiPaper-root-MuiDrawer-paper,
-.css-juqc2r-MuiPaper-root-MuiAppBar-root{
-    box-shadow: none !important;
-    border-bottom: 1px solid $color-border-input;
+.css-juqc2r-MuiPaper-root-MuiAppBar-root {
+	box-shadow: none !important;
+	border-bottom: 1px solid $color-border-input;
 }
 
-.nav_btnChild.active{
-    background-color: $color-border-input !important;
+.nav_btnChild.active {
+	background-color: $color-border-input !important;
 }
 
-.nav__container--nav-child{
-    display: none;
-    p{
-        padding: 10px 0;
-        color : $color-white;
-    }
-    .MuiButtonBase-root{
-        padding-left: 50px !important;
-    }
+.nav__container--nav-child {
+	display: none;
+	p {
+		padding: 10px 0;
+		color: $color-white;
+	}
+	.MuiButtonBase-root {
+		padding-left: 50px !important;
+	}
 }
 
-.nav__container--nav-child.active{
-    display: block
+.nav__container--nav-child.active {
+	display: block;
 }
 
-.nav__btn-active{
-    .MuiTouchRipple-root{
-        height: 35px !important;
-        z-index: -99 !important;
-        transform: translateY(-15%) !important;
-        top: 25% !important;
-    }
+.nav__btn-active {
+	.MuiTouchRipple-root {
+		height: 35px !important;
+		z-index: -99 !important;
+		transform: translateY(-15%) !important;
+		top: 25% !important;
+	}
 }
 
-.nav__icon-active{
-    position: relative;
-    &::before{
-        content: "";
-        width: 3px ;
-        height: 100%;
-        border-radius: 5px;
-        background: $color-primary !important;
-        position: absolute;
-        left: 0;
-        margin-right: 5px;
-    }
-    &::after{
-        content: " ";
-        width: 58px;
-        height: 100%;
-        border-radius: 5px 0 0 5px;
-        background: #0061F4 !important;
-        position: absolute;
-        right: 0;
-        top: 0;
-        z-index: -99;
-    }
+.nav__icon-active {
+	position: relative;
+	&::before {
+		content: '';
+		width: 3px;
+		height: 100%;
+		border-radius: 5px;
+		background: $color-primary !important;
+		position: absolute;
+		left: 0;
+		margin-right: 5px;
+	}
+	&::after {
+		content: ' ';
+		width: 58px;
+		height: 100%;
+		border-radius: 5px 0 0 5px;
+		background: #0061f4 !important;
+		position: absolute;
+		right: 0;
+		top: 0;
+		z-index: -99;
+	}
 }
 
-.font-bold{
-    font-weight: bold !important;
-    font-size: 13px;
+.font-bold {
+	font-weight: bold !important;
+	font-size: 13px;
 }
 
 .p-float-label,
-.p-float-label a{
-    font-size: 13px;
+.p-float-label a {
+	font-size: 13px;
 }
 
-.p-inputtext{
-    width: 100% ;
-    font-size: 13px;
-    // background-color: $color-input;
+.p-inputtext {
+	width: 100%;
+	font-size: 13px;
+	// background-color: $color-input;
 }
 
-.creat__job{
-    padding: 10px 0;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+.creat__job {
+	padding: 10px 0;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
 }
 
-.creat__job--title{
-    margin-bottom: 10px;
-    margin-left: 5px;
+.creat__job--title {
+	margin-bottom: 10px;
+	margin-left: 5px;
 }
 
-.p-datepicker{
-    z-index: 99999 !important;
-    min-width: 250px !important;
+.p-datepicker {
+	z-index: 99999 !important;
+	min-width: 250px !important;
 }
 
 .p-datepicker .p-yearpicker .p-yearpicker-year.p-highlight {
-    color: $color-primary;
+	color: $color-primary;
 }
 
-.creat__job--calendar{
-    display: flex;
+.creat__job--calendar {
+	display: flex;
 }
 
-
-.creat__job--calendar{
-    border: 1px solid $color-border-input;
-    border-radius: 5px;
-    padding: 0 15px !important;
+.creat__job--calendar {
+	border: 1px solid $color-border-input;
+	border-radius: 5px;
+	padding: 0 15px !important;
 }
 
-.calendar__image{
-    width: 20px;
-    position: absolute;
-    top: 38px;
-    right: 14px;
+.calendar__image {
+	width: 20px;
+	position: absolute;
+	top: 38px;
+	right: 14px;
 }
 
-.calendar #range .p-inputtext{
-    background-color: $color-white !important;
+.calendar #range .p-inputtext {
+	background-color: $color-white !important;
 }
 
-.p-dropdown-panel{
-    z-index: 99999 !important;
+.p-dropdown-panel {
+	z-index: 99999 !important;
 }
 
-.create__user--calendar,.create__job--calendar{
-    position: relative;
+.create__user--calendar,
+.create__job--calendar {
+	position: relative;
 }
 
-#calendar{
-    width: 100%;
+#calendar {
+	width: 100%;
 }
 
-.create__job_type, .create__role_type{
-    width: 100%;
+.create__job_type,
+.create__role_type {
+	width: 100%;
 }
 
-.create__job_area{
-    min-height: 150px;
+.create__job_area {
+	min-height: 150px;
 }
 
 .cancel--btn,
-.confirm--btn{
-    width: 100%;
-    span{
-        color: $color-primary;
-    }
+.confirm--btn {
+	width: 100%;
+	span {
+		color: $color-primary;
+	}
 }
 
-.p-button.p-button-outlined:enabled:hover, .p-button.p-button-outlined:not(button):not(a):not(.p-disabled):hover {
-    background: rgba(99, 102, 241, 0.04);
-    color: #6366F1;
-    border: 1px solid $color-primary;
+.p-button.p-button-outlined:enabled:hover,
+.p-button.p-button-outlined:not(button):not(a):not(.p-disabled):hover {
+	background: rgba(99, 102, 241, 0.04);
+	color: #6366f1;
+	border: 1px solid $color-primary;
 }
 
-.confirm--btn{
-    background-color: $color-primary !important;
-    span{
-        color: $color-white !important;
-    }
+.confirm--btn {
+	background-color: $color-primary !important;
+	span {
+		color: $color-white !important;
+	}
 }
 
-.warning{
-    color: $color-danger !important;
+.warning {
+	color: $color-danger !important;
 }
 
-.p-autocomplete-panel{
-    z-index: 99999 !important;
+.p-autocomplete-panel {
+	z-index: 99999 !important;
 }
 
-.modal__creat--job{
-    display: flex;
-    justify-content: space-between;
-    flex-direction: column;
-    overflow-y: auto;
-    height: 100%;
-    flex-wrap: nowrap;
+.modal__creat--job {
+	display: flex;
+	justify-content: space-between;
+	flex-direction: column;
+	overflow-y: auto;
+	height: 100%;
+	flex-wrap: nowrap;
 }
 
-.modal__creat--job::-webkit-scrollbar{
-    display: none;
+.modal__creat--job::-webkit-scrollbar {
+	display: none;
 }
 
-.btn_modal{
-    align-items:flex-end;
-    margin-bottom: 0px;
+.btn_modal {
+	align-items: flex-end;
+	margin-bottom: 0px;
 }
 
 .p-dropdown:not(.p-disabled):hover,
 .p-dropdown:not(.p-disabled).p-focus,
-.p-inputtext:enabled:hover{
-    border: 1px solid $color-border-input;
-    outline: none;
-    outline-offset: none;
-    box-shadow: none;
+.p-inputtext:enabled:hover {
+	border: 1px solid $color-border-input;
+	outline: none;
+	outline-offset: none;
+	box-shadow: none;
 }
-.p-inputtext:enabled:focus{
-    outline: none;
-    box-shadow: none;
-}
-
-.modal__creat--job .field div > span:first-child{
-    font-size: 13px;
-    color: $color-black;
+.p-inputtext:enabled:focus {
+	outline: none;
+	box-shadow: none;
 }
 
-.creat__job--title{
-    color: $color-black;
-    font-weight: bold;
-}
-#nameCustomer,#id_editor{
-    width: 100%;
-}
-#id_editor input,#nameCustomer input{
-    padding-right: 40px;
-    border-radius: 5px;
-
-}
-.icon__search{
-    position: relative;
+.modal__creat--job .field div > span:first-child {
+	font-size: 13px;
+	color: $color-black;
 }
 
-.icon__search::before{
-    content: "";
-    background-image: url("../../../../public/images/search_user.svg");
-    width: 30px;
-    height: 30px;
-    display: block;
-    position: absolute;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: 25px;
-    right: 5px;
-    top: 5px;
+.creat__job--title {
+	color: $color-black;
+	font-weight: bold;
+}
+#nameCustomer,
+#id_editor {
+	width: 100%;
+}
+#id_editor input,
+#nameCustomer input {
+	padding-right: 40px;
+	border-radius: 5px;
+}
+.icon__search {
+	position: relative;
 }
 
-#id_editor button,#nameCustomer button{
-    background-color: unset !important;
-    position: absolute;
-    right: 0px;
-    border: white;
-    border-radius: 5px;
+.icon__search::before {
+	content: '';
+	background-image: url('../../../../public/images/search_user.svg');
+	width: 30px;
+	height: 30px;
+	display: block;
+	position: absolute;
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: 25px;
+	right: 5px;
+	top: 5px;
+}
+
+#id_editor button,
+#nameCustomer button {
+	background-color: unset !important;
+	position: absolute;
+	right: 0px;
+	border: white;
+	border-radius: 5px;
 }
 .modal__creat--job .field div span textarea,
 .modal__creat--job .field div span .p-dropdown,
-.modal__creat--job .field div span input{
-    // background-color: $color-input;
+.modal__creat--job .field div span input {
+	// background-color: $color-input;
 }
 
 .p-dropdown .p-dropdown-label.p-placeholder {
-    color: #6c757d;
-    font-size: 13px;
+	color: #6c757d;
+	font-size: 13px;
 }
 
 .p-dropdown .p-dropdown-label {
-    font-size: 11px;
+	font-size: 11px;
 }
 
-.create_new_customer{
-    margin-bottom: 10px;
-    color: $color-primary;
-    font-size: 11px;
-    font-weight: bold;
-    cursor: pointer;
+.create_new_customer {
+	margin-bottom: 10px;
+	color: $color-primary;
+	font-size: 11px;
+	font-weight: bold;
+	cursor: pointer;
 }
 
 .pi-chevron-left:before {
-    content: "";
-    background-image: url("../../../../public/images/arrow_left.svg");
-    display: block;
-    width: 15px;
-    height: 15px;
-    background-size: 8px;
-    background-repeat: no-repeat;
-    position: absolute;
-    top: 10px;
-    left: 10px;
+	content: '';
+	background-image: url('../../../../public/images/arrow_left.svg');
+	display: block;
+	width: 15px;
+	height: 15px;
+	background-size: 8px;
+	background-repeat: no-repeat;
+	position: absolute;
+	top: 10px;
+	left: 10px;
 }
 
 .pi-chevron-right:before {
-    content: "";
-    background-image: url("../../../../public/images/arrow_right.svg");
-    display: block;
-    width: 15px;
-    height: 15px;
-    background-size: 8px;
-    background-repeat: no-repeat;
-    position: absolute;
-    top: 10px;
-    left: 10px;
+	content: '';
+	background-image: url('../../../../public/images/arrow_right.svg');
+	display: block;
+	width: 15px;
+	height: 15px;
+	background-size: 8px;
+	background-repeat: no-repeat;
+	position: absolute;
+	top: 10px;
+	left: 10px;
 }
 
 #city,
 #country,
-#date{
-    width: 100%;
+#date {
+	width: 100%;
 }
 
-.btn_information_jobs{
-    font-size: 12px;
-    color: $color-primary;
-    font-weight: bold;
-    padding-left: 20px;
-    cursor: pointer;
+.btn_information_jobs {
+	font-size: 12px;
+	color: $color-primary;
+	font-weight: bold;
+	padding-left: 20px;
+	cursor: pointer;
 }
 
-.id_jobs{
-    font-size: 12px;
-    color: $color-black;
-    font-weight: bold;
-    padding-left: 20px;
+.id_jobs {
+	font-size: 12px;
+	color: $color-black;
+	font-weight: bold;
+	padding-left: 20px;
 }
 
-.css-juqc2r-MuiPaper-root-MuiAppBar-root{
-    background-color: $color-white !important;
+.css-juqc2r-MuiPaper-root-MuiAppBar-root {
+	background-color: $color-white !important;
 }
-.copy__icon,.readonly-class{
-    cursor: pointer;
+.copy__icon,
+.readonly-class {
+	cursor: pointer;
 }
 .p-toast-bottom-left {
-    z-index: 100000000000000000000 !important;
+	z-index: 100000000000000000000 !important;
 }
 
 .p-datepicker .p-datepicker-header {
-    .p-datepicker-prev:focus,
-    .p-datepicker-next:focus {
-        outline: none !important;
-        outline-offset: 0 !important;
-        box-shadow: none !important;
-    }
+	.p-datepicker-prev:focus,
+	.p-datepicker-next:focus {
+		outline: none !important;
+		outline-offset: 0 !important;
+		box-shadow: none !important;
+	}
 }
 
-.p-datepicker table td > span.p-highlight{
-    color : $color-primary;
+.p-datepicker table td > span.p-highlight {
+	color: $color-primary;
 }
-

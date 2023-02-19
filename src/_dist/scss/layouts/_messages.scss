@@ -1,165 +1,164 @@
-.notification-message__container{
-    position: absolute;
-    right: 130px;
-    color: black;
-    display: flex;
-    flex-direction: column;
-    top: 65px;
-    padding-top: 5px;
-    background: $color-white;
-    box-shadow: 3px 4px 14px rgb(0 0 0 / 23%);
-    border-radius: 0 0 10px 10px;
-    max-width: 330px;
-    width: 100%;
-    max-height: 600px;
-.mess_notification{
-    max-height: 100%;
-    overflow-y: auto;
-    &::-webkit-scrollbar{
-        display: none;
-    }
-}
-}
-
-.notification-message__block{
-    height: 100%;
-    border-bottom: 1px solid $color-border-input;
+.notification-message__container {
+	position: absolute;
+	right: 130px;
+	color: black;
+	display: flex;
+	flex-direction: column;
+	top: 65px;
+	padding-top: 5px;
+	background: $color-white;
+	box-shadow: 3px 4px 14px rgb(0 0 0 / 23%);
+	border-radius: 0 0 10px 10px;
+	max-width: 330px;
+	width: 100%;
+	max-height: 600px;
+	.mess_notification {
+		max-height: 100%;
+		overflow-y: auto;
+		&::-webkit-scrollbar {
+			display: none;
+		}
+	}
 }
 
-.notification-message__title{
-    padding: 10px;
-    border-bottom: 1px solid $color-border-input;
-    h5{
-        font-weight: 400;
-        font-size: 14px;
-        line-height: 29px;
-        color: $color-primary;
-    }
+.notification-message__block {
+	height: 100%;
+	border-bottom: 1px solid $color-border-input;
 }
 
-.notification-message__name span:first-child{
-    width: 60%;
-    -webkit-line-clamp: 1;
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    text-overflow: ellipsis;
-    overflow: hidden;
+.notification-message__title {
+	padding: 10px;
+	border-bottom: 1px solid $color-border-input;
+	h5 {
+		font-weight: 400;
+		font-size: 14px;
+		line-height: 29px;
+		color: $color-primary;
+	}
 }
 
-.notification-message__name{
-    color: $color-name-notification;
+.notification-message__name span:first-child {
+	width: 60%;
+	-webkit-line-clamp: 1;
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	text-overflow: ellipsis;
+	overflow: hidden;
+}
+
+.notification-message__name {
+	color: $color-name-notification;
 }
 
 .notification-message__name,
-.notification-message__note{
-    font-style: normal;
-    font-weight: 500;
-    font-size: 12px;
-    line-height: 18px;
-    margin-bottom: 10px;
-
+.notification-message__note {
+	font-style: normal;
+	font-weight: 500;
+	font-size: 12px;
+	line-height: 18px;
+	margin-bottom: 10px;
 }
 
-.notification-message__note{
-    width: 100%;
-    font-style: normal;
-    font-weight: 500;
-    font-size: 12px;
-    line-height: 18px;
-    margin-bottom: 10px;
-    -webkit-line-clamp: 1;
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    text-overflow: ellipsis;
-    overflow: hidden;
+.notification-message__note {
+	width: 100%;
+	font-style: normal;
+	font-weight: 500;
+	font-size: 12px;
+	line-height: 18px;
+	margin-bottom: 10px;
+	-webkit-line-clamp: 1;
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	text-overflow: ellipsis;
+	overflow: hidden;
 }
 
-.notification-message__note.active{
-    font-weight: bold;
-    text-overflow: ellipsis;
-    -webkit-line-clamp: 1;
-    -webkit-box-orient: vertical;
-    white-space: nowrap;
-    max-width: 100%;
+.notification-message__note.active {
+	font-weight: bold;
+	text-overflow: ellipsis;
+	-webkit-line-clamp: 1;
+	-webkit-box-orient: vertical;
+	white-space: nowrap;
+	max-width: 100%;
 }
 
-.notification-message__i{
-    display: flex;
-    justify-content: space-between;
+.notification-message__i {
+	display: flex;
+	justify-content: space-between;
 }
 
-.notification-message_item{
-    padding: 5px 10px;
-    cursor: pointer;
-    width: 85%;
+.notification-message_item {
+	padding: 5px 10px;
+	cursor: pointer;
+	width: 85%;
 }
 
-.notification-message__it.active{
-    background-color: $color-input;
+.notification-message__it.active {
+	background-color: $color-input;
 }
 
-.notification-message__it:hover{
-    background-color: $color-input;
-    transition: 0.3s linear;
+.notification-message__it:hover {
+	background-color: $color-input;
+	transition: 0.3s linear;
 }
 
-.notification-message__alert::before{
-    content: attr(data-count);
-    width: 20px;
-    height: 20px;
-    background-color: #ff0d39;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: white;
-    right: 10px;
-    font-size: 13px;
-    margin-top: 2px;
+.notification-message__alert::before {
+	content: attr(data-count);
+	width: 20px;
+	height: 20px;
+	background-color: #ff0d39;
+	border-radius: 50%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	color: white;
+	right: 10px;
+	font-size: 13px;
+	margin-top: 2px;
 }
 
-.notification-message__it{
-    display: flex;
-    .p-avatar-group{
-        padding-left: 10px;
-        .p-avatar:last-child{
-            margin-bottom: -25px;
-        }
-    }
+.notification-message__it {
+	display: flex;
+	.p-avatar-group {
+		padding-left: 10px;
+		.p-avatar:last-child {
+			margin-bottom: -25px;
+		}
+	}
 }
 
-.notification-message__search{
-    position: relative;
-    .MuiFormControl-root{
-        width: 100%;
-        .MuiInputBase-root input{
-            padding-right: 60px;
-        }
-    }
-    .filter__btn--search{
-        right: 10px;
-    }
+.notification-message__search {
+	position: relative;
+	.MuiFormControl-root {
+		width: 100%;
+		.MuiInputBase-root input {
+			padding-right: 60px;
+		}
+	}
+	.filter__btn--search {
+		right: 10px;
+	}
 }
 
-.message_time{
-    position: absolute;
-    font-size: 9px;
-    bottom: 0px;
-    opacity: 0;
+.message_time {
+	position: absolute;
+	font-size: 9px;
+	bottom: 0px;
+	opacity: 0;
 }
 
-.edit__group{
-    position: absolute;
-    top: 38px;
-    padding-left: 90px;
-    height: 12px;
-    cursor: pointer;
-    opacity: 0.7;
+.edit__group {
+	position: absolute;
+	top: 38px;
+	padding-left: 90px;
+	height: 12px;
+	cursor: pointer;
+	opacity: 0.7;
 }
 
-.loadmore{
-    text-align: center;
-    color: gray;
-    opacity: .5;
-    font-size: 12px;
+.loadmore {
+	text-align: center;
+	color: gray;
+	opacity: 0.5;
+	font-size: 12px;
 }
