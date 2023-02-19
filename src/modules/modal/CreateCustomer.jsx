@@ -191,7 +191,7 @@ const CreateCustomer = () => {
 									name='country'
 									control={control}
 									rules={{ required: 'Chưa điền quốc gia' }}
-									render={({ field, fieldState }) => (
+									render={({ field }) => (
 										<AutoComplete
 											suggestions={filteredCountry}
 											completeMethod={(e) => searchDropdown(e, countries, setFilteredCountry)}
@@ -221,7 +221,7 @@ const CreateCustomer = () => {
 										name='city'
 										control={control}
 										rules={{ required: 'Chưa điền thành phố' }}
-										render={({ field, fieldState }) => (
+										render={({ field }) => (
 											<AutoComplete
 												suggestions={filteredCity}
 												completeMethod={(e) => searchDropdown(e, cities, setFilteredCity)}
