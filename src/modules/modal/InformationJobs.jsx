@@ -296,7 +296,7 @@ const InformationJobs = () => {
 											Trạng thái khách hàng :<span className='warning'>*</span>
 										</span>
 										<span
-											onClick={(e) => handleOpenInput('status_customer')}
+											onClick={handleOpenInput('status_customer')}
 											className={
 												'p-float-label ' +
 												(rowdata?.data?.finished_link !== NOT_SET_ADMIN
@@ -351,7 +351,7 @@ const InformationJobs = () => {
 										)}
 									</span>
 									<span
-										onClick={(e) => handleOpenInput('quality')}
+										onClick={handleOpenInput('quality')}
 										className={
 											'p-float-label ' +
 											(user?.data?.role !== 'LEADER_EDITOR' && user?.data?.role !== 'EDITOR'
@@ -381,7 +381,7 @@ const InformationJobs = () => {
 										)}
 									</span>
 									<span
-										onClick={(e) => handleOpenInput('type_models')}
+										onClick={handleOpenInput('type_models')}
 										className={
 											'p-float-label ' +
 											(user?.data?.role !== 'LEADER_EDITOR' && user?.data?.role !== 'EDITOR'
@@ -415,7 +415,7 @@ const InformationJobs = () => {
 										)}
 									</span>
 									<span
-										onClick={(e) => handleOpenInput('end_day')}
+										onClick={handleOpenInput('end_day')}
 										className={
 											'p-float-label font-bold ' +
 											(user?.data?.role !== 'LEADER_EDITOR' && user?.data?.role !== 'EDITOR'
@@ -448,7 +448,7 @@ const InformationJobs = () => {
 										)}
 									</span>
 									<span
-										onClick={(e) => handleOpenInput('photo_types')}
+										onClick={handleOpenInput('photo_types')}
 										className={
 											'mt-3 p-float-label ' +
 											(user?.data?.role !== 'LEADER_EDITOR' && user?.data?.role !== 'EDITOR'
@@ -484,7 +484,7 @@ const InformationJobs = () => {
 											Editor :<span className='warning'>*</span>
 										</span>
 										<span
-											onClick={(e) => handleOpenInput('id_editor')}
+											onClick={handleOpenInput('id_editor')}
 											className={
 												'mt-3 p-float-label cursor__edit ' +
 												(isOpenInput?.id_editor ? '' : ' mt-3 ')
@@ -517,7 +517,7 @@ const InformationJobs = () => {
 										)}
 									</span>
 									<span
-										onClick={(e) => handleOpenInput('org_link')}
+										onClick={handleOpenInput('org_link')}
 										className={
 											'p-float-label  ' +
 											(user?.data?.role !== 'LEADER_EDITOR' && user?.data?.role !== 'EDITOR'
@@ -562,7 +562,7 @@ const InformationJobs = () => {
 											Link ảnh hoàn thành :<span className='warning'>*</span>
 										</span>
 										<span
-											onClick={(e) => handleOpenInput('finished_link')}
+											onClick={handleOpenInput('finished_link')}
 											className={
 												'p-float-label cursor__edit ' +
 												(isOpenInput?.finished_link ? '' : ' mt-3 ')
@@ -640,7 +640,7 @@ const InformationJobs = () => {
 											Chi phí tổng :<span className='warning'>*</span>
 										</span>
 										<span
-											onClick={(e) => handleOpenInput('total_cost')}
+											onClick={handleOpenInput('total_cost')}
 											className={
 												'p-float-label cursor__edit ' +
 												(isOpenInput?.total_cost ? '' : ' mt-3 ')
@@ -669,7 +669,7 @@ const InformationJobs = () => {
 											)}
 										</span>
 										<span
-											onClick={(e) => handleOpenInput('editor_cost')}
+											onClick={handleOpenInput('editor_cost')}
 											className={
 												'mt-3 p-float-label ' +
 												(user?.data?.role === 'ADMIN' ? 'cursor__edit' : 'mt-3')

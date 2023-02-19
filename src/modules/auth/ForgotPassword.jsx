@@ -4,11 +4,12 @@ import { useForm } from 'react-hook-form';
 import { EMAIL_REGEX } from '../../constants';
 import { forgotPassword } from '../../redux/auth/action';
 import { useDispatch, useSelector } from 'react-redux';
+import Loader from './../../commons/loader';
 
 const ForgotPassword = () => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
-	const resetpass = useSelector((state) => state.auth?.forgotpassword);
+	const forgotpass = useSelector((state) => state.auth?.forgotpassword);
 	const [errorMessage, setErrorMessage] = useState(['', '']);
 	const {
 		register,
@@ -17,15 +18,15 @@ const ForgotPassword = () => {
 	} = useForm({});
 
 	useEffect(() => {
-		if (resetpass?.error) {
-			setErrorMessage([false, resetpass?.data]);
+		if (forgotpass?.error) {
+			setErrorMessage([false, forgotpass?.data]);
 		}
-		if (resetpass?.data?.status) {
-			setErrorMessage([true, resetpass?.data?.data?.messager]);
+		if (forgotpass?.data?.status) {
+			setErrorMessage([true, forgotpass?.data?.data?.messager]);
 		}
-	}, [resetpass]);
+	}, [forgotpass]);
 	const onSubmit = (data) => {
-		if (data && !resetpass?.data) {
+		if (data && !forgotpass?.data) {
 			const dataPost = {
 				email: data?.email,
 			};
@@ -44,7 +45,7 @@ const ForgotPassword = () => {
 				<form onSubmit={handleSubmit(onSubmit)} className='forgot__form'>
 					<div className='form__email'>
 						<p>Email:</p>
-						<div className='form__input'>
+						<div className={' form__input ' + (forgotpass?.data ? 'form__input__disabled' : '')}>
 							<input
 								type='text'
 								placeholder='Nhập mail của bạn'
@@ -57,6 +58,7 @@ const ForgotPassword = () => {
 										message: 'Email không hợp lệ',
 									},
 								})}
+								disabled={forgotpass?.data && true}
 							/>
 						</div>
 						{errors?.email?.message && <span className='form__error'>{errors?.email?.message}</span>}
@@ -74,6 +76,7 @@ const ForgotPassword = () => {
 				{errorMessage[0] === false && <p className='form__message form__message_error'>{errorMessage[1]}</p>}
 			</div>
 			<div className='forgotpassword__bg'></div>
+			<Loader />
 		</div>
 	);
 };

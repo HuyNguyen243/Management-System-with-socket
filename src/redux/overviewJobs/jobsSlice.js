@@ -126,7 +126,7 @@ const jobsReducer = createSlice({
 				}
 			);
 		},
-		[dashboardJobsRequest.rejected]: (state, action) => {
+		[dashboardJobsRequest.rejected]: (state) => {
 			Object.assign(
 				state,
 				{},
@@ -240,7 +240,7 @@ const jobsReducer = createSlice({
 			);
 			state.dashboard.data.splice(action?.payload?.index, 1);
 		},
-		[deleteJobsRequest.rejected]: (state, action) => {
+		[deleteJobsRequest.rejected]: (state) => {
 			Object.assign(
 				state,
 				{},

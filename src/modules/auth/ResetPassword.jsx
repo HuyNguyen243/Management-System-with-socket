@@ -36,7 +36,7 @@ const ForgotPassword = () => {
 		if (data?.password !== data?.repassword) {
 			setErrorMessage([false, 'Hai mật khẩu phải trùng nhau']);
 		} else {
-			if (data && id && token) {
+			if (data && id && token && !resetpass?.data) {
 				const dataPost = {
 					password: data?.password,
 					id: id,
@@ -58,7 +58,7 @@ const ForgotPassword = () => {
 				<form onSubmit={handleSubmit(onSubmit)} className='forgot__form'>
 					<div className='form__password'>
 						<p>Nhập mật khẩu mới:</p>
-						<div className='form__input'>
+						<div className={' form__input ' + (resetpass?.data ? 'form__input__disabled' : '')}>
 							<input
 								type={haveSeenPwd ? 'text' : 'password'}
 								placeholder='Nhập mật khẩu mới của bạn'
@@ -70,6 +70,7 @@ const ForgotPassword = () => {
 										message: 'Mật khẩu dài hơn 8 kí tự',
 									},
 								})}
+								disabled={resetpass?.data && true}
 							/>
 							<img
 								className='show__password'
@@ -82,7 +83,7 @@ const ForgotPassword = () => {
 					</div>
 					<div className='form__password'>
 						<p>Nhập lại mật khẩu:</p>
-						<div className='form__input'>
+						<div className={' form__input ' + (resetpass?.data ? 'form__input__disabled' : '')}>
 							<input
 								type={haveSeenRePwd ? 'text' : 'password'}
 								placeholder='Nhập mật khẩu mới của bạn'
@@ -94,6 +95,7 @@ const ForgotPassword = () => {
 										message: 'Mật khẩu dài hơn 8 kí tự',
 									},
 								})}
+								disabled={resetpass?.data && true}
 							/>
 							<img
 								className='show__password'

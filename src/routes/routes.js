@@ -1,3 +1,4 @@
+import React from 'react';
 import Dashboard from '../modules/manager/editor/Dashboard';
 import WorkflowManagement from '../modules/manager/sale/workFlowManager/WorkflowManagement';
 import CustomerManager from '../modules/manager/sale/customerManager/CustomerManager';

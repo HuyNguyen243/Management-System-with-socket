@@ -57,7 +57,7 @@ const employeePerformanceReducer = createSlice({
 				}
 			);
 		},
-		[getEmployeePerformance.rejected]: (state, action) => {
+		[getEmployeePerformance.rejected]: (state) => {
 			Object.assign(
 				state,
 				{},
@@ -95,7 +95,7 @@ const employeePerformanceReducer = createSlice({
 				}
 			);
 		},
-		[kpiYearOfMonth.rejected]: (state, action) => {
+		[kpiYearOfMonth.rejected]: (state) => {
 			Object.assign(
 				state,
 				{},
@@ -133,7 +133,7 @@ const employeePerformanceReducer = createSlice({
 				}
 			);
 		},
-		[jobsStaffSaler.rejected]: (state, action) => {
+		[jobsStaffSaler.rejected]: (state) => {
 			Object.assign(
 				state,
 				{},
@@ -171,7 +171,7 @@ const employeePerformanceReducer = createSlice({
 				}
 			);
 		},
-		[jobsStaffEditor.rejected]: (state, action) => {
+		[jobsStaffEditor.rejected]: (state) => {
 			Object.assign(
 				state,
 				{},

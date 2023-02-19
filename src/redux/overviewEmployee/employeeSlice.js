@@ -109,7 +109,7 @@ const employeeReducer = createSlice({
 				}
 			);
 		},
-		[dashboardEmployeeRequest.rejected]: (state, action) => {
+		[dashboardEmployeeRequest.rejected]: (state) => {
 			Object.assign(
 				state,
 				{},
@@ -185,7 +185,7 @@ const employeeReducer = createSlice({
 			);
 			state.dashboard.data.splice(action?.payload?.index, 1, action?.payload?.data);
 		},
-		[editEmployeeRequest.rejected]: (state, action) => {
+		[editEmployeeRequest.rejected]: (state) => {
 			Object.assign(
 				state,
 				{},
@@ -223,7 +223,7 @@ const employeeReducer = createSlice({
 			);
 			state.dashboard.data.splice(action?.payload?.index, 1);
 		},
-		[deleteEmployeeRequest.rejected]: (state, action) => {
+		[deleteEmployeeRequest.rejected]: (state) => {
 			Object.assign(
 				state,
 				{},

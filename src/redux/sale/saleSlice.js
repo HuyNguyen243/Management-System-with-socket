@@ -110,7 +110,7 @@ const saleSlice = createSlice({
 				}
 			);
 		},
-		[saleCustomerRequest.rejected]: (state, action) => {
+		[saleCustomerRequest.rejected]: (state) => {
 			Object.assign(
 				state,
 				{},
@@ -150,7 +150,7 @@ const saleSlice = createSlice({
 			);
 			state.customers.data.push(result);
 		},
-		[addCustomerRequest.rejected]: (state, action) => {
+		[addCustomerRequest.rejected]: (state) => {
 			Object.assign(
 				state,
 				{},

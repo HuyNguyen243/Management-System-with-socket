@@ -60,7 +60,7 @@ const notificationSlice = createSlice({
 				}
 			);
 		},
-		[createNotification.rejected]: (state, action) => {
+		[createNotification.rejected]: (state) => {
 			Object.assign(
 				state,
 				{},
@@ -98,7 +98,7 @@ const notificationSlice = createSlice({
 				}
 			);
 		},
-		[getNotification.rejected]: (state, action) => {
+		[getNotification.rejected]: (state) => {
 			Object.assign(
 				state,
 				{},
@@ -136,7 +136,7 @@ const notificationSlice = createSlice({
 				}
 			);
 		},
-		[updateNotification.rejected]: (state, action) => {
+		[updateNotification.rejected]: (state) => {
 			Object.assign(
 				state,
 				{},

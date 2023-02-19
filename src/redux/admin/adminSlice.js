@@ -42,7 +42,7 @@ const settingReducer = createSlice({
 				}
 			);
 		},
-		[settingRequest.rejected]: (state, action) => {
+		[settingRequest.rejected]: (state) => {
 			Object.assign(
 				state,
 				{},
@@ -80,7 +80,7 @@ const settingReducer = createSlice({
 			);
 			state.system = action?.payload?.data;
 		},
-		[updateRequest.rejected]: (state, action) => {
+		[updateRequest.rejected]: (state) => {
 			Object.assign(
 				state,
 				{},

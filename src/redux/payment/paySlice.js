@@ -62,7 +62,7 @@ const payReducer = createSlice({
 				}
 			);
 		},
-		[getPayRequest.rejected]: (state, action) => {
+		[getPayRequest.rejected]: (state) => {
 			Object.assign(
 				state,
 				{},
@@ -101,7 +101,7 @@ const payReducer = createSlice({
 			);
 			state?.getstaff?.data?.splice(action?.payload?.index, 1, action.payload.data);
 		},
-		[updatePayRequest.rejected]: (state, action) => {
+		[updatePayRequest.rejected]: (state) => {
 			Object.assign(
 				state,
 				{},
@@ -139,7 +139,7 @@ const payReducer = createSlice({
 				}
 			);
 		},
-		[getPayStaffRequest.rejected]: (state, action) => {
+		[getPayStaffRequest.rejected]: (state) => {
 			Object.assign(
 				state,
 				{},

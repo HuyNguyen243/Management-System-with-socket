@@ -129,7 +129,7 @@ const messagesSlice = createSlice({
 				}
 			);
 		},
-		[createGroupMsgRequest.rejected]: (state, action) => {
+		[createGroupMsgRequest.rejected]: (state) => {
 			Object.assign(
 				state,
 				{},
