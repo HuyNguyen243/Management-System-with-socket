@@ -1,5 +1,5 @@
 .nav__container .MuiPaper-root {
-	background-color: $color-secondary !important;
+	background-color: $color-white !important;
 	box-shadow: 3px 0px 4px rgb(0 0 0 / 25%);
 }
 
@@ -10,6 +10,10 @@
 .nav__name {
 	color: $color-white !important;
 	position: relative;
+}
+
+.css-10hburv-MuiTypography-root{
+    color: $color-black;
 }
 
 .nav__name.disabled {
@@ -25,7 +29,7 @@
 
 .nav__name.icon_arrow-up::after {
 	content: '';
-	background-image: url('../../../../public/images/arrow_up.svg');
+	background-image: url('../../../../public/images/arrow_up_black.svg');
 	width: 15px;
 	height: 15px;
 	display: block;
@@ -37,7 +41,7 @@
 
 .nav__name.icon_arrow-down::after {
 	content: '';
-	background-image: url('../../../../public/images/arrow_down.svg');
+	background-image: url('../../../../public/images/arrow_down_black.svg');
 	width: 15px;
 	height: 15px;
 	display: block;
@@ -73,15 +77,28 @@
 	border-bottom: 1px solid $color-border-input;
 }
 
+.MuiDrawer-paper::after{
+	content: "";
+}
+
 .nav_btnChild.active {
-	background-color: $color-border-input !important;
+	background-color: $color-nav-child-action !important;
+    &::after{
+        content: "";
+        width: 2px;
+        height: 100%;
+        background-color: $color-primary;
+        display: block;
+        position: absolute;
+        right: 0;
+    }
 }
 
 .nav__container--nav-child {
 	display: none;
 	p {
 		padding: 10px 0;
-		color: $color-white;
+		color: $color-black;
 	}
 	.MuiButtonBase-root {
 		padding-left: 50px !important;
@@ -103,22 +120,11 @@
 
 .nav__icon-active {
 	position: relative;
-	&::before {
-		content: '';
-		width: 3px;
-		height: 100%;
-		border-radius: 5px;
-		background: $color-primary !important;
-		position: absolute;
-		left: 0;
-		margin-right: 5px;
-	}
 	&::after {
 		content: ' ';
-		width: 58px;
+		width: 100%;
 		height: 100%;
-		border-radius: 5px 0 0 5px;
-		background: #0061f4 !important;
+		background: $color-primary!important;
 		position: absolute;
 		right: 0;
 		top: 0;
@@ -404,4 +410,8 @@
 
 .p-datepicker table td > span.p-highlight {
 	color: $color-primary;
+}
+
+.MuiList-root{
+	height: 100%;
 }

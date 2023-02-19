@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
 import DatePicker from './DatePicker';
 import { useNavigate, useLocation } from 'react-router';
 import { dateString } from '../../commons/dateTime';
@@ -13,6 +9,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Dropdown } from 'primereact/dropdown';
 import { resetKpis } from '../../redux/employeePerformance/performanceSlice';
 import { getEmployeePerformance } from '../../redux/employeePerformance/action';
+import { InputText } from 'primereact/inputtext';
 
 const Filter = ({ DataFilter, sortBy, sortValue, setSortBy, setSortValue, search, setsearch, dropdown }) => {
 	const queryParams = new URLSearchParams(window.location.search);
@@ -177,7 +174,6 @@ const Filter = ({ DataFilter, sortBy, sortValue, setSortBy, setSortValue, search
 	return (
 		<>
 			<div className={`page__filter align-items-center flex grid  `}>
-				<img src='images/reset.svg' alt='' onClick={handleReset} />
 				<Box
 					component='form'
 					sx={{
@@ -189,15 +185,15 @@ const Filter = ({ DataFilter, sortBy, sortValue, setSortBy, setSortValue, search
 				>
 					{pathname !== '/job-performance' ? (
 						<>
-							<TextField
-								label='Tìm kiếm'
+							<InputText
+								placeholder='Search'
 								id='outlined-size-small'
 								value={keyword}
 								size='small'
 								className='filter__input--search'
 								onChange={(e) => handleSearchKeyWord(e.target.value)}
 							/>
-							<img src='../../images/search_blue.svg' alt='' className='filter__btn--search' />
+							<img src='../../images/search.svg' alt='' className='filter__btn--search' />
 						</>
 					) : (
 						<Dropdown
@@ -210,26 +206,20 @@ const Filter = ({ DataFilter, sortBy, sortValue, setSortBy, setSortValue, search
 						/>
 					)}
 				</Box>
-
 				<DatePicker dates={dates} setDates={setDates} />
 				{pathname !== '/job-performance' && (
-					<FormControl sx={{ m: 1, minWidth: 270 }} size='small' className='fiter__status'>
-						<InputLabel id='filter__label'>Trạng thái</InputLabel>
-						<Select
-							labelId='demo-controlled-open-select-label'
-							id='status__select'
-							value={status}
-							label='Age'
-							onChange={(e) => setStatus(e.target.value)}
-						>
-							{dropdown.map((item, index) => (
-								<MenuItem value={item.id} key={index} className='status__option'>
-									<span className='status__content'>{item.status}</span>
-								</MenuItem>
-							))}
-						</Select>
-					</FormControl>
+					<Dropdown
+						options={dropdown}
+						optionLabel='status'
+						optionValue='id'
+						value={status}
+						onChange={(e) => setStatus(e.target.value)}
+						placeholder='Bộ lọc trạng thái'
+						className='ml-2 mr-2 filter__dropdown'
+						style= {{width: "inherit"}}
+					/>
 				)}
+				<img src='images/reset.svg' alt='' onClick={handleReset} className="filter__reset"/>
 			</div>
 		</>
 	);

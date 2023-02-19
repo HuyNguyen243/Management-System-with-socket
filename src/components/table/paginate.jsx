@@ -54,7 +54,7 @@ export const paginate = {
 				value={options.value}
 				options={dropdownOptions}
 				onChange={options.onChange}
-				className='select__perpage'
+				className='select__perpage align-items-center'
 			/>
 		);
 	},

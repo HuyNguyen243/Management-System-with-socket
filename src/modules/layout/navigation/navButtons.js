@@ -1,6 +1,6 @@
 export const navButtons = [
 	{
-		name_image: 'pie',
+		name_image: 'nav/home',
 		role: ['ADMIN'],
 		isRederect: false,
 		route: '',
@@ -29,7 +29,7 @@ export const navButtons = [
 		],
 	},
 	{
-		name_image: 'work',
+		name_image: 'nav/project',
 		role: ['EDITOR', 'LEADER_EDITOR'],
 		isRederect: false,
 		route: '',
@@ -43,7 +43,7 @@ export const navButtons = [
 		],
 	},
 	{
-		name_image: 'shopping-bag',
+		name_image: 'nav/idcard',
 		role: ['SALER', 'ADMIN'],
 		isRederect: false,
 		route: '',
@@ -62,7 +62,7 @@ export const navButtons = [
 		],
 	},
 	{
-		name_image: 'money',
+		name_image: 'nav/wallet',
 		role: ['SALER', 'EDITOR', 'LEADER_EDITOR'],
 		isRederect: false,
 		route: '',

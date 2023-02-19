@@ -75,14 +75,23 @@
 
 .filter__btn--search {
 	position: absolute;
-	right: 20px;
+	left: 20px;
 	top: 50%;
 	transform: translateY(-50%);
 }
 
 .filter__input--search {
+	padding: 9px;
+	padding-left: 40px;
 	.MuiInputBase-root .MuiInputBase-input {
-		padding-right: 40px !important;
+		padding-left: 40px !important;
+	}
+}
+
+.filter__dropdown{
+	.p-dropdown-label{
+		padding: 9px;
+		width: 150px;
 	}
 }
 
@@ -150,8 +159,16 @@
 }
 
 .filter__calendar input {
-	border-radius: 5px;
-	padding: 11px 15px;
-	width: 270px !important;
-	border: 1px solid #ced1d7;
+	border-radius: 4px;
+    padding: 9px 15px;
+    width: 270px !important;
+    border: 1px solid #ced1d7;
+}
+
+.filter__reset{
+	height: 35px;
+}
+
+.css-e53awj-MuiStack-root{
+	justify-content: end;
 }
