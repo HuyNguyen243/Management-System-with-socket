@@ -1,25 +1,26 @@
 .login__container {
 	display: flex;
+
 	.login__bg {
-		background-image: url('../../../../public/images/bg_login.jpg');
-		background-repeat: no-repeat;
 		width: 50%;
 		height: 100vh;
-		background-position: center center;
 	}
 
 	.login__form {
 		margin: 126px 0;
 		width: 500px;
 		margin: auto;
+
 		.login__title {
 			display: flex;
+
 			p:first-child {
 				font-size: 32px;
 				line-height: 47px;
 				color: $color-bloom;
 				margin-right: 5px;
 			}
+
 			p {
 				margin-top: unset;
 				font-size: 32px;
@@ -40,6 +41,7 @@
 	form {
 		.form__email {
 			margin-bottom: 40px;
+
 			p {
 				font-style: normal;
 				font-weight: 600;
@@ -48,18 +50,22 @@
 				color: $color-bloom;
 				margin-bottom: 15px;
 			}
+
 			input {
 				border: none;
 				font-size: 16px;
 				width: 100%;
+
 				&:focus-visible {
 					outline: none;
 					background: white;
 				}
 			}
 		}
+
 		.form__password {
 			margin: 20px 0;
+
 			p {
 				font-style: normal;
 				font-weight: 600;
@@ -68,16 +74,20 @@
 				color: $color-bloom;
 				margin-bottom: 15px;
 			}
+
 			.form__input {
 				display: flex;
+
 				input {
 					border: none;
 					font-size: 16px;
 					width: 100%;
+
 					&:focus-visible {
 						outline: none;
 					}
 				}
+
 				.show__password {
 					cursor: pointer;
 				}
@@ -88,6 +98,7 @@
 			display: flex;
 			justify-content: space-between;
 			margin-bottom: 40px;
+
 			.form__btn-forgotpwd {
 				font-size: 14px;
 				color: $color-primary;
@@ -122,11 +133,13 @@
 .form__input__disabled {
 	background-color: #ccc7c74f;
 }
+
 .save__me {
 	display: flex;
 	font-size: 14px;
 	color: $color-secondary;
 	line-height: 20px;
+
 	input {
 		width: 20px;
 		margin-right: 20px;

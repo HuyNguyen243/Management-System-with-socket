@@ -35,11 +35,7 @@ const Login = () => {
 
 	useEffect(() => {
 		if (user?.error && !user?.data) {
-			if (user?.error?.payload?.message && (user?.error?.payload?.message).includes('expired')) {
-				errorToast('Phiên đăng nhập vừa hết hạn, ENTER để tạo phiên đăng nhập mới');
-			} else {
-				errorToast('Tài khoản hoặc mật khẩu không chính xác');
-			}
+			errorToast('Tài khoản hoặc mật khẩu không chính xác');
 		}
 	}, [user]);
 
@@ -51,7 +47,9 @@ const Login = () => {
 
 	return (
 		<div className='login__container'>
-			<div className='login__bg'></div>
+			<div className='login__bg'>
+				<div className='login__bg--img'></div>
+			</div>
 			<div className='login__form'>
 				<div className='login__title'>
 					<p>Hệ thống quản lý</p>
