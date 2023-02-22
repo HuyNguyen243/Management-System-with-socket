@@ -12,7 +12,6 @@ const TableTotal = ({ setDateWorkFlow, dateWorkFlow }) => {
 	const dataTable = dataParse(performance?.data);
 	const user = useSelector((state) => state.auth.user);
 
-
 	const headerTable = (name) => {
 		return (
 			<div className=''>
@@ -58,7 +57,6 @@ const TableTotal = ({ setDateWorkFlow, dateWorkFlow }) => {
 					)}
 				</DataTable>
 			</div>
-
 
 			<div className='table__analysis field col-12 md:col-4 mt-0'>
 				<Calendar

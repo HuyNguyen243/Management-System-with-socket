@@ -120,10 +120,10 @@
 
 .sort__up {
 	position: absolute;
-    top: -10px;
-    left: -4px;
-    width: 10px;
-    margin-left: 4px;
+	top: -10px;
+	left: -4px;
+	width: 10px;
+	margin-left: 4px;
 }
 
 .sort__down {
@@ -289,7 +289,7 @@
 	height: 100%;
 }
 
-tr th:last-child .p-column-header-content{
+tr th:last-child .p-column-header-content {
 	border: none;
 }
 
@@ -335,32 +335,32 @@ tr th:last-child .p-column-header-content{
 }
 
 .infor_avatar {
-    background: white;
-    border: 6px solid white;
-    position: relative;
-    overflow: hidden;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-size: cover;
-    background-position: center center;
-    -o-object-fit: cover;
-    object-fit: cover;
-    will-change: transform;
-    -webkit-transition: -webkit-transform 1.5s ease-out;
-    transition: -webkit-transform 1.5s ease-out;
-    -moz-transition: transform 1.5s ease-out, -moz-transform 1.5s ease-out;
-    transition: transform 1.5s ease-out;
-    transition: transform 1.5s ease-out, -webkit-transform 1.5s ease-out, -moz-transform 1.5s ease-out;
-    border-radius: 50%;
+	background: white;
+	border: 6px solid white;
+	position: relative;
+	overflow: hidden;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-size: cover;
+	background-position: center center;
+	-o-object-fit: cover;
+	object-fit: cover;
+	will-change: transform;
+	-webkit-transition: -webkit-transform 1.5s ease-out;
+	transition: -webkit-transform 1.5s ease-out;
+	-moz-transition: transform 1.5s ease-out, -moz-transform 1.5s ease-out;
+	transition: transform 1.5s ease-out;
+	transition: transform 1.5s ease-out, -webkit-transform 1.5s ease-out, -moz-transform 1.5s ease-out;
+	border-radius: 50%;
 }
 
 .avatar__block {
 	display: flex;
-    justify-content: center;
-    top: 270px;
+	justify-content: center;
+	top: 270px;
 	left: 150px;
 }
 
@@ -375,15 +375,15 @@ tr th:last-child .p-column-header-content{
 
 .label_avatar:before {
 	content: '';
-	background-image: url("../../../../public/images/personal/btn_camera.svg");
+	background-image: url('../../../../public/images/personal/btn_camera.svg');
 	display: block;
-    width: 40px;
-    height: 40px;
-    cursor: pointer;
-    background-repeat: no-repeat;
-    position: absolute;
-    right: -5px;
-    bottom: -5px;
+	width: 40px;
+	height: 40px;
+	cursor: pointer;
+	background-repeat: no-repeat;
+	position: absolute;
+	right: -5px;
+	bottom: -5px;
 }
 
 .p-dropdown {
@@ -562,12 +562,12 @@ tr th:last-child .p-column-header-content{
 
 .select__perpage {
 	width: inherit;
-    position: absolute;
-    top: -65px;
-    right: 45px;
-    background-color: #fbfafa;
-    margin-top: 10px;
-    height: 40px;
+	position: absolute;
+	top: -65px;
+	right: 45px;
+	background-color: #fbfafa;
+	margin-top: 10px;
+	height: 40px;
 	.p-inputtext {
 		color: $color-black;
 	}
@@ -575,7 +575,6 @@ tr th:last-child .p-column-header-content{
 
 .p-paginator {
 	padding: 0px;
-
 }
 
 .p-paginator-current {
@@ -848,11 +847,11 @@ tr th:last-child .p-column-header-content{
 	position: absolute;
 }
 
-.table__icon--add{
+.table__icon--add {
 	font-size: 20px;
 }
 
-.page__content{
+.page__content {
 	font-style: normal;
 	font-weight: 400;
 	font-size: 13px;

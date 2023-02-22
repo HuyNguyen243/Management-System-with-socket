@@ -124,7 +124,7 @@ const CreateUser = () => {
 						<div className='field col-12 md:col-12 grid pr-0'>
 							<div className='field col-12 md:col-12'>
 								<span>
-									<span className='warning'>*</span>Nhập tên nhân viên: 
+									<span className='warning'>*</span>Nhập tên nhân viên:
 								</span>
 								<span className=''>
 									<Controller
@@ -181,7 +181,7 @@ const CreateUser = () => {
 							)}
 							<div className='field col-12 md:col-12'>
 								<span>
-									<span className='warning'>*</span>Nhập tên đăng nhập: 
+									<span className='warning'>*</span>Nhập tên đăng nhập:
 								</span>
 								<span className='relative'>
 									<Controller
@@ -291,7 +291,7 @@ const CreateUser = () => {
 							</div>
 							<div className='field col-12 md:col-6 '>
 								<span htmlFor='withoutgrouping'>
-									<span className='warning'>*</span>Số điện thoại: 
+									<span className='warning'>*</span>Số điện thoại:
 								</span>
 								<span className=''>
 									<Controller

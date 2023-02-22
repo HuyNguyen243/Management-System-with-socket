@@ -81,7 +81,7 @@ const Modal = ({
 	const handleAddMember = (e) => {
 		const { value } = e;
 		if (!dataWatch?.members.includes(value)) {
-			setValue('members', [...dataWatch?.members, value]);
+			setValue('members', [...dataWatch.members, value]);
 		} else {
 			const arr = dataWatch?.members.filter((item) => {
 				return item !== value;
@@ -181,7 +181,7 @@ const Modal = ({
 						)}
 						{errors?.name?.type === 'minLength' && (
 							<span className='warning' style={{ fontSize: '12px' }}>
-								"Tên nhóm tối thiểu 6 ký tự"
+								Tên nhóm tối thiểu 6 ký tự
 							</span>
 						)}
 					</div>

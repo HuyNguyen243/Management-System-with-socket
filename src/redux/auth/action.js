@@ -10,7 +10,7 @@ export const userloginRequest = createAsyncThunk('user_login', async (req, { rej
 	try {
 		const res = await post('auth/login', req.data);
 		storage.save(NAME_SESSION_STORAGE_TOKEN, res?.data?.access_token);
-		
+
 		const decodedToken = jwt_decode(res?.data?.access_token);
 		let url;
 		if (decodedToken.role === UserRules.ROLE.ADMIN) {

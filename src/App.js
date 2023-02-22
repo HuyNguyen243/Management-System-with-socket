@@ -47,9 +47,9 @@ function App() {
 						<Route path='*' element={<Navigate to={URL_ROUTER.LOGIN} replace />} />
 					</>
 				)}
-				<Route path={URL_ROUTER.LOGIN}  element={<Login />} />
-				<Route path={URL_ROUTER.FORGOT_PASSWORD}  element={<ForgotPassword />} />
-				<Route path={URL_ROUTER.RESET_PASSWORD}  element={<ResetPassword />} />
+				<Route path={URL_ROUTER.LOGIN} element={<Login />} />
+				<Route path={URL_ROUTER.FORGOT_PASSWORD} element={<ForgotPassword />} />
+				<Route path={URL_ROUTER.RESET_PASSWORD} element={<ResetPassword />} />
 			</Routes>
 			{userIsAuth && (
 				<>

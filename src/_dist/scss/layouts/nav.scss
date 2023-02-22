@@ -12,8 +12,8 @@
 	position: relative;
 }
 
-.css-10hburv-MuiTypography-root{
-    color: $color-black;
+.css-10hburv-MuiTypography-root {
+	color: $color-black;
 }
 
 .nav__name.disabled {
@@ -77,21 +77,21 @@
 	border-bottom: 1px solid $color-border-input;
 }
 
-.MuiDrawer-paper::after{
-	content: "";
+.MuiDrawer-paper::after {
+	content: '';
 }
 
 .nav_btnChild.active {
 	background-color: $color-nav-child-action !important;
-    &::after{
-        content: "";
-        width: 2px;
-        height: 100%;
-        background-color: $color-primary;
-        display: block;
-        position: absolute;
-        right: 0;
-    }
+	&::after {
+		content: '';
+		width: 2px;
+		height: 100%;
+		background-color: $color-primary;
+		display: block;
+		position: absolute;
+		right: 0;
+	}
 }
 
 .nav__container--nav-child {
@@ -124,7 +124,7 @@
 		content: ' ';
 		width: 100%;
 		height: 100%;
-		background: $color-primary!important;
+		background: $color-primary !important;
 		position: absolute;
 		right: 0;
 		top: 0;
@@ -159,10 +159,10 @@
 	background-color: $color-primary;
 	padding: 15px;
 	z-index: 1;
-	h2{
+	h2 {
 		color: $color-white;
 	}
-	p{
+	p {
 		color: $color-white;
 		font-style: normal;
 		font-weight: 400;
@@ -170,7 +170,6 @@
 		line-height: 20px;
 		margin-top: 5px;
 	}
-
 }
 
 .p-datepicker {
@@ -428,6 +427,6 @@
 	color: $color-primary;
 }
 
-.MuiList-root{
+.MuiList-root {
 	height: 100%;
 }

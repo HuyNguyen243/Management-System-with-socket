@@ -171,23 +171,23 @@ const CreateJobs = () => {
 							<div className='field col-12 md:col-6 '>
 								<div>
 									<span htmlFor='withoutgrouping'>
-										<span className='warning'>*</span>Số lượng: 
+										<span className='warning'>*</span>Số lượng:
 									</span>
 								</div>
-									<Controller
-										name='quality_img'
-										control={control}
-										rules={{ required: 'Chưa điền số lượng' }}
-										render={({ field, fieldState }) => (
-											<InputNumber
-												value={field.value}
-												onValueChange={(e) => field.onChange(e.value)}
-												mode='decimal'
-												className={classNames({ 'p-invalid': fieldState.invalid })}
-												placeholder='Điền số lượng ảnh'
-											/>
-										)}
-									/>
+								<Controller
+									name='quality_img'
+									control={control}
+									rules={{ required: 'Chưa điền số lượng' }}
+									render={({ field, fieldState }) => (
+										<InputNumber
+											value={field.value}
+											onValueChange={(e) => field.onChange(e.value)}
+											mode='decimal'
+											className={classNames({ 'p-invalid': fieldState.invalid })}
+											placeholder='Điền số lượng ảnh'
+										/>
+									)}
+								/>
 								{errors?.quality_img && (
 									<span className='warning' style={{ fontSize: '12px' }}>
 										{errors?.quality_img.message}
@@ -196,7 +196,7 @@ const CreateJobs = () => {
 							</div>
 							<div className='field col-12 md:col-12 create__job--calendar'>
 								<span htmlFor='calendar'>
-									<span className='warning'>*</span>Deadline: 
+									<span className='warning'>*</span>Deadline:
 								</span>
 								<span className=''>
 									<Controller
@@ -250,7 +250,7 @@ const CreateJobs = () => {
 							</div>
 							<div className='field col-12 md:col-6'>
 								<span htmlFor='original__link'>
-									<span className='warning'>*</span> Định dạng file: 
+									<span className='warning'>*</span> Định dạng file:
 								</span>
 								<span className=''>
 									<Controller
@@ -280,7 +280,7 @@ const CreateJobs = () => {
 							</div>
 							<div className='field col-12 md:col-6'>
 								<span htmlFor='cost'>
-									<span className='warning'>*</span> Chi phí: 
+									<span className='warning'>*</span> Chi phí:
 								</span>
 								<span className=''>
 									<Controller
@@ -313,7 +313,9 @@ const CreateJobs = () => {
 							{user?.data?.role === 'ADMIN' && (
 								<div className='field col-12 md:col-6'>
 									<span>
-										<span htmlFor='cost' style={{height:"24px"}}>Chi phí Editor:</span>
+										<span htmlFor='cost' style={{ height: '24px' }}>
+											Chi phí Editor:
+										</span>
 									</span>
 									<Controller
 										name='editor_cost'
@@ -337,7 +339,7 @@ const CreateJobs = () => {
 							)}
 							<div className='field col-12 md:col-12'>
 								<span htmlFor='employees'>
-									<span className='warning'>*</span> Nội dung yêu cầu: 
+									<span className='warning'>*</span> Nội dung yêu cầu:
 								</span>
 								<span className=''>
 									<Controller
@@ -366,27 +368,27 @@ const CreateJobs = () => {
 							</div>
 							<div className='field col-12 md:col-12'>
 								<span className=''>
-										<span>
-											<span className='warning'>*</span>Lưu ý của khách hàng:
-										</span>
+									<span>
+										<span className='warning'>*</span>Lưu ý của khách hàng:
+									</span>
 								</span>
-									<Controller
-										name='work_notes'
-										control={control}
-										rules={{ required: 'Chưa điền lưu ý của khách hàng' }}
-										render={({ field, fieldState }) => (
-											<InputTextarea
-												autoResize
-												id={field.name}
-												{...field}
-												className={classNames(
-													{ 'p-invalid': fieldState.invalid },
-													'create__job_area'
-												)}
-												placeholder='Lưu ý khách hàng'
-											/>
-										)}
-									/>
+								<Controller
+									name='work_notes'
+									control={control}
+									rules={{ required: 'Chưa điền lưu ý của khách hàng' }}
+									render={({ field, fieldState }) => (
+										<InputTextarea
+											autoResize
+											id={field.name}
+											{...field}
+											className={classNames(
+												{ 'p-invalid': fieldState.invalid },
+												'create__job_area'
+											)}
+											placeholder='Lưu ý khách hàng'
+										/>
+									)}
+								/>
 								{errors?.work_notes && (
 									<span className='warning' style={{ fontSize: '12px' }}>
 										{errors?.work_notes.message}

@@ -22,12 +22,12 @@
 	margin-right: 10px;
 }
 
-.page__header{
+.page__header {
 	position: absolute;
-    right: 25px;
-    top: 100px;
+	right: 25px;
+	top: 100px;
 	display: flex;
-    align-items: center;
+	align-items: center;
 	width: 100%;
 	justify-content: space-between !important;
 	padding-left: 125px;
@@ -35,7 +35,7 @@
 
 .header__container {
 	height: 180px;
-    position: relative;
+	position: relative;
 	> .MuiPaper-root {
 		> .MuiToolbar-root {
 			padding: 0 20px !important;
@@ -50,7 +50,7 @@
 	}
 }
 
-.header__right{
+.header__right {
 	align-items: center;
 }
 
@@ -109,7 +109,7 @@
 	cursor: pointer;
 }
 
-.css-1wlk0hk-MuiAvatar-root{
+.css-1wlk0hk-MuiAvatar-root {
 	width: 35px !important;
 	height: 35px !important;
 }
@@ -118,7 +118,7 @@
 .header__right--notification img {
 	margin: 0 10px;
 	border-radius: 50%;
-    width: 20px;
+	width: 20px;
 }
 
 .header__right--profile {
@@ -140,16 +140,16 @@
 
 .count_notification {
 	background: $color-danger;
-    width: 37px;
-    height: 24px;
-    position: absolute;
-    display: block;
-    border-radius: 40%;
-    text-align: center;
-    margin: auto 0;
-    font-weight: 600;
-    top: -15px;
-    right: -18px;
+	width: 37px;
+	height: 24px;
+	position: absolute;
+	display: block;
+	border-radius: 40%;
+	text-align: center;
+	margin: auto 0;
+	font-weight: 600;
+	top: -15px;
+	right: -18px;
 }
 
 .dots_online {
@@ -211,13 +211,13 @@
 	background: $color-primary;
 }
 
-.header__title{
+.header__title {
 	position: absolute;
-    top: 60%;
-    left: 100px;
+	top: 60%;
+	left: 100px;
 }
 
-.page__title{
+.page__title {
 	color: $color-black;
 	text-transform: uppercase;
 	font-style: normal;

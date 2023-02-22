@@ -78,10 +78,6 @@ const Notification = ({ isOpenNotification, setisOpenNotification }) => {
 			setNotifications(notifys?.data);
 		}
 	}, [notifys]);
-	useEffect(() => {
-		if (notifyupdate?.data) {
-		}
-	}, [notifyupdate]);
 
 	useEffect(() => {
 		if (addjobs?.data && !addjobs?.error) {
@@ -109,7 +105,7 @@ const Notification = ({ isOpenNotification, setisOpenNotification }) => {
 
 	useEffect(() => {
 		if (user?.data) {
-			const { id_system } = user?.data;
+			const { id_system } = user.data;
 			socket.emit('notifications-of-id-system', id_system);
 		}
 	}, [user]);
@@ -118,8 +114,8 @@ const Notification = ({ isOpenNotification, setisOpenNotification }) => {
 		if (payload?.members.includes(user?.data?.id_system)) {
 			audio.play();
 		}
-		if (payload) {
-			const { id_system } = user?.data;
+		if (payload && user?.data) {
+			const { id_system } = user.data;
 			socket.emit('get-members');
 			socket.emit('notifications-of-id-system', id_system);
 		}
@@ -136,8 +132,8 @@ const Notification = ({ isOpenNotification, setisOpenNotification }) => {
 	});
 
 	socket.off('is_reset_notify').on('is_reset_notify', (payload) => {
-		if (payload) {
-			const { id_system } = user?.data;
+		if (payload && user?.data) {
+			const { id_system } = user.data;
 			socket.emit('notifications-of-id-system', id_system);
 		}
 	});

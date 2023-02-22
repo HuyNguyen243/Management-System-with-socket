@@ -134,7 +134,7 @@ const CreateCustomer = () => {
 							</div>
 							<div className='field col-12 md:col-6'>
 								<span>
-									<span className='warning'>*</span>Biệt danh: 
+									<span className='warning'>*</span>Biệt danh:
 								</span>
 								<span className=''>
 									<Controller
@@ -160,7 +160,7 @@ const CreateCustomer = () => {
 							</div>
 							<div className='field col-12 md:col-6'>
 								<span htmlFor='original__link'>
-									<span className='warning'>*</span>Email: 
+									<span className='warning'>*</span>Email:
 								</span>
 								<Controller
 									name='email'
@@ -214,7 +214,7 @@ const CreateCustomer = () => {
 							</div>
 							<div className='field col-12 md:col-12'>
 								<span htmlFor='original__link'>
-									<span className='warning'>*</span>Quốc gia: 
+									<span className='warning'>*</span>Quốc gia:
 								</span>
 								<Controller
 									name='country'
@@ -243,7 +243,7 @@ const CreateCustomer = () => {
 							</div>
 							<div className='field col-12 md:col-12'>
 								<span htmlFor='cost'>
-									<span className='warning'>*</span>Thành phố: 
+									<span className='warning'>*</span>Thành phố:
 								</span>
 								{
 									<Controller

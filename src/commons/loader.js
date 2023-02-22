@@ -17,10 +17,10 @@ const Loader = () => {
 	const user = useSelector((state) => state.auth?.user);
 	const paymentUpdate = useSelector((state) => state.payment.updatepay);
 	const resetpass = useSelector((state) => state.auth?.forgotpassword);
-	const [ isloaded, setIsloaded ] = useState(false)
+	const [isloaded, setIsloaded] = useState(false);
 
-	useEffect(()=>{
-		if(
+	useEffect(() => {
+		if (
 			deletejobs?.loading ||
 			updatejobs?.loading ||
 			donejobs?.loading ||
@@ -36,21 +36,32 @@ const Loader = () => {
 			user?.loading ||
 			paymentUpdate?.loading ||
 			resetpass?.loading
-		){
-			setIsloaded(true)
-		}else{
-			setIsloaded(false)
+		) {
+			setIsloaded(true);
+		} else {
+			setIsloaded(false);
 		}
-	},[
-		deletejobs, updatejobs, donejobs, putUser, 
-		deleteUser, setting, updatestting, putCustomer, 
-		deleteCustomer, addjobs, customer, editUser, 
-		user, paymentUpdate, resetpass
-	])
+	}, [
+		deletejobs,
+		updatejobs,
+		donejobs,
+		putUser,
+		deleteUser,
+		setting,
+		updatestting,
+		putCustomer,
+		deleteCustomer,
+		addjobs,
+		customer,
+		editUser,
+		user,
+		paymentUpdate,
+		resetpass,
+	]);
 
 	return (
 		<div className='container__loader'>
-			<div id='preloader' className={`${isloaded && 'block'}`} >
+			<div id='preloader' className={`${isloaded && 'block'}`}>
 				<div className='loader'></div>
 			</div>
 		</div>

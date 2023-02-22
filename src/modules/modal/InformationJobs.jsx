@@ -127,7 +127,7 @@ const InformationJobs = () => {
 	useEffect(() => {
 		if (updatejobs?.data && !updatejobs?.error) {
 			handleCloseModal();
-			if ( pathname === URL_ROUTER.WORKFLOW_MANAGEMENT ) {
+			if (pathname === URL_ROUTER.WORKFLOW_MANAGEMENT) {
 				dispatch(getEmployeePerformance());
 			}
 			setTimeout(() => {
@@ -267,11 +267,13 @@ const InformationJobs = () => {
 									/>
 								)}
 						</div>
-						{user?.data?.role === UserRules.ROLE.ADMIN && rowdata?.data && Object?.keys(rowdata?.data).length > 0 && (
-							<Button onClick={handleRemoveRow}>
-								<img src='images/trash.svg' alt='' className='image__trash' />
-							</Button>
-						)}
+						{user?.data?.role === UserRules.ROLE.ADMIN &&
+							rowdata?.data &&
+							Object?.keys(rowdata?.data).length > 0 && (
+								<Button onClick={handleRemoveRow}>
+									<img src='images/trash.svg' alt='' className='image__trash' />
+								</Button>
+							)}
 					</div>
 					<form className=' grid modal__creat--job no_flex' onSubmit={handleSubmit(onSubmit)}>
 						{rowdata?.data && Object?.keys(rowdata?.data).length === 0 ? (
@@ -286,17 +288,18 @@ const InformationJobs = () => {
 								</div>
 								<div className='field col-12 md:col-12 create__job--calendar'>
 									<span htmlFor='end_day'>
-										
-										{user?.data?.role !== UserRules.ROLE.LEADER_EDITOR && user?.data?.role !== UserRules.ROLE.EDITOR && (
-											<span className='warning'>*</span>
-										)}
+										{user?.data?.role !== UserRules.ROLE.LEADER_EDITOR &&
+											user?.data?.role !== UserRules.ROLE.EDITOR && (
+												<span className='warning'>*</span>
+											)}
 										Deadline :
 									</span>
 									<span
 										onClick={handleOpenInput('end_day')}
 										className={
 											'p-float-label font-bold ' +
-											(user?.data?.role !== UserRules.ROLE.LEADER_EDITOR && user?.data?.role !== UserRules.ROLE.EDITOR
+											(user?.data?.role !== UserRules.ROLE.LEADER_EDITOR &&
+											user?.data?.role !== UserRules.ROLE.EDITOR
 												? 'cursor__edit'
 												: isOpenInput?.end_day
 												? ''
@@ -321,94 +324,97 @@ const InformationJobs = () => {
 								</div>
 								<div className='field col-12 md:col-6 '>
 									<span htmlFor='quality'>
-										{user?.data?.role !== UserRules.ROLE.LEADER_EDITOR && user?.data?.role !== UserRules.ROLE.EDITOR && (
-											<span className='warning'>*</span>
-										)}
+										{user?.data?.role !== UserRules.ROLE.LEADER_EDITOR &&
+											user?.data?.role !== UserRules.ROLE.EDITOR && (
+												<span className='warning'>*</span>
+											)}
 										Số lượng :
 									</span>
 									<span
 										onClick={handleOpenInput('quality')}
 										className={
 											'p-float-label ' +
-											(user?.data?.role !== UserRules.ROLE.LEADER_EDITOR && user?.data?.role !== UserRules.ROLE.EDITOR
+											(user?.data?.role !== UserRules.ROLE.LEADER_EDITOR &&
+											user?.data?.role !== UserRules.ROLE.EDITOR
 												? 'cursor__edit'
 												: isOpenInput?.quality
 												? ''
 												: ' mt-3 ')
 										}
 									>
-										{user?.data?.role !== UserRules.ROLE.LEADER_EDITOR && user?.data?.role !== UserRules.ROLE.EDITOR && (
-											<InputNumber
-												value={rowdata?.data?.quality}
-												onValueChange={(e) => setValue('quality_img', e.value)}
-												mode='decimal'
-												max={9999}
-												min={1}
-												className='w-full'
-											/>
-										)}
+										{user?.data?.role !== UserRules.ROLE.LEADER_EDITOR &&
+											user?.data?.role !== UserRules.ROLE.EDITOR && (
+												<InputNumber
+													value={rowdata?.data?.quality}
+													onValueChange={(e) => setValue('quality_img', e.value)}
+													mode='decimal'
+													max={9999}
+													min={1}
+													className='w-full'
+												/>
+											)}
 									</span>
 								</div>
 								<div className='field col-12 md:col-6 '>
 									<span htmlFor='type_models'>
-										{user?.data?.role !== UserRules.ROLE.LEADER_EDITOR && user?.data?.role !== UserRules.ROLE.EDITOR && (
-											<span className='warning'>*</span>
-										)}
+										{user?.data?.role !== UserRules.ROLE.LEADER_EDITOR &&
+											user?.data?.role !== UserRules.ROLE.EDITOR && (
+												<span className='warning'>*</span>
+											)}
 										Loại ảnh :
 									</span>
 									<span
 										onClick={handleOpenInput('type_models')}
 										className={
 											'p-float-label ' +
-											(user?.data?.role !== UserRules.ROLE.LEADER_EDITOR && user?.data?.role !== UserRules.ROLE.EDITOR
+											(user?.data?.role !== UserRules.ROLE.LEADER_EDITOR &&
+											user?.data?.role !== UserRules.ROLE.EDITOR
 												? 'cursor__edit'
 												: isOpenInput?.type_models
 												? ''
 												: ' mt-3 ')
 										}
 									>
-										{user?.data?.role !== UserRules.ROLE.LEADER_EDITOR && user?.data?.role !== UserRules.ROLE.EDITOR && (
-											<InputText
-												defaultValue={rowdata?.data?.type_models}
-												onChange={(e) => setValue('type_models', e.target.value)}
-												{...register('type_models', { required: true })}
-												className={errors?.type_models && 'p-invalid'}
-											/>
-										)}
+										{user?.data?.role !== UserRules.ROLE.LEADER_EDITOR &&
+											user?.data?.role !== UserRules.ROLE.EDITOR && (
+												<InputText
+													defaultValue={rowdata?.data?.type_models}
+													onChange={(e) => setValue('type_models', e.target.value)}
+													{...register('type_models', { required: true })}
+													className={errors?.type_models && 'p-invalid'}
+												/>
+											)}
 									</span>
 								</div>
-							
+
 								<div className='field col-12 md:col-6'>
 									<span htmlFor='photo_types'>
-										{user?.data?.role !== UserRules.ROLE.LEADER_EDITOR && user?.data?.role !== UserRules.ROLE.EDITOR && (
-											<span className='warning'>*</span>
-										)}
+										{user?.data?.role !== UserRules.ROLE.LEADER_EDITOR &&
+											user?.data?.role !== UserRules.ROLE.EDITOR && (
+												<span className='warning'>*</span>
+											)}
 										Định dạng file :
 									</span>
-									<span
-										onClick={handleOpenInput('photo_types')}
-										className={
-											' p-float-label ' 
-										}
-									>
-										{user?.data?.role !== UserRules.ROLE.LEADER_EDITOR && user?.data?.role !== UserRules.ROLE.EDITOR && (
-											<Dropdown
-												options={type_files}
-												optionLabel='name'
-												defaultValue={JobRules.PHOTO_TYPES[rowdata?.data?.photo_types]}
-												value={typeFile}
-												onChange={(e) => {
-													setTypeFile(e.value);
-													setValue('photo_types', e.value.code);
-												}}
-												disabled={
-													user?.data?.role === UserRules.ROLE.EDITOR &&
-													user?.data?.role === UserRules.ROLE.LEADER_EDITOR
-														? true
-														: false
-												}
-											/>
-										)}
+									<span onClick={handleOpenInput('photo_types')} className={' p-float-label '}>
+										{user?.data?.role !== UserRules.ROLE.LEADER_EDITOR &&
+											user?.data?.role !== UserRules.ROLE.EDITOR && (
+												<Dropdown
+													options={type_files}
+													optionLabel='name'
+													defaultValue={JobRules.PHOTO_TYPES[rowdata?.data?.photo_types]}
+													value={typeFile}
+													onChange={(e) => {
+														setTypeFile(e.value);
+														setValue('photo_types', e.value.code);
+													}}
+													disabled={
+														user?.data?.role === UserRules.ROLE.EDITOR &&
+														user?.data?.role === UserRules.ROLE.LEADER_EDITOR
+															? true
+															: false
+													}
+												/>
+											)}
 									</span>
 								</div>
 								{user?.data?.role === UserRules.ROLE.ADMIN && (
@@ -418,9 +424,7 @@ const InformationJobs = () => {
 										</span>
 										<span
 											onClick={handleOpenInput('id_editor')}
-											className={
-												' p-float-label cursor__edit '
-											}
+											className={' p-float-label cursor__edit '}
 										>
 											<Dropdown
 												options={employees.data}
@@ -443,17 +447,18 @@ const InformationJobs = () => {
 								)}
 								<div className='field col-12 md:col-12 create__job--calendar'>
 									<span htmlFor='org_link'>
-										
-										{user?.data?.role !== UserRules.ROLE.LEADER_EDITOR && user?.data?.role !== UserRules.ROLE.EDITOR && (
-											<span className='warning'>*</span>
-										)}
+										{user?.data?.role !== UserRules.ROLE.LEADER_EDITOR &&
+											user?.data?.role !== UserRules.ROLE.EDITOR && (
+												<span className='warning'>*</span>
+											)}
 										Link ảnh gốc :
 									</span>
 									<span
 										onClick={handleOpenInput('org_link')}
 										className={
 											'p-float-label  ' +
-											(user?.data?.role !== UserRules.ROLE.LEADER_EDITOR && user?.data?.role !== UserRules.ROLE.EDITOR
+											(user?.data?.role !== UserRules.ROLE.LEADER_EDITOR &&
+											user?.data?.role !== UserRules.ROLE.EDITOR
 												? 'cursor__edit'
 												: isOpenInput?.org_link
 												? ''
@@ -489,16 +494,15 @@ const InformationJobs = () => {
 										)}
 									</span>
 								</div>
-								{user?.data?.role === UserRules.ROLE.EDITOR || user?.data?.role === UserRules.ROLE.LEADER_EDITOR ? (
+								{user?.data?.role === UserRules.ROLE.EDITOR ||
+								user?.data?.role === UserRules.ROLE.LEADER_EDITOR ? (
 									<div className='field col-12 md:col-12 create__job--calendar'>
 										<span htmlFor='finished_link'>
 											Link ảnh hoàn thành :<span className='warning'>*</span>
 										</span>
 										<span
 											onClick={handleOpenInput('finished_link')}
-											className={
-												'p-float-label cursor__edit '
-											}
+											className={'p-float-label cursor__edit '}
 										>
 											{isOpenInput?.finished_link ? (
 												<InputText
@@ -566,45 +570,40 @@ const InformationJobs = () => {
 										</span>
 									</div>
 								)}
-								{user?.data?.role !== UserRules.ROLE.LEADER_EDITOR && user?.data?.role !== UserRules.ROLE.EDITOR && (
-									<div className='field col-12 md:col-6'>
-										<span htmlFor='total_cost'>
-											<span className='warning'>*</span>Chi phí tổng :
-										</span>
-										<span
-											onClick={handleOpenInput('total_cost')}
-											className={
-												'p-float-label cursor__edit '
-											}
-										>
-											<InputNumber
-												inputId='currency-us'
-												value={convertUSD(rowdata?.data?.total_cost)}
-												onValueChange={(e) => setValue('total_cost', e.target.value)}
-												mode='currency'
-												currency='USD'
-												locale='en-US'
-												useGrouping={true}
-												minFractionDigits={0}
-												className={` w-full ${errors?.total_cost && 'p-invalid'}`}
-											/>
-										</span>
-									</div>
-								)}
+								{user?.data?.role !== UserRules.ROLE.LEADER_EDITOR &&
+									user?.data?.role !== UserRules.ROLE.EDITOR && (
+										<div className='field col-12 md:col-6'>
+											<span htmlFor='total_cost'>
+												<span className='warning'>*</span>Chi phí tổng :
+											</span>
+											<span
+												onClick={handleOpenInput('total_cost')}
+												className={'p-float-label cursor__edit '}
+											>
+												<InputNumber
+													inputId='currency-us'
+													value={convertUSD(rowdata?.data?.total_cost)}
+													onValueChange={(e) => setValue('total_cost', e.target.value)}
+													mode='currency'
+													currency='USD'
+													locale='en-US'
+													useGrouping={true}
+													minFractionDigits={0}
+													className={` w-full ${errors?.total_cost && 'p-invalid'}`}
+												/>
+											</span>
+										</div>
+									)}
 								{user?.data?.role !== UserRules.ROLE.SALER && (
 									<div className='field col-12 md:col-6'>
 										<span htmlFor='editor_cost'>
-											{user?.data?.role !== UserRules.ROLE.LEADER_EDITOR && user?.data?.role !== UserRules.ROLE.EDITOR && (
-												<span className='warning'>*</span>
-											)}
+											{user?.data?.role !== UserRules.ROLE.LEADER_EDITOR &&
+												user?.data?.role !== UserRules.ROLE.EDITOR && (
+													<span className='warning'>*</span>
+												)}
 											Chi phí Editor :
 										</span>
-										<span
-											onClick={handleOpenInput('editor_cost')}
-											className={
-												'p-float-label '
-											}
-										>
+										<span onClick={handleOpenInput('editor_cost')} className={'p-float-label '}>
 											<InputNumber
 												id='editor_cost'
 												inputId='currency-vn'
@@ -619,14 +618,17 @@ const InformationJobs = () => {
 										</span>
 									</div>
 								)}
-								{user?.data?.role !== UserRules.ROLE.LEADER_EDITOR && user?.data?.role !== UserRules.ROLE.EDITOR && (
-									<div className='field col-12 md:col-6'>
-										<span htmlFor='saler_cost'>Chi phí Saler :</span>
-										<span className='p-float-label mt-2 cursor__normal'>
-											<span className='font-bold'>{formatUSD(rowdata?.data?.saler_cost)}</span>
-										</span>
-									</div>
-								)}
+								{user?.data?.role !== UserRules.ROLE.LEADER_EDITOR &&
+									user?.data?.role !== UserRules.ROLE.EDITOR && (
+										<div className='field col-12 md:col-6'>
+											<span htmlFor='saler_cost'>Chi phí Saler :</span>
+											<span className='p-float-label mt-2 cursor__normal'>
+												<span className='font-bold'>
+													{formatUSD(rowdata?.data?.saler_cost)}
+												</span>
+											</span>
+										</div>
+									)}
 								{user?.data?.role === UserRules.ROLE.ADMIN && (
 									<div className='field col-12 md:col-6'>
 										<span htmlFor='saler_cost'>Lợi nhuận :</span>
@@ -635,13 +637,15 @@ const InformationJobs = () => {
 										</span>
 									</div>
 								)}
-								{(user?.data?.role === UserRules.ROLE.ADMIN || user?.data?.role === UserRules.ROLE.SALER) && (
+								{(user?.data?.role === UserRules.ROLE.ADMIN ||
+									user?.data?.role === UserRules.ROLE.SALER) && (
 									<div className='field col-12 md:col-12'>
 										<span htmlFor='request_content'>
 											Nội dung yêu cầu :
-											{user?.data?.role !== UserRules.ROLE.LEADER_EDITOR && user?.data?.role !== UserRules.ROLE.EDITOR && (
-												<span className='warning'>*</span>
-											)}
+											{user?.data?.role !== UserRules.ROLE.LEADER_EDITOR &&
+												user?.data?.role !== UserRules.ROLE.EDITOR && (
+													<span className='warning'>*</span>
+												)}
 										</span>
 										<InputTextarea
 											autoResize
@@ -658,9 +662,10 @@ const InformationJobs = () => {
 								<div className='field col-12 md:col-12'>
 									<span htmlFor='work_notes'>
 										Yêu cầu của khách hàng :
-										{user?.data?.role !== UserRules.ROLE.LEADER_EDITOR && user?.data?.role !== UserRules.ROLE.EDITOR && (
-											<span className='warning'>*</span>
-										)}
+										{user?.data?.role !== UserRules.ROLE.LEADER_EDITOR &&
+											user?.data?.role !== UserRules.ROLE.EDITOR && (
+												<span className='warning'>*</span>
+											)}
 									</span>
 									<InputTextarea
 										autoResize

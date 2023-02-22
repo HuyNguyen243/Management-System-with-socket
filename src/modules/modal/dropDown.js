@@ -1,6 +1,6 @@
 import { CustomerRules, UserRules } from '../../constants';
 
-const { ADMIN, SALER, EDITOR, LEADER_EDITOR } = UserRules.ROLE
+const { ADMIN, SALER, EDITOR, LEADER_EDITOR } = UserRules.ROLE;
 
 export const type_files = [
 	{ name: 'PNG', code: 'PNG' },
@@ -36,4 +36,3 @@ export const role = [
 	{ name: 'Saler', code: SALER },
 	{ name: 'Admin', code: ADMIN },
 ];
-

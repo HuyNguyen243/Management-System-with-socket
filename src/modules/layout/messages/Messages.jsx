@@ -27,7 +27,7 @@ const Messages = ({ isOpenMessages, setisOpenMessages }) => {
 		dispatch(getMsgsByIdSystem(payload));
 	});
 
-	socket.off('user-send-message').on('user-send-message', (payload) => {
+	socket.off('user-send-message').on('user-send-message', () => {
 		socket.emit('messages-by-id-system', user?.data?.id_system);
 	});
 

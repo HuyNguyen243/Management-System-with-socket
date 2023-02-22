@@ -67,7 +67,7 @@ export default function Header() {
 	}, [openMenu, open]);
 
 	useEffect(() => {
-		handleOutSide('.header__container .MuiDrawer-root .MuiPaper-elevation', open, setOpen)
+		handleOutSide('.header__container .MuiDrawer-root .MuiPaper-elevation', open, setOpen);
 	}, [openMenu, open]);
 
 	useEffect(() => {
@@ -148,7 +148,10 @@ export default function Header() {
 							<img src='../../images/menu.svg' alt='' />
 						</IconButton>
 						<div className='header__block'>
-							<div className='header__left flex align-items-center '><img src='../../images/logo/logo.svg' alt="" className="pr-1"/>One Touch</div>
+							<div className='header__left flex align-items-center '>
+								<img src='../../images/logo/logo.svg' alt='' className='pr-1' />
+								One Touch
+							</div>
 							<div className='header__right'>
 								<div className='header__right--notification-msg mr-3'>
 									<img src='../../images/header/chat.svg' alt='' />
@@ -164,9 +167,9 @@ export default function Header() {
 										alt=''
 										onClick={() => socket.emit('reset-count-notify', user?.data?.id_system)}
 									/>
-									{ currentUser?.notification_count > 0 && 
+									{currentUser?.notification_count > 0 && (
 										<span className='count_notification'>{currentUser?.notification_count}</span>
-									}
+									)}
 								</div>
 								<div
 									className='header__right--profile'

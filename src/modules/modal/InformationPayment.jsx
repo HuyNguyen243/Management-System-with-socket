@@ -103,7 +103,7 @@ const InformationPayment = () => {
 				<div className='creat__job'>
 					<div className='creat__job--title flex justify-content-between' style={{ marginRight: '10px' }}>
 						<h2>
-							Thông tin thanh toán 
+							Thông tin thanh toán
 							<p>Hiển thị các trường thông tin thanh toán</p>
 						</h2>
 					</div>

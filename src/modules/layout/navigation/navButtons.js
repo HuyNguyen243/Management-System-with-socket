@@ -1,12 +1,12 @@
-import { URL_ROUTER } from "../../../routes/routes";
+import { URL_ROUTER } from '../../../routes/routes';
 import { UserRules } from '../../../constants';
 
-const { SALER, ADMIN, EDITOR, LEADER_EDITOR } = UserRules.ROLE
+const { SALER, ADMIN, EDITOR, LEADER_EDITOR } = UserRules.ROLE;
 
 export const navButtons = [
 	{
 		name_image: 'nav/home',
-		role: [ ADMIN ],
+		role: [ADMIN],
 		isRederect: false,
 		route: '',
 		name: 'Tổng quan',
@@ -35,7 +35,7 @@ export const navButtons = [
 	},
 	{
 		name_image: 'nav/project',
-		role: [ EDITOR, LEADER_EDITOR ],
+		role: [EDITOR, LEADER_EDITOR],
 		isRederect: false,
 		route: '',
 		name: 'Công việc',
@@ -68,7 +68,7 @@ export const navButtons = [
 	},
 	{
 		name_image: 'nav/wallet',
-		role: [ SALER, EDITOR, LEADER_EDITOR ],
+		role: [SALER, EDITOR, LEADER_EDITOR],
 		isRederect: false,
 		route: '',
 		name: 'Thanh toán',
@@ -82,7 +82,7 @@ export const navButtons = [
 	},
 	{
 		name_image: 'setting',
-		role: [ ADMIN ],
+		role: [ADMIN],
 		isRederect: false,
 		route: '',
 		name: 'Cài đặt',

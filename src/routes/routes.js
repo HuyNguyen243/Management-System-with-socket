@@ -11,10 +11,10 @@ import PersonalInfor from '../modules/manager/personal/PersonalInfor';
 import { UserRules } from '../constants';
 
 export const URL_ROUTER = {
-	DASHBOARD: "/",
-	WORKFLOW_MANAGEMENT: "/workflow-management",
-	CUSTOMER: "/customer-management",
-	PAYMENT: "/payment",
+	DASHBOARD: '/',
+	WORKFLOW_MANAGEMENT: '/workflow-management',
+	CUSTOMER: '/customer-management',
+	PAYMENT: '/payment',
 	EMPLOYEE: '/employee-overview',
 	PAYMENT_MANAGEMENT: '/payment-management',
 	JOB_PERFORMANCE: '/job-performance',
@@ -24,9 +24,9 @@ export const URL_ROUTER = {
 	NOT_FOUND: '/404-notfound',
 	FORGOT_PASSWORD: '/forgot-password',
 	RESET_PASSWORD: '/reset-password',
-}
+};
 
-const { SALER, ADMIN, EDITOR, LEADER_EDITOR } = UserRules.ROLE
+const { SALER, ADMIN, EDITOR, LEADER_EDITOR } = UserRules.ROLE;
 
 export const routes = [
 	{

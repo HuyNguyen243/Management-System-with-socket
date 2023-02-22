@@ -15,7 +15,7 @@ import { convertDate } from '../../commons/dateTime';
 import { getEmployeePerformance } from '../../redux/employeePerformance/action';
 import { useDispatch, useSelector } from 'react-redux';
 import { JobRules } from '../../constants';
-import { URL_ROUTER } from '../../routes/routes'
+import { URL_ROUTER } from '../../routes/routes';
 
 const Table = ({
 	dataTable = [],
@@ -56,7 +56,7 @@ const Table = ({
 			setCurrentLocation(pageURL * perpageURL - perpageURL);
 		}
 	}, [perpageURL, pageURL]);
-	
+
 	const handleSetPage = (event) => {
 		setCurrentLocation(event.first);
 		setPerpage(event.rows);
@@ -160,21 +160,20 @@ const Table = ({
 	const bodyTable = (rowData, item, table) => {
 		if (table) return <TableBody rowData={rowData} item={item} />;
 	};
-	
+
 	return (
 		<>
-				<Stack spacing={2} direction='row' className="page__header">
-					<h3 className=" page__title" >
-					</h3>
+			<Stack spacing={2} direction='row' className='page__header'>
+				<h3 className=' page__title'></h3>
 				{name_btn_add && (
 					<Button variant='contained' className='table__add' onClick={handleCreate}>
-						<span className="table__icon--add">&#43;</span> {name_btn_add}
+						<span className='table__icon--add'>&#43;</span> {name_btn_add}
 					</Button>
 				)}
-				</Stack>
-		<div className='page'>
-			<br />
-			{haveTotalTable && <TotalTable data={old_Data} />}
+			</Stack>
+			<div className='page'>
+				<br />
+				{haveTotalTable && <TotalTable data={old_Data} />}
 				<div className='table__container'>
 					<div className='table__perpage'>
 						<Filter
@@ -187,7 +186,9 @@ const Table = ({
 							search={search}
 							setsearch={setsearch}
 						/>
-						{Object.keys(old_Data).length > 0 && pathname !== URL_ROUTER.JOB_PERFORMANCE && <span>Display:</span>}
+						{Object.keys(old_Data).length > 0 && pathname !== URL_ROUTER.JOB_PERFORMANCE && (
+							<span>Display:</span>
+						)}
 					</div>
 					<DataTable
 						loading={loading}
@@ -196,7 +197,9 @@ const Table = ({
 						breakpoint='1113px'
 						onRowClick={handleRowClick}
 						paginator
-						paginatorTemplate={pathname !== URL_ROUTER.JOB_PERFORMANCE && old_Data?.length > 0 ? paginate : false}
+						paginatorTemplate={
+							pathname !== URL_ROUTER.JOB_PERFORMANCE && old_Data?.length > 0 ? paginate : false
+						}
 						first={currentLocation}
 						rows={perpage}
 						onPage={handleSetPage}
@@ -214,7 +217,7 @@ const Table = ({
 											/>
 										)
 									);
-							})
+							  })
 							: header?.map((item, index) => {
 									return (
 										<Column
@@ -224,14 +227,14 @@ const Table = ({
 											header={() => headerTable(header?.[index], item)}
 										/>
 									);
-							})}
+							  })}
 					</DataTable>
 				</div>
 
-			{pathname === URL_ROUTER.WORKFLOW_MANAGEMENT && (
-				<TableTotal data={old_Data} setDateWorkFlow={setDateWorkFlow} dateWorkFlow={dateWorkFlow} />
-			)}
-		</div>
+				{pathname === URL_ROUTER.WORKFLOW_MANAGEMENT && (
+					<TableTotal data={old_Data} setDateWorkFlow={setDateWorkFlow} dateWorkFlow={dateWorkFlow} />
+				)}
+			</div>
 		</>
 	);
 };

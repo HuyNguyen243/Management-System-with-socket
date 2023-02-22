@@ -62,7 +62,7 @@ const Navigation = ({ open, getBtnNavIsOpen }) => {
 						sx={{ display: 'block' }}
 						className={`
 						${checkIsActive(item.navChild, location.pathname) && !open && 'nav__icon-active'} 
-						${item.name_image === "setting" && "absolute bottom-0"}
+						${item.name_image === 'setting' && 'absolute bottom-0'}
 						`}
 					>
 						<ListItemButton

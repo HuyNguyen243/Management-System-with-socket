@@ -6,7 +6,7 @@
 	line-height: 24px;
 }
 
-.infor__content{
+.infor__content {
 	font-style: normal;
 	font-weight: 400;
 	font-size: 14px;
@@ -27,9 +27,8 @@
 	}
 }
 
-
-.personal__container{
-	background-image: url("../../../../public/images/personal/unsplash_jhnvYd8FFQc.svg");
+.personal__container {
+	background-image: url('../../../../public/images/personal/unsplash_jhnvYd8FFQc.svg');
 	height: 100%;
 	background-repeat: no-repeat;
 	background-size: 100%;
@@ -37,58 +36,58 @@
 	background-color: white;
 	border-radius: 50px 50px 0 0;
 	margin-top: 20px;
-    padding: 0 30px;
+	padding: 0 30px;
 }
 
-.p-button-outlined{
+.p-button-outlined {
 	color: $color-primary !important;
 	border: 1px solid $color-primary !important;
 }
 
-.card__bank{
-	background-image: url("../../../../public/images/personal/payment.svg");
+.card__bank {
+	background-image: url('../../../../public/images/personal/payment.svg');
 	width: 500px;
-    background-size: 100%;
-    background-repeat: no-repeat;
-    height: 100%;
-    background-position: center;
+	background-size: 100%;
+	background-repeat: no-repeat;
+	height: 100%;
+	background-position: center;
 }
 
-.card__name--bank{
+.card__name--bank {
 	position: absolute;
-    top: 44%;
-    left: 20%;
-    color: white;
-    font-size: 20px;
-    text-transform: uppercase;
-    font-weight: 600;
+	top: 44%;
+	left: 20%;
+	color: white;
+	font-size: 20px;
+	text-transform: uppercase;
+	font-weight: 600;
 }
 
-.card__nameUser--bank{
+.card__nameUser--bank {
 	position: absolute;
-    top: 50%;
-    left: 20%;
-    color: white;
-    font-size: 15px;
-    text-transform: uppercase;
-    font-weight: 600;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    -webkit-line-clamp: 1;
-    -webkit-box-orient: vertical;
-    white-space: nowrap;
-    max-width: 330px;
+	top: 50%;
+	left: 20%;
+	color: white;
+	font-size: 15px;
+	text-transform: uppercase;
+	font-weight: 600;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	-webkit-line-clamp: 1;
+	-webkit-box-orient: vertical;
+	white-space: nowrap;
+	max-width: 330px;
 }
 
-.card__number--bank{
+.card__number--bank {
 	position: absolute;
-    top: 54%;
-    left: 20%;
-    color: white;
-    font-size: 15px;
-    text-transform: uppercase;
-    font-weight: 600;
-	span{
+	top: 54%;
+	left: 20%;
+	color: white;
+	font-size: 15px;
+	text-transform: uppercase;
+	font-weight: 600;
+	span {
 		line-height: 20px;
 	}
 	overflow: hidden;
@@ -99,27 +98,28 @@
 	max-width: 330px;
 }
 
-.personal__block{
+.personal__block {
 	padding-top: 250px;
 }
 
-.mask__image{
+.mask__image {
 	position: relative;
-    border-radius: 50%;
-    display: block;
-    width: 160px;
-    height: 160px;
-    font-family: inherit;
-    line-height: normal;
-    overflow: hidden;
+	border-radius: 50%;
+	display: block;
+	width: 160px;
+	height: 160px;
+	font-family: inherit;
+	line-height: normal;
+	overflow: hidden;
 }
 
-.button__personal--cancel{
+.button__personal--cancel {
 	width: 130px;
 }
 
-.p-button:enabled:hover, .p-button:not(button):not(a):not(.p-disabled):hover {
-    background: none;
-    color: #ffffff;
-    border-color: none ;
+.p-button:enabled:hover,
+.p-button:not(button):not(a):not(.p-disabled):hover {
+	background: none;
+	color: #ffffff;
+	border-color: none;
 }

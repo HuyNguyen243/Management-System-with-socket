@@ -43,7 +43,7 @@ const PersonalInfor = () => {
 		}
 	}, [setConfirmPassword, setPassword, editUser, dispatch]);
 
-	const setDefaultValue = React.useCallback(()=>{
+	const setDefaultValue = React.useCallback(() => {
 		if (user?.data) {
 			const { data } = user;
 			if (data?.username) {
@@ -84,10 +84,10 @@ const PersonalInfor = () => {
 				setBirth(date);
 			}
 		}
-	},[user, birthStorage])
+	}, [user, birthStorage]);
 
 	useEffect(() => {
-		setDefaultValue()
+		setDefaultValue();
 	}, [setDefaultValue]);
 
 	const handleSubmit = (e) => {
@@ -181,22 +181,22 @@ const PersonalInfor = () => {
 		setAvatar(file);
 	};
 
-	const handleCancel = ()=>{
-		setDefaultValue()
-	}
+	const handleCancel = () => {
+		setDefaultValue();
+	};
 
 	return (
-		<div className='page h-full' >
+		<div className='page h-full'>
 			<div className='grid '>
-			<div className='field col-12 md:col-12 flex personal__container'>
-				<div className='field col-12 md:col-6 personal__block' >
+				<div className='field col-12 md:col-12 flex personal__container'>
+					<div className='field col-12 md:col-6 personal__block'>
 						<form className='infor__block grid' onSubmit={handleSubmit}>
 							<div className='field avatar__block absolute '>
 								<div className='mask__image'>
-									<img src={imagePreview || avatar} alt="" className="mr-5 infor_avatar"/>
+									<img src={imagePreview || avatar} alt='' className='mr-5 infor_avatar' />
 								</div>
-									<input type='file' id='avatar' onChange={handleChangeAvatar} />
-									<label htmlFor='avatar' className='label_avatar absolute'></label>
+								<input type='file' id='avatar' onChange={handleChangeAvatar} />
+								<label htmlFor='avatar' className='label_avatar absolute'></label>
 							</div>
 							<div className='field col-12 md:col-12 mb-0 pb-0'>
 								<p className='infor__title'>Information</p>
@@ -325,7 +325,7 @@ const PersonalInfor = () => {
 									label='Cancel'
 									className='p-button-outlined button__personal--cancel'
 									type='button'
-									severity="info" 
+									severity='info'
 									onClick={handleCancel}
 								/>
 							</div>
@@ -337,15 +337,18 @@ const PersonalInfor = () => {
 								/>
 							</div>
 						</form>
-				</div>
-				<div className='field col-12 md:col-6 flex justify-content-center align-items-center personal__block' >
-					<div className='relative card__bank'>
-						<p className='card__name--bank'>{nameBank || ""}</p>
-						<p className='card__nameUser--bank'>{branch ? `Chủ tài khoản: ${branch}` : ""}</p>
-						<p className='card__number--bank'>{numberAccountPayment ? `stk: ` : ""}<span>{numberAccountPayment || ""}</span></p>
+					</div>
+					<div className='field col-12 md:col-6 flex justify-content-center align-items-center personal__block'>
+						<div className='relative card__bank'>
+							<p className='card__name--bank'>{nameBank || ''}</p>
+							<p className='card__nameUser--bank'>{branch ? `Chủ tài khoản: ${branch}` : ''}</p>
+							<p className='card__number--bank'>
+								{numberAccountPayment ? `stk: ` : ''}
+								<span>{numberAccountPayment || ''}</span>
+							</p>
+						</div>
 					</div>
 				</div>
-			</div>
 			</div>
 		</div>
 	);

@@ -216,10 +216,10 @@ const Filter = ({ DataFilter, sortBy, sortValue, setSortBy, setSortValue, search
 						onChange={(e) => setStatus(e.target.value)}
 						placeholder='Bộ lọc trạng thái'
 						className='ml-2 mr-2 filter__dropdown'
-						style= {{width: "inherit"}}
+						style={{ width: 'inherit' }}
 					/>
 				)}
-				<img src='images/reset.svg' alt='' onClick={handleReset} className="filter__reset"/>
+				<img src='images/reset.svg' alt='' onClick={handleReset} className='filter__reset' />
 			</div>
 		</>
 	);

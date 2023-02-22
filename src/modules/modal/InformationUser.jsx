@@ -108,7 +108,7 @@ const InformationUser = () => {
 				<div className='creat__job'>
 					<div className='creat__job--title flex justify-content-between'>
 						<h2>
-							Thông tin nhân viên 
+							Thông tin nhân viên
 							<p>Hiển thị các trường thông tin của nhân viên</p>
 						</h2>
 						{!rowdata?.error && (
@@ -166,7 +166,7 @@ const InformationUser = () => {
 								</div>
 								<div className='field col-12 md:col-12 '>
 									<span htmlFor='autocomplete'>
-										<span className='warning'>*</span>Tên nhân viên: 
+										<span className='warning'>*</span>Tên nhân viên:
 									</span>
 									<InputText
 										defaultValue={rowdata?.data?.fullname}
@@ -177,7 +177,7 @@ const InformationUser = () => {
 								</div>
 								<div className='field col-12 md:col-12 '>
 									<span htmlFor='autocomplete'>
-										<span className='warning'>*</span>Biệt danh: 
+										<span className='warning'>*</span>Biệt danh:
 									</span>
 									<InputText
 										defaultValue={rowdata?.data?.infor_reminder}
@@ -188,7 +188,7 @@ const InformationUser = () => {
 								</div>
 								<div className='field col-12 md:col-6 '>
 									<span htmlFor='withoutgrouping'>
-										<span className='warning'>*</span>Số điện thoại: 
+										<span className='warning'>*</span>Số điện thoại:
 									</span>
 									<InputText
 										onKeyPress={(event) => {
@@ -204,7 +204,7 @@ const InformationUser = () => {
 								</div>
 								<div className='field col-12 md:col-6'>
 									<span htmlFor='original__link'>
-										<span className='warning'>*</span>Email: 
+										<span className='warning'>*</span>Email:
 									</span>
 									<InputText
 										defaultValue={rowdata?.data?.email}
@@ -215,19 +215,19 @@ const InformationUser = () => {
 								</div>
 								<div className='field col-12 md:col-12'>
 									<span htmlFor='original__link'>
-										<span className='warning'>*</span>Địa chỉ: 
+										<span className='warning'>*</span>Địa chỉ:
 									</span>
 									<InputText
 										defaultValue={rowdata?.data?.address}
 										onChange={(e) => setValue('address', e.target.value)}
-										{...register('address', { required: true, })}
+										{...register('address', { required: true })}
 										className={errors?.address && 'p-invalid'}
 									/>
 								</div>
 								{rowdata?.data?.role === UserRules?.ROLE?.SALER && (
 									<div className='field col-12 md:col-12'>
 										<span htmlFor='original__link'>
-											<span className='warning'>*</span>Kpi saler: 
+											<span className='warning'>*</span>Kpi saler:
 										</span>
 										<span className='p-float-label cursor__normal '>
 											<InputNumber

@@ -12,12 +12,12 @@ const Dashboard = () => {
 	const jobs = useSelector((state) => state.jobs?.dashboard);
 
 	useEffect(() => {
-		dispatch(dashboardJobsRequest(filter))
+		dispatch(dashboardJobsRequest(filter));
 	}, [dispatch, filter]);
 
 	useEffect(() => {
 		let interval = setInterval(() => {
-			dispatch(dashboardJobsRequest(filter))
+			dispatch(dashboardJobsRequest(filter));
 		}, 60000 * 5);
 
 		return () => {

@@ -200,7 +200,7 @@ const InformationCustomer = () => {
 				<div className='creat__job'>
 					<div className='creat__job--title flex justify-content-between'>
 						<h2>
-							Thông tin khách hàng 
+							Thông tin khách hàng
 							<p>Hiển thị các trường thông tin của khách hàng</p>
 						</h2>
 						{!rowdata?.error && (
@@ -216,7 +216,7 @@ const InformationCustomer = () => {
 							<div className='field col-12 md:col-12 grid pr-0'>
 								<div className='field col-12 md:col-6 '>
 									<span htmlFor='autocomplete'>
-										<span className='warning'>*</span>Tên khách hàng: 
+										<span className='warning'>*</span>Tên khách hàng:
 									</span>
 									<span className='p-float-label '>
 										<InputText
@@ -242,7 +242,7 @@ const InformationCustomer = () => {
 								</div>
 								<div className='field col-12 md:col-6'>
 									<span htmlFor='original__link'>
-										<span className='warning'>*</span>Email: 
+										<span className='warning'>*</span>Email:
 									</span>
 									<span className='p-float-label '>
 										<InputText
@@ -255,7 +255,7 @@ const InformationCustomer = () => {
 								</div>
 								<div className='field col-12 md:col-6'>
 									<span htmlFor='employees'>
-										<span className='warning'>*</span>Link liên kết: 
+										<span className='warning'>*</span>Link liên kết:
 									</span>
 									<span className='p-float-label  relative'>
 										<InputText
@@ -276,13 +276,13 @@ const InformationCustomer = () => {
 								</div>
 								<div className='field col-12 md:col-6'>
 									<span htmlFor='original__link'>
-										<span className='warning'>*</span>Quốc gia: 
+										<span className='warning'>*</span>Quốc gia:
 									</span>
 									<Controller
 										name='country'
 										control={control}
 										rules={{ required: true }}
-										render={({ field, fieldState }) => (
+										render={({ field }) => (
 											<AutoComplete
 												suggestions={filteredCountry}
 												completeMethod={(e) => searchDropdown(e, countries, setFilteredCountry)}
@@ -300,14 +300,14 @@ const InformationCustomer = () => {
 								</div>
 								<div className='field col-12 md:col-6'>
 									<span htmlFor='cost'>
-										<span className='warning'>*</span>Thành phố: 
+										<span className='warning'>*</span>Thành phố:
 									</span>
 									<span className='p-float-label '>
 										<Controller
 											name='city'
 											control={control}
 											rules={{ required: true }}
-											render={({ field, fieldState }) => (
+											render={({ field }) => (
 												<AutoComplete
 													suggestions={filteredCity}
 													completeMethod={(e) => searchDropdown(e, cities, setFilteredCity)}
@@ -326,7 +326,7 @@ const InformationCustomer = () => {
 										/>
 									</span>
 								</div>
-								
+
 								<div className='field col-12 md:col-6'>
 									<span htmlFor='employees'>
 										<span className='warning'>*</span>Trạng thái khách hàng:
