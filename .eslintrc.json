@@ -14,15 +14,12 @@
 	"plugins": ["react"],
 	"ignorePatterns": ["**/*.css", "**/*.scss"],
 	"rules": {
-		"react/jsx-uses-react": "error",
 		"no-mixed-spaces-and-tabs": "off",
-		"react/jsx-uses-vars": "error",
 		"react/prop-types": "off"
 	},
 	"settings": {
 		"react": {
-		  "version": "detect"
+			"version": "detect"
 		}
-	  }
-	  
+	}
 }
