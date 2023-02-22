@@ -9,67 +9,37 @@
 	z-index: 999999999999999999;
 	display: none;
 }
-#loader {
-	display: block;
+.loader {
+	width: 48px;
+	height: 48px;
+	border-radius: 50%;
 	position: relative;
-	left: 50%;
-	top: 50%;
-	width: 150px;
-	height: 150px;
-	margin: -75px 0 0 -75px;
-	border-radius: 50%;
-	border: 3px solid transparent;
-	border-top-color: #9370db;
-	-webkit-animation: spin 2s linear infinite;
-	animation: spin 2s linear infinite;
-}
-#loader:before {
-	content: '';
+	animation: rotate 1s linear infinite
+  }
+.loader::before , .loader::after {
+	content: "";
+	box-sizing: border-box;
 	position: absolute;
-	top: 5px;
-	left: 5px;
-	right: 5px;
-	bottom: 5px;
+	inset: 0px;
 	border-radius: 50%;
-	border: 3px solid transparent;
-	border-top-color: #ba55d3;
-	-webkit-animation: spin 3s linear infinite;
-	animation: spin 3s linear infinite;
+	border: 5px solid #FFF;
+	animation: prixClipFix 2s linear infinite ;
 }
-#loader:after {
-	content: '';
-	position: absolute;
-	top: 15px;
-	left: 15px;
-	right: 15px;
-	bottom: 15px;
-	border-radius: 50%;
-	border: 3px solid transparent;
-	border-top-color: #ff00ff;
-	-webkit-animation: spin 1.5s linear infinite;
-	animation: spin 1.5s linear infinite;
+.loader::after{
+	border-color: $color-primary;
+	animation: prixClipFix 2s linear infinite , rotate 0.5s linear infinite reverse;
+	inset: 6px;
 }
-@-webkit-keyframes spin {
-	0% {
-		-webkit-transform: rotate(0deg);
-		-ms-transform: rotate(0deg);
-		transform: rotate(0deg);
-	}
-	100% {
-		-webkit-transform: rotate(360deg);
-		-ms-transform: rotate(360deg);
-		transform: rotate(360deg);
-	}
+
+@keyframes rotate {
+	0%   {transform: rotate(0deg)}
+	100%   {transform: rotate(360deg)}
 }
-@keyframes spin {
-	0% {
-		-webkit-transform: rotate(0deg);
-		-ms-transform: rotate(0deg);
-		transform: rotate(0deg);
-	}
-	100% {
-		-webkit-transform: rotate(360deg);
-		-ms-transform: rotate(360deg);
-		transform: rotate(360deg);
-	}
+
+@keyframes prixClipFix {
+	  0%   {clip-path:polygon(50% 50%,0 0,0 0,0 0,0 0,0 0)}
+	  25%  {clip-path:polygon(50% 50%,0 0,100% 0,100% 0,100% 0,100% 0)}
+	  50%  {clip-path:polygon(50% 50%,0 0,100% 0,100% 100%,100% 100%,100% 100%)}
+	  75%  {clip-path:polygon(50% 50%,0 0,100% 0,100% 100%,0 100%,0 100%)}
+	  100% {clip-path:polygon(50% 50%,0 0,100% 0,100% 100%,0 100%,0 0)}
 }

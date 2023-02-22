@@ -44,8 +44,8 @@ export const editCustomerRequest = createAsyncThunk('editCustomer', async (data,
 export const deleteCustomerRequest = createAsyncThunk('deleteCustomer', async (data, { rejectWithValue }) => {
 	try {
 		let res = await del(`customers/${data?.id}`);
-		successToast('Xóa khách hàng thành công');
 		if (res) {
+			successToast('Xóa khách hàng thành công');
 			res.index = data?.index;
 		}
 		return res;

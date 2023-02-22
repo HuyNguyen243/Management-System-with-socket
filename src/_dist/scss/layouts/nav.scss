@@ -149,7 +149,6 @@
 }
 
 .creat__job {
-	padding: 10px 0;
 	height: 100%;
 	display: flex;
 	flex-direction: column;
@@ -157,8 +156,21 @@
 }
 
 .creat__job--title {
-	margin-bottom: 10px;
-	margin-left: 5px;
+	background-color: $color-primary;
+	padding: 15px;
+	z-index: 1;
+	h2{
+		color: $color-white;
+	}
+	p{
+		color: $color-white;
+		font-style: normal;
+		font-weight: 400;
+		font-size: 12px;
+		line-height: 20px;
+		margin-top: 5px;
+	}
+
 }
 
 .p-datepicker {
@@ -237,6 +249,8 @@
 
 .warning {
 	color: $color-danger !important;
+	padding-right: 5px;
+	font-size: 16px;
 }
 
 .p-autocomplete-panel {
@@ -250,6 +264,7 @@
 	overflow-y: auto;
 	height: 100%;
 	flex-wrap: nowrap;
+	padding: 20px;
 }
 
 .modal__creat--job::-webkit-scrollbar {
@@ -277,6 +292,7 @@
 .modal__creat--job .field div > span:first-child {
 	font-size: 13px;
 	color: $color-black;
+	display: flex;
 }
 
 .creat__job--title {

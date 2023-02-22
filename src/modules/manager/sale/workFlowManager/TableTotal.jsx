@@ -4,37 +4,14 @@ import { Column } from 'primereact/column';
 import Analysis from './Analysis';
 import { useSelector } from 'react-redux';
 import { dataParse } from '../../overview/employeePerformance/dataparse';
-// import {  horizontalOptions} from '../../overview/employeePerformance/dataparse';
-// import { Chart } from 'primereact/chart';
 import { Calendar } from 'primereact/calendar';
-// import {  kpiYearOfMonth } from "../../../../redux/employeePerformance/action";
 import { UserRules } from '../../../../constants';
 
 const TableTotal = ({ setDateWorkFlow, dateWorkFlow }) => {
 	const performance = useSelector((state) => state.performanceReducer.employeePerformance);
 	const dataTable = dataParse(performance?.data);
-	// const kpisYear = useSelector(state => state.performanceReducer?.kpis)
 	const user = useSelector((state) => state.auth.user);
 
-	// const [year, setyear] = useState(null);
-	// const dispatch = useDispatch()
-
-	// const [dataKPis,setDataKPis] = useState({
-	//   labels: ['T1', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'T8', 'T9', 'T10', 'T11', 'T12'],
-	//   datasets: [{
-	//       type: 'bar',
-	//       label: 'KPI YEAR',
-	//       backgroundColor: '#0061F4',
-	//       data: [0,0,0,0,0,0,0,0,0,0,0,0]
-	//   },
-	//   {
-	//       type: 'bar',
-	//       label: 'default',
-	//       backgroundColor: 'transparent',
-	//       data: [100]
-	//   }
-	//   ]
-	// });
 
 	const headerTable = (name) => {
 		return (
@@ -51,45 +28,6 @@ const TableTotal = ({ setDateWorkFlow, dateWorkFlow }) => {
 			</div>
 		);
 	};
-
-	// useEffect(() => {
-	//   if(kpisYear?.data){
-	//       let data = [0,0,0,0,0,0,0,0,0,0,0,0]
-	//       if(kpisYear?.data.length > 0){
-	//           for(const item of kpisYear?.data){
-	//               let index = (item?.month).split("-")[1]
-	//               data[index - 1] = (item?.kpi)?.toFixed(0)
-	//           }
-	//       }
-
-	//       setDataKPis({
-	//           labels: ['T1', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'T8', 'T9', 'T10', 'T11', 'T12'],
-	//           datasets: [
-	//               {
-	//                   type: 'bar',
-	//                   label: 'KPI YEAR',
-	//                   backgroundColor: '#0061F4',
-	//                   data: data
-	//               },
-	//               {
-	//                   type: 'bar',
-	//                   label: '',
-	//                   backgroundColor: 'transparent',
-	//                   data: [100]
-	//               }
-	//           ]
-	//       },)
-	//   }
-	// }, [kpisYear])
-
-	// 	const handleChangeYear = (e)=>{
-	// 	setyear(e.value)
-	//   let getYear = new Date(e.value).getFullYear()
-	//   if(getYear === 1970){
-	//       getYear = new Date().getFullYear()
-	//   }
-	// 	dispatch(kpiYearOfMonth(`?year=${getYear}`))
-	// }
 
 	return (
 		<div className='grid'>
@@ -121,10 +59,7 @@ const TableTotal = ({ setDateWorkFlow, dateWorkFlow }) => {
 				</DataTable>
 			</div>
 
-			{/* <div className="field col-12 md:col-7 " >
-	  		<Calendar id="yearpicker " className="w-3 calendar__year" value={year} onChange={handleChangeYear} view="year" dateFormat="yy" placeholder="Chọn năm"/>
-          	<Chart type="bar"  className="chart_bar"  data={dataKPis} options={horizontalOptions}/>
-      </div> */}
+
 			<div className='table__analysis field col-12 md:col-4 mt-0'>
 				<Calendar
 					id=''

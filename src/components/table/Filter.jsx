@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
 import DatePicker from './DatePicker';
 import { useNavigate, useLocation } from 'react-router';
 import { dateString } from '../../commons/dateTime';
@@ -10,6 +9,7 @@ import { Dropdown } from 'primereact/dropdown';
 import { resetKpis } from '../../redux/employeePerformance/performanceSlice';
 import { getEmployeePerformance } from '../../redux/employeePerformance/action';
 import { InputText } from 'primereact/inputtext';
+import { URL_ROUTER } from '../../routes/routes';
 
 const Filter = ({ DataFilter, sortBy, sortValue, setSortBy, setSortValue, search, setsearch, dropdown }) => {
 	const queryParams = new URLSearchParams(window.location.search);
@@ -76,7 +76,7 @@ const Filter = ({ DataFilter, sortBy, sortValue, setSortBy, setSortValue, search
 			search: '',
 		});
 		dispatch(resetKpis());
-		if (pathname === '/job-performance') {
+		if (pathname === URL_ROUTER.JOB_PERFORMANCE) {
 			dispatch(getEmployeePerformance());
 		}
 	};

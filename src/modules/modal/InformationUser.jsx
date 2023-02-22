@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 
 import { Sidebar } from 'primereact/sidebar';
 import { InputText } from 'primereact/inputtext';
@@ -7,20 +7,19 @@ import { ConfirmPopup, confirmPopup } from 'primereact/confirmpopup';
 import { timezoneToDate } from '../../commons/dateTime';
 import { EMAIL_REGEX, PHONE_REGEX, UserRules } from '../../constants';
 import { useDispatch, useSelector } from 'react-redux';
-import copy from 'copy-to-clipboard';
 import { useForm } from 'react-hook-form';
 import { editEmployeeRequest, deleteEmployeeRequest } from '../../redux/overviewEmployee/actionEmployee';
 import { setIsOpenModalCreateUser, setIsOpenModalInformationUser } from '../../redux/modal/modalSlice';
 import { overlay } from '../../commons/overlay';
 import { InputNumber } from 'primereact/inputnumber';
-import { inforToast } from '../../commons/toast';
+import { Calendar } from 'primereact/calendar';
 
 const InformationUser = () => {
 	const putUser = useSelector((state) => state.employee?.edituser);
 	const deleteUser = useSelector((state) => state.employee?.deleteuser);
 	const isOpenInformationUser = useSelector((state) => state.modal?.isOpenModalInformationUser);
 	const rowdata = useSelector((state) => state.modal?.dataModalInformationUser);
-	const [isOpenInput, setIsOpenInput] = useState({});
+	let minDate = new Date();
 
 	const dispatch = useDispatch();
 	const {
@@ -72,7 +71,6 @@ const InformationUser = () => {
 	};
 
 	const handleCloseModal = () => {
-		setIsOpenInput({});
 		reset();
 		dispatch(setIsOpenModalInformationUser(false));
 	};
@@ -103,24 +101,16 @@ const InformationUser = () => {
 		}, 100);
 	};
 
-	const handleOpenInput = (key) => {
-		if (!Object.keys(isOpenInput).includes(key)) {
-			setIsOpenInput({ ...isOpenInput, [key]: true });
-		}
-	};
-
-	const copyToClipboard = () => {
-		inforToast('Sao chép mã nhân viên thành công');
-		copy(rowdata?.data?.id_system);
-	};
-
 	return (
 		<>
 			<ConfirmPopup />
 			<Sidebar visible={isOpenInformationUser} position='right' onHide={handleCloseModal} className='create__job'>
 				<div className='creat__job'>
 					<div className='creat__job--title flex justify-content-between'>
-						<h2>Thông tin nhân viên </h2>
+						<h2>
+							Thông tin nhân viên 
+							<p>Hiển thị các trường thông tin của nhân viên</p>
+						</h2>
 						{!rowdata?.error && (
 							<Button onClick={handleRemoveRow}>
 								<img src='images/trash.svg' alt='' className='image__trash' />
@@ -137,27 +127,9 @@ const InformationUser = () => {
 						) : (
 							<div className='field col-12 md:col-12 grid'>
 								<div className='field col-12 md:col-6'>
-									<span htmlFor='autocomplete'>Mã nhân viên: </span>
-									<span className='p-float-label pt-3 flex justify-content-between cursor__normal'>
-										<span className='font-bold'>{rowdata?.data?.id_system}</span>
-										<img
-											src='images/copy.svg'
-											alt=''
-											label='Bottom Right'
-											onClick={copyToClipboard}
-											className='cursor-pointer'
-										/>
-									</span>
-								</div>
-								<div className='field col-12 md:col-6'>
-									<span className='p-float-label open__modal text-bold'>
-										<span onClick={handleCreateNewUser}>Tạo nhân viên mới</span>
-									</span>
-								</div>
-								<div className='field col-12 md:col-6 create__job--calendar'>
-									<span htmlFor='calendar'>Ngày tháng năm sinh:</span>
-									<span className='p-float-label pt-3 cursor__normal font-bold'>
-										{timezoneToDate(rowdata?.data?.births)}
+									<span htmlFor='employees'>Chức vụ nhân viên:</span>
+									<span className='p-float-label mt-3'>
+										<span className='font-bold'>{UserRules.ROLE_NAME[rowdata?.data?.role]}</span>
 									</span>
 								</div>
 								<div className='field col-12 md:col-6 create__job--calendar'>
@@ -181,120 +153,83 @@ const InformationUser = () => {
 										{UserRules._STATUS[rowdata?.data?.status]}
 									</span>
 								</div>
-								<div className='field col-12 md:col-6'>
-									<span htmlFor='employees'>Chức vụ nhân viên:</span>
-									<span className='p-float-label mt-4'>
-										<span className='font-bold'>{UserRules.ROLE_NAME[rowdata?.data?.role]}</span>
+								<div className='field col-12 md:col-6 create__job--calendar'>
+									<span htmlFor='calendar'>Ngày tháng năm sinh:</span>
+									<span className=' pt-3 cursor__normal font-bold mt-1 block'>
+										<Calendar
+											readOnlyInput
+											value={new Date(rowdata?.data?.births)}
+											maxDate={minDate}
+											onChange={(e) => setValue('births', e.value)}
+										/>
 									</span>
 								</div>
-								<div className='field col-12 md:col-6 '>
+								<div className='field col-12 md:col-12 '>
 									<span htmlFor='autocomplete'>
-										Tên nhân viên: <span className='warning'>*</span>
+										<span className='warning'>*</span>Tên nhân viên: 
 									</span>
-									<span
-										onClick={(e) => handleOpenInput('fullname')}
-										className={
-											'p-float-label cursor__edit ' + (isOpenInput?.fullname ? 'mt-2' : 'mt-4')
-										}
-									>
-										{isOpenInput?.fullname ? (
-											<InputText
-												defaultValue={rowdata?.data?.fullname}
-												onChange={(e) => setValue('fullname', e.target.value)}
-												{...register('fullname', { required: true })}
-												className={errors?.fullname && 'p-invalid'}
-											/>
-										) : (
-											<span className='font-bold'>{rowdata?.data?.fullname}</span>
-										)}
-									</span>
+									<InputText
+										defaultValue={rowdata?.data?.fullname}
+										onChange={(e) => setValue('fullname', e.target.value)}
+										{...register('fullname', { required: true })}
+										className={errors?.fullname && 'p-invalid'}
+									/>
 								</div>
-								<div className='field col-12 md:col-6 '>
+								<div className='field col-12 md:col-12 '>
 									<span htmlFor='autocomplete'>
-										Biệt danh: <span className='warning'>*</span>
+										<span className='warning'>*</span>Biệt danh: 
 									</span>
-									<span
-										onClick={(e) => handleOpenInput('infor_reminder')}
-										className={
-											'p-float-label cursor__edit ' +
-											(isOpenInput?.infor_reminder ? 'mt-2' : 'mt-4')
-										}
-									>
-										{isOpenInput?.infor_reminder ? (
-											<InputText
-												defaultValue={rowdata?.data?.infor_reminder}
-												onChange={(e) => setValue('infor_reminder', e.target.value)}
-												{...register('infor_reminder', { required: true })}
-												className={errors?.infor_reminder && 'p-invalid'}
-											/>
-										) : (
-											<span className='font-bold'>{rowdata?.data?.infor_reminder}</span>
-										)}
-									</span>
+									<InputText
+										defaultValue={rowdata?.data?.infor_reminder}
+										onChange={(e) => setValue('infor_reminder', e.target.value)}
+										{...register('infor_reminder', { required: true })}
+										className={errors?.infor_reminder && 'p-invalid'}
+									/>
 								</div>
 								<div className='field col-12 md:col-6 '>
 									<span htmlFor='withoutgrouping'>
-										Số điện thoại: <span className='warning'>*</span>
+										<span className='warning'>*</span>Số điện thoại: 
 									</span>
-									<span
-										onClick={(e) => handleOpenInput('phone')}
-										className={
-											'p-float-label cursor__edit ' + (isOpenInput?.phone ? 'mt-2' : 'mt-4')
-										}
-									>
-										{isOpenInput?.phone ? (
-											<InputText
-												onKeyPress={(event) => {
-													if (!/[0-9]/.test(event.key)) {
-														event.preventDefault();
-													}
-												}}
-												defaultValue={rowdata?.data?.phone}
-												onChange={(e) => setValue('phone', e.target.value)}
-												{...register('phone', { required: true, pattern: PHONE_REGEX })}
-												className={errors?.phone && 'p-invalid'}
-											/>
-										) : (
-											<span className='font-bold'>{rowdata?.data?.phone}</span>
-										)}
-									</span>
+									<InputText
+										onKeyPress={(event) => {
+											if (!/[0-9]/.test(event.key)) {
+												event.preventDefault();
+											}
+										}}
+										defaultValue={rowdata?.data?.phone}
+										onChange={(e) => setValue('phone', e.target.value)}
+										{...register('phone', { required: true, pattern: PHONE_REGEX })}
+										className={errors?.phone && 'p-invalid'}
+									/>
 								</div>
 								<div className='field col-12 md:col-6'>
 									<span htmlFor='original__link'>
-										Email: <span className='warning'>*</span>
+										<span className='warning'>*</span>Email: 
 									</span>
-									<span
-										onClick={(e) => handleOpenInput('email')}
-										className={
-											'p-float-label cursor__edit ' + (isOpenInput?.email ? 'mt-2' : 'mt-4')
-										}
-									>
-										{isOpenInput?.email ? (
-											<InputText
-												defaultValue={rowdata?.data?.email}
-												onChange={(e) => setValue('email', e.target.value)}
-												{...register('email', { required: true, pattern: EMAIL_REGEX })}
-												className={errors?.email && 'p-invalid'}
-											/>
-										) : (
-											<span className='font-bold'>{rowdata?.data?.email}</span>
-										)}
-									</span>
+									<InputText
+										defaultValue={rowdata?.data?.email}
+										onChange={(e) => setValue('email', e.target.value)}
+										{...register('email', { required: true, pattern: EMAIL_REGEX })}
+										className={errors?.email && 'p-invalid'}
+									/>
 								</div>
-								<div className='field col-12 md:col-6'>
-									<span htmlFor='original__link'>Địa chỉ: </span>
-									<span className='p-float-label cursor__normal mt-4'>
-										{rowdata?.data?.address ? (
-											<span className='font-bold mt-5 block'>{rowdata?.data?.address}</span>
-										) : (
-											<span className=''>Trống</span>
-										)}
+								<div className='field col-12 md:col-12'>
+									<span htmlFor='original__link'>
+										<span className='warning'>*</span>Địa chỉ: 
 									</span>
+									<InputText
+										defaultValue={rowdata?.data?.address}
+										onChange={(e) => setValue('address', e.target.value)}
+										{...register('address', { required: true, })}
+										className={errors?.address && 'p-invalid'}
+									/>
 								</div>
 								{rowdata?.data?.role === UserRules?.ROLE?.SALER && (
-									<div className='field col-12 md:col-6'>
-										<span htmlFor='original__link'>Kpi saler:($) </span>
-										<span className='p-float-label cursor__normal mt-4'>
+									<div className='field col-12 md:col-12'>
+										<span htmlFor='original__link'>
+											<span className='warning'>*</span>Kpi saler: 
+										</span>
+										<span className='p-float-label cursor__normal '>
 											<InputNumber
 												id='editor_cost'
 												inputId='currency-us'
@@ -310,6 +245,11 @@ const InformationUser = () => {
 										</span>
 									</div>
 								)}
+								<div className='field col-12 md:col-12'>
+									<span className='p-float-label open__modal text-bold pt-0'>
+										<span onClick={handleCreateNewUser}>+ Tạo nhân viên mới</span>
+									</span>
+								</div>
 							</div>
 						)}
 

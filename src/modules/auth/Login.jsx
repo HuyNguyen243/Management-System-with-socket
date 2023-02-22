@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router';
 import { useForm } from 'react-hook-form';
 import { userloginRequest } from '../../redux/auth/action';
 import { useDispatch, useSelector } from 'react-redux';
-import { Cookie } from '../../commons/cookie';
 import { errorToast } from '../../commons/toast';
 
 const Login = () => {
@@ -15,7 +14,6 @@ const Login = () => {
 	} = useForm();
 
 	const [haveSeenPwd, setHaveSeenPwd] = useState(false);
-	const [checked, setChecked] = useState(Cookie.getChecked() || false);
 	const user = useSelector((state) => state.auth.token);
 	const dispatch = useDispatch();
 
@@ -27,7 +25,6 @@ const Login = () => {
 		if (username && password && username !== '' && password !== '') {
 			const result = {
 				data: data,
-				checked: checked,
 			};
 			dispatch(userloginRequest(result));
 		}
@@ -35,19 +32,11 @@ const Login = () => {
 
 	useEffect(() => {
 		if (user?.error && !user?.data) {
-			if (user?.error?.payload?.message && (user?.error?.payload?.message).includes('expired')) {
-				errorToast('Phiên đăng nhập vừa hết hạn, ENTER để tạo phiên đăng nhập mới');
-			} else {
-				errorToast('Tài khoản hoặc mật khẩu không chính xác');
-			}
+			errorToast('Tài khoản hoặc mật khẩu không chính xác');
 		}
 	}, [user]);
 
-	const handleChecked = () => {
-		setChecked(!checked);
-		Cookie.delete();
-		Cookie.deleteChecked();
-	};
+
 
 	return (
 		<div className='login__container'>
@@ -98,10 +87,6 @@ const Login = () => {
 						{errors?.password?.message && <span className='form__error'>{errors?.password?.message}</span>}
 					</div>
 					<div className='form__save--information'>
-						<div className='save__me'>
-							<input type='checkbox' onChange={handleChecked} checked={checked} />
-							<p>Lưu tài khoản</p>
-						</div>
 						<p className='form__btn-forgotpwd' onClick={() => navigate('/forgot-password')}>
 							Quên mật khẩu
 						</p>

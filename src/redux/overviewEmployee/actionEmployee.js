@@ -26,7 +26,6 @@ export const addEmployeeRequest = createAsyncThunk('addEmployee', async (data, {
 export const editEmployeeRequest = createAsyncThunk('updateEmployee', async (data, { rejectWithValue }) => {
 	try {
 		const res = await put(`users/${data?.result.id_system}`, data?.result);
-		successToast('Cập nhật thành công');
 		if (res) {
 			successToast('Cập nhật thành công');
 			res.data_user = data?.result;
@@ -42,8 +41,8 @@ export const editEmployeeRequest = createAsyncThunk('updateEmployee', async (dat
 export const deleteEmployeeRequest = createAsyncThunk('deleteEmployee', async (data, { rejectWithValue }) => {
 	try {
 		const res = await del(`users/${data.id}`);
-		successToast('Xóa thành viên thành công');
 		if (res) {
+			successToast('Xóa thành viên thành công');
 			res.index = data?.index;
 		}
 		return res;

@@ -5,7 +5,6 @@ import { dataParse } from './dataParse';
 import { dashboardJobsRequest } from '../../../redux/overviewJobs/actionJobs';
 import { table_dashboard } from '../../../components/table/header_table';
 import { setIsOpenInformationJob, setDataModalInformationJob } from '../../../redux/modal/modalSlice';
-import { RESET_REQUEST } from '../../../commons/support';
 
 const Dashboard = () => {
 	const dispatch = useDispatch();
@@ -13,12 +12,12 @@ const Dashboard = () => {
 	const jobs = useSelector((state) => state.jobs?.dashboard);
 
 	useEffect(() => {
-		RESET_REQUEST(dispatch, filter, dashboardJobsRequest);
+		dispatch(dashboardJobsRequest(filter))
 	}, [dispatch, filter]);
 
 	useEffect(() => {
 		let interval = setInterval(() => {
-			RESET_REQUEST(dispatch, filter, dashboardJobsRequest);
+			dispatch(dashboardJobsRequest(filter))
 		}, 60000 * 5);
 
 		return () => {

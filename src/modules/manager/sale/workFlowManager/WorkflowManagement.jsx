@@ -51,8 +51,6 @@ const WorkflowManagement = () => {
 		dispatch(setIsOpenModalCreateJob(true));
 	};
 
-	console.log(dataParse(jobs?.data));
-
 	return (
 		<Table
 			dataTable={dataParse(jobs?.data)}

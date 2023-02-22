@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router';
 import { useForm } from 'react-hook-form';
 import { resetPassword } from '../../redux/auth/action';
 import { useDispatch, useSelector } from 'react-redux';
+import { URL_ROUTER } from '../../routes/routes';
 
 const ForgotPassword = () => {
 	const dispatch = useDispatch();
@@ -25,7 +26,7 @@ const ForgotPassword = () => {
 		if (resetpass?.data?.status) {
 			setErrorMessage([true, resetpass?.data?.data?.messager]);
 			setTimeout(() => {
-				navigate('/login');
+				navigate(URL_ROUTER.LOGIN);
 			}, 2000);
 		}
 	}, [resetpass, navigate]);

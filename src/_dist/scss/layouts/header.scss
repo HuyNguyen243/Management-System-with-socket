@@ -22,7 +22,20 @@
 	margin-right: 10px;
 }
 
+.page__header{
+	position: absolute;
+    right: 25px;
+    top: 100px;
+	display: flex;
+    align-items: center;
+	width: 100%;
+	justify-content: space-between !important;
+	padding-left: 125px;
+}
+
 .header__container {
+	height: 180px;
+    position: relative;
 	> .MuiPaper-root {
 		> .MuiToolbar-root {
 			padding: 0 20px !important;
@@ -196,4 +209,19 @@
 .p-inputswitch.p-inputswitch-checked:not(.p-disabled):hover .p-inputswitch-slider,
 .p-inputswitch.p-inputswitch-checked .p-inputswitch-slider {
 	background: $color-primary;
+}
+
+.header__title{
+	position: absolute;
+    top: 60%;
+    left: 100px;
+}
+
+.page__title{
+	color: $color-black;
+	text-transform: uppercase;
+	font-style: normal;
+	font-weight: 500;
+	font-size: 20px;
+	line-height: 28px;
 }

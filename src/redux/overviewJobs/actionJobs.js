@@ -14,8 +14,8 @@ export const dashboardJobsRequest = createAsyncThunk('dashboard', async (filter,
 
 export const addJobsRequest = createAsyncThunk('addJobs', async (data, { rejectWithValue }) => {
 	try {
-		successToast('Tạo công việc mới thành công');
 		const res = await post('jobs/', data);
+		successToast('Tạo công việc mới thành công');
 		return res.data;
 	} catch (error) {
 		errorToast(error?.response?.data?.message);
@@ -26,8 +26,8 @@ export const addJobsRequest = createAsyncThunk('addJobs', async (data, { rejectW
 export const editJobsRequest = createAsyncThunk('updateJobs', async (data, { rejectWithValue }) => {
 	try {
 		const res = await put(`jobs/${data?.result.id_system}`, data?.result);
-		successToast('Cập nhật thành công');
 		if (res) {
+			successToast('Cập nhật thành công');
 			res.data_user = data?.result;
 			res.index = data?.index;
 		}
@@ -41,8 +41,8 @@ export const editJobsRequest = createAsyncThunk('updateJobs', async (data, { rej
 export const doneJobsRequest = createAsyncThunk('doneJobs', async (data, { rejectWithValue }) => {
 	try {
 		const res = await put(`jobs/done/${data?.result.id_system}`, data?.result);
-		successToast('Cập nhật thành công');
 		if (res) {
+			successToast('Cập nhật thành công');
 			res.data_user = data?.result;
 			res.index = data?.index;
 		}
@@ -56,9 +56,9 @@ export const doneJobsRequest = createAsyncThunk('doneJobs', async (data, { rejec
 
 export const deleteJobsRequest = createAsyncThunk('deleteJobs', async (data, { rejectWithValue }) => {
 	try {
-		successToast('Xóa công việc thành công');
 		const res = await del(`jobs/${data.id}`);
 		if (res) {
+			successToast('Xóa công việc thành công');
 			res.index = data?.index;
 		}
 		return res;

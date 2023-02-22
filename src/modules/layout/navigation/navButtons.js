@@ -1,7 +1,12 @@
+import { URL_ROUTER } from "../../../routes/routes";
+import { UserRules } from '../../../constants';
+
+const { SALER, ADMIN, EDITOR, LEADER_EDITOR } = UserRules.ROLE
+
 export const navButtons = [
 	{
 		name_image: 'nav/home',
-		role: ['ADMIN'],
+		role: [ ADMIN ],
 		isRederect: false,
 		route: '',
 		name: 'Tổng quan',
@@ -9,28 +14,28 @@ export const navButtons = [
 			{
 				name: 'Tổng quan công việc',
 				isRederect: true,
-				route: '/jobs-overview',
+				route: URL_ROUTER.JOB_OVERVIEW,
 			},
 			{
 				name: 'Tổng quan nhân viên',
 				isRederect: true,
-				route: '/employee-overview',
+				route: URL_ROUTER.EMPLOYEE,
 			},
 			{
 				name: 'Quản lý thanh toán',
 				isRederect: true,
-				route: '/payment-management',
+				route: URL_ROUTER.PAYMENT_MANAGEMENT,
 			},
 			{
 				name: 'Hiệu suất công việc',
 				isRederect: true,
-				route: '/job-performance',
+				route: URL_ROUTER.JOB_PERFORMANCE,
 			},
 		],
 	},
 	{
 		name_image: 'nav/project',
-		role: ['EDITOR', 'LEADER_EDITOR'],
+		role: [ EDITOR, LEADER_EDITOR ],
 		isRederect: false,
 		route: '',
 		name: 'Công việc',
@@ -38,13 +43,13 @@ export const navButtons = [
 			{
 				name: 'Danh sách công việc',
 				isRederect: true,
-				route: '/',
+				route: URL_ROUTER.DASHBOARD,
 			},
 		],
 	},
 	{
 		name_image: 'nav/idcard',
-		role: ['SALER', 'ADMIN'],
+		role: [SALER, ADMIN],
 		isRederect: false,
 		route: '',
 		name: 'Sales',
@@ -52,18 +57,18 @@ export const navButtons = [
 			{
 				name: 'Quản lý công việc',
 				isRederect: true,
-				route: '/workflow-management',
+				route: URL_ROUTER.WORKFLOW_MANAGEMENT,
 			},
 			{
 				name: 'Quản lý khách hàng',
 				isRederect: true,
-				route: '/customer-management',
+				route: URL_ROUTER.CUSTOMER,
 			},
 		],
 	},
 	{
 		name_image: 'nav/wallet',
-		role: ['SALER', 'EDITOR', 'LEADER_EDITOR'],
+		role: [ SALER, EDITOR, LEADER_EDITOR ],
 		isRederect: false,
 		route: '',
 		name: 'Thanh toán',
@@ -71,13 +76,13 @@ export const navButtons = [
 			{
 				name: 'Tiến trình thanh toán',
 				isRederect: true,
-				route: '/payment',
+				route: URL_ROUTER.PAYMENT,
 			},
 		],
 	},
 	{
 		name_image: 'setting',
-		role: ['ADMIN'],
+		role: [ ADMIN ],
 		isRederect: false,
 		route: '',
 		name: 'Cài đặt',

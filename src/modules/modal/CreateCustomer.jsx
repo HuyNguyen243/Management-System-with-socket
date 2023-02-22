@@ -44,9 +44,9 @@ const CreateCustomer = () => {
 
 	useEffect(() => {
 		if (isOpenCreateCustomer) {
-			overlay.enable();
-		} else {
 			overlay.disable();
+		} else {
+			overlay.enable();
 		}
 	}, [isOpenCreateCustomer]);
 
@@ -90,7 +90,10 @@ const CreateCustomer = () => {
 			>
 				<div className='creat__job'>
 					<div className='creat__job--title'>
-						<h2>Tạo khách hàng mới</h2>
+						<h2>
+							Tạo khách hàng mới
+							<p>Nhập trường thông tin liên quan bắt buộc</p>
+						</h2>
 					</div>
 					<form
 						className=' grid modal__creat--job'
@@ -100,10 +103,10 @@ const CreateCustomer = () => {
 							return e.key !== 'Enter';
 						}}
 					>
-						<div className='field col-12 md:col-12 grid'>
-							<div className='field col-12 md:col-12'>
+						<div className='field col-12 md:col-12 grid pr-0'>
+							<div className='field col-12 md:col-6'>
 								<span htmlFor='autocomplete'>
-									Nhập tên khách hàng: <span className='warning'>*</span>
+									<span className='warning'>*</span>Nhập tên khách hàng:
 								</span>
 								<Controller
 									name='fullname'
@@ -129,9 +132,9 @@ const CreateCustomer = () => {
 									</span>
 								)}
 							</div>
-							<div className='field col-12 md:col-12'>
+							<div className='field col-12 md:col-6'>
 								<span>
-									Biệt danh: <span className='warning'>*</span>
+									<span className='warning'>*</span>Biệt danh: 
 								</span>
 								<span className=''>
 									<Controller
@@ -157,7 +160,7 @@ const CreateCustomer = () => {
 							</div>
 							<div className='field col-12 md:col-6'>
 								<span htmlFor='original__link'>
-									Email: <span className='warning'>*</span>
+									<span className='warning'>*</span>Email: 
 								</span>
 								<Controller
 									name='email'
@@ -183,9 +186,35 @@ const CreateCustomer = () => {
 									</span>
 								)}
 							</div>
-							<div className='field col-12 md:col-6'>
+							<div className='field col-6 md:col-6'>
+								<span>
+									<span className='warning'>*</span>Link:
+								</span>
+								<span className=''>
+									<Controller
+										name='link'
+										control={control}
+										rules={{ required: 'Chưa điền link khách hàng' }}
+										render={({ field, fieldState }) => (
+											<InputText
+												autoComplete='disabled'
+												id={field.name}
+												{...field}
+												className={classNames({ 'p-invalid': fieldState.invalid })}
+												placeholder='Điền link khách hàng'
+											/>
+										)}
+									/>
+								</span>
+								{errors?.link && (
+									<span className='warning' style={{ fontSize: '12px' }}>
+										{errors?.link.message}
+									</span>
+								)}
+							</div>
+							<div className='field col-12 md:col-12'>
 								<span htmlFor='original__link'>
-									Quốc gia: <span className='warning'>*</span>
+									<span className='warning'>*</span>Quốc gia: 
 								</span>
 								<Controller
 									name='country'
@@ -212,9 +241,9 @@ const CreateCustomer = () => {
 									</span>
 								)}
 							</div>
-							<div className='field col-12 md:col-6'>
+							<div className='field col-12 md:col-12'>
 								<span htmlFor='cost'>
-									Thành phố: <span className='warning'>*</span>
+									<span className='warning'>*</span>Thành phố: 
 								</span>
 								{
 									<Controller
@@ -245,32 +274,6 @@ const CreateCustomer = () => {
 									</span>
 								)}
 							</div>
-							<div className='field col-6 md:col-6'>
-								<span>
-									Link: <span className='warning'>*</span>
-								</span>
-								<span className=''>
-									<Controller
-										name='link'
-										control={control}
-										rules={{ required: 'Chưa điền link khách hàng' }}
-										render={({ field, fieldState }) => (
-											<InputText
-												autoComplete='disabled'
-												id={field.name}
-												{...field}
-												className={classNames({ 'p-invalid': fieldState.invalid })}
-												placeholder='Điền link khách hàng'
-											/>
-										)}
-									/>
-								</span>
-								{errors?.link && (
-									<span className='warning' style={{ fontSize: '12px' }}>
-										{errors?.link.message}
-									</span>
-								)}
-							</div>
 						</div>
 
 						<div className='btn_modal field col-12 md:col-12 grid position_bottom'>
@@ -286,7 +289,7 @@ const CreateCustomer = () => {
 									/>
 								</span>
 							</div>
-							<div className='field col-12 md:col-6'>
+							<div className='field col-12 md:col-6 pr-0'>
 								<span className='p-float-label'>
 									<Button
 										label='Tạo mới'

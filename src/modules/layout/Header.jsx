@@ -18,6 +18,8 @@ import { profileUserByToken } from '../../redux/auth/authSlice';
 import Notification from './notification/Notification';
 import Messages from './messages/Messages';
 import { socket } from '../../_services/socket';
+import HeaderPage from './HeaderPage';
+import { handleOutSide } from '../../commons/support';
 
 export default function Header() {
 	const dispatch = useDispatch();
@@ -65,17 +67,7 @@ export default function Header() {
 	}, [openMenu, open]);
 
 	useEffect(() => {
-		const handleClickOutSideNav = (e) => {
-			const el = document.querySelector('.header__container .MuiDrawer-root .MuiPaper-elevation');
-			if (open && !el?.contains(e.target)) {
-				setOpen(false);
-			}
-		};
-		window.addEventListener('mousedown', handleClickOutSideNav);
-
-		return () => {
-			window.removeEventListener('mousedown', handleClickOutSideNav);
-		};
+		handleOutSide('.header__container .MuiDrawer-root .MuiPaper-elevation', open, setOpen)
 	}, [openMenu, open]);
 
 	useEffect(() => {
@@ -137,6 +129,7 @@ export default function Header() {
 
 	return (
 		<Box sx={{ display: 'flex' }} className='header__container'>
+			<HeaderPage />
 			<>
 				<CssBaseline />
 				<AppBar position='fixed' open={open} className='navigation_left'>
@@ -155,7 +148,7 @@ export default function Header() {
 							<img src='../../images/menu.svg' alt='' />
 						</IconButton>
 						<div className='header__block'>
-							<div className='header__left flex align-items-center '><img src='../../images/logo/logo.svg' className="pr-1"/>One Touch</div>
+							<div className='header__left flex align-items-center '><img src='../../images/logo/logo.svg' alt="" className="pr-1"/>One Touch</div>
 							<div className='header__right'>
 								<div className='header__right--notification-msg mr-3'>
 									<img src='../../images/header/chat.svg' alt='' />
