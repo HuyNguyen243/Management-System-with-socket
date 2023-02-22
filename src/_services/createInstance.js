@@ -2,7 +2,6 @@ import axios from 'axios';
 import jwt_decode from 'jwt-decode';
 import { storage } from './sesionStorage';
 import { NAME_SESSION_STORAGE_TOKEN } from '../constants';
-import { Cookie } from '../commons/cookie';
 
 const URL = process.env.REACT_APP_API || process.env.REACT_APP_DEV_API;
 
@@ -15,6 +14,7 @@ export const createAxios = () => {
 			window.location.href = '/login';
 		}, 700);
 	};
+
 	const newInstance = axios.create();
 	newInstance.interceptors.request.use(
 		async (config) => {
@@ -39,10 +39,8 @@ export const createAxios = () => {
 				if (refreshtoken?.data?.access_token) {
 					default_token = refreshtoken?.data?.access_token;
 					storage.save(NAME_SESSION_STORAGE_TOKEN, default_token);
-					Cookie.set(default_token);
 				} else {
 					logout();
-					Cookie.delete();
 				}
 			}
 			config.headers['Authorization'] = '1TouchAuthorization ' + default_token;

@@ -5,7 +5,6 @@ import InformationCustomer from './InformationCustomer';
 import CreateUser from './CreateUser';
 import InformationUser from './InformationUser';
 import CreateJobs from './CreateJobs';
-import ModalJobEditor from './ModalJobEditor';
 import InformationJobs from './InformationJobs';
 import InformationPayment from './InformationPayment';
 
@@ -18,7 +17,6 @@ const Modal = () => {
 			<CreateUser />
 			<InformationUser />
 			<CreateJobs />
-			<ModalJobEditor />
 			<InformationJobs />
 			<InformationPayment />
 		</>

@@ -134,11 +134,13 @@ table {
 }
 
 .page {
-	margin-left: 100px;
-	margin-top: 100px;
-	margin-right: 30px;
-	// height: 100vh;
+	padding-left: 100px;
+	// padding-top: 100px;
+	padding-right: 30px;
+	background-color: #CFDAE6 !important;
+	height: 100vh;
 }
+
 
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
@@ -169,6 +171,6 @@ img[src*='000webhost'][style] {
 	display: none !important;
 }
 
-body{
-	background-color: #CFDAE6 !important;
+body::-webkit-scrollbar {
+	display: none;
 }

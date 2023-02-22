@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
 const Loader = () => {
@@ -17,30 +17,41 @@ const Loader = () => {
 	const user = useSelector((state) => state.auth?.user);
 	const paymentUpdate = useSelector((state) => state.payment.updatepay);
 	const resetpass = useSelector((state) => state.auth?.forgotpassword);
+	const [ isloaded, setIsloaded ] = useState(false)
+
+	useEffect(()=>{
+		if(
+			deletejobs?.loading ||
+			updatejobs?.loading ||
+			donejobs?.loading ||
+			putUser?.loading ||
+			deleteUser?.loading ||
+			setting?.loading ||
+			updatestting?.loading ||
+			putCustomer?.loading ||
+			deleteCustomer?.loading ||
+			addjobs?.loading ||
+			customer?.loading ||
+			editUser?.loading ||
+			user?.loading ||
+			paymentUpdate?.loading ||
+			resetpass?.loading
+		){
+			setIsloaded(true)
+		}else{
+			setIsloaded(false)
+		}
+	},[
+		deletejobs, updatejobs, donejobs, putUser, 
+		deleteUser, setting, updatestting, putCustomer, 
+		deleteCustomer, addjobs, customer, editUser, 
+		user, paymentUpdate, resetpass
+	])
 
 	return (
 		<div className='container__loader'>
-			<div
-				id='preloader'
-				className={`
-        ${deletejobs?.loading && 'block'}
-        ${updatejobs?.loading && 'block'}
-        ${donejobs?.loading && 'block'}
-        ${putUser?.loading && 'block'}
-        ${deleteUser?.loading && 'block'}
-        ${setting?.loading && 'block'}
-        ${updatestting?.loading && 'block'}
-        ${putCustomer?.loading && 'block'}
-        ${deleteCustomer?.loading && 'block'}
-        ${addjobs?.loading && 'block'}
-        ${customer?.loading && 'block'}
-        ${editUser?.loading && 'block'}
-        ${user?.loading && 'block'}
-        ${paymentUpdate?.loading && 'block'}
-        ${resetpass?.loading && 'block'}
-      `}
-			>
-				<div id='loader'></div>
+			<div id='preloader' className={`${isloaded && 'block'}`} >
+				<div className='loader'></div>
 			</div>
 		</div>
 	);

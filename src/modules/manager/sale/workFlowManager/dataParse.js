@@ -1,7 +1,6 @@
 export const dataParse = (data) => {
 	if (Array.isArray(data)) {
 		const result = data.map((item) => {
-			console.log(item);
 			const newobject = {
 				reminder_customer: item?.infor_reminder?.reminder_customer,
 				reminder_editor: item?.infor_reminder?.reminder_editor,

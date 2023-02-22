@@ -65,21 +65,3 @@ async function apiRequest(url, requestOptions) {
 	return res.data;
 }
 
-export const postFireBaseNotification = async (url, notification, token) => {
-	const headers = {
-		'Content-Type': 'application/json',
-		Authorization: `key=${process.env.REACT_APP_FIRE_BASE_SERVER_KEY}`,
-	};
-	const URL = 'https://fcm.googleapis.com/fcm/send';
-	const data = {
-		notification: {
-			title: notification.title,
-			body: notification.message,
-			click_action: url,
-			sound: 'default',
-		},
-		to: token,
-	};
-
-	await axios.post(URL, data, { headers: headers });
-};

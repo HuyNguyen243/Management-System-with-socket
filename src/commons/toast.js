@@ -63,7 +63,7 @@ export function successToast(message) {
 
 export function errorToast(message) {
 	toast({
-		title: 'error',
+		title: 'Error',
 		message: message,
 		type: 'error',
 		duration: DURATION,
@@ -72,7 +72,7 @@ export function errorToast(message) {
 
 export function inforToast(message) {
 	toast({
-		title: 'infor',
+		title: 'Success',
 		message: message,
 		type: 'infor',
 		duration: DURATION,

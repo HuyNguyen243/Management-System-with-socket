@@ -15,8 +15,8 @@ export const getPayRequest = createAsyncThunk('getPays', async (data, { rejectWi
 export const updatePayRequest = createAsyncThunk('updatepays', async (data, { rejectWithValue }) => {
 	try {
 		const res = await put(`pays/${data.id}`, data.data);
-		successToast('Thay đổi trạng thái thanh toán thành công');
 		if (res.data) {
+			successToast('Thay đổi trạng thái thanh toán thành công');
 			return data.result;
 		}
 	} catch (error) {

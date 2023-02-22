@@ -3,7 +3,7 @@ import { Dialog } from 'primereact/dialog';
 import { Button } from 'primereact/button';
 import { InputText } from 'primereact/inputtext';
 import { Dropdown } from 'primereact/dropdown';
-import { roleGroup } from '../../modal/dropDown';
+import { role } from '../../modal/dropDown';
 import { useSelector, useDispatch } from 'react-redux';
 import { dashboardEmployeeRequest } from '../../../redux/overviewEmployee/actionEmployee';
 import { Chips } from 'primereact/chips';
@@ -53,7 +53,7 @@ const Modal = ({
 		if (nameModal === NAME_ROOM.EDIT && Object.keys(editDataGroup)?.length > 0) {
 			setValue('name', editDataGroup?.name);
 			setValue('members', editDataGroup?.members);
-			setValue('role', roleGroup?.[0]?.code);
+			setValue('role', role?.[0]?.code);
 		} else {
 			setValue('name', '');
 			setValue('members', [user?.data?.id_system]);
@@ -219,7 +219,7 @@ const Modal = ({
 							rules={{ required: 'Chức vụ không được để trống' }}
 							render={({ field }) => (
 								<Dropdown
-									options={roleGroup}
+									options={role}
 									optionLabel='name'
 									value={field.value}
 									onChange={(e) => changeRole(e, field)}

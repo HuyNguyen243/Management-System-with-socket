@@ -198,8 +198,11 @@ const InformationCustomer = () => {
 			<ConfirmPopup />
 			<Sidebar visible={isOpenInformationCustomer} position='right' onHide={resetModal} className='create__job'>
 				<div className='creat__job'>
-					<div className='creat__job--title flex justify-content-between' style={{ marginRight: '10px' }}>
-						<h2>Thông tin khách hàng </h2>
+					<div className='creat__job--title flex justify-content-between'>
+						<h2>
+							Thông tin khách hàng 
+							<p>Hiển thị các trường thông tin của khách hàng</p>
+						</h2>
 						{!rowdata?.error && (
 							<Button onClick={handleRemoveRow}>
 								<img src='images/trash.svg' alt='' className='image__trash' />
@@ -210,10 +213,10 @@ const InformationCustomer = () => {
 						{rowdata?.error ? (
 							<span className='notfound'>Thông tin khách hàng không tồn tại</span>
 						) : (
-							<div className='field col-12 md:col-12 grid'>
+							<div className='field col-12 md:col-12 grid pr-0'>
 								<div className='field col-12 md:col-6 '>
 									<span htmlFor='autocomplete'>
-										Tên khách hàng: <span className='warning'>*</span>
+										<span className='warning'>*</span>Tên khách hàng: 
 									</span>
 									<span className='p-float-label '>
 										<InputText
@@ -226,7 +229,7 @@ const InformationCustomer = () => {
 								</div>
 								<div className='field col-12 md:col-6 '>
 									<span htmlFor='autocomplete'>
-										Biệt danh: <span className='warning'>*</span>
+										<span className='warning'>*</span>Biệt danh:
 									</span>
 									<span className='p-float-label '>
 										<InputText
@@ -239,7 +242,7 @@ const InformationCustomer = () => {
 								</div>
 								<div className='field col-12 md:col-6'>
 									<span htmlFor='original__link'>
-										Email: <span className='warning'>*</span>
+										<span className='warning'>*</span>Email: 
 									</span>
 									<span className='p-float-label '>
 										<InputText
@@ -251,8 +254,29 @@ const InformationCustomer = () => {
 									</span>
 								</div>
 								<div className='field col-12 md:col-6'>
+									<span htmlFor='employees'>
+										<span className='warning'>*</span>Link liên kết: 
+									</span>
+									<span className='p-float-label  relative'>
+										<InputText
+											defaultValue={rowdata?.data?.link}
+											onChange={(e) => setValue('link', e.target.value)}
+											{...register('link', { required: true })}
+											className={errors?.link && 'p-invalid'}
+										/>
+										<img
+											src='images/copy.svg'
+											alt='link'
+											className='cursor-pointer absolute'
+											label='Bottom Right'
+											onClick={(e) => copyToClipboard(e.target.alt)}
+											style={{ right: '5px', top: '9px' }}
+										/>
+									</span>
+								</div>
+								<div className='field col-12 md:col-6'>
 									<span htmlFor='original__link'>
-										Quốc gia: <span className='warning'>*</span>
+										<span className='warning'>*</span>Quốc gia: 
 									</span>
 									<Controller
 										name='country'
@@ -276,7 +300,7 @@ const InformationCustomer = () => {
 								</div>
 								<div className='field col-12 md:col-6'>
 									<span htmlFor='cost'>
-										Thành phố: <span className='warning'>*</span>
+										<span className='warning'>*</span>Thành phố: 
 									</span>
 									<span className='p-float-label '>
 										<Controller
@@ -302,30 +326,10 @@ const InformationCustomer = () => {
 										/>
 									</span>
 								</div>
+								
 								<div className='field col-12 md:col-6'>
 									<span htmlFor='employees'>
-										Link liên kết: <span className='warning'>*</span>
-									</span>
-									<span className='p-float-label  relative'>
-										<InputText
-											defaultValue={rowdata?.data?.link}
-											onChange={(e) => setValue('link', e.target.value)}
-											{...register('link', { required: true })}
-											className={errors?.link && 'p-invalid'}
-										/>
-										<img
-											src='images/copy.svg'
-											alt='link'
-											className='cursor-pointer absolute'
-											label='Bottom Right'
-											onClick={(e) => copyToClipboard(e.target.alt)}
-											style={{ right: '5px', top: '9px' }}
-										/>
-									</span>
-								</div>
-								<div className='field col-12 md:col-6'>
-									<span htmlFor='employees'>
-										Trạng thái khách hàng: <span className='warning'>*</span>
+										<span className='warning'>*</span>Trạng thái khách hàng:
 									</span>
 									<span className='p-float-label '>
 										<Dropdown
@@ -335,32 +339,6 @@ const InformationCustomer = () => {
 											onChange={(e) => setCustomerStatus(e.value)}
 											placeholder='Trạng thái khách hàng'
 											disabled={user?.data?.role !== UserRules.ROLE.ADMIN ? true : false}
-										/>
-									</span>
-								</div>
-								<div className='field col-12 md:col-6'>
-									<span htmlFor='autocomplete'>ID Người tạo: </span>
-									<span className='p-float-label pt-3 flex justify-content-between font-bold'>
-										{rowdata?.data?.create_by}
-										<img
-											src='images/copy.svg'
-											alt='create_by'
-											label='Bottom Right'
-											className='cursor-pointer'
-											onClick={(e) => copyToClipboard(e.target.alt)}
-										/>
-									</span>
-								</div>
-								<div className='field col-12 md:col-6'>
-									<span htmlFor='autocomplete'>Mã khách hàng: </span>
-									<span className='p-float-label pt-3 flex justify-content-between font-bold '>
-										{rowdata?.data?.id_system}
-										<img
-											src='images/copy.svg'
-											alt='id_system'
-											className='cursor-pointer'
-											label='Bottom Right'
-											onClick={(e) => copyToClipboard(e.target.alt)}
 										/>
 									</span>
 								</div>
@@ -378,7 +356,7 @@ const InformationCustomer = () => {
 								</span>
 							</div>
 							{!rowdata?.error && (
-								<div className='field col-12 md:col-6'>
+								<div className='field col-12 md:col-6 pr-0'>
 									<span className='p-float-label'>
 										<Button
 											label='Cập nhật'
