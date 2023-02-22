@@ -1,28 +1,26 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { post, get, del, put } from '../../_services/apiRequest';
 import { storage } from '../../_services/sesionStorage';
-import { Cookie } from '../../commons/cookie';
-import { NAME_SESSION_STORAGE_TOKEN, ROOM_SESSION_MESSAGES } from '../../constants';
+import { NAME_SESSION_STORAGE_TOKEN, ROOM_SESSION_MESSAGES, UserRules } from '../../constants';
 import jwt_decode from 'jwt-decode';
 import { successToast, errorToast } from '../../commons/toast';
+import { URL_ROUTER } from '../../routes/routes';
 
 export const userloginRequest = createAsyncThunk('user_login', async (req, { rejectWithValue }) => {
 	try {
 		const res = await post('auth/login', req.data);
 		storage.save(NAME_SESSION_STORAGE_TOKEN, res?.data?.access_token);
-		if (req?.checked) {
-			Cookie.set(res?.data?.access_token);
-		}
+
 		const decodedToken = jwt_decode(res?.data?.access_token);
 		let url;
-		if (decodedToken.role === 'ADMIN') {
-			url = '/jobs-overview';
-		} else if (decodedToken.role === 'SALER') {
-			url = '/workflow-management';
-		} else if (decodedToken.role === 'LEADER_EDITOR' || decodedToken.role === 'EDITOR') {
-			url = '/';
+		if (decodedToken.role === UserRules.ROLE.ADMIN) {
+			url = URL_ROUTER.JOB_OVERVIEW;
+		} else if (decodedToken.role === UserRules.ROLE.SALER) {
+			url = URL_ROUTER.WORKFLOW_MANAGEMENT;
+		} else if (decodedToken.role === UserRules.ROLE.LEADER_EDITOR || decodedToken.role === UserRules.ROLE.EDITOR) {
+			url = URL_ROUTER.DASHBOARD;
 		} else {
-			url = '/404-notfound';
+			url = URL_ROUTER.NOT_FOUND;
 		}
 
 		window.location.href = url;
@@ -36,7 +34,6 @@ export const userloginRequest = createAsyncThunk('user_login', async (req, { rej
 export const userLogoutRequest = createAsyncThunk('user_logout', async (data, { rejectWithValue }) => {
 	try {
 		const res = await del('auth/logout');
-		Cookie.delete();
 		setTimeout(() => {
 			storage.delete(NAME_SESSION_STORAGE_TOKEN);
 			storage.delete(ROOM_SESSION_MESSAGES);
@@ -56,7 +53,6 @@ export const userProfile = createAsyncThunk('userProfile', async (id, { rejectWi
 	} catch (error) {
 		storage.delete(NAME_SESSION_STORAGE_TOKEN);
 		storage.delete('birth');
-		Cookie.delete();
 		return rejectWithValue(error?.response?.data);
 	}
 });
@@ -64,9 +60,9 @@ export const userProfile = createAsyncThunk('userProfile', async (id, { rejectWi
 export const userEditProfile = createAsyncThunk('userEditProfile', async (result, { rejectWithValue }) => {
 	try {
 		const res = await put(`users/infor/update/${result.id}`, result?.data);
-		successToast('Cập nhật thành công');
 		if (res) {
 			storage.save('birth', res?.data?.births);
+			successToast('Cập nhật thành công');
 		}
 		return res?.data;
 	} catch (error) {

@@ -7,7 +7,7 @@ import { setIsOpenInformationJob } from '../../redux/modal/modalSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm, Controller } from 'react-hook-form';
 import { Dropdown } from 'primereact/dropdown';
-import { customer_status, type_files } from './dropDown';
+import { type_files } from './dropDown';
 import { UserRules, JobRules, NOT_SET_ADMIN, NAME_ROOM } from '../../constants';
 import { InputText } from 'primereact/inputtext';
 import { timezoneToDate } from '../../commons/dateTime';
@@ -27,6 +27,7 @@ import { socket } from '../../_services/socket';
 import { getCurrentRoom, setIsOpenChat } from '../../redux/messages/messageSlice';
 import { resetJobCreated } from '../../redux/overviewJobs/jobsSlice';
 import { inforToast, errorToast } from '../../commons/toast';
+import { URL_ROUTER } from '../../routes/routes';
 
 const InformationJobs = () => {
 	const dispatch = useDispatch();
@@ -34,7 +35,6 @@ const InformationJobs = () => {
 	const [typeFile, setTypeFile] = useState(false);
 	const location = useLocation();
 	const { pathname } = location;
-	const [statusCustomer, setStatusCustomer] = useState(false);
 	const [workNotes, setWorkNotes] = useState(false);
 	const [requestContent, setRequestContent] = useState(false);
 	const [selectEditor, setSelectEditor] = useState(false);
@@ -71,14 +71,6 @@ const InformationJobs = () => {
 	}, [isOpenInformationJob]);
 
 	useEffect(() => {
-		if (rowdata?.data?.status_jobs) {
-			for (let item of customer_status) {
-				if (item.code === rowdata?.data?.status_customer) {
-					setStatusCustomer(item);
-					break;
-				}
-			}
-		}
 		if (rowdata?.data?.photo_types) {
 			for (let item of type_files) {
 				if (item.code === rowdata?.data?.photo_types) {
@@ -101,7 +93,7 @@ const InformationJobs = () => {
 
 	useEffect(() => {
 		if (deletejobs?.data) {
-			if (pathname === '/workflow-management') {
+			if (pathname === URL_ROUTER.WORKFLOW_MANAGEMENT) {
 				dispatch(getEmployeePerformance());
 			}
 			dispatch(setIsOpenInformationJob(false));
@@ -111,9 +103,9 @@ const InformationJobs = () => {
 	useEffect(() => {
 		if (
 			isOpenInformationJob &&
-			user?.data?.role !== 'LEADER_EDITOR' &&
-			user?.data?.role !== 'EDITOR' &&
-			user?.data?.role !== 'SALER'
+			user?.data?.role !== UserRules.ROLE.LEADER_EDITOR &&
+			user?.data?.role !== UserRules.ROLE.EDITOR &&
+			user?.data?.role !== UserRules.ROLE.SALER
 		) {
 			let keyword = '?keyword=Editor';
 			dispatch(dashboardEmployeeRequest(keyword));
@@ -135,7 +127,7 @@ const InformationJobs = () => {
 	useEffect(() => {
 		if (updatejobs?.data && !updatejobs?.error) {
 			handleCloseModal();
-			if (pathname === '/workflow-management') {
+			if (pathname === URL_ROUTER.WORKFLOW_MANAGEMENT) {
 				dispatch(getEmployeePerformance());
 			}
 			setTimeout(() => {
@@ -150,7 +142,7 @@ const InformationJobs = () => {
 
 	useEffect(() => {
 		if (donejobs?.data && !donejobs?.error) {
-			if (pathname === '/workflow-management') {
+			if (pathname === URL_ROUTER.WORKFLOW_MANAGEMENT) {
 				dispatch(getEmployeePerformance());
 			}
 			handleCloseModal();
@@ -208,7 +200,7 @@ const InformationJobs = () => {
 				index: rowdata?.index,
 			};
 
-			if (user?.data?.role !== 'LEADER_EDITOR' && user?.data?.role !== 'EDITOR') {
+			if (user?.data?.role !== UserRules.ROLE.LEADER_EDITOR && user?.data?.role !== UserRules.ROLE.EDITOR) {
 				dispatch(editJobsRequest(formData));
 			} else {
 				if (formData?.result?.finished_link) {
@@ -260,7 +252,10 @@ const InformationJobs = () => {
 				<div className='creat__job'>
 					<div className='creat__job--title flex justify-content-between align-items-center'>
 						<div className='flex align-items-center'>
-							<h2 className='mr-2'>Thông tin công việc</h2>
+							<h2 className='mr-2'>
+								Thông tin công việc
+								<p>Hiển thị các trường thông tin của công việc </p>
+							</h2>
 							{idUserCreateJob !== '' &&
 								idEditorAdded !== '' &&
 								idEditorAdded !== UserRules.ROLE.NOT_SET_BY_ADMIN && (
@@ -272,164 +267,51 @@ const InformationJobs = () => {
 									/>
 								)}
 						</div>
-						{user?.data?.role === 'ADMIN' && rowdata?.data && Object?.keys(rowdata?.data).length > 0 && (
-							<Button onClick={handleRemoveRow}>
-								<img src='images/trash.svg' alt='' className='image__trash' />
-							</Button>
-						)}
+						{user?.data?.role === UserRules.ROLE.ADMIN &&
+							rowdata?.data &&
+							Object?.keys(rowdata?.data).length > 0 && (
+								<Button onClick={handleRemoveRow}>
+									<img src='images/trash.svg' alt='' className='image__trash' />
+								</Button>
+							)}
 					</div>
 					<form className=' grid modal__creat--job no_flex' onSubmit={handleSubmit(onSubmit)}>
 						{rowdata?.data && Object?.keys(rowdata?.data).length === 0 ? (
 							<span className='notfound'>Thông tin công việc không tồn tại</span>
 						) : (
-							<div className='field col-12 md:col-12 grid'>
-								{/* <div className="field col-12 md:col-6">
-                                        <span htmlFor="autocomplete">Mã công việc :</span>
-                                        <span className="p-float-label mt-3 flex justify-content-between cursor__normal">
-                                            <span className='font-bold mt-1'>{rowdata?.data?.id_system}</span>
-                                            <img src="images/copy.svg" alt="id_system" label="Bottom Right" onClick={(e) => copyToClipboard(e.target.alt)} className="cursor-pointer" />
-                                        </span>
-                                    </div> */}
-								{user?.data?.role !== 'LEADER_EDITOR' && user?.data?.role !== 'EDITOR' && (
-									<div className='field col-12 md:col-12'>
-										<span htmlFor='status_customer'>
-											Trạng thái khách hàng :<span className='warning'>*</span>
-										</span>
-										<span
-											onClick={handleOpenInput('status_customer')}
-											className={
-												'p-float-label ' +
-												(rowdata?.data?.finished_link !== NOT_SET_ADMIN
-													? 'cursor__edit '
-													: isOpenInput?.status_customer
-													? ''
-													: ' mt-3 ')
-											}
-										>
-											{rowdata?.data?.finished_link !== NOT_SET_ADMIN &&
-											isOpenInput?.status_customer ? (
-												<Dropdown
-													options={customer_status}
-													optionLabel='name'
-													defaultValue={statusCustomer}
-													value={statusCustomer}
-													onChange={(e) => {
-														setStatusCustomer(e.value);
-														setValue('status_customer', e.value.code);
-													}}
-													disabled={
-														user?.data?.role === UserRules.ROLE.EDITOR &&
-														user?.data?.role === UserRules.ROLE.LEADER_EDITOR
-															? true
-															: false
-													}
-												/>
-											) : (
-												<span
-													className={
-														'p-float-label mt-3 m-0 flex justify-content-between align-items-center ' +
-														(rowdata?.data?.status_customer ===
-														JobRules.STATUS_CUSTOMER.UNREQUEST
-															? ' btn_stop '
-															: rowdata?.data?.status_customer ===
-															  JobRules.STATUS_CUSTOMER.REQUEST
-															? ' btn_pending'
-															: ' btn_success ')
-													}
-												>
-													{JobRules.STATUS_CUSTOMER_NAME[rowdata?.data?.status_customer]}
-												</span>
-											)}
-										</span>
-									</div>
-								)}
-								<div className='field col-12 md:col-6 '>
-									<span htmlFor='quality'>
-										Số lượng :
-										{user?.data?.role !== 'LEADER_EDITOR' && user?.data?.role !== 'EDITOR' && (
-											<span className='warning'>*</span>
-										)}
-									</span>
-									<span
-										onClick={handleOpenInput('quality')}
-										className={
-											'p-float-label ' +
-											(user?.data?.role !== 'LEADER_EDITOR' && user?.data?.role !== 'EDITOR'
-												? 'cursor__edit'
-												: isOpenInput?.quality
-												? ''
-												: ' mt-3 ')
-										}
-									>
-										{user?.data?.role !== 'LEADER_EDITOR' && user?.data?.role !== 'EDITOR' && (
-											<InputNumber
-												value={rowdata?.data?.quality}
-												onValueChange={(e) => setValue('quality_img', e.value)}
-												mode='decimal'
-												max={9999}
-												min={1}
-												className='w-full'
-											/>
-										)}
-									</span>
-								</div>
-								<div className='field col-12 md:col-6 '>
-									<span htmlFor='type_models'>
-										Loại ảnh :
-										{user?.data?.role !== 'LEADER_EDITOR' && user?.data?.role !== 'EDITOR' && (
-											<span className='warning'>*</span>
-										)}
-									</span>
-									<span
-										onClick={handleOpenInput('type_models')}
-										className={
-											'p-float-label ' +
-											(user?.data?.role !== 'LEADER_EDITOR' && user?.data?.role !== 'EDITOR'
-												? 'cursor__edit'
-												: isOpenInput?.type_models
-												? ''
-												: ' mt-3 ')
-										}
-									>
-										{user?.data?.role !== 'LEADER_EDITOR' && user?.data?.role !== 'EDITOR' && (
-											<InputText
-												defaultValue={rowdata?.data?.type_models}
-												onChange={(e) => setValue('type_models', e.target.value)}
-												{...register('type_models', { required: true })}
-												className={errors?.type_models && 'p-invalid'}
-											/>
-										)}
-									</span>
-								</div>
-								<div className='field col-12 md:col-6 create__job--calendar'>
+							<div className='field col-12 md:col-12 grid pr-0'>
+								<div className='field col-12 md:col-12 create__job--calendar'>
 									<span htmlFor='start_day'>Ngày tạo công việc :</span>
 									<span className='p-float-label pt-3 cursor__normal font-bold'>
 										{timezoneToDate(rowdata?.data?.start_day)}
 									</span>
 								</div>
-								<div className='field col-12 md:col-6 create__job--calendar'>
+								<div className='field col-12 md:col-12 create__job--calendar'>
 									<span htmlFor='end_day'>
-										Deadline :{' '}
-										{user?.data?.role !== 'LEADER_EDITOR' && user?.data?.role !== 'EDITOR' && (
-											<span className='warning'>*</span>
-										)}
+										{user?.data?.role !== UserRules.ROLE.LEADER_EDITOR &&
+											user?.data?.role !== UserRules.ROLE.EDITOR && (
+												<span className='warning'>*</span>
+											)}
+										Deadline :
 									</span>
 									<span
 										onClick={handleOpenInput('end_day')}
 										className={
 											'p-float-label font-bold ' +
-											(user?.data?.role !== 'LEADER_EDITOR' && user?.data?.role !== 'EDITOR'
+											(user?.data?.role !== UserRules.ROLE.LEADER_EDITOR &&
+											user?.data?.role !== UserRules.ROLE.EDITOR
 												? 'cursor__edit'
 												: isOpenInput?.end_day
 												? ''
 												: ' mt-3')
 										}
 									>
-										{user?.data?.role !== 'LEADER_EDITOR' &&
-										user?.data?.role !== 'EDITOR' &&
+										{user?.data?.role !== UserRules.ROLE.LEADER_EDITOR &&
+										user?.data?.role !== UserRules.ROLE.EDITOR &&
 										isOpenInput?.end_day ? (
 											<Calendar
 												readOnlyInput
+												value={new Date(rowdata?.data?.end_day)}
 												minDate={minDate}
 												onChange={(e) => setValue('end_day', e.value)}
 											/>
@@ -440,55 +322,109 @@ const InformationJobs = () => {
 										)}
 									</span>
 								</div>
-								<div className='field col-12 md:col-6'>
-									<span htmlFor='photo_types'>
-										Định dạng file :
-										{user?.data?.role !== 'LEADER_EDITOR' && user?.data?.role !== 'EDITOR' && (
-											<span className='warning'>*</span>
-										)}
+								<div className='field col-12 md:col-6 '>
+									<span htmlFor='quality'>
+										{user?.data?.role !== UserRules.ROLE.LEADER_EDITOR &&
+											user?.data?.role !== UserRules.ROLE.EDITOR && (
+												<span className='warning'>*</span>
+											)}
+										Số lượng :
 									</span>
 									<span
-										onClick={handleOpenInput('photo_types')}
+										onClick={handleOpenInput('quality')}
 										className={
-											'mt-3 p-float-label ' +
-											(user?.data?.role !== 'LEADER_EDITOR' && user?.data?.role !== 'EDITOR'
+											'p-float-label ' +
+											(user?.data?.role !== UserRules.ROLE.LEADER_EDITOR &&
+											user?.data?.role !== UserRules.ROLE.EDITOR
 												? 'cursor__edit'
-												: isOpenInput?.photo_types
+												: isOpenInput?.quality
 												? ''
 												: ' mt-3 ')
 										}
 									>
-										{user?.data?.role !== 'LEADER_EDITOR' && user?.data?.role !== 'EDITOR' && (
-											<Dropdown
-												options={type_files}
-												optionLabel='name'
-												defaultValue={JobRules.PHOTO_TYPES[rowdata?.data?.photo_types]}
-												value={typeFile}
-												onChange={(e) => {
-													setTypeFile(e.value);
-													setValue('photo_types', e.value.code);
-												}}
-												disabled={
-													user?.data?.role === UserRules.ROLE.EDITOR &&
-													user?.data?.role === UserRules.ROLE.LEADER_EDITOR
-														? true
-														: false
-												}
-											/>
-										)}
+										{user?.data?.role !== UserRules.ROLE.LEADER_EDITOR &&
+											user?.data?.role !== UserRules.ROLE.EDITOR && (
+												<InputNumber
+													value={rowdata?.data?.quality}
+													onValueChange={(e) => setValue('quality_img', e.value)}
+													mode='decimal'
+													max={9999}
+													min={1}
+													className='w-full'
+												/>
+											)}
 									</span>
 								</div>
-								{user?.data?.role === 'ADMIN' && (
+								<div className='field col-12 md:col-6 '>
+									<span htmlFor='type_models'>
+										{user?.data?.role !== UserRules.ROLE.LEADER_EDITOR &&
+											user?.data?.role !== UserRules.ROLE.EDITOR && (
+												<span className='warning'>*</span>
+											)}
+										Loại ảnh :
+									</span>
+									<span
+										onClick={handleOpenInput('type_models')}
+										className={
+											'p-float-label ' +
+											(user?.data?.role !== UserRules.ROLE.LEADER_EDITOR &&
+											user?.data?.role !== UserRules.ROLE.EDITOR
+												? 'cursor__edit'
+												: isOpenInput?.type_models
+												? ''
+												: ' mt-3 ')
+										}
+									>
+										{user?.data?.role !== UserRules.ROLE.LEADER_EDITOR &&
+											user?.data?.role !== UserRules.ROLE.EDITOR && (
+												<InputText
+													defaultValue={rowdata?.data?.type_models}
+													onChange={(e) => setValue('type_models', e.target.value)}
+													{...register('type_models', { required: true })}
+													className={errors?.type_models && 'p-invalid'}
+												/>
+											)}
+									</span>
+								</div>
+
+								<div className='field col-12 md:col-6'>
+									<span htmlFor='photo_types'>
+										{user?.data?.role !== UserRules.ROLE.LEADER_EDITOR &&
+											user?.data?.role !== UserRules.ROLE.EDITOR && (
+												<span className='warning'>*</span>
+											)}
+										Định dạng file :
+									</span>
+									<span onClick={handleOpenInput('photo_types')} className={' p-float-label '}>
+										{user?.data?.role !== UserRules.ROLE.LEADER_EDITOR &&
+											user?.data?.role !== UserRules.ROLE.EDITOR && (
+												<Dropdown
+													options={type_files}
+													optionLabel='name'
+													defaultValue={JobRules.PHOTO_TYPES[rowdata?.data?.photo_types]}
+													value={typeFile}
+													onChange={(e) => {
+														setTypeFile(e.value);
+														setValue('photo_types', e.value.code);
+													}}
+													disabled={
+														user?.data?.role === UserRules.ROLE.EDITOR &&
+														user?.data?.role === UserRules.ROLE.LEADER_EDITOR
+															? true
+															: false
+													}
+												/>
+											)}
+									</span>
+								</div>
+								{user?.data?.role === UserRules.ROLE.ADMIN && (
 									<div className='field col-12 md:col-6'>
 										<span htmlFor='id_editor'>
-											Editor :<span className='warning'>*</span>
+											<span className='warning'>*</span>Editor :
 										</span>
 										<span
 											onClick={handleOpenInput('id_editor')}
-											className={
-												'mt-3 p-float-label cursor__edit ' +
-												(isOpenInput?.id_editor ? '' : ' mt-3 ')
-											}
+											className={' p-float-label cursor__edit '}
 										>
 											<Dropdown
 												options={employees.data}
@@ -509,26 +445,28 @@ const InformationJobs = () => {
 										</span>
 									</div>
 								)}
-								<div className='field col-12 md:col-6 create__job--calendar'>
+								<div className='field col-12 md:col-12 create__job--calendar'>
 									<span htmlFor='org_link'>
+										{user?.data?.role !== UserRules.ROLE.LEADER_EDITOR &&
+											user?.data?.role !== UserRules.ROLE.EDITOR && (
+												<span className='warning'>*</span>
+											)}
 										Link ảnh gốc :
-										{user?.data?.role !== 'LEADER_EDITOR' && user?.data?.role !== 'EDITOR' && (
-											<span className='warning'>*</span>
-										)}
 									</span>
 									<span
 										onClick={handleOpenInput('org_link')}
 										className={
 											'p-float-label  ' +
-											(user?.data?.role !== 'LEADER_EDITOR' && user?.data?.role !== 'EDITOR'
+											(user?.data?.role !== UserRules.ROLE.LEADER_EDITOR &&
+											user?.data?.role !== UserRules.ROLE.EDITOR
 												? 'cursor__edit'
 												: isOpenInput?.org_link
 												? ''
-												: ' mt-3 ')
+												: ' ')
 										}
 									>
-										{user?.data?.role !== 'LEADER_EDITOR' &&
-										user?.data?.role !== 'EDITOR' &&
+										{user?.data?.role !== UserRules.ROLE.LEADER_EDITOR &&
+										user?.data?.role !== UserRules.ROLE.EDITOR &&
 										isOpenInput?.org_link ? (
 											<Controller
 												control={control}
@@ -556,17 +494,15 @@ const InformationJobs = () => {
 										)}
 									</span>
 								</div>
-								{user?.data?.role === 'EDITOR' || user?.data?.role === 'LEADER_EDITOR' ? (
-									<div className='field col-12 md:col-6 create__job--calendar'>
+								{user?.data?.role === UserRules.ROLE.EDITOR ||
+								user?.data?.role === UserRules.ROLE.LEADER_EDITOR ? (
+									<div className='field col-12 md:col-12 create__job--calendar'>
 										<span htmlFor='finished_link'>
 											Link ảnh hoàn thành :<span className='warning'>*</span>
 										</span>
 										<span
 											onClick={handleOpenInput('finished_link')}
-											className={
-												'p-float-label cursor__edit ' +
-												(isOpenInput?.finished_link ? '' : ' mt-3 ')
-											}
+											className={'p-float-label cursor__edit '}
 										>
 											{isOpenInput?.finished_link ? (
 												<InputText
@@ -606,9 +542,9 @@ const InformationJobs = () => {
 										</span>
 									</div>
 								) : (
-									<div className='field col-12 md:col-6 create__job--calendar'>
+									<div className='field col-12 md:col-12 create__job--calendar'>
 										<span htmlFor='finished_link'>Link ảnh hoàn thành :</span>
-										<span className={'p-float-label  mt-3'}>
+										<span className={'p-float-label  mt-2'}>
 											<span className='flex justify-content-between'>
 												{rowdata?.data?.finished_link === NOT_SET_ADMIN ? (
 													'Trống'
@@ -634,47 +570,40 @@ const InformationJobs = () => {
 										</span>
 									</div>
 								)}
-								{user?.data?.role !== 'LEADER_EDITOR' && user?.data?.role !== 'EDITOR' && (
-									<div className='field col-12 md:col-6'>
-										<span htmlFor='total_cost'>
-											Chi phí tổng :<span className='warning'>*</span>
-										</span>
-										<span
-											onClick={handleOpenInput('total_cost')}
-											className={
-												'p-float-label cursor__edit ' +
-												(isOpenInput?.total_cost ? '' : ' mt-3 ')
-											}
-										>
-											<InputNumber
-												inputId='currency-us'
-												value={convertUSD(rowdata?.data?.total_cost)}
-												onValueChange={(e) => setValue('total_cost', e.target.value)}
-												mode='currency'
-												currency='USD'
-												locale='en-US'
-												useGrouping={true}
-												minFractionDigits={0}
-												className={` w-full ${errors?.total_cost && 'p-invalid'}`}
-											/>
-										</span>
-									</div>
-								)}
-								{user?.data?.role !== 'SALER' && (
+								{user?.data?.role !== UserRules.ROLE.LEADER_EDITOR &&
+									user?.data?.role !== UserRules.ROLE.EDITOR && (
+										<div className='field col-12 md:col-6'>
+											<span htmlFor='total_cost'>
+												<span className='warning'>*</span>Chi phí tổng :
+											</span>
+											<span
+												onClick={handleOpenInput('total_cost')}
+												className={'p-float-label cursor__edit '}
+											>
+												<InputNumber
+													inputId='currency-us'
+													value={convertUSD(rowdata?.data?.total_cost)}
+													onValueChange={(e) => setValue('total_cost', e.target.value)}
+													mode='currency'
+													currency='USD'
+													locale='en-US'
+													useGrouping={true}
+													minFractionDigits={0}
+													className={` w-full ${errors?.total_cost && 'p-invalid'}`}
+												/>
+											</span>
+										</div>
+									)}
+								{user?.data?.role !== UserRules.ROLE.SALER && (
 									<div className='field col-12 md:col-6'>
 										<span htmlFor='editor_cost'>
+											{user?.data?.role !== UserRules.ROLE.LEADER_EDITOR &&
+												user?.data?.role !== UserRules.ROLE.EDITOR && (
+													<span className='warning'>*</span>
+												)}
 											Chi phí Editor :
-											{user?.data?.role !== 'LEADER_EDITOR' && user?.data?.role !== 'EDITOR' && (
-												<span className='warning'>*</span>
-											)}
 										</span>
-										<span
-											onClick={handleOpenInput('editor_cost')}
-											className={
-												'mt-3 p-float-label ' +
-												(user?.data?.role === 'ADMIN' ? 'cursor__edit' : 'mt-3')
-											}
-										>
+										<span onClick={handleOpenInput('editor_cost')} className={'p-float-label '}>
 											<InputNumber
 												id='editor_cost'
 												inputId='currency-vn'
@@ -689,33 +618,38 @@ const InformationJobs = () => {
 										</span>
 									</div>
 								)}
-								{user?.data?.role !== 'LEADER_EDITOR' && user?.data?.role !== 'EDITOR' && (
-									<div className='field col-12 md:col-6'>
-										<span htmlFor='saler_cost'>Chi phí Saler :</span>
-										<span className='p-float-label mt-3 cursor__normal'>
-											<span className='font-bold'>{formatUSD(rowdata?.data?.saler_cost)}</span>
-										</span>
-									</div>
-								)}
-								{user?.data?.role === 'ADMIN' && (
+								{user?.data?.role !== UserRules.ROLE.LEADER_EDITOR &&
+									user?.data?.role !== UserRules.ROLE.EDITOR && (
+										<div className='field col-12 md:col-6'>
+											<span htmlFor='saler_cost'>Chi phí Saler :</span>
+											<span className='p-float-label mt-2 cursor__normal'>
+												<span className='font-bold'>
+													{formatUSD(rowdata?.data?.saler_cost)}
+												</span>
+											</span>
+										</div>
+									)}
+								{user?.data?.role === UserRules.ROLE.ADMIN && (
 									<div className='field col-12 md:col-6'>
 										<span htmlFor='saler_cost'>Lợi nhuận :</span>
-										<span className='p-float-label mt-3 cursor__normal'>
+										<span className='p-float-label mt-2 cursor__normal'>
 											<span className='font-bold'>{formatUSD(rowdata?.data?.admin_cost)}</span>
 										</span>
 									</div>
 								)}
-								{(user?.data?.role === 'ADMIN' || user?.data?.role === 'SALER') && (
+								{(user?.data?.role === UserRules.ROLE.ADMIN ||
+									user?.data?.role === UserRules.ROLE.SALER) && (
 									<div className='field col-12 md:col-12'>
 										<span htmlFor='request_content'>
 											Nội dung yêu cầu :
-											{user?.data?.role !== 'LEADER_EDITOR' && user?.data?.role !== 'EDITOR' && (
-												<span className='warning'>*</span>
-											)}
+											{user?.data?.role !== UserRules.ROLE.LEADER_EDITOR &&
+												user?.data?.role !== UserRules.ROLE.EDITOR && (
+													<span className='warning'>*</span>
+												)}
 										</span>
 										<InputTextarea
 											autoResize
-											className='aria_content mt-3'
+											className='aria_content '
 											value={requestContent}
 											onChange={(e) => {
 												setRequestContent(e.target.value);
@@ -728,13 +662,14 @@ const InformationJobs = () => {
 								<div className='field col-12 md:col-12'>
 									<span htmlFor='work_notes'>
 										Yêu cầu của khách hàng :
-										{user?.data?.role !== 'LEADER_EDITOR' && user?.data?.role !== 'EDITOR' && (
-											<span className='warning'>*</span>
-										)}
+										{user?.data?.role !== UserRules.ROLE.LEADER_EDITOR &&
+											user?.data?.role !== UserRules.ROLE.EDITOR && (
+												<span className='warning'>*</span>
+											)}
 									</span>
 									<InputTextarea
 										autoResize
-										className='aria_note mt-3'
+										className='aria_note'
 										value={workNotes}
 										onChange={(e) => {
 											setWorkNotes(e.target.value);
@@ -763,7 +698,7 @@ const InformationJobs = () => {
 							{rowdata?.data && Object?.keys(rowdata?.data).length === 0 ? (
 								''
 							) : (
-								<div className='field col-12 md:col-6'>
+								<div className='field col-12 md:col-6 pr-0'>
 									<span className='p-float-label'>
 										<Button
 											label='Cập nhật'

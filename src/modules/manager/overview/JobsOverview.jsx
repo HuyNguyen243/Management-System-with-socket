@@ -15,7 +15,6 @@ import {
 import { dashboardJobsRequest } from '../../../redux/overviewJobs/actionJobs';
 import { getEmployeeRequest } from '../../../redux/overviewEmployee/actionEmployee';
 import { getCustomerRequest } from '../../../redux/sale/action';
-import { RESET_REQUEST } from '../../../commons/support';
 
 const JobsOverview = () => {
 	const dispatch = useDispatch();
@@ -25,12 +24,12 @@ const JobsOverview = () => {
 	const customer = useSelector((state) => state.sale?.getcustomer);
 
 	useEffect(() => {
-		RESET_REQUEST(dispatch, filter, dashboardJobsRequest);
+		dispatch(dashboardJobsRequest(filter));
 	}, [dispatch, filter]);
 
 	useEffect(() => {
 		let interval = setInterval(() => {
-			RESET_REQUEST(dispatch, filter, dashboardJobsRequest);
+			dispatch(dashboardJobsRequest(filter));
 		}, 60000 * 5);
 
 		return () => {

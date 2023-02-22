@@ -284,12 +284,6 @@ const BoxChat = () => {
 		setMultiPreviewImages(images);
 	};
 
-	// useEffect(() => {
-	//     if(multiPreviewImages.length === 0){
-	//         document.getElementById('file_chat').value= null;
-	//     }
-	// },[multiPreviewImages])
-
 	return (
 		<div className={`chat-container page ${!isOpenChat && 'hidden'}`}>
 			{user?.data?.role === UserRules.ROLE.ADMIN && (

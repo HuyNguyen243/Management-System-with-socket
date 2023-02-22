@@ -14,7 +14,9 @@ export const settingRequest = createAsyncThunk('getSystem', async (data, { rejec
 export const updateRequest = createAsyncThunk('updateSystem', async (data, { rejectWithValue }) => {
 	try {
 		const res = await put(`setting/${data?.result?.id_system}`, data?.result);
-		successToast('Cập nhật thành công');
+		if (res) {
+			successToast('Cập nhật thành công');
+		}
 		return res;
 	} catch (error) {
 		errorToast('Cập nhật thất bại');

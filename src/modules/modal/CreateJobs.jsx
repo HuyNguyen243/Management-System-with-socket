@@ -37,7 +37,6 @@ const CreateJobs = () => {
 		handleSubmit,
 		reset,
 	} = useForm({ defaultValues });
-	const [customerSelect, setCustomerSelect] = React.useState(null);
 	const customers = useSelector((state) => state.sale.customers);
 	const addjobs = useSelector((state) => state.jobs.addjobs);
 	const user = useSelector((state) => state.auth?.user);
@@ -89,7 +88,6 @@ const CreateJobs = () => {
 
 	const handleCloseModal = () => {
 		dispatch(setIsOpenModalCreateJob(false));
-		setCustomerSelect(null);
 		reset();
 	};
 	const handleCreateNewCustomer = () => {
@@ -105,12 +103,13 @@ const CreateJobs = () => {
 				<div className='creat__job'>
 					<div className='creat__job--title'>
 						<h2>Tạo công việc mới</h2>
+						<p>Nhập trường thông tin liên quan bắt buộc</p>
 					</div>
 					<form className=' grid modal__creat--job' onSubmit={handleSubmit(onSubmit)}>
-						<div className='field col-12 md:col-12 grid'>
-							<div className='field col-12 md:col-6'>
+						<div className='field col-12 md:col-12 grid pr-0'>
+							<div className='field col-12 md:col-12'>
 								<span htmlFor='autocomplete'>
-									Tìm thông tin khách hàng: <span className='warning'>*</span>
+									<span className='warning'>*</span>Tìm thông tin khách hàng:
 								</span>
 								<span className=''>
 									<Controller
@@ -139,20 +138,65 @@ const CreateJobs = () => {
 									</span>
 								)}
 							</div>
-							<div className='field col-12 md:col-6'>
-								<span>Mã khách hàng: </span>
-								<span className=' pt-3 flex justify-content-between cursor__normal'>
-									<span className='font-bold'>{customerSelect?.id_system}</span>
-								</span>
-							</div>
 							<div className='field col-12 md:col-12 create_new_customer'>
 								<p onClick={handleCreateNewCustomer} style={{ width: 'max-content' }}>
-									Tạo khách hàng mới
+									+ Tạo khách hàng mới
 								</p>
 							</div>
-							<div className='field col-12 md:col-6 create__job--calendar'>
+							<div className='field col-12 md:col-6'>
+								<span htmlFor='type_models'>
+									<span className='warning'>*</span>Loại ảnh:
+								</span>
+								<span className=''>
+									<Controller
+										name='type_models'
+										control={control}
+										rules={{ required: 'Chưa điền loại ảnh' }}
+										render={({ field, fieldState }) => (
+											<InputText
+												id={field.name}
+												{...field}
+												className={classNames({ 'p-invalid': fieldState.invalid })}
+												placeholder='Chọn ảnh'
+											/>
+										)}
+									/>
+								</span>
+								{errors?.type_models && (
+									<span className='warning' style={{ fontSize: '12px' }}>
+										{errors?.type_models.message}
+									</span>
+								)}
+							</div>
+							<div className='field col-12 md:col-6 '>
+								<div>
+									<span htmlFor='withoutgrouping'>
+										<span className='warning'>*</span>Số lượng:
+									</span>
+								</div>
+								<Controller
+									name='quality_img'
+									control={control}
+									rules={{ required: 'Chưa điền số lượng' }}
+									render={({ field, fieldState }) => (
+										<InputNumber
+											value={field.value}
+											onValueChange={(e) => field.onChange(e.value)}
+											mode='decimal'
+											className={classNames({ 'p-invalid': fieldState.invalid })}
+											placeholder='Điền số lượng ảnh'
+										/>
+									)}
+								/>
+								{errors?.quality_img && (
+									<span className='warning' style={{ fontSize: '12px' }}>
+										{errors?.quality_img.message}
+									</span>
+								)}
+							</div>
+							<div className='field col-12 md:col-12 create__job--calendar'>
 								<span htmlFor='calendar'>
-									Deadline: <span className='warning'>*</span>
+									<span className='warning'>*</span>Deadline:
 								</span>
 								<span className=''>
 									<Controller
@@ -179,60 +223,9 @@ const CreateJobs = () => {
 									</span>
 								)}
 							</div>
-							<div className='field col-12 md:col-3'>
-								<span htmlFor='type_models'>
-									Loại ảnh: <span className='warning'>*</span>
-								</span>
-								<span className=''>
-									<Controller
-										name='type_models'
-										control={control}
-										rules={{ required: 'Chưa điền loại ảnh' }}
-										render={({ field, fieldState }) => (
-											<InputText
-												id={field.name}
-												{...field}
-												className={classNames({ 'p-invalid': fieldState.invalid })}
-												placeholder='Chọn ảnh'
-											/>
-										)}
-									/>
-								</span>
-								{errors?.type_models && (
-									<span className='warning' style={{ fontSize: '12px' }}>
-										{errors?.type_models.message}
-									</span>
-								)}
-							</div>
-							<div className='field col-12 md:col-3 '>
-								<span htmlFor='withoutgrouping'>
-									Số lượng: <span className='warning'>*</span>
-								</span>
-								<span className=''>
-									<Controller
-										name='quality_img'
-										control={control}
-										rules={{ required: 'Chưa điền số lượng' }}
-										render={({ field, fieldState }) => (
-											<InputNumber
-												value={field.value}
-												onValueChange={(e) => field.onChange(e.value)}
-												mode='decimal'
-												className={classNames({ 'p-invalid': fieldState.invalid })}
-												placeholder='Điền số lượng ảnh'
-											/>
-										)}
-									/>
-								</span>
-								{errors?.quality_img && (
-									<span className='warning' style={{ fontSize: '12px' }}>
-										{errors?.quality_img.message}
-									</span>
-								)}
-							</div>
 							<div className='field col-12 md:col-6'>
 								<span htmlFor='original__link'>
-									Link ảnh gốc: <span className='warning'>*</span>
+									<span className='warning'>*</span>Link ảnh gốc:
 								</span>
 								<span className=''>
 									<Controller
@@ -257,7 +250,7 @@ const CreateJobs = () => {
 							</div>
 							<div className='field col-12 md:col-6'>
 								<span htmlFor='original__link'>
-									Định dạng file: <span className='warning'>*</span>
+									<span className='warning'>*</span> Định dạng file:
 								</span>
 								<span className=''>
 									<Controller
@@ -287,7 +280,7 @@ const CreateJobs = () => {
 							</div>
 							<div className='field col-12 md:col-6'>
 								<span htmlFor='cost'>
-									Chi phí: <span className='warning'>*</span>
+									<span className='warning'>*</span> Chi phí:
 								</span>
 								<span className=''>
 									<Controller
@@ -319,32 +312,34 @@ const CreateJobs = () => {
 							</div>
 							{user?.data?.role === 'ADMIN' && (
 								<div className='field col-12 md:col-6'>
-									<span htmlFor='cost'>Chi phí Editor:</span>
-									<span className=''>
-										<Controller
-											name='editor_cost'
-											control={control}
-											render={({ field, fieldState }) => (
-												<InputNumber
-													id='editor_cost'
-													inputId='currency-vn'
-													value={field.value}
-													onChange={(e) => field.onChange(e.value)}
-													mode='currency'
-													currency='VND'
-													locale='vi-VN'
-													useGrouping={true}
-													className={classNames({ 'p-invalid': fieldState.invalid })}
-													placeholder='Chi phí'
-												/>
-											)}
-										/>
+									<span>
+										<span htmlFor='cost' style={{ height: '24px' }}>
+											Chi phí Editor:
+										</span>
 									</span>
+									<Controller
+										name='editor_cost'
+										control={control}
+										render={({ field, fieldState }) => (
+											<InputNumber
+												id='editor_cost'
+												inputId='currency-vn'
+												value={field.value}
+												onChange={(e) => field.onChange(e.value)}
+												mode='currency'
+												currency='VND'
+												locale='vi-VN'
+												useGrouping={true}
+												className={classNames({ 'p-invalid': fieldState.invalid })}
+												placeholder='Chi phí'
+											/>
+										)}
+									/>
 								</div>
 							)}
 							<div className='field col-12 md:col-12'>
 								<span htmlFor='employees'>
-									Nội dung yêu cầu: <span className='warning'>*</span>
+									<span className='warning'>*</span> Nội dung yêu cầu:
 								</span>
 								<span className=''>
 									<Controller
@@ -374,26 +369,26 @@ const CreateJobs = () => {
 							<div className='field col-12 md:col-12'>
 								<span className=''>
 									<span>
-										Lưu ý của khách hàng:<span className='warning'>*</span>
+										<span className='warning'>*</span>Lưu ý của khách hàng:
 									</span>
-									<Controller
-										name='work_notes'
-										control={control}
-										rules={{ required: 'Chưa điền lưu ý của khách hàng' }}
-										render={({ field, fieldState }) => (
-											<InputTextarea
-												autoResize
-												id={field.name}
-												{...field}
-												className={classNames(
-													{ 'p-invalid': fieldState.invalid },
-													'create__job_area'
-												)}
-												placeholder='Lưu ý khách hàng'
-											/>
-										)}
-									/>
 								</span>
+								<Controller
+									name='work_notes'
+									control={control}
+									rules={{ required: 'Chưa điền lưu ý của khách hàng' }}
+									render={({ field, fieldState }) => (
+										<InputTextarea
+											autoResize
+											id={field.name}
+											{...field}
+											className={classNames(
+												{ 'p-invalid': fieldState.invalid },
+												'create__job_area'
+											)}
+											placeholder='Lưu ý khách hàng'
+										/>
+									)}
+								/>
 								{errors?.work_notes && (
 									<span className='warning' style={{ fontSize: '12px' }}>
 										{errors?.work_notes.message}
@@ -412,7 +407,7 @@ const CreateJobs = () => {
 									/>
 								</span>
 							</div>
-							<div className='field col-12 md:col-6'>
+							<div className='field col-12 md:col-6 pr-0'>
 								<span className=''>
 									<Button
 										label='Tạo mới'

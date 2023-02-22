@@ -108,7 +108,10 @@ const CreateUser = () => {
 			>
 				<div className='creat__job'>
 					<div className='creat__job--title'>
-						<h2>Tạo nhân viên mới</h2>
+						<h2>
+							Tạo nhân viên mới
+							<p>Nhập trường thông tin liên quan bắt buộc</p>
+						</h2>
 					</div>
 					<form
 						className=' grid modal__creat--job no_flex'
@@ -118,10 +121,10 @@ const CreateUser = () => {
 							return e.key !== 'Enter';
 						}}
 					>
-						<div className='field col-12 md:col-12 grid'>
+						<div className='field col-12 md:col-12 grid pr-0'>
 							<div className='field col-12 md:col-12'>
 								<span>
-									Nhập tên nhân viên: <span className='warning'>*</span>
+									<span className='warning'>*</span>Nhập tên nhân viên:
 								</span>
 								<span className=''>
 									<Controller
@@ -134,7 +137,7 @@ const CreateUser = () => {
 												id={field.name}
 												{...field}
 												className={classNames({ 'p-invalid': fieldState.invalid })}
-												placeholder='Chọn nhân viên'
+												placeholder='Enter'
 											/>
 										)}
 									/>
@@ -152,7 +155,7 @@ const CreateUser = () => {
 							</div>
 							<div className='field col-12 md:col-12'>
 								<span>
-									Biệt danh: <span className='warning'>*</span>
+									<span className='warning'>*</span>Biệt danh:
 								</span>
 								<span className=''>
 									<Controller
@@ -165,7 +168,7 @@ const CreateUser = () => {
 												id={field.name}
 												{...field}
 												className={classNames({ 'p-invalid': fieldState.invalid })}
-												placeholder='Điền biệt danh'
+												placeholder='Enter'
 											/>
 										)}
 									/>
@@ -178,7 +181,7 @@ const CreateUser = () => {
 							)}
 							<div className='field col-12 md:col-12'>
 								<span>
-									Nhập tên đăng nhập: <span className='warning'>*</span>
+									<span className='warning'>*</span>Nhập tên đăng nhập:
 								</span>
 								<span className='relative'>
 									<Controller
@@ -196,7 +199,7 @@ const CreateUser = () => {
 												id={field.name}
 												{...field}
 												className={classNames({ 'p-invalid': fieldState.invalid })}
-												placeholder='Điền tên đăng nhập'
+												placeholder='Enter'
 											/>
 										)}
 									/>
@@ -239,7 +242,9 @@ const CreateUser = () => {
 								</span>
 							</div>
 							<div className='field col-12 md:col-6 create__user--calendar'>
-								<span htmlFor='calendar'>Ngày tháng năm sinh:</span>
+								<span htmlFor='calendar'>
+									<span className='warning'>*</span>Ngày tháng năm sinh:
+								</span>
 								<span className=''>
 									<Controller
 										name='births'
@@ -253,7 +258,7 @@ const CreateUser = () => {
 												className={classNames({ 'p-invalid': fieldState.invalid })}
 												value={field.value}
 												onChange={(e) => field.onChange(e.value)}
-												placeholder='Chọn ngày tháng năm sinh'
+												placeholder='Enter'
 											/>
 										)}
 									/>
@@ -261,7 +266,9 @@ const CreateUser = () => {
 								<img src='/images/calendar.svg' alt='' className='calendar__image' />
 							</div>
 							<div className='field col-12 md:col-6 create__user--calendar'>
-								<span htmlFor='calendar'>Ngày bắt đầu làm:</span>
+								<span htmlFor='calendar'>
+									<span className='warning'>*</span>Ngày bắt đầu làm:
+								</span>
 								<span className=' '>
 									<Controller
 										name='start_day'
@@ -275,7 +282,7 @@ const CreateUser = () => {
 												className={classNames({ 'p-invalid': fieldState.invalid })}
 												value={field.value}
 												onChange={(e) => field.onChange(e.value)}
-												placeholder='Chọn ngày bắt đầu làm'
+												placeholder='Enter'
 											/>
 										)}
 									/>
@@ -284,7 +291,7 @@ const CreateUser = () => {
 							</div>
 							<div className='field col-12 md:col-6 '>
 								<span htmlFor='withoutgrouping'>
-									Số điện thoại: <span className='warning'>*</span>
+									<span className='warning'>*</span>Số điện thoại:
 								</span>
 								<span className=''>
 									<Controller
@@ -302,7 +309,7 @@ const CreateUser = () => {
 												id={field.name}
 												{...field}
 												className={classNames({ 'p-invalid': fieldState.invalid })}
-												placeholder='Số điện thoại'
+												placeholder='Enter'
 											/>
 										)}
 									/>
@@ -320,7 +327,7 @@ const CreateUser = () => {
 							</div>
 							<div className='field col-12 md:col-6'>
 								<span htmlFor='employees'>
-									Chức vụ: <span className='warning'>*</span>
+									<span className='warning'>*</span>Chức vụ:
 								</span>
 								<span className=''>
 									<Controller
@@ -349,7 +356,7 @@ const CreateUser = () => {
 													{ 'p-invalid': fieldState.invalid },
 													'create__role_type'
 												)}
-												placeholder='Chọn chức vụ'
+												placeholder='Select'
 											/>
 										)}
 									/>
@@ -362,7 +369,7 @@ const CreateUser = () => {
 							</div>
 							<div className='field col-12 md:col-6'>
 								<span htmlFor='original__link'>
-									Email: <span className='warning'>*</span>
+									<span className='warning'>*</span>Email:
 								</span>
 								<span className=''>
 									<Controller
@@ -375,7 +382,7 @@ const CreateUser = () => {
 												id={field.name}
 												{...field}
 												className={classNames({ 'p-invalid': fieldState.invalid })}
-												placeholder='Điền email'
+												placeholder='Enter'
 											/>
 										)}
 									/>
@@ -406,7 +413,7 @@ const CreateUser = () => {
 												value={field.value}
 												{...field}
 												className={classNames({ 'p-invalid': fieldState.invalid })}
-												placeholder='Điền địa chỉ'
+												placeholder='Enter'
 											/>
 										)}
 									/>
@@ -429,7 +436,7 @@ const CreateUser = () => {
 													className={`${classNames({
 														'p-invalid': fieldState.invalid,
 													})} w-full`}
-													placeholder='Nhập số'
+													placeholder='Enter'
 													currency='USD'
 													locale='en-US'
 													minFractionDigits={0}
@@ -461,7 +468,7 @@ const CreateUser = () => {
 										/>
 									</span>
 								</div>
-								<div className='field col-12 md:col-6'>
+								<div className='field col-12 md:col-6 pr-0'>
 									<span className=''>
 										<Button
 											label='Tạo mới'

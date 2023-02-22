@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
-import { Avatar } from 'primereact/avatar';
-import TablePersonalInfor from './TablePersonalInfor';
 import { useSelector } from 'react-redux';
 import { PHONE_REGEX } from '../../../constants';
 import { useDispatch } from 'react-redux';
@@ -45,7 +43,7 @@ const PersonalInfor = () => {
 		}
 	}, [setConfirmPassword, setPassword, editUser, dispatch]);
 
-	useEffect(() => {
+	const setDefaultValue = React.useCallback(() => {
 		if (user?.data) {
 			const { data } = user;
 			if (data?.username) {
@@ -87,6 +85,10 @@ const PersonalInfor = () => {
 			}
 		}
 	}, [user, birthStorage]);
+
+	useEffect(() => {
+		setDefaultValue();
+	}, [setDefaultValue]);
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
@@ -179,124 +181,172 @@ const PersonalInfor = () => {
 		setAvatar(file);
 	};
 
+	const handleCancel = () => {
+		setDefaultValue();
+	};
+
 	return (
-		<div className='page'>
-			<div className='grid'>
-				<div className='field col-12 md:col-5'>
-					<form className='infor__block grid' onSubmit={handleSubmit}>
-						<div className='field col-12 md:col-10 '>
-							<p className='infor__title'>Thông tin cá nhân</p>
-						</div>
-						<div className='field avatar__block relative ava_res'>
-							<Avatar image={imagePreview || avatar} className='mr-5 infor_avatar' shape='circle' />
-							<input type='file' id='avatar' onChange={handleChangeAvatar} />
-							<label htmlFor='avatar' className='label_avatar absolute'></label>
-						</div>
-						<div className='field col-12 md:col-10'>
-							<span>Họ và tên: </span>
-							<InputText placeholder='Nhập họ và tên' value={username} disabled />
-						</div>
-						<div className='field col-12 md:col-10'>
-							<span>Tên đăng nhập: </span>
-							<InputText placeholder='Tên đăng nhập' value={fullname} disabled />
-						</div>
-						<div className='field col-12 md:col-10'>
-							<span>Chức vụ: </span>
-							<InputText placeholder='Chức vụ' value={role} disabled />
-						</div>
-						<div className='field col-12 md:col-10'>
-							<span>Email: </span>
-							<InputText placeholder='nhập email' value={email} disabled />
-						</div>
-						<div className='field col-12 md:col-10'>
-							<span>Ngày sinh: </span>
-							<Calendar
-								value={birth || new Date(birthStorage)}
-								onChange={(e) => setBirth(e.value)}
-								placeholder='Ngày sinh'
-							/>
-						</div>
+		<div className='page h-full'>
+			<div className='grid '>
+				<div className='field col-12 md:col-12 flex personal__container'>
+					<div className='field col-12 md:col-6 personal__block'>
+						<form className='infor__block grid' onSubmit={handleSubmit}>
+							<div className='field avatar__block absolute '>
+								<div className='mask__image'>
+									<img src={imagePreview || avatar} alt='' className='mr-5 infor_avatar' />
+								</div>
+								<input type='file' id='avatar' onChange={handleChangeAvatar} />
+								<label htmlFor='avatar' className='label_avatar absolute'></label>
+							</div>
+							<div className='field col-12 md:col-12 mb-0 pb-0'>
+								<p className='infor__title'>Information</p>
+							</div>
+							<div className='field col-6 md:col-6'>
+								<span>First and last name: </span>
+								<InputText placeholder='Nhập họ và tên' value={username} disabled />
+							</div>
+							{/* <div className='field col-6 md:col-6'>
+								<span>Chức vụ: </span>
+								<InputText placeholder='Chức vụ' value={role} disabled />
+							</div> */}
+							<div className='field col-6 md:col-6'>
+								<span>Tên đăng nhập: </span>
+								<InputText placeholder='Tên đăng nhập' value={fullname} disabled />
+							</div>
+							<div className='field col-6 md:col-6'>
+								<span>Email: </span>
+								<InputText placeholder='nhập email' value={email} disabled />
+							</div>
+							<div className='field col-6 md:col-6'>
+								<span>Ngày sinh: </span>
+								<Calendar
+									value={birth || new Date(birthStorage)}
+									onChange={(e) => setBirth(e.value)}
+									placeholder='Ngày sinh'
+								/>
+							</div>
 
-						<div className='field col-12 md:col-10'>
-							<span>Số điện thoại: </span>
-							<InputText
-								placeholder='Số điện thoại'
-								value={phone}
-								onChange={(e) => {
-									setError('');
-									setPhone(e.target.value);
-								}}
-							/>
+							<div className='field col-12 md:col-6'>
+								<span>Số điện thoại: </span>
+								<InputText
+									placeholder='Số điện thoại'
+									value={phone}
+									onChange={(e) => {
+										setError('');
+										setPhone(e.target.value);
+									}}
+								/>
+							</div>
+							<div className='field col-12 md:col-6'>
+								<span>Địa chỉ: </span>
+								<InputText
+									placeholder='nhập địa chỉ'
+									value={address}
+									onChange={(e) => {
+										setError('');
+										setAddress(e.target.value);
+									}}
+								/>
+							</div>
+							<div className='field col-12 md:col-6'>
+								<span>Tên ngân hàng: </span>
+								<InputText
+									type='text'
+									value={nameBank || ''}
+									placeholder='Enter'
+									className='w-full'
+									onChange={(e) => {
+										setNameBank(e.target.value);
+									}}
+								/>
+							</div>
+							<div className='field col-12 md:col-6'>
+								<span>Số tài khoản: </span>
+								<InputText
+									type='text'
+									value={numberAccountPayment || ''}
+									placeholder='Số tài khoản'
+									className='w-full'
+									onChange={(e) => {
+										setNumberAccountPayment(e.target.value);
+									}}
+								/>
+							</div>
+							<div className='field col-12 md:col-6'>
+								<span>Tên chủ tài khoản: </span>
+								<InputText
+									type='text'
+									value={branch || ''}
+									placeholder='Enter'
+									className='w-full'
+									onChange={(e) => {
+										setBranch(e.target.value);
+									}}
+								/>
+							</div>
+							<div className='field col-12 md:col-12 mb-0 pb-0'>
+								<p className='infor__title'>Change password</p>
+								<span className='infor__content'>Enter input to change your password.</span>
+							</div>
+							<div className='field col-12 md:col-6'>
+								<span>Mật khẩu mới: </span>
+								<Password
+									placeholder='nhập mật khẩu mới'
+									value={password}
+									toggleMask
+									onChange={(e) => {
+										setError('');
+										setPassword(e.target.value);
+									}}
+								/>
+							</div>
+							<div className='field col-12 md:col-6'>
+								<span>Nhập lại mật khẩu: </span>
+								<Password
+									value={confirmPassword}
+									onChange={(e) => {
+										setError('');
+										setConfirmPassword(e.target.value);
+									}}
+									toggleMask
+									placeholder='Nhập lại mật khẩu'
+								/>
+							</div>
+							{error.length > 0 && (
+								<span
+									className='warning '
+									style={{ fontSize: '13px', marginLeft: '10px', bottom: '100px' }}
+								>
+									{error}
+								</span>
+							)}
+							<div className='field col-12 md:col-10 flex justify-content-end'>
+								<Button
+									label='Cancel'
+									className='p-button-outlined button__personal--cancel'
+									type='button'
+									severity='info'
+									onClick={handleCancel}
+								/>
+							</div>
+							<div className='field col-12 md:col-2 flex justify-content-end'>
+								<Button
+									label='Save'
+									className='p-button-outlined p-button-secondary infor__submit w-full'
+									type='submit'
+								/>
+							</div>
+						</form>
+					</div>
+					<div className='field col-12 md:col-6 flex justify-content-center align-items-center personal__block'>
+						<div className='relative card__bank'>
+							<p className='card__name--bank'>{nameBank || ''}</p>
+							<p className='card__nameUser--bank'>{branch ? `Chủ tài khoản: ${branch}` : ''}</p>
+							<p className='card__number--bank'>
+								{numberAccountPayment ? `stk: ` : ''}
+								<span>{numberAccountPayment || ''}</span>
+							</p>
 						</div>
-						<div className='field col-12 md:col-10'>
-							<span>Địa chỉ: </span>
-							<InputText
-								placeholder='nhập địa chỉ'
-								value={address}
-								onChange={(e) => {
-									setError('');
-									setAddress(e.target.value);
-								}}
-							/>
-						</div>
-						<div className='field col-12 md:col-10'>
-							<span>Mật khẩu mới: </span>
-							<Password
-								placeholder='nhập mật khẩu mới'
-								value={password}
-								toggleMask
-								onChange={(e) => {
-									setError('');
-									setPassword(e.target.value);
-								}}
-							/>
-						</div>
-						<div className='field col-12 md:col-10'>
-							<span>Nhập lại mật khẩu: </span>
-							<Password
-								value={confirmPassword}
-								onChange={(e) => {
-									setError('');
-									setConfirmPassword(e.target.value);
-								}}
-								toggleMask
-								placeholder='Nhập lại mật khẩu'
-							/>
-						</div>
-						{error.length > 0 && (
-							<span
-								className='warning '
-								style={{ fontSize: '13px', marginLeft: '10px', bottom: '100px' }}
-							>
-								{error}
-							</span>
-						)}
-						<div className='field col-12 md:col-10 flex justify-content-end'>
-							<Button
-								label='Sửa'
-								className='p-button-outlined p-button-secondary infor__submit'
-								type='submit'
-							/>
-						</div>
-					</form>
-				</div>
-				<div className='field col-12 md:col-7'>
-					<div className='flex flex-column justify-content-between' style={{ height: '100%' }}>
-						<div className='field avatar__block relative ava_right'>
-							<Avatar image={imagePreview || avatar} className='mr-5 infor_avatar' shape='circle' />
-							<input type='file' id='avatar' onChange={handleChangeAvatar} />
-							<label htmlFor='avatar' className='label_avatar absolute'></label>
-						</div>
-
-						<TablePersonalInfor
-							nameBank={nameBank}
-							numberAccountPayment={numberAccountPayment}
-							paymentMethod={paymentMethod}
-							branch={branch}
-							setNameBank={setNameBank}
-							setNumberAccountPayment={setNumberAccountPayment}
-							setBranch={setBranch}
-						/>
 					</div>
 				</div>
 			</div>

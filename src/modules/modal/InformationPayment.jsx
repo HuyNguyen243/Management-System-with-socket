@@ -102,7 +102,10 @@ const InformationPayment = () => {
 			>
 				<div className='creat__job'>
 					<div className='creat__job--title flex justify-content-between' style={{ marginRight: '10px' }}>
-						<h2>Thông tin thanh toán </h2>
+						<h2>
+							Thông tin thanh toán
+							<p>Hiển thị các trường thông tin thanh toán</p>
+						</h2>
 					</div>
 					<form className=' grid modal__creat--job no_flex' onSubmit={handleSubmit}>
 						<div className='field col-12 md:col-12 grid'>

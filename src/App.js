@@ -13,6 +13,7 @@ import Modal from './modules/modal/Modal';
 import Notfound from './404';
 import 'primeicons/primeicons.css';
 import Loader from './commons/loader';
+import { URL_ROUTER } from './routes/routes';
 
 function App() {
 	const user = useSelector((state) => state.auth.token);
@@ -25,12 +26,6 @@ function App() {
 		}, 300);
 	}, [user?.isAuth]);
 
-	// React.useEffect(() => {
-	//     window.onunload = function (ev) {
-	//         ev.preventDefault();
-	//         return (ev.returnValue = "Are you sure you want to close?");
-	//     }
-	// });
 	const notFound = () => {
 		return <>{role?.data?.role && <Notfound />}</>;
 	};
@@ -49,12 +44,12 @@ function App() {
 					))
 				) : (
 					<>
-						<Route path='*' element={<Navigate to='/login' replace />} />
+						<Route path='*' element={<Navigate to={URL_ROUTER.LOGIN} replace />} />
 					</>
 				)}
-				<Route path='/login' element={<Login />} />
-				<Route path='/forgot-password' element={<ForgotPassword />} />
-				<Route path='/reset-password' element={<ResetPassword />} />
+				<Route path={URL_ROUTER.LOGIN} element={<Login />} />
+				<Route path={URL_ROUTER.FORGOT_PASSWORD} element={<ForgotPassword />} />
+				<Route path={URL_ROUTER.RESET_PASSWORD} element={<ResetPassword />} />
 			</Routes>
 			{userIsAuth && (
 				<>

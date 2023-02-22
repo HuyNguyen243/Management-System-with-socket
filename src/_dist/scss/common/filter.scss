@@ -88,8 +88,8 @@
 	}
 }
 
-.filter__dropdown{
-	.p-dropdown-label{
+.filter__dropdown {
+	.p-dropdown-label {
 		padding: 9px;
 		width: 150px;
 	}
@@ -160,15 +160,19 @@
 
 .filter__calendar input {
 	border-radius: 4px;
-    padding: 9px 15px;
-    width: 270px !important;
-    border: 1px solid #ced1d7;
+	padding: 9px 15px;
+	width: 270px !important;
+	border: 1px solid #ced1d7;
 }
 
-.filter__reset{
+.filter__reset {
 	height: 35px;
 }
 
-.css-e53awj-MuiStack-root{
+.css-e53awj-MuiStack-root {
 	justify-content: end;
+}
+
+.p-paginator .p-dropdown {
+	height: 40px;
 }

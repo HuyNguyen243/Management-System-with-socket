@@ -6,25 +6,15 @@ import { getCurrentRoom, setIsOpenChat, getMsgsByIdSystem } from '../../../redux
 import { timeAgo } from '../../../commons/message.common';
 import { CharacterRoom } from '../../../commons/message.common';
 import { UserRules } from '../../../constants';
-// import { requestPermission } from '../../../_services/firebase';
-// import { useLocation } from 'react-router';
-// import { NAME_NOTIFICATION } from '../../../constants';
-// import { postFireBaseNotification } from '../../../_services/apiRequest';
 
 const Messages = ({ isOpenMessages, setisOpenMessages }) => {
 	const [messages, setMessages] = useState([]);
-	// const [token,setToken] = useState(null)
 	const user = useSelector((state) => state.auth.user);
 	const currentUser = useSelector((state) => state.message.currentUser);
 	const dispatch = useDispatch();
 	const groups = useSelector((state) => state.message.allGroups);
 	const members = useSelector((state) => state.message.allMembers);
-	// const location = useLocation()
-	// const { search } = location
-	// const pathNameURL = window.location.href.replace(search,"")
 	const userReminders = useSelector((state) => state.auth.userReminders);
-
-	// requestPermission(setToken)
 
 	useEffect(() => {
 		if (user?.data) {
@@ -35,22 +25,9 @@ const Messages = ({ isOpenMessages, setisOpenMessages }) => {
 	socket.off('messages-by-id-system').on('messages-by-id-system', (payload) => {
 		setMessages(payload);
 		dispatch(getMsgsByIdSystem(payload));
-		// if(payload.length > 0){
-		//     if(token && currentUser && currentUser?.newMessages){
-		//         for(let room in currentUser?.newMessages){
-		//             if(room && room === payload?.[0]?._id){
-		//                 const notification ={
-		//                     title: NAME_NOTIFICATION.MESSAGE,
-		//                     message: payload?.[0]?.content
-		//                 }
-		//                 postFireBaseNotification(pathNameURL, notification, token)
-		//             }
-		//         }
-		//     }
-		// }
 	});
 
-	socket.off('user-send-message').on('user-send-message', (payload) => {
+	socket.off('user-send-message').on('user-send-message', () => {
 		socket.emit('messages-by-id-system', user?.data?.id_system);
 	});
 

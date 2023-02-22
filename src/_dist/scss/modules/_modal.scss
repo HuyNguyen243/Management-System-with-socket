@@ -33,13 +33,18 @@
 	padding-top: 10px;
 }
 
+.p-inputnumber {
+	width: 100%;
+}
+
 .aria_content,
 .aria_note {
 	height: 150px;
 }
 
 .p-sidebar-content {
-	padding: 10px 20px 0 20px !important;
+	padding: 0px !important;
+	overflow-x: hidden;
 }
 
 .image_messager {
