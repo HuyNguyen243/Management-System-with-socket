@@ -267,3 +267,39 @@ export const table_performance = [
 		haveSort: false,
 	},
 ];
+
+
+export const table_job_performance = [
+	{
+		name: 'STT',
+		haveSort: false,
+	},
+	{
+		name: 'Nhân viên',
+		haveSort: false,
+	},
+	{
+		name: 'Đang yêu cầu',
+		haveSort: false,
+	},
+	{
+		name: 'Đang xử lý',
+		haveSort: false,
+	},
+	{
+		name: 'Đã hoàn thành',
+		haveSort: false,
+	},
+	{
+		name: 'Doanh thu',
+		haveSort: false,
+	},
+	{
+		name: 'Bonus Complete',
+		haveSort: false,
+	},
+	{
+		name: 'KPI',
+		haveSort: false,
+	},
+];

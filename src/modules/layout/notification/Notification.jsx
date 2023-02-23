@@ -190,24 +190,26 @@ const Notification = ({ isOpenNotification, setisOpenNotification }) => {
 			return notifications?.map((notify, index) => {
 				const arrTittle = notify?.title.split(' ');
 				arrTittle.splice(arrTittle?.length - 1, 1, checkNameReminder(arrTittle?.[arrTittle?.length - 1]));
-
 				return (
-					<div
-						className={`notification_item ${
-							notify?.member_check_notify?.[user?.data?.id_system] && 'active'
-						}`}
-						key={index}
-						onClick={() => handleSeenNotify(notify?._id, notify?.id_job, notify?.status, index)}
-					>
-						<p className='notification__name'>{notify?.id_job}</p>
-						<div className='notification__i'>
-							<p className='notification__note'>{arrTittle.join(' ')}</p>
-							{notify?.member_check_notify?.[user?.data?.id_system] && (
-								<label className='notification__alert'></label>
-							)}
+						<div
+							className={`notification_item flex ${
+								notify?.member_check_notify?.[user?.data?.id_system] && 'active'
+							}`}
+							key={index}
+							onClick={() => handleSeenNotify(notify?._id, notify?.id_job, notify?.status, index)}
+						>
+							<div className="chat_img pr-2" ></div>
+							<div className="w-full">
+								<p className='notification__name'>{notify?.id_job}</p>
+								<div className='notification__i'>
+									<p className='notification__note'>{arrTittle.join(' ')}</p>
+									{notify?.member_check_notify?.[user?.data?.id_system] && (
+										<label className='notification__alert'></label>
+									)}
+								</div>
+								<span className='notify__time'>{timeAgo(notify?._create_at)}</span>
+							</div>
 						</div>
-						<span className='notify__time'>{timeAgo(notify?._create_at)}</span>
-					</div>
 				);
 			});
 		} else {
@@ -218,7 +220,7 @@ const Notification = ({ isOpenNotification, setisOpenNotification }) => {
 	return (
 		<div className={`notification__container ${!isOpenNotification && 'hidden'}`}>
 			<div className='notification__title'>
-				<h5>Thông báo</h5>
+				<h5>Notification</h5>
 			</div>
 			<div className='notification__block'>
 				{showNotifications()}

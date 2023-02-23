@@ -276,7 +276,14 @@ const Index = ({
 				</div>
 				<div className='flex flex-column justify-content-center'></div>
 			</div>
+			<div className='msg__title'>
+				<span className='title_members'>
+					<img alt="" src="/images/logo/logo_blue.svg" />
+					One Touch
+				</span>
+			</div>
 			<ul className='list'>
+				
 				<Groups
 					groups={groupsAfterSort}
 					currentUser={currentUser}

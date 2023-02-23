@@ -29,8 +29,17 @@ const TableTotal = ({ setDateWorkFlow, dateWorkFlow }) => {
 	};
 
 	return (
-		<div className='grid'>
-			<div className='table__analysis field col-12 md:col-8 mt-0'>
+		<div className='grid table__container'>
+			<div className='table__analysis field col-12 md:col-8 mt-0 mb-0 pb-0 flex flex-column justify-content-between'>
+				<p className='chart__title'>Thống kê công việc</p>
+				<Calendar
+					id=''
+					className='w-3 mb-2'
+					value={dateWorkFlow}
+					onChange={(e) => setDateWorkFlow(e.value)}
+					selectionMode='range'
+					placeholder='Select date'
+				/>
 				<DataTable
 					value={[dataTable]}
 					responsiveLayout='stack'
@@ -58,15 +67,7 @@ const TableTotal = ({ setDateWorkFlow, dateWorkFlow }) => {
 				</DataTable>
 			</div>
 
-			<div className='table__analysis field col-12 md:col-4 mt-0'>
-				<Calendar
-					id=''
-					className='w-5 mb-2'
-					value={dateWorkFlow}
-					onChange={(e) => setDateWorkFlow(e.value)}
-					selectionMode='range'
-					placeholder='Select date'
-				/>
+			<div className='table__analysis field col-12 md:col-4 mt-0  mb-0 pb-0'>
 				<Analysis />
 			</div>
 		</div>

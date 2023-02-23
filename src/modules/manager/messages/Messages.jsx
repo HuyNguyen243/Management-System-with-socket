@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { timeAgo } from '../../../commons/message.common';
 import { Image } from 'primereact/image';
 
 const Messages = ({ messagesOnRoom, currentUser }) => {
 	const URL = process.env.REACT_APP_API || process.env.REACT_APP_DEV_API;
-	const [currentTime, setCurrentTime] = useState(null);
 
 	const showMessages = () => {
 		if (messagesOnRoom?.length > 0) {
@@ -23,7 +22,6 @@ const Messages = ({ messagesOnRoom, currentUser }) => {
 										className={`msg__by--user flex ${
 											checkUserSend ? 'justify-content-end' : 'justify-content-start'
 										}`}
-										onClick={() => setCurrentTime(message?._id)}
 									>
 										{checkUserSend ? (
 											<>
@@ -50,10 +48,7 @@ const Messages = ({ messagesOnRoom, currentUser }) => {
 													data-size='small'
 												></div>
 												<span
-													className={`message_time ${
-														currentTime === message?._id &&
-														'opacity-100 transition-ease-in transition-duration-300'
-													}`}
+													className={`message_time`}
 												>
 													{timeAgo(message?.time)}
 												</span>
@@ -83,10 +78,7 @@ const Messages = ({ messagesOnRoom, currentUser }) => {
 													</div>
 												</div>
 												<span
-													className={`message_time ${
-														currentTime === message?._id &&
-														'opacity-100 transition-ease-in transition-duration-300'
-													}`}
+													className={`message_time`}
 												>
 													{timeAgo(message?.time)}
 												</span>

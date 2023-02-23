@@ -118,7 +118,7 @@ const Messages = ({ isOpenMessages, setisOpenMessages }) => {
 	return (
 		<div className={`notification-message__container ${!isOpenMessages && 'hidden'}`}>
 			<div className='notification-message__title'>
-				<h5>Tin nhắn</h5>
+				<h5>Messages</h5>
 			</div>
 			<div className='mess_notification'>
 				{messages?.length > 0 ? (

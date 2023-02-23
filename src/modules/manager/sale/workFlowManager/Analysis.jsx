@@ -6,11 +6,12 @@ import { useSelector } from 'react-redux';
 const Analysis = () => {
 	const [chartData, setChartData] = useState(initialDataChart);
 	const performance = useSelector((state) => state.performanceReducer.employeePerformance);
+	const [haveValueChart, setHaveValueChart] = useState(false);
 
 	useEffect(() => {
 		if (performance?.data) {
 			const _data = {
-				labels: ['Tạm hoãn', 'Đang xử lý', 'Đã hoàn thành'],
+				// labels: ['Tạm hoãn', 'Đang xử lý', 'Đã hoàn thành'],
 				datasets: [
 					{
 						data: [
@@ -18,8 +19,8 @@ const Analysis = () => {
 							performance?.data ? performance?.data?.job_incomplete : 100,
 							performance?.data ? performance?.data?.job_complete : 100,
 						],
-						backgroundColor: ['#FF6384', '#FFCE56', '#0061F4'],
-						hoverBackgroundColor: ['#FF6384', '#FFCE56', '#0061F4'],
+						backgroundColor: ['#FF6600', '#3564DB', '#3EC180'],
+						hoverBackgroundColor: ['#FF6600', '#3564DB', '#3EC180'],
 					},
 				],
 			};
@@ -27,27 +28,38 @@ const Analysis = () => {
 		}
 	}, [setChartData, performance]);
 
-	const checkData = () => {
-		if (performance?.data) {
-			if (
-				performance?.data?.job_pending > 0 ||
-				performance?.data?.job_incomplete > 0 ||
-				performance?.data?.job_complete > 0
-			) {
-				return true;
-			} else {
-				return false;
+	useEffect(()=>{
+		if(chartData?.datasets?.[0]?.data){
+			const totalValue =  chartData?.datasets?.[0]?.data.reduce((acc,item)=>{
+				return acc += item
+			},0)
+	
+			if(totalValue > 0){
+				setHaveValueChart(true)
+			}else{
+				setHaveValueChart(false)
 			}
-		} else {
-			return false;
 		}
-	};
+	},[chartData])
 
 	return (
-		<div className='grid' style={{ height: '350px' }}>
-			<div className='field col-12 md:col-12 '>
-				{checkData() && <p className='chart__title'>Jobs</p>}
-				<Chart type='doughnut' data={chartData} className='chart_donut' />
+		<div className='grid'>
+			<div className='field col-6 md:col-6 mb-0'>
+				<Chart type='doughnut' data={chartData} className='chart_donut mr-0' />
+			</div>
+			<div className='field col-6 md:col-6 mb-0'>
+				{
+					haveValueChart && 
+					<div className="flex justify-content-center h-full flex-column">
+						<div className="chart__dot complete flex align-items-center">Đã hoàn thành</div>
+						<div className="chart__dot not-complete flex align-items-center">Chưa hoàn thành</div>
+						<div className="chart__dot processing flex align-items-center">Đang xử lý</div>
+						<div className="chart__bonus" >
+							<p>Số tiền bonus: <span>132$</span> </p>
+							<p>Tổng doanh thu:	<span>132$</span> </p>
+						</div>
+					</div>
+				}
 			</div>
 		</div>
 	);

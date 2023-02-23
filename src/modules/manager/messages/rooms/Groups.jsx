@@ -177,11 +177,6 @@ const Groups = ({
 	};
 	return (
 		<>
-			{roomview && roomview?.length > 0 && (
-				<li className='msg__title'>
-					<span className='title_members'>Room thành viên</span>
-				</li>
-			)}
 			<div ref={UserViewTopRef}></div>
 			{roomview &&
 				roomview?.length > 0 &&

@@ -83,9 +83,6 @@ const Members = ({
 
 	return (
 		<>
-			<li className='msg__title'>
-				<span className='title_members'>Thành viên</span>
-			</li>
 			<div ref={userTopRef}></div>
 			{newmembers?.map((member, index) => (
 				<div key={index}>

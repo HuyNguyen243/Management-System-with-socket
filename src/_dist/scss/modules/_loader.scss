@@ -11,10 +11,12 @@
 }
 .loader {
 	width: 48px;
-	height: 48px;
-	border-radius: 50%;
-	position: relative;
-	animation: rotate 1s linear infinite;
+    height: 48px;
+    border-radius: 50%;
+    position: absolute;
+    left: 50%;
+    animation: rotate 1s linear infinite;
+    top: 50%;
 }
 .loader::before,
 .loader::after {

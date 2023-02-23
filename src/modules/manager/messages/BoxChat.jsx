@@ -285,7 +285,7 @@ const BoxChat = () => {
 	};
 
 	return (
-		<div className={`chat-container page ${!isOpenChat && 'hidden'}`}>
+		<div className={`chat-container  ${!isOpenChat && 'hidden'}`}>
 			{user?.data?.role === UserRules.ROLE.ADMIN && (
 				<>
 					<div
@@ -334,14 +334,13 @@ const BoxChat = () => {
 					{namePrivateRoom && (
 						<div className='chat_img' role={namePrivateRoom?.charAt(0) + namePrivateRoom?.charAt(1)}></div>
 					)}
-					<span className='id__me'>{currentUser?.id_system}</span>
 					<div className='chat-about'>
 						<div className='chat-with'>
 							{(currentUser?.role === UserRules.ROLE.ADMIN
 								? replaceName(privateMemberMsg)
 								: checkNameReminder(privateMemberMsg)) || namePrivateRoom}
 						</div>
-						<div className='chat-num-messages'>{role}</div>
+						<div className='chat-num-messages hidden'>{role}</div>
 						{user?.data?.role === UserRules.ROLE.ADMIN &&
 							currentRoom &&
 							currentRoom?.includes(NAME_ROOM.GROUP) && (
@@ -355,7 +354,7 @@ const BoxChat = () => {
 					</div>
 				</div>
 				{/* end chat-header */}
-				<div className={`chat-history relative ${multiPreviewImages.length > 0 && 'have__img'}`}>
+				<div className={`chat-history relative`}>
 					<ul className='group__message'>
 						<Messages messagesOnRoom={messagesOnRoom} currentUser={currentUser} />
 					</ul>
@@ -368,19 +367,28 @@ const BoxChat = () => {
 						onSubmit={handleSubmit}
 						className={`chat-message align-items-end clearfix ${!currentRoom ? 'hidden' : ''}`}
 					>
-						<div className='chat__file'>
-							<input
-								type='file'
-								className='hidden'
-								id='file_chat'
-								onChange={handleFiles}
-								multiple
-								accept='image/png, image/jpeg, image/jpg '
-							/>
-							<label htmlFor='file_chat'></label>
-						</div>
 						<div className={`w-full box__chat ${multiPreviewImages.length > 0 && 'pt-1'}`}>
-							<div className={`preview__imgs ${multiPreviewImages.length > 0 && 'pl-4 pb-1'}`}>
+							<textarea
+								name='message-to-send m-0'
+								id='message-to-send'
+								rows={1}
+								value={messages}
+								onChange={(e) => setMessages(e.target.value)}
+							/>
+						</div>
+						<div className="justify-content-between flex group__chat--btn">
+							<div className='chat__file'>
+								<input
+									type='file'
+									className='hidden'
+									id='file_chat'
+									onChange={handleFiles}
+									multiple
+									accept='image/png, image/jpeg, image/jpg '
+								/>
+								<label htmlFor='file_chat'></label>
+							</div>
+							<div className={`preview__imgs`}>
 								{multiPreviewImages.length > 0 &&
 									multiPreviewImages.map((image, index) => {
 										return (
@@ -394,17 +402,10 @@ const BoxChat = () => {
 										);
 									})}
 							</div>
-							<textarea
-								name='message-to-send m-0'
-								id='message-to-send'
-								rows={1}
-								value={messages}
-								onChange={(e) => setMessages(e.target.value)}
-							/>
+							<button className={`${isOpenChat && 'btn__sendChat'}`}>
+								Send
+							</button>
 						</div>
-						<button className={`${isOpenChat && 'btn__sendChat'} ""`}>
-							<img src='images/send.svg' alt='' className='mb-1' />
-						</button>
 					</form>
 				}
 			</div>

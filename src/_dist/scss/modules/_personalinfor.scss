@@ -47,10 +47,12 @@
 .card__bank {
 	background-image: url('../../../../public/images/personal/payment.svg');
 	width: 500px;
-	background-size: 100%;
-	background-repeat: no-repeat;
-	height: 100%;
-	background-position: center;
+    background-size: 100%;
+    background-repeat: no-repeat;
+    height: 100%;
+    background-position: center;
+    top: -150px;
+    left: 60px
 }
 
 .card__name--bank {
@@ -122,4 +124,22 @@
 	background: none;
 	color: #ffffff;
 	border-color: none;
+}
+
+.personal__information{
+	position: absolute;
+    top: -50px;
+    left: 190px;
+	p{
+		font-style: normal;
+		font-weight: 400;
+		font-size: 16px;
+		line-height: 24px;
+		color: $color-gray-dark;
+	}
+}
+
+.card__title{
+	top: 25%;
+    left: 70px;
 }

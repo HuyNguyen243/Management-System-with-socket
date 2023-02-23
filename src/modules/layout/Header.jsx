@@ -20,6 +20,7 @@ import Messages from './messages/Messages';
 import { socket } from '../../_services/socket';
 import HeaderPage from './HeaderPage';
 import { handleOutSide } from '../../commons/support';
+import DotStatus from "../../commons/dotStatus"
 
 export default function Header() {
 	const dispatch = useDispatch();
@@ -183,15 +184,7 @@ export default function Header() {
 									<div className='header__right--information'>
 										<div className='information__name'>
 											<p>{user?.data?.fullname}</p>
-											{user?.data?.status === UserRules.STATUS.ONLINE && (
-												<span className='dots_online'></span>
-											)}
-											{user?.data?.status === UserRules.STATUS.LEAVE && (
-												<span className='dots_busy'></span>
-											)}
-											{user?.data?.status === UserRules.STATUS.OFFLINE && (
-												<span className='dots_offline'></span>
-											)}
+											<DotStatus />
 										</div>
 										<div className='information__roles'>
 											{user?.data?.role === UserRules.ROLE.ADMIN && <p>Admin</p>}

@@ -10,6 +10,7 @@ import { Calendar } from 'primereact/calendar';
 import { storage } from '../../../_services/sesionStorage';
 import { formatDate } from '../../../commons/dateTime';
 import { resetEditStaff } from '../../../redux/auth/authSlice';
+import DotStatus from '../../../commons/dotStatus';
 
 const PersonalInfor = () => {
 	const dispatch = useDispatch();
@@ -190,13 +191,20 @@ const PersonalInfor = () => {
 			<div className='grid '>
 				<div className='field col-12 md:col-12 flex personal__container'>
 					<div className='field col-12 md:col-6 personal__block'>
-						<form className='infor__block grid' onSubmit={handleSubmit}>
+						<form className='infor__block grid relative' onSubmit={handleSubmit}>
 							<div className='field avatar__block absolute '>
 								<div className='mask__image'>
 									<img src={imagePreview || avatar} alt='' className='mr-5 infor_avatar' />
 								</div>
 								<input type='file' id='avatar' onChange={handleChangeAvatar} />
 								<label htmlFor='avatar' className='label_avatar absolute'></label>
+							</div>
+							<div className='personal__information'>
+								<div className='flex align-items-center'>
+									<DotStatus />
+									<span className='pl-1'>{user?.data?.fullname}</span>
+								</div>
+								<p>{user?.data?.email}</p>
 							</div>
 							<div className='field col-12 md:col-12 mb-0 pb-0'>
 								<p className='infor__title'>Information</p>
@@ -266,6 +274,12 @@ const PersonalInfor = () => {
 									type='text'
 									value={numberAccountPayment || ''}
 									placeholder='Số tài khoản'
+									onKeyPress={(event) => {
+										const numbKeyBoard = event.which;
+										if (numbKeyBoard < 48 || numbKeyBoard > 57) {
+											event.preventDefault();
+										}
+									}}
 									className='w-full'
 									onChange={(e) => {
 										setNumberAccountPayment(e.target.value);
@@ -338,7 +352,11 @@ const PersonalInfor = () => {
 							</div>
 						</form>
 					</div>
-					<div className='field col-12 md:col-6 flex justify-content-center align-items-center personal__block'>
+					<div className='field col-12 md:col-6 flex justify-content-start align-items-start personal__block relative'>
+						<div className='absolute card__title'>
+							<p className='infor__title'>Payment methods</p>
+							<p className='infor__content'>Payment by bank transfer or e-wallets.</p>
+						</div>
 						<div className='relative card__bank'>
 							<p className='card__name--bank'>{nameBank || ''}</p>
 							<p className='card__nameUser--bank'>{branch ? `Chủ tài khoản: ${branch}` : ''}</p>

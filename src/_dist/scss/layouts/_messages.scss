@@ -28,12 +28,11 @@
 
 .notification-message__title {
 	padding: 10px;
-	border-bottom: 1px solid $color-border-input;
 	h5 {
 		font-weight: 400;
 		font-size: 14px;
 		line-height: 29px;
-		color: $color-primary;
+		color: $color-black;
 	}
 }
 
@@ -144,7 +143,6 @@
 	position: absolute;
 	font-size: 9px;
 	bottom: 0px;
-	opacity: 0;
 }
 
 .edit__group {

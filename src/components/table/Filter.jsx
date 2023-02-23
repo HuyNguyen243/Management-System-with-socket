@@ -183,7 +183,7 @@ const Filter = ({ DataFilter, sortBy, sortValue, setSortBy, setSortValue, search
 					autoComplete='off'
 					className='filter__search field col-6 md:col-3'
 				>
-					{pathname !== '/job-performance' ? (
+					{pathname !== URL_ROUTER.JOB_PERFORMANCE ? (
 						<>
 							<InputText
 								placeholder='Search'
@@ -202,12 +202,12 @@ const Filter = ({ DataFilter, sortBy, sortValue, setSortBy, setSortValue, search
 							value={user}
 							onChange={(e) => setUser(e.value)}
 							placeholder='Nhân viên'
-							className='filter__user'
+							className='filter__user '
 						/>
 					)}
 				</Box>
 				<DatePicker dates={dates} setDates={setDates} />
-				{pathname !== '/job-performance' && (
+				{pathname !== URL_ROUTER.JOB_PERFORMANCE && (
 					<Dropdown
 						options={dropdown}
 						optionLabel='status'
@@ -219,7 +219,7 @@ const Filter = ({ DataFilter, sortBy, sortValue, setSortBy, setSortValue, search
 						style={{ width: 'inherit' }}
 					/>
 				)}
-				<img src='images/reset.svg' alt='' onClick={handleReset} className='filter__reset' />
+				<img src='images/reset.svg' alt='' onClick={handleReset} className={`filter__reset ${pathname === URL_ROUTER.JOB_PERFORMANCE && 'pl-2'}`} />
 			</div>
 		</>
 	);

@@ -5,8 +5,16 @@
 	right: 45px;
 	z-index: 9999;
 	box-shadow: -2px 8px 8px rgb(0 0 0 / 30%);
-	border-radius: 10px;
+	border-radius: 20px;
 	height: 475px;
+}
+
+.group__chat--btn{
+	background: #F8F9FA;
+	border: 1px solid #D9D9D9;
+	border-radius: 0 0 10px 10px;
+	padding: 5px 10px;
+	position: relative;
 }
 
 .list {
@@ -17,10 +25,10 @@
 }
 
 .people-list {
-	width: 100px;
+	width: 300px;
 	transition: 0.3s linear;
-	background: #dfdfdf;
-	border-radius: 0 0 0 10px;
+	background: white;
+	border-radius: 0 0 0 20px;
 	.search {
 		padding: 20px;
 	}
@@ -45,10 +53,10 @@
 
 	ul {
 		overflow-y: auto;
-		max-height: 470px;
+		max-height: 411px;
 		li {
 			display: flex;
-			padding: 5px 10px;
+			padding: 20px 10px 10px 20px;
 			justify-content: center;
 			position: relative;
 			border-bottom: 1px solid $color-border-input;
@@ -61,9 +69,6 @@
 		}
 	}
 
-	.about {
-		margin-top: 8px;
-	}
 
 	.about {
 		.status {
@@ -87,22 +92,68 @@
 			max-width: 120px;
 		}
 	}
+
+	.about {
+		padding-left: 5px;
+		.name {
+			display: block;
+			transition: 0.3s linear;
+		}
+		.status {
+			display: block;
+			transition: 0.3s linear;
+		}
+	}
+	.avatar_me {
+		display: none;
+	}
+	.message__title {
+		padding-bottom: 18px;
+	}
+	ul li {
+		border-bottom: 1px solid $color-white;
+		justify-content: inherit;
+	}
+	ul li:last-child {
+		border-bottom: none;
+	}
+
+	.notification-message__search {
+		opacity: 1;
+		transition: 0.3s linear;
+		width: inherit;
+		height: inherit;
+	}
+	.has_seen {
+		top: 30px;
+		right: 10px;
+	}
+}
+
+.chat-header::after{
+	content: "";
+    position: absolute;
+    left: -10px;
+    top: 0;
+    background-color: white;
+    width: 10px;
+	height: 100%;
 }
 
 .chat {
 	width: 490px;
 	float: left;
-	background: #f2f5f8;
+	background: $color-white;
 	border-top-right-radius: 5px;
 	border-bottom-right-radius: 5px;
-	border-left: 2px solid $color-white;
 	color: #434651;
+	border-left: 1px solid #D9D9D9;
 	.chat-header {
-		padding: 10px;
-		border-bottom: 2px solid $color-white;
+		padding: 5px 10px 5px 10px;
+		border-bottom: 1px solid #D9D9D9;
 		display: flex;
 		position: relative;
-		height: 71px;
+		height: 64px;
 		img {
 			float: left;
 		}
@@ -110,7 +161,7 @@
 		.chat-about {
 			float: left;
 			padding-left: 10px;
-			margin-top: 6px;
+			margin-top: 10px;
 		}
 
 		.chat-with {
@@ -140,37 +191,23 @@
 		padding: 10px 10px 20px;
 		border-bottom: 2px solid white;
 		overflow-y: scroll;
-		height: 325px;
+		height: 300px;
 
 		.message-data {
 			margin-bottom: 15px;
+			display: flex;
+			justify-content:center;
 		}
 
 		.message-data-time {
-			width: 100%;
+			width: max-content;
 			text-align: center;
-			font-size: 13px;
-			color: gray;
+			font-size: 11px;
+			color: white;
 			position: relative;
-			background: #f2f5f8;
-		}
-
-		.message-data-time::after {
-			content: '';
-			border-bottom: 1px solid #8080803b;
-			width: 40%;
-			position: absolute;
-			right: 0;
-			top: 9px;
-		}
-
-		.message-data-time::before {
-			content: '';
-			border-bottom: 1px solid #8080803b;
-			width: 40%;
-			position: absolute;
-			left: 0;
-			top: 9px;
+			background-color: #8FA0AF;
+			padding: 5px;
+			border-radius: 20px;
 		}
 
 		.my-message {
@@ -178,16 +215,24 @@
 		}
 
 		.my-message p {
-			background: linear-gradient(#fd9e9f, #b3b7dd);
-			color: $color-white !important;
-			padding: 0 5px;
-			border-radius: 10px;
+			background: #E8F2FE;
+			color: $color-black !important;
+			padding: 10px;
+			font-weight: 400;
+			font-size: 14px;
+			line-height: 22px;
+			border-radius: 20px 20px 0px 20px;
 		}
 
 		.other-message p {
-			background-color: #fdfeff;
-			padding: 0 5px;
-			border-radius: 10px;
+			background-color: #EEF1F4;
+			padding: 10px;
+			border-radius: 20px 20px 20px 0px;
+			font-style: normal;
+			font-weight: 400;
+			font-size: 14px;
+			line-height: 22px;
+			color: $color-black !important;
 		}
 
 		.message {
@@ -232,14 +277,13 @@
 	}
 
 	.chat-message {
-		padding: 15px 0px 0 15px;
-		display: flex;
+		padding: 10px;
 		textarea {
+			border: 1px solid #D9D9D9;
+			border-radius: 10px 10px 0 0;
 			width: 100%;
-			border: none;
 			padding: 10px 20px;
 			font: 14px/22px 'Lato', Arial, sans-serif;
-			border-radius: 5px;
 			resize: none;
 		}
 
@@ -252,12 +296,18 @@
 
 		button {
 			float: right;
-			font-size: 16px;
-			text-transform: uppercase;
+		
 			border: none;
 			cursor: pointer;
-			font-weight: bold;
 			background: #f2f5f8;
+			font-style: normal;
+			font-weight: 600;
+			font-size: 14px;
+			line-height: 20px;
+			color: #9E9E9E;
+			border: 1px solid #D9D9D9;
+			border-radius: 10px;
+			width: 65px;
 		}
 	}
 }
@@ -310,8 +360,6 @@
 }
 
 #people-list.active {
-	width: 200px;
-	transition: 0.3s linear;
 	.about {
 		padding-left: 5px;
 		.name {
@@ -425,14 +473,14 @@
 .chat__file label:before {
 	content: '';
 	background-image: url('../../../../public/images/gim.svg');
-	width: 15px;
-	height: 22px;
-	display: block;
-	background-size: 10px;
-	background-repeat: no-repeat;
-	background-position: center;
-	cursor: pointer;
-	margin-bottom: 10px;
+	width: 27px;
+    height: 30px;
+    display: block;
+    background-size: 10px;
+    background-repeat: no-repeat;
+    background-position: center;
+    cursor: pointer;
+    background-size: 15px;
 }
 
 .chat__file {
@@ -461,8 +509,9 @@
 	position: absolute;
 	bottom: -1px;
 	right: -1px;
-	width: 60px;
-	height: 60px;
+	width: 55px;
+    height: 55px;
+	border-radius: 50%;
 }
 
 .btn__messager {
@@ -470,9 +519,8 @@
 	position: absolute;
 	bottom: 15px;
 	right: 15px;
-	width: 60px;
-	height: 60px;
-	background-color: #aca9a947;
+	width: 75px;
+	height: 75px;
 	border-radius: 50%;
 	display: flex;
 	justify-content: center;
@@ -480,6 +528,8 @@
 	box-shadow: 3px 4px 4px rgb(0 0 0 / 17%);
 	cursor: pointer;
 	transition: 0.5s linear;
+	border: 10px solid #DBDDE8;
+    background-color: #51C332;
 }
 
 .btn__messager:hover {
@@ -545,24 +595,18 @@
 	content: 'Id của bạn: ';
 }
 
-.id__me:before {
-	content: 'Id của bạn: ';
-	font-size: 12px;
-}
-
-.id__me {
-	position: absolute;
-	bottom: 12px;
-	right: 5px;
-	color: gray;
-	font-size: 12px;
-}
-
 .title_members {
-	font-size: 10px;
-	color: gray;
+	font-style: normal;
+	font-weight: 500;
+	font-size: 18px;
+	line-height: 32px;
+	color: $color-gray-dark;
 	text-align: center;
-	display: block;
+	display: flex;
+	align-items: center;
+	img{
+		padding-right: 5px;
+	}
 }
 
 .logo_chat {
@@ -613,12 +657,9 @@
 	padding-top: 10px;
 }
 
-.have__img {
-	height: 275px !important;
-}
-
 .preview__imgs {
 	display: flex;
+	left: 35px;
 }
 
 .preview__imgs div {
@@ -654,7 +695,8 @@
 
 .box__chat {
 	background: white;
-	border-radius: 5px;
+	border-radius: 10px;
+	height: 44px;
 }
 
 .chat__image {
@@ -681,4 +723,11 @@
 	position: relative;
 	border: 1px solid $color-white;
 	border-radius: 50%;
+}
+
+.msg__title{
+	border-bottom: 1px solid #D9D9D9 !important;
+    position: relative;
+    height: 64px;
+    padding: 15px;
 }

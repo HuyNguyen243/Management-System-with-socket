@@ -1,0 +1,55 @@
+.chart__dot{
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 20px;
+    color: #434343;
+    margin-bottom: 10px;
+}
+
+.chart__dot.complete::before{
+    content: '';
+    background-color: #3EC180;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: block;
+    margin-right: 5px;
+}
+
+.chart__dot.not-complete::before{
+    content: '';
+    background-color: #3564DB;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: block;
+    margin-right: 5px;
+}
+
+.chart__dot.processing::before{
+    content: '';
+    background-color: #FF6600;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: block;
+    margin-right: 5px;
+}
+
+.chart__bonus{
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 22px;
+    color: #696969;
+    p{
+        margin-bottom: 10px;
+    }
+    span{
+        font-weight: 500;
+        font-size: 14px;
+        line-height: 22px;
+        color: #404040;
+    }
+}
