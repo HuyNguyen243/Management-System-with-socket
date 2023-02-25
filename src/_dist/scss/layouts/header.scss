@@ -13,6 +13,11 @@
 	background-color: $color-border-input;
 }
 
+.disable {
+	background-color: $color-border-input;
+	border-radius: 5px;
+}
+
 .css-jedpe8-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input,
 .css-1n4twyu-MuiInputBase-input-MuiOutlinedInput-input {
 	padding: 6.5px 14px !important;

@@ -130,7 +130,7 @@
 	}
 }
 
-.chat-header::after{
+.chat-header.active::after{
 	content: "";
     position: absolute;
     left: -10px;

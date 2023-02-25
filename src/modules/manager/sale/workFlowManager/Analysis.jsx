@@ -55,8 +55,8 @@ const Analysis = () => {
 						<div className="chart__dot not-complete flex align-items-center">Chưa hoàn thành</div>
 						<div className="chart__dot processing flex align-items-center">Đang xử lý</div>
 						<div className="chart__bonus" >
-							<p>Số tiền bonus: <span>132$</span> </p>
-							<p>Tổng doanh thu:	<span>132$</span> </p>
+							<p>Số tiền bonus: <span>{Number(performance?.data?.bonus) && Number(performance?.data?.bonus) + "$"}</span> </p>
+							<p>Tổng doanh thu:	<span>{Number(performance?.data?.cost_jobs) && Number(performance?.data?.cost_jobs) + "$"}</span> </p>
 						</div>
 					</div>
 				}

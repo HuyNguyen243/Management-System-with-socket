@@ -23,27 +23,27 @@ const TableBody = ({ rowData, item }) => {
 	//btn_success , btn_pending, btn_stop , normal, text-bold ,text-blue
 
 	const HTML = () => {
+		const value = rowData?.[item]
 		switch (item) {
 			case 'status':
-				const status = rowData?.[item];
-				if (status === CustomerRules.STATUS.PENDING) {
+				if (value === CustomerRules.STATUS.PENDING) {
 					return <span className='table__body-name btn_pending'>{CUSTOMER_REQUEST_PENDING}</span>;
 				}
-				if (status === CustomerRules.STATUS.REQUEST) {
+				if (value === CustomerRules.STATUS.REQUEST) {
 					return <span className='table__body-name btn_success'>{CUSTOMER_REQUEST_REQUEST}</span>;
 				}
-				if (status === CustomerRules.STATUS.UNREQUEST) {
+				if (value === CustomerRules.STATUS.UNREQUEST) {
 					return <span className='table__body-name btn_stop'>{CUSTOMER_REQUEST_CANCEL}</span>;
 				}
-				if (status === UserRules.STATUS.ONLINE) {
+				if (value === UserRules.STATUS.ONLINE) {
 					return (
 						<span className='table__body-name btn_success flex align-items-center '>{USER_IS_ONLINE}</span>
 					);
 				}
-				if (status === UserRules.STATUS.OFFLINE) {
+				if (value === UserRules.STATUS.OFFLINE) {
 					return <span className='table__body-name btn_stop flex align-items-center'>{USER_IS_OFFLINE}</span>;
 				}
-				if (status === UserRules.STATUS.LEAVE) {
+				if (value === UserRules.STATUS.LEAVE) {
 					return (
 						<span className='table__body-name btn_pending flex align-items-center'>{USER_IS_STOPPING}</span>
 					);
@@ -62,54 +62,51 @@ const TableBody = ({ rowData, item }) => {
 				}
 				break;
 			case 'status_jobs':
-				const status_jobs = rowData?.[item];
-				if (status_jobs === JobRules.STATUS_JOBS.COMPLETE) {
+				if (value === JobRules.STATUS_JOBS.COMPLETE) {
 					return <span className='table__body-name btn_success flex justify-content-center'>{JOB_DONE}</span>;
 				}
-				if (status_jobs === JobRules.STATUS_JOBS.INCOMPLETE) {
+				if (value === JobRules.STATUS_JOBS.INCOMPLETE) {
 					return (
 						<span className='table__body-name btn_stop flex justify-content-center'>{JOB_INCOMPLETE}</span>
 					);
 				}
-				if (status_jobs === JobRules.STATUS_JOBS.PENDING) {
+				if (value === JobRules.STATUS_JOBS.PENDING) {
 					return (
 						<span className='table__body-name btn_pending flex justify-content-center'>{JOB_PENDING}</span>
 					);
 				}
 				break;
 			case 'status_editor':
-				const status_editor = rowData?.[item];
-				if (status_editor === JobRules.STATUS_EDITOR.COMPLETE) {
+				if (value === JobRules.STATUS_EDITOR.COMPLETE) {
 					return <span className='table__body-name btn_success flex justify-content-center'>{JOB_DONE}</span>;
 				}
-				if (status_editor === JobRules.STATUS_EDITOR.INCOMPLETE) {
+				if (value === JobRules.STATUS_EDITOR.INCOMPLETE) {
 					return (
 						<span className='table__body-name btn_stop flex justify-content-center'>{JOB_INCOMPLETE}</span>
 					);
 				}
-				if (status_editor === JobRules.STATUS_EDITOR.PENDING) {
+				if (value === JobRules.STATUS_EDITOR.PENDING) {
 					return (
 						<span className='table__body-name btn_pending flex justify-content-center'>{JOB_PENDING}</span>
 					);
 				}
 				break;
 			case 'status_customer':
-				const status_customer = rowData?.[item];
-				if (status_customer === JobRules.STATUS_CUSTOMER.DONE) {
+				if (value === JobRules.STATUS_CUSTOMER.DONE) {
 					return (
 						<span className='table__body-name btn_success flex justify-content-center'>
 							{CUSTOMER_REQUEST_DONE}
 						</span>
 					);
 				}
-				if (status_customer === JobRules.STATUS_CUSTOMER.REQUEST) {
+				if (value === JobRules.STATUS_CUSTOMER.REQUEST) {
 					return (
 						<span className='table__body-name btn_stop flex justify-content-center'>
 							{CUSTOMER_REQUEST_REQUEST}
 						</span>
 					);
 				}
-				if (status_customer === JobRules.STATUS_CUSTOMER.PENDING) {
+				if (value === JobRules.STATUS_CUSTOMER.PENDING) {
 					return (
 						<span className='table__body-name btn_pending flex justify-content-center'>
 							{CUSTOMER_REQUEST_PENDING}
@@ -124,16 +121,15 @@ const TableBody = ({ rowData, item }) => {
 			case 'end_day':
 				return <span className='table__body-name text-bold'>{timezoneToDate(rowData?.end_day)}</span>;
 			case 'role':
-				const role = rowData?.[item];
-				if (role === UserRules.ROLE.SALER) {
+				if (value === UserRules.ROLE.SALER) {
 					return <span className='table__body-name text-bold color__green'>{UserRules.ROLE_NAME.SALER}</span>;
 				}
-				if (role === UserRules.ROLE.EDITOR) {
+				if (value === UserRules.ROLE.EDITOR) {
 					return (
 						<span className='table__body-name text-bold color__price'>{UserRules.ROLE_NAME.EDITOR}</span>
 					);
 				}
-				if (role === UserRules.ROLE.LEADER_EDITOR) {
+				if (value === UserRules.ROLE.LEADER_EDITOR) {
 					return (
 						<span className='table__body-name text-bold color__warning'>
 							{' '}
@@ -150,28 +146,28 @@ const TableBody = ({ rowData, item }) => {
 			case 'reminder_customer':
 				if (item === 'reminder_saler') {
 					return (
-						<span alt-saler={rowData?.id_saler} className={` table__body-name text-bold ${item}`}>
+						<span id={rowData?.id_saler} className={`altSaler table__body-name text-bold ${item}`}>
 							{rowData?.[item] !== 'NOT_SET_BY_ADMIN' && rowData?.[item]}
 						</span>
 					);
 				}
 				if (item === 'reminder_customer') {
 					return (
-						<span alt-customer={rowData?.id_customer} className={` table__body-name text-bold ${item}`}>
+						<span id={rowData?.id_customer} className={`altCustomer table__body-name text-bold ${item}`}>
 							{rowData?.[item] !== 'NOT_SET_BY_ADMIN' && rowData?.[item]}
 						</span>
 					);
 				}
 				if (item === 'reminder_editor') {
 					return (
-						<span alt-editor={rowData?.id_editor} className={` table__body-name text-bold ${item}`}>
+						<span id={rowData?.id_editor} className={`altEditor table__body-name text-bold ${item}`}>
 							{rowData?.[item] !== 'NOT_SET_BY_ADMIN' && rowData?.[item]}
 						</span>
 					);
 				}
 				if (item === 'reminder_staff') {
 					return (
-						<span alt-staff={rowData?.staff_is_pay} className={` table__body-name text-bold ${item}`}>
+						<span id={rowData?.staff_is_pay} className={`altStaff table__body-name text-bold ${item}`}>
 							{rowData?.[item] !== 'NOT_SET_BY_ADMIN' && rowData?.[item]}
 						</span>
 					);
@@ -192,11 +188,11 @@ const TableBody = ({ rowData, item }) => {
 				);
 			case 'total_cost':
 			case 'saler_cost':
-				return <span className='table__body-name text-bold btn_success'>{formatUSD(rowData?.[item])}</span>;
+				return <span className='table__body-name text-bold'>{formatUSD(rowData?.[item])}</span>;
 			case 'pay_employees':
 			case 'editor_cost':
 				return (
-					<span className='table__body-name text-bold btn_success color__price'>
+					<span className='table__body-name text-bold color__price'>
 						{formatVND(rowData?.[item])}
 					</span>
 				);

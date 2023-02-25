@@ -120,7 +120,7 @@
 
 .sort__up {
 	position: absolute;
-	top: -10px;
+	top: -8px;
 	left: -4px;
 	width: 10px;
 	margin-left: 4px;
@@ -128,7 +128,7 @@
 
 .sort__down {
 	position: absolute;
-	bottom: -7px;
+	bottom: -8px;
 	right: -10px;
 	width: 10px;
 	margin-left: 4px;
@@ -175,8 +175,8 @@
 .p-label.btn_success,
 .p-float-label.btn_success,
 .table__body-name.btn_success {
-	color: $color-success;
-	background-color: $color-success-bg;
+	color: $color-black;
+	background-color: #ECFBE6;
 	border-radius: 5px;
 	padding: 2px 10px;
 	width: 155px;
@@ -186,16 +186,22 @@
 	align-items: center;
 	justify-content: center !important;
 	margin: auto;
-	.dots_online {
-		margin-right: 20px;
+	&::before{
+		content: "";
+		width: 8px;
+		height: 8px;
+		border-radius: 50%;
+		background: $color-success;
+		display: block;
+		margin-right: 5px;
 	}
 }
 
 .p-label.btn_pending,
 .p-float-label.btn_pending,
 .table__body-name.btn_pending {
-	color: $color-warning;
-	background-color: #ffc67080;
+	color: $color-black;
+	background-color: #FFF6E8;
 	border-radius: 5px;
 	padding: 2px 10px;
 	width: 155px;
@@ -205,8 +211,14 @@
 	align-items: center;
 	justify-content: center !important;
 	margin: auto;
-	.dots_offline {
-		margin-right: 20px;
+	&::before{
+		content: "";
+		width: 8px;
+		height: 8px;
+		border-radius: 50%;
+		background: $color-warning;
+		display: block;
+		margin-right: 5px;
 	}
 }
 
@@ -221,8 +233,8 @@
 .p-label.btn_stop,
 .p-float-label.btn_stop,
 .table__body-name.btn_stop {
-	color: $color-danger;
-	background-color: #ffbdc9;
+	color: $color-black;
+	background-color: #FFE8EC;
 	border-radius: 5px;
 	padding: 2px 10px;
 	width: 155px;
@@ -233,8 +245,14 @@
 	align-items: center;
 	justify-content: center !important;
 	margin: auto;
-	.dots_offline {
-		margin-right: 20px;
+	&::before{
+		content: "";
+		width: 8px;
+		height: 8px;
+		border-radius: 50%;
+		background: $color-danger;
+		display: block;
+		margin-right: 5px;
 	}
 }
 
@@ -285,7 +303,8 @@
 	align-items: center;
 	text-transform: uppercase;
 	height: 45px;
-	padding: 1rem 0rem;
+	padding: 1rem 0rem !important;
+	// margin: 1rem 1rem;
 }
 
 .p-datatable .p-datatable-tbody > tr > td {

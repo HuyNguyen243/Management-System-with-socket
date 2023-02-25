@@ -329,7 +329,7 @@ const BoxChat = () => {
 			/>
 
 			<div className='chat'>
-				<div className='chat-header '>
+				<div className={`chat-header ${currentUser.role === UserRules.ROLE_ADMIN  && "active"}`}>
 					<div className='chat__close' onClick={() => dispatch(setIsOpenChat(false))}></div>
 					{namePrivateRoom && (
 						<div className='chat_img' role={namePrivateRoom?.charAt(0) + namePrivateRoom?.charAt(1)}></div>

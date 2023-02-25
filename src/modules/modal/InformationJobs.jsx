@@ -38,7 +38,6 @@ const InformationJobs = () => {
 	const [workNotes, setWorkNotes] = useState(false);
 	const [requestContent, setRequestContent] = useState(false);
 	const [selectEditor, setSelectEditor] = useState(false);
-	const [isOpenInput, setIsOpenInput] = useState({});
 	const [idUserCreateJob, setIdUserCreateJob] = useState('');
 	const [idEditorAdded, setIdEditorAdded] = useState('');
 
@@ -61,6 +60,22 @@ const InformationJobs = () => {
 	} = useForm();
 
 	const employees = useSelector((state) => state.employee?.dashboard);
+
+	useEffect(()=>{
+		if(rowdata?.data?.type_models){
+			setValue("type_models",rowdata?.data?.type_models)
+		}
+		if(rowdata?.data?.reminder_editor && employees.data){
+			const getEditor = employees.data.find((item)=>{
+				return item.fullname === rowdata?.data?.reminder_editor
+			})
+			if(getEditor){
+				setSelectEditor(getEditor)
+				setValue('id_editor', getEditor?.id_system);
+			}
+		}
+	},[rowdata, isOpenInformationJob])
+
 
 	useEffect(() => {
 		if (isOpenInformationJob) {
@@ -112,15 +127,9 @@ const InformationJobs = () => {
 		}
 	}, [dispatch, isOpenInformationJob, user?.data]);
 
-	const handleOpenInput = (key) => {
-		if (!Object.keys(isOpenInput).includes(key)) {
-			setIsOpenInput({ ...isOpenInput, [key]: true });
-		}
-	};
 	const handleCloseModal = React.useCallback(() => {
 		dispatch(setIsOpenInformationJob(false));
 		setSelectEditor(false);
-		setIsOpenInput({});
 		reset();
 	}, [dispatch, setSelectEditor, reset]);
 
@@ -295,31 +304,27 @@ const InformationJobs = () => {
 										Deadline :
 									</span>
 									<span
-										onClick={handleOpenInput('end_day')}
 										className={
-											'p-float-label font-bold ' +
-											(user?.data?.role !== UserRules.ROLE.LEADER_EDITOR &&
-											user?.data?.role !== UserRules.ROLE.EDITOR
-												? 'cursor__edit'
-												: isOpenInput?.end_day
-												? ''
-												: ' mt-3')
+											'p-float-label font-bold '
 										}
 									>
-										{user?.data?.role !== UserRules.ROLE.LEADER_EDITOR &&
-										user?.data?.role !== UserRules.ROLE.EDITOR &&
-										isOpenInput?.end_day ? (
-											<Calendar
-												readOnlyInput
-												value={new Date(rowdata?.data?.end_day)}
-												minDate={minDate}
-												onChange={(e) => setValue('end_day', e.value)}
-											/>
-										) : (
-											<span className='p-float-label mt-3'>
-												{timezoneToDate(rowdata?.data?.end_day)}
-											</span>
-										)}
+										<Calendar
+											readOnlyInput
+											value={new Date(rowdata?.data?.end_day)}
+											minDate={minDate}
+											onChange={(e) => setValue('end_day', e.value)}
+											className={
+												`	
+												${user?.data?.role === UserRules.ROLE.LEADER_EDITOR && "disable"}
+												${user?.data?.role === UserRules.ROLE.EDITOR && "disable"}
+												`
+											}
+											disabled={
+												user?.data?.role === UserRules.ROLE.LEADER_EDITOR || 
+												user?.data?.role === UserRules.ROLE.EDITOR ?
+												true : false
+											}
+										/>
 									</span>
 								</div>
 								<div className='field col-12 md:col-6 '>
@@ -331,28 +336,29 @@ const InformationJobs = () => {
 										Số lượng :
 									</span>
 									<span
-										onClick={handleOpenInput('quality')}
 										className={
-											'p-float-label ' +
-											(user?.data?.role !== UserRules.ROLE.LEADER_EDITOR &&
-											user?.data?.role !== UserRules.ROLE.EDITOR
-												? 'cursor__edit'
-												: isOpenInput?.quality
-												? ''
-												: ' mt-3 ')
+											'p-float-label ' 
 										}
 									>
-										{user?.data?.role !== UserRules.ROLE.LEADER_EDITOR &&
-											user?.data?.role !== UserRules.ROLE.EDITOR && (
-												<InputNumber
-													value={rowdata?.data?.quality}
-													onValueChange={(e) => setValue('quality_img', e.value)}
-													mode='decimal'
-													max={9999}
-													min={1}
-													className='w-full'
-												/>
-											)}
+										<InputNumber
+											value={rowdata?.data?.quality}
+											onValueChange={(e) => setValue('quality_img', e.value)}
+											mode='decimal'
+											max={9999}
+											min={1}
+											className={`
+											w-full
+											${user?.data?.role === UserRules.ROLE.LEADER_EDITOR && "disable" }
+											${user?.data?.role === UserRules.ROLE.EDITOR && "disable" }
+											`}
+											disabled={
+												user?.data?.role === UserRules.ROLE.LEADER_EDITOR ||
+												user?.data?.role === UserRules.ROLE.EDITOR ?
+												true
+												:
+												false
+											}
+										/>
 									</span>
 								</div>
 								<div className='field col-12 md:col-6 '>
@@ -364,18 +370,11 @@ const InformationJobs = () => {
 										Loại ảnh :
 									</span>
 									<span
-										onClick={handleOpenInput('type_models')}
 										className={
-											'p-float-label ' +
-											(user?.data?.role !== UserRules.ROLE.LEADER_EDITOR &&
-											user?.data?.role !== UserRules.ROLE.EDITOR
-												? 'cursor__edit'
-												: isOpenInput?.type_models
-												? ''
-												: ' mt-3 ')
+											'p-float-label ' 
 										}
 									>
-										{user?.data?.role !== UserRules.ROLE.LEADER_EDITOR &&
+										{/* {user?.data?.role !== UserRules.ROLE.LEADER_EDITOR &&
 											user?.data?.role !== UserRules.ROLE.EDITOR && (
 												<InputText
 													defaultValue={rowdata?.data?.type_models}
@@ -383,7 +382,25 @@ const InformationJobs = () => {
 													{...register('type_models', { required: true })}
 													className={errors?.type_models && 'p-invalid'}
 												/>
-											)}
+											)} */}
+											<InputText
+												defaultValue={rowdata?.data?.type_models}
+												onChange={(e) => setValue('type_models', e.target.value)}
+												{...register('type_models', { required: true })}
+												className={`
+													w-full
+													${errors?.type_models ? 'p-invalid' : ""}
+													${user?.data?.role === UserRules.ROLE.LEADER_EDITOR && "disable" }
+													${user?.data?.role === UserRules.ROLE.EDITOR && "disable" }
+												`}
+												disabled={
+													user?.data?.role === UserRules.ROLE.LEADER_EDITOR ||
+													user?.data?.role === UserRules.ROLE.EDITOR ?
+													true
+													:
+													false
+												}
+											/>
 									</span>
 								</div>
 
@@ -395,26 +412,27 @@ const InformationJobs = () => {
 											)}
 										Định dạng file :
 									</span>
-									<span onClick={handleOpenInput('photo_types')} className={' p-float-label '}>
-										{user?.data?.role !== UserRules.ROLE.LEADER_EDITOR &&
-											user?.data?.role !== UserRules.ROLE.EDITOR && (
-												<Dropdown
-													options={type_files}
-													optionLabel='name'
-													defaultValue={JobRules.PHOTO_TYPES[rowdata?.data?.photo_types]}
-													value={typeFile}
-													onChange={(e) => {
-														setTypeFile(e.value);
-														setValue('photo_types', e.value.code);
-													}}
-													disabled={
-														user?.data?.role === UserRules.ROLE.EDITOR &&
-														user?.data?.role === UserRules.ROLE.LEADER_EDITOR
-															? true
-															: false
-													}
-												/>
-											)}
+									<span className={' p-float-label '}>
+										<Dropdown
+											options={type_files}
+											optionLabel='name'
+											defaultValue={JobRules.PHOTO_TYPES[rowdata?.data?.photo_types]}
+											value={typeFile}
+											onChange={(e) => {
+												setTypeFile(e.value);
+												setValue('photo_types', e.value.code);
+											}}
+											className={`
+												${user?.data?.role === UserRules.ROLE.LEADER_EDITOR && "disable" }
+												${user?.data?.role === UserRules.ROLE.EDITOR && "disable" }
+											`}
+											disabled={
+												user?.data?.role === UserRules.ROLE.EDITOR ||
+												user?.data?.role === UserRules.ROLE.LEADER_EDITOR
+													? true
+													: false
+											}
+										/>
 									</span>
 								</div>
 								{user?.data?.role === UserRules.ROLE.ADMIN && (
@@ -423,8 +441,7 @@ const InformationJobs = () => {
 											<span className='warning'>*</span>Editor :
 										</span>
 										<span
-											onClick={handleOpenInput('id_editor')}
-											className={' p-float-label cursor__edit '}
+											className={' p-float-label'}
 										>
 											<Dropdown
 												options={employees.data}
@@ -436,7 +453,8 @@ const InformationJobs = () => {
 													setSelectEditor(e.value);
 												}}
 												disabled={
-													user?.data?.role === UserRules.ROLE.EDITOR &&
+													user?.data?.role === UserRules.ROLE.EDITOR 
+													||
 													user?.data?.role === UserRules.ROLE.LEADER_EDITOR
 														? true
 														: false
@@ -445,7 +463,12 @@ const InformationJobs = () => {
 										</span>
 									</div>
 								)}
-								<div className='field col-12 md:col-12 create__job--calendar'>
+								<div className={`
+									field create__job--calendar
+									${user?.data?.role === UserRules.ROLE.EDITOR || user?.data?.role === UserRules.ROLE.LEADER_EDITOR ?
+										"col-6 md:col-6" : "col-12 md:col-12"
+									}
+									`}>
 									<span htmlFor='org_link'>
 										{user?.data?.role !== UserRules.ROLE.LEADER_EDITOR &&
 											user?.data?.role !== UserRules.ROLE.EDITOR && (
@@ -454,20 +477,13 @@ const InformationJobs = () => {
 										Link ảnh gốc :
 									</span>
 									<span
-										onClick={handleOpenInput('org_link')}
 										className={
-											'p-float-label  ' +
-											(user?.data?.role !== UserRules.ROLE.LEADER_EDITOR &&
-											user?.data?.role !== UserRules.ROLE.EDITOR
-												? 'cursor__edit'
-												: isOpenInput?.org_link
-												? ''
-												: ' ')
+											'p-float-label  ' 
 										}
 									>
 										{user?.data?.role !== UserRules.ROLE.LEADER_EDITOR &&
-										user?.data?.role !== UserRules.ROLE.EDITOR &&
-										isOpenInput?.org_link ? (
+										user?.data?.role !== UserRules.ROLE.EDITOR
+										? (
 											<Controller
 												control={control}
 												rules={{
@@ -498,13 +514,9 @@ const InformationJobs = () => {
 								user?.data?.role === UserRules.ROLE.LEADER_EDITOR ? (
 									<div className='field col-12 md:col-12 create__job--calendar'>
 										<span htmlFor='finished_link'>
-											Link ảnh hoàn thành :<span className='warning'>*</span>
+											<span className='warning'>*</span>Link ảnh hoàn thành :
 										</span>
-										<span
-											onClick={handleOpenInput('finished_link')}
-											className={'p-float-label cursor__edit '}
-										>
-											{isOpenInput?.finished_link ? (
+										<span>
 												<InputText
 													defaultValue={
 														rowdata?.data?.finished_link === NOT_SET_ADMIN
@@ -514,31 +526,8 @@ const InformationJobs = () => {
 													onChange={(e) => setValue('finished_link', e.target.value)}
 													{...register('finished_link', { required: true })}
 													className={errors?.finished_link && 'p-invalid'}
+													placeholder="Enter"
 												/>
-											) : (
-												<span className='flex justify-content-between'>
-													{rowdata?.data?.finished_link === NOT_SET_ADMIN ? (
-														'Trống'
-													) : (
-														<>
-															<a
-																href={rowdata?.data?.finished_link}
-																target='_blank'
-																rel='noreferrer'
-															>
-																Link liên kết
-															</a>
-															<img
-																src='images/copy.svg'
-																alt='finished_link'
-																label='Bottom Right'
-																onClick={(e) => copyToClipboard(e.target.alt)}
-																className='cursor-pointer'
-															/>
-														</>
-													)}
-												</span>
-											)}
 										</span>
 									</div>
 								) : (
@@ -547,7 +536,7 @@ const InformationJobs = () => {
 										<span className={'p-float-label  mt-2'}>
 											<span className='flex justify-content-between'>
 												{rowdata?.data?.finished_link === NOT_SET_ADMIN ? (
-													'Trống'
+													''
 												) : (
 													<>
 														<a
@@ -577,8 +566,7 @@ const InformationJobs = () => {
 												<span className='warning'>*</span>Chi phí tổng :
 											</span>
 											<span
-												onClick={handleOpenInput('total_cost')}
-												className={'p-float-label cursor__edit '}
+												className={'p-float-label'}
 											>
 												<InputNumber
 													inputId='currency-us'
@@ -595,7 +583,11 @@ const InformationJobs = () => {
 										</div>
 									)}
 								{user?.data?.role !== UserRules.ROLE.SALER && (
-									<div className='field col-12 md:col-6'>
+									<div className={`
+									field 
+									${user?.data?.role === UserRules.ROLE.LEADER_EDITOR || user?.data?.role === UserRules.ROLE.EDITOR 
+										? "col-12 md:col-12": "col-6 md:col-6"}
+									`}>
 										<span htmlFor='editor_cost'>
 											{user?.data?.role !== UserRules.ROLE.LEADER_EDITOR &&
 												user?.data?.role !== UserRules.ROLE.EDITOR && (
@@ -603,7 +595,7 @@ const InformationJobs = () => {
 												)}
 											Chi phí Editor :
 										</span>
-										<span onClick={handleOpenInput('editor_cost')} className={'p-float-label '}>
+										<span  className={'p-float-label '}>
 											<InputNumber
 												id='editor_cost'
 												inputId='currency-vn'
@@ -613,7 +605,17 @@ const InformationJobs = () => {
 												currency='VND'
 												locale='vi-VN'
 												useGrouping={true}
-												className={'m-0'}
+												className={`m-0 
+													${user?.data?.role === UserRules.ROLE.LEADER_EDITOR && "disable"}
+													${user?.data?.role === UserRules.ROLE.EDITOR && "disable"}
+												`}
+												disabled={
+													user?.data?.role === UserRules.ROLE.LEADER_EDITOR ||
+													user?.data?.role === UserRules.ROLE.EDITOR ?
+													true
+													:
+													false
+												}
 											/>
 										</span>
 									</div>
@@ -669,13 +671,24 @@ const InformationJobs = () => {
 									</span>
 									<InputTextarea
 										autoResize
-										className='aria_note'
+										className={`
+										aria_note
+										${user?.data?.role === UserRules.ROLE.LEADER_EDITOR && "disable"}
+										${user?.data?.role === UserRules.ROLE.EDITOR && "disable"}
+										`}
 										value={workNotes}
 										onChange={(e) => {
 											setWorkNotes(e.target.value);
 											setValue('work_notes', e.target.value);
 										}}
 										style={{ height: '150px' }}
+										disabled={
+											user?.data?.role === UserRules.ROLE.LEADER_EDITOR ||
+											user?.data?.role === UserRules.ROLE.EDITOR ?
+											true
+											:
+											false
+										}
 									/>
 								</div>
 							</div>

@@ -55,23 +55,26 @@ const JobsOverview = () => {
 
 	const handleRowClick = (rowdata) => {
 		const el = rowdata.originalEvent.target.closest('td').childNodes[1];
-
-		if (el.getAttribute('alt-saler')) {
+		if (el.classList.contains('altSaler')) {
 			//OPEN SALE
 			const data = {};
-			data.id = el.getAttribute('alt-saler');
+			data.id = el.getAttribute('id');
 			dispatch(getEmployeeRequest(data));
+			setTimeout(()=>{
 			dispatch(setIsOpenModalInformationUser(true));
-		} else if (el.getAttribute('alt-customer')) {
+			},700)
+		} else if (el.classList.contains('altCustomer')) {
 			//OPEN CUSTOMER
 			const data = {};
-			data.id = el.getAttribute('alt-customer');
+			data.id = el.getAttribute('id');
 			dispatch(getCustomerRequest(data));
-			dispatch(setIsOpenModalInformationCustomer(true));
-		} else if (el.getAttribute('alt-editor')) {
+			setTimeout(()=>{
+				dispatch(setIsOpenModalInformationCustomer(true));
+			},700)
+		} else if (el.classList.contains('altEditor')) {
 			//OPEN EDITOR
 			const data = {};
-			data.id = el.getAttribute('alt-editor');
+			data.id = el.getAttribute('id');
 			if (data.id !== 'NOT_SET_BY_ADMIN') {
 				dispatch(getEmployeeRequest(data));
 				dispatch(setIsOpenModalInformationUser(true));
